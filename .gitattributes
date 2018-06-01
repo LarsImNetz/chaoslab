@@ -1,5 +1,8 @@
 *.ebuild gitlab-language=shell
-*.initd gitlab-language=shell
-*.confd gitlab-language=shell
-*.service gitlab-language=ini
+*.initd* gitlab-language=shell
+*.confd* gitlab-language=shell
+*.logrotate* gitlab-language=shell
+*.logrotated* gitlab-language=shell
+*.eclass gitlab-language=shell
+*.service* gitlab-language=ini
 *.socket gitlab-language=ini
