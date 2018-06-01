@@ -51,9 +51,9 @@ src_compile() {
 	# otherwise install it locally:
 	if ! command -v bower &>/dev/null; then
 		ebegin "Installing bower locally"
-		pushd "${N_PREFIX}" > /dev/null || die
+		pushd "${N_PREFIX}" || die
 		npm install --cache "${WORKDIR}"/npm-cache bower || die
-		popd > /dev/null || die
+		popd || die
 		eend $?
 	fi
 

@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -16,6 +16,8 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="c-plugins icons +largefile libnotify +otr pgp plugins python-plugins test +themes xscreensaver"
+REQUIRED_USE="c-plugins? ( plugins )
+	python-plugins? ( plugins ${PYTHON_REQUIRED_USE} )"
 
 CDEPEND="dev-libs/glib:2
 	net-misc/curl
@@ -37,8 +39,6 @@ DEPEND="${CDEPEND}
 	test? ( dev-util/cmocka )"
 RDEPEND="${CDEPEND}
 	libnotify? ( virtual/notification-daemon )"
-REQUIRED_USE="c-plugins? ( plugins )
-	python-plugins? ( plugins ${PYTHON_REQUIRED_USE} )"
 
 src_prepare() {
 	default
@@ -46,18 +46,20 @@ src_prepare() {
 }
 
 src_configure() {
-	econf \
-		$(use_enable c-plugins) \
-		$(use_enable icons) \
-		$(use_enable largefile) \
-		$(use_enable libnotify notifications) \
-		$(use_enable otr) \
-		$(use_enable pgp) \
-		$(use_enable plugins) \
-		$(use_enable python-plugins) \
-		$(use_with themes) \
-		$(use_with xscreensaver) \
-		|| die "econf failed"
+	# shellcheck disable=SC2207
+	local myeconf=(
+		$(use_enable c-plugins)
+		$(use_enable icons)
+		$(use_enable largefile)
+		$(use_enable libnotify notifications)
+		$(use_enable otr)
+		$(use_enable pgp)
+		$(use_enable plugins)
+		$(use_enable python-plugins)
+		$(use_with themes)
+		$(use_with xscreensaver)
+	)
+	econf "${myeconf[@]}" || die "econf failed"
 }
 
 src_install() {

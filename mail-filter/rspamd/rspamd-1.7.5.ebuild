@@ -62,7 +62,7 @@ src_configure() {
 src_install() {
 	cmake-utils_src_install
 
-	newinitd "${FILESDIR}"/rspamd.initd-r1 rspamd
+	newinitd "${FILESDIR}"/rspamd.initd rspamd
 	systemd_dounit rspamd.service
 
 	# Remove mprotect for JIT support
