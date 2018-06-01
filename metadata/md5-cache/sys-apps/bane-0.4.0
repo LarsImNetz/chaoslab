@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile install test unpack
+DEPEND=>=dev-lang/go-1.9
+DESCRIPTION=AppArmor profile generator for docker containers
+EAPI=6
+HOMEPAGE=https://github.com/genuinetools/bane
+KEYWORDS=~amd64
+LICENSE=MIT
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/genuinetools/bane/archive/v0.4.0.tar.gz -> bane-0.4.0.tar.gz
+_eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536
+_md5_=48205ccbedd7ea6ef20a7bbe7f67d18d

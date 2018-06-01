@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile install prepare setup test unpack
+DEPEND=|| ( net-misc/wget net-misc/curl ) test? ( net-analyzer/netcat[crypt] ) >=dev-lang/go-1.9 virtual/pkgconfig
+DESCRIPTION=IPFS implementation written in Go
+EAPI=6
+HOMEPAGE=https://ipfs.io
+IUSE=fuse test
+KEYWORDS=~amd64 ~arm ~x86
+LICENSE=MIT
+RDEPEND=fuse? ( sys-fs/fuse:0 )
+RESTRICT=mirror strip
+SLOT=0
+SRC_URI=https://github.com/ipfs/go-ipfs/archive/v0.4.14.tar.gz -> go-ipfs-0.4.14.tar.gz
+_eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	a31844b675f1a1fea87fbe1144aee5f5	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607	user	8bc2845510e2109af75e3eeac607ec81
+_md5_=2c8db3653ea562d1377af0cedf05c373

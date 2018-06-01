@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile install unpack
+DEPEND=>=dev-lang/go-1.9
+DESCRIPTION=CLI tool for spawning and running containers
+EAPI=6
+HOMEPAGE=http://runc.io
+IUSE=+ambient apparmor bash-completion +seccomp
+KEYWORDS=~amd64 ~arm
+LICENSE=Apache-2.0
+RDEPEND=!app-emulation/docker-runc apparmor? ( sys-libs/libapparmor ) seccomp? ( sys-libs/libseccomp )
+RESTRICT=test
+SLOT=0
+SRC_URI=https://github.com/opencontainers/runc/archive/v1.0.0-rc5.tar.gz -> runc-1.0.0_rc5.tar.gz https://github.com/cpuguy83/go-md2man/archive/20f5889.tar.gz -> github.com-cpuguy83-go-md2man-20f5889.tar.gz
+_eclasses_=bash-completion-r1	7e76462890d7d19cad453151876b0ecf	golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	multilib	97f470f374f2e94ccab04a2fb21d811e	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607
+_md5_=5a7ea89b50a59a3374b235289ae73cd7

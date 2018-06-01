@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile install postinst prepare setup test unpack
+DEPEND=>=dev-lang/go-1.9 virtual/pkgconfig
+DESCRIPTION=Gitea - Git with a cup of tea
+EAPI=6
+HOMEPAGE=https://gitea.io
+IUSE=memcached mysql openssh pam postgres redis sqlite tidb
+KEYWORDS=~amd64
+LICENSE=MIT
+RDEPEND=dev-vcs/git[curl,threads] memcached? ( net-misc/memcached ) mysql? ( virtual/mysql ) openssh? ( net-misc/openssh ) pam? ( virtual/pam ) postgres? ( dev-db/postgresql ) redis? ( dev-db/redis ) sqlite? ( dev-db/sqlite ) tidb? ( dev-db/tidb )
+RESTRICT=mirror strip
+SLOT=0
+SRC_URI=https://github.com/go-gitea/gitea/archive/v1.4.0.tar.gz -> gitea-1.4.0.tar.gz https://github.com/jteeuwen/go-bindata/archive/a0ff256.tar.gz -> github.com-jteeuwen-go-bindata-a0ff256.tar.gz
+_eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	a31844b675f1a1fea87fbe1144aee5f5	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607	user	8bc2845510e2109af75e3eeac607ec81
+_md5_=e31e39613f709d878bbb7094dc11e617

@@ -1,0 +1,12 @@
+DEFINED_PHASES=install
+DEPEND=app-arch/unzip
+DESCRIPTION=Cross platform application development framework based on web technologies
+EAPI=6
+HOMEPAGE=https://electron.atom.io
+KEYWORDS=-* ~amd64 ~x86
+LICENSE=MIT
+RDEPEND=dev-libs/nss dev-libs/expat dev-libs/libappindicator dev-libs/nss gnome-base/gconf media-libs/alsa-lib media-libs/libpng net-print/cups sys-libs/zlib virtual/opengl virtual/ttf-fonts x11-libs/cairo x11-libs/gtk+:2 x11-libs/libnotify x11-libs/libxcb x11-libs/libXtst x11-libs/pango
+RESTRICT=mirror
+SLOT=1.7
+SRC_URI=amd64? ( https://github.com/electron/electron/releases/download/v1.7.15/electron-v1.7.15-linux-x64.zip -> electron-bin-1.7.15-x64.zip ) x86? ( https://github.com/electron/electron/releases/download/v1.7.15/electron-v1.7.15-linux-ia32.zip -> electron-bin-1.7.15-ia32.zip )
+_md5_=b6752b931470b6a90f00aefba5345c06

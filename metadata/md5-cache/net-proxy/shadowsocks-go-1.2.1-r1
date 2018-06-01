@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install setup unpack
+DEPEND=>=dev-lang/go-1.9
+DESCRIPTION=A Go port of Shadowsocks
+EAPI=6
+HOMEPAGE=https://shadowsocks.org
+IUSE=pie
+KEYWORDS=~amd64 ~x86
+LICENSE=Apache-2.0
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/shadowsocks/shadowsocks-go/archive/1.2.1.tar.gz -> shadowsocks-go-1.2.1.tar.gz https://github.com/Yawning/chacha20/archive/e3b1f96.tar.gz -> github.com-Yawning-chacha20-e3b1f96.tar.gz https://github.com/golang/crypto/archive/9f005a0.tar.gz -> github.com-golang-crypto-9f005a0.tar.gz
+_eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	user	8bc2845510e2109af75e3eeac607ec81
+_md5_=dafb3908a794658fdf4dfd9ea5a04f21

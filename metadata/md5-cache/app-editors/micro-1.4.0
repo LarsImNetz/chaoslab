@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile install test unpack
+DEPEND=>=dev-lang/go-1.9
+DESCRIPTION=A modern and intuitive terminal-based text editor
+EAPI=6
+HOMEPAGE=https://micro-editor.github.io
+KEYWORDS=~amd64 ~x86
+LICENSE=MIT
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/zyedidia/micro/archive/v1.4.0.tar.gz -> micro-1.4.0.tar.gz https://github.com/blang/semver/archive/4a1e882.tar.gz -> github.com-blang-semver-4a1e882.tar.gz https://github.com/dustin/go-humanize/archive/259d2a1.tar.gz -> github.com-dustin-go-humanize-259d2a1.tar.gz https://github.com/flynn/json5/archive/7620272.tar.gz -> github.com-flynn-json5-7620272.tar.gz https://github.com/gdamore/encoding/archive/b23993c.tar.gz -> github.com-gdamore-encoding-b23993c.tar.gz https://github.com/go-errors/errors/archive/8fa88b0.tar.gz -> github.com-go-errors-errors-8fa88b0.tar.gz https://github.com/lucasb-eyer/go-colorful/archive/c900de9.tar.gz -> github.com-lucasb-eyer-go-colorful-c900de9.tar.gz https://github.com/mattn/go-isatty/archive/fc9e8d8.tar.gz -> github.com-mattn-go-isatty-fc9e8d8.tar.gz https://github.com/mattn/go-runewidth/archive/97311d9.tar.gz -> github.com-mattn-go-runewidth-97311d9.tar.gz https://github.com/mitchellh/go-homedir/archive/b8bc1bf.tar.gz -> github.com-mitchellh-go-homedir-b8bc1bf.tar.gz https://github.com/sergi/go-diff/archive/feef008.tar.gz -> github.com-sergi-go-diff-feef008.tar.gz https://github.com/yuin/gopher-lua/archive/b402f31.tar.gz -> github.com-yuin-gopher-lua-b402f31.tar.gz https://github.com/zyedidia/clipboard/archive/adacf41.tar.gz -> github.com-zyedidia-clipboard-adacf41.tar.gz https://github.com/zyedidia/glob/archive/dd4023a.tar.gz -> github.com-zyedidia-glob-dd4023a.tar.gz https://github.com/zyedidia/pty/archive/3036466.tar.gz -> github.com-zyedidia-pty-3036466.tar.gz https://github.com/zyedidia/tcell/archive/208b6e8.tar.gz -> github.com-zyedidia-tcell-208b6e8.tar.gz https://github.com/zyedidia/terminal/archive/1760577.tar.gz -> github.com-zyedidia-terminal-1760577.tar.gz https://github.com/golang/net/archive/1a68b13.tar.gz -> github.com-golang-net-1a68b13.tar.gz https://github.com/golang/text/archive/210eee5.tar.gz -> github.com-golang-text-210eee5.tar.gz https://github.com/go-yaml/yaml/archive/cd8b52f.tar.gz -> github.com-go-yaml-yaml-cd8b52f.tar.gz https://github.com/layeh/gopher-luar/archive/1628157.tar.gz -> github.com-layeh-gopher-luar-1628157.tar.gz
+_eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536
+_md5_=69a8cbedf8b4fc1eda337b134bd55b50

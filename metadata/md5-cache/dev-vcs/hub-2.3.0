@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile install unpack
+DEPEND=man? ( app-text/ronn dev-ruby/bundler ) >=dev-lang/go-1.9
+DESCRIPTION=A command-line wrapper for git that makes you better at GitHub
+EAPI=6
+HOMEPAGE=https://hub.github.com/
+IUSE=fish-completion man zsh-completion
+KEYWORDS=~amd64 ~x86
+LICENSE=MIT
+RDEPEND=>=dev-vcs/git-1.7.3 fish-completion? ( app-shells/fish ) zsh-completion? ( app-shells/zsh )
+RESTRICT=mirror test
+SLOT=0
+SRC_URI=https://github.com/github/hub/archive/v2.3.0.tar.gz -> hub-2.3.0.tar.gz
+_eclasses_=bash-completion-r1	7e76462890d7d19cad453151876b0ecf	golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	multilib	97f470f374f2e94ccab04a2fb21d811e	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607
+_md5_=b042b70106d1c35c461c75a2aef67168
