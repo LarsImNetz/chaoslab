@@ -1,0 +1,33 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="Gitea, a self-hosted Git service"
+
+: ${GITEA_USER:=git}
+: ${GITEA_HOME:="/var/lib/gitea"}
+: ${GITEA_LOG:="/var/log/${SVCNAME}/gitea.log"}
+: ${GITEA_CONFIG:="${GITEA_HOME}/conf/app.ini"}
+: ${SSD_OPTS:="--wait 1000 -1 ${GITEA_LOG} -2 ${GITEA_LOG}"}
+
+name="Gitea"
+command="/usr/bin/gitea"
+command_args="web --config ${GITEA_CONFIG} ${GITEA_OPTS}"
+command_user="${GITEA_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+required_files="${GITEA_CONFIG}"
+retry=${GITEA_TERMTIMEOUT:-"TERM/60/KILL/5"}
+start_stop_daemon_args="${SSD_OPTS} \
+	-d ${GITEA_HOME} \
+	-e \"GITEA_WORK_DIR=${GITEA_HOME}\" \
+	-e \"USER=${GITEA_USER/:*}\""
+
+depend() {
+	need localmount net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${GITEA_USER} "${GITEA_HOME}" "${GITEA_LOG%/*}"
+	checkpath -f -m 0600 -o ${GITEA_USER} "${GITEA_CONFIG}"
+}

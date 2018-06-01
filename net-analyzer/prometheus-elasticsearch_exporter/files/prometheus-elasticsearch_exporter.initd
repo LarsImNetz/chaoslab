@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="Elasticsearch stats exporter for Prometheus"
+
+: ${ELASTICSEARCH_EXPORTER_USER:=elasticsearch_exporter}
+: ${ELASTICSEARCH_EXPORTER_LOG:="/var/log/elasticsearch_exporter/elasticsearch_exporter.log"}
+: ${SSD_OPTS:="-1 ${ELASTICSEARCH_EXPORTER_LOG} -2 ${ELASTICSEARCH_EXPORTER_LOG}"}
+
+name="${ELASTICSEARCH_EXPORTER_NAME:-"Elasticsearch Exporter"}"
+command="/usr/bin/elasticsearch_exporter"
+command_args="${ELASTICSEARCH_EXPORTER_OPTS}"
+command_user="${ELASTICSEARCH_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${ELASTICSEARCH_EXPORTER_USER} \
+		"${ELASTICSEARCH_EXPORTER_LOG%/*}"
+}

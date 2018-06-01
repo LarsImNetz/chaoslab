@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="A Prometheus metrics exporter for NSQ"
+
+: ${NSQ_EXPORTER_USER:=nsq_exporter}
+: ${NSQ_EXPORTER_LOG:="/var/log/nsq_exporter/nsq_exporter.log"}
+: ${SSD_OPTS:="-1 ${NSQ_EXPORTER_LOG} -2 ${NSQ_EXPORTER_LOG}"}
+
+name="${NSQ_EXPORTER_NAME:-"NSQ Exporter"}"
+command="/usr/bin/nsq_exporter"
+command_args="${NSQ_EXPORTER_OPTS}"
+command_user="${NSQ_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${NSQ_EXPORTER_USER} \
+		"${NSQ_EXPORTER_LOG%/*}"
+}

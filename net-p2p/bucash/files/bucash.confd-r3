@@ -1,0 +1,24 @@
+# /etc/conf.d/bucash: config file for /etc/init.d/bucash
+
+# Config file location (-conf option)
+#BITCOIND_CONFIGFILE="/etc/bitcoin/bitcoin.conf"
+
+# Where to write bitcoind data (-datadir option)
+# Be mindful that the blockchain is large
+#BITCOIND_DATADIR="/var/lib/bitcoin/.bitcoin"
+
+# Additional options (avoid -conf and -datadir, use flags above)
+BITCOIND_OPTS="-disablewallet"
+
+# User to own bitcoind process
+#BITCOIND_USER="bitcoin"
+
+# Nice value to run bitcoind under
+BITCOIND_NICE=19
+
+# The timeout in seconds OpenRC will wait for bitcoind to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+BITCOIND_SIGTERM_TIMEOUT=60

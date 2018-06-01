@@ -1,0 +1,8 @@
+# config file for /etc/init.d/prometheus
+
+PROMETHEUS_DATADIR="/var/lib/prometheus"
+PROMETHEUS_OPTS="--storage.tsdb.path=${PROMETHEUS_DATADIR}/data"
+
+# Logging
+#output_log="${PROMETHEUS_LOGDIR}/prometheus.log"
+#error_log="${PROMETHEUS_LOGDIR}/error.log"

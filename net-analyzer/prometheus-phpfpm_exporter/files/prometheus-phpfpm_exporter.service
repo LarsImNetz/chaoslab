@@ -1,0 +1,11 @@
+[Unit]
+Description=PHP-FPM Exporter service
+After=network.target
+
+[Service]
+User=phpfpm_exporter
+ExecStart=/usr/bin/phpfpm_exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

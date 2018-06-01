@@ -1,0 +1,67 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+name="FireHOL"
+extra_commands="save panic try"
+extra_started_commands="reload"
+
+depend() {
+	need localmount
+	after bootmisc
+	before net
+	provide firewall
+}
+
+checkrules() {
+	if [ ! -f "${FIREHOL_CONF}" ]; then
+		eerror "Not starting FireHOL. Create ${FIREHOL_CONF}"
+		eerror "and fill it with some rules."
+		eerror "man firehol.conf for more info."
+		return 1
+	fi
+}
+
+start() {
+	checkrules || return 1
+	ebegin "Starting ${name}"
+		/usr/sbin/firehol "${FIREHOL_CONF}" start > /dev/null
+	eend $? 
+}
+
+stop() {
+	ebegin "Stopping ${name}"
+		/usr/sbin/firehol stop > /dev/null
+	eend $?
+}
+
+restart() {
+	ebegin "Restarting ${name}"
+		svc_stop;
+		svc_start;
+	eend $?
+}
+
+try() {
+	ebegin "Trying ${name} configuration"
+		/usr/sbin/firehol "${FIREHOL_CONF}" try
+	eend $?
+}
+
+status() {
+	ebegin "Showing ${name} status"
+		/usr/sbin/firehol status
+	eend $?
+}
+
+panic() {
+	ebegin "${name} PANIC"
+		/usr/sbin/firehol panic
+	eend $?
+}
+
+save() {
+	ebegin "Saving ${name} configuration"
+		/usr/sbin/firehol save
+	eend $?
+}

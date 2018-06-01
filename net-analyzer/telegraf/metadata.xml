@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">influxdata/telegraf</remote-id>
+		<bugs-to>https://github.com/influxdata/telegraf/issues</bugs-to>
+		<doc>https://docs.influxdata.com/telegraf/</doc>
+	</upstream>
+	<longdescription lang="en">
+		Design goals are to have a minimal memory footprint with a
+		plugin system so that developers in the community can easily
+		add support for collecting metrics from well known services
+		(like Hadoop, Postgres, or Redis) and third party APIs
+		(like Mailchimp, AWS CloudWatch, or Google Analytics).
+	</longdescription>
+</pkgmetadata>

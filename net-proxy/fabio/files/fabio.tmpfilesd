@@ -1,0 +1,2 @@
+d /var/lib/fabio 0750 fabio fabio -
+d /var/log/fabio 0750 fabio fabio -

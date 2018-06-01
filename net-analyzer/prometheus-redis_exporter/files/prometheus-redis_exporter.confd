@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-redis_exporter
+# run /usr/bin/redis_exporter -h to see available options
+
+REDIS_EXPORTER_OPTS=""

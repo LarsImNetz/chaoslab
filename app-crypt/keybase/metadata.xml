@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">keybase/client</remote-id>
+		<bugs-to>https://github.com/keybase/client/issues</bugs-to>
+		<doc>https://github.com/keybase/client/blob/master/go/README.md</doc>
+	</upstream>
+	<longdescription lang="en">
+		Get a public key, safely, starting just with someone's
+		social media username(s).
+	</longdescription>
+</pkgmetadata>

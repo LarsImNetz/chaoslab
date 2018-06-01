@@ -1,0 +1,17 @@
+[Unit]
+Description=Algernon web server
+
+[Service]
+User=algernon
+Group=algernon
+ExecStart=/usr/bin/algernon -e -a --domain --server --log /var/log/algernon/algernon.log --addr=:80 /var/www/algernon
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+RuntimeDirectory=algernon
+RuntimeDirectoryMode=700
+
+[Install]
+WantedBy=multi-user.target

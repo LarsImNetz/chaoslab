@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">CZ-NIC/knot-resolver</remote-id>
+		<bugs-to>https://github.com/CZ-NIC/knot-resolver/issues</bugs-to>
+		<doc>https://knot-resolver.readthedocs.io/en/stable/</doc>
+	</upstream>
+	<longdescription lang="en">
+		The Knot DNS Resolver is a caching full resolver implementation
+		written in C and LuaJIT, including both a resolver library and
+		a daemon. Modular architecture of the library keeps the core tiny
+		and efficient, and provides a state-machine like API for extensions.
+	</longdescription>
+	<use>
+		<flag name="dnstap">Enables dnstap packet logging</flag>
+		<flag name="go">Build modules written in Go</flag>
+	</use>
+</pkgmetadata>

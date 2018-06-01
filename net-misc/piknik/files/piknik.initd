@@ -1,0 +1,13 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+command="/usr/bin/piknik"
+command_args="${command_args:--config /etc/piknik.toml -server}"
+command_user="${command_user:-piknik:piknik}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+
+depend() {
+	need net
+}

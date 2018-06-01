@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-mysqld_exporter
+# run /usr/bin/mysqld_exporter -h to see available options
+
+MYSQLD_EXPORTER_OPTS=""

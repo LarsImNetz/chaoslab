@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">xyproto/algernon</remote-id>
+		<bugs-to>https://github.com/xyproto/algernon/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Web server with built-in support for QUIC, HTTP/2, Lua,
+		Markdown, Pongo2, HyperApp, Amber, Sass(SCSS), GCSS, JSX,
+		BoltDB (built-in, stores the database in a file, like SQLite),
+		Redis, PostgreSQL, MariaDB/MySQL, rate limiting, graceful
+		shutdown, plugins, users and permissions.
+	</longdescription>
+	<use>
+		<flag name="redis">Add support for storing in a redis DB</flag>
+	</use>
+</pkgmetadata>

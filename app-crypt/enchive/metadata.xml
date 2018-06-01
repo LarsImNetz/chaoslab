@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">skeeto/enchive</remote-id>
+		<bugs-to>https://github.com/skeeto/enchive/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Enchive is a tool to encrypt files to yourself for
+		long-term archival. It's a focused, simple alternative
+		to more complex solutions such as GnuPG or encrypted
+		filesystems. Enchive has no external dependencies and
+		is trivial to build for local use. Portability is
+		emphasized over performance.
+	</longdescription>
+</pkgmetadata>

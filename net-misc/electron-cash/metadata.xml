@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">fyookball/electrum</remote-id>
+		<bugs-to>https://github.com/fyookball/electrum/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Electron Cash gives you what you love about the popular
+		Electrum Bitcoin wallet, but for Bitcoin Cash. Control
+		your own private keys. Back up your wallet easily with
+		a mnemonic seed phrase. SPV technology provides high
+		security without having to download the blockchain or
+		run a full node.
+	</longdescription>
+	<use>
+		<flag name="audio_modem">Enable plugin to support Audio Modem</flag>
+		<flag name="cli">Enables the CLI interface</flag>
+		<flag name="cosign">Enable plugin to support multisig wallets between multiple Electron Cash clients</flag>
+		<flag name="digitalbitbox">Enable plugin to support Digital Bitbox hardware wallet</flag>
+		<flag name="email">Enable plugin to support emailing invoices</flag>
+		<flag name="qrcode">Enable QR code scanning with <pkg>media-gfx/zbar</pkg></flag>
+		<flag name="sync">Enable plugin to sync wallet metadata across multiple Electrum clients</flag>
+		<flag name="vkb">Enable plugin for virtual keyboard</flag>
+	</use>
+</pkgmetadata>

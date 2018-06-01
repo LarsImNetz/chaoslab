@@ -1,0 +1,21 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${DOCKER_LOGDIR}/err.log}"
+
+pidfile="/run/${RC_SVCNAME}.pid"
+command="/usr/bin/dockerd"
+command_args="-p \"${pidfile}\" ${DOCKER_OPTS}"
+retry="${retry:-TERM/30/KILL/5}"
+start_stop_daemon_args="-b ${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
+
+# Having non-zero -u limits causes performance problems due to accounting overhead
+# in the kernel. We recommend using cgroups to do container-local accounting.
+rc_ulimit="-n 1048576 -u unlimited"
+
+start_pre() {
+	checkpath -d -m 0755 -o root:docker "${DOCKER_LOGDIR}"
+}

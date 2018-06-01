@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+PUSHGATEWAY_LOGDIR="${PUSHGATEWAY_LOGDIR:-/var/log/pushgateway}"
+
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${PUSHGATEWAY_LOGDIR}/error.log}"
+
+name="${name:-"Pushgateway"}"
+command="/usr/bin/pushgateway"
+command_args="${PUSHGATEWAY_OPTS}"
+command_user="${command_user:-pushgateway:pushgateway}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" \
+		"${PUSHGATEWAY_DATADIR}" "${PUSHGATEWAY_LOGDIR}"
+}

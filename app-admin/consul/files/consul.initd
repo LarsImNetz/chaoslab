@@ -1,0 +1,55 @@
+#!/sbin/openrc-run
+# Copyright 2015-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="A tool for service discovery, monitoring and configuration"
+extra_commands="configtest"
+extra_started_commands="reload"
+
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${CONSUL_LOGDIR}/error.log}"
+
+name="${RC_SVCNAME}"
+command="/usr/bin/consul"
+command_args="agent -config-dir=${CONSUL_CONFDIR} ${CONSUL_OPTS}"
+command_user="${command_use:-consul:consul}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+retry="${retry:-TERM/30/KILL/5}"
+start_stop_daemon_args="-1 ${output_log} -2 ${error_log}"
+stopsig="SIGINT"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	# upstream strongly recommends > 1
+	export GOMAXPROCS=${GOMAXPROCS:-2}
+
+	checkpath -d -m 0750 -o "${command_user}" \
+		"${CONSUL_DATADIR}" "${CONSUL_LOGDIR}"
+
+	if [ "${RC_CMD}" != "restart" ]; then
+		configtest || return 1
+	fi
+}
+
+stop_pre() {
+	if [ "${RC_CMD}" = "restart" ]; then
+		configtest || return 1
+	fi
+}
+
+reload() {
+	configtest || return 1
+	ebegin "Reloading ${name}"
+	${command} reload
+	eend $?
+}
+
+configtest() {
+	ebegin "Checking ${name} configuration"
+	${command} validate -quiet "${CONSUL_CONFDIR}"
+	eend $? "Failed, please correct the errors above"
+}

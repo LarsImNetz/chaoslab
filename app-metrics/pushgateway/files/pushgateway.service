@@ -1,0 +1,11 @@
+[Unit]
+Description=Prometheus Pushgateway service
+After=network.target
+
+[Service]
+User=pushgateway
+ExecStart=/usr/bin/pushgateway -persistence.interval="/var/lib/pushgateway/persistence.data"
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Graphite Exporter service
+After=network.target
+
+[Service]
+User=graphite_exporter
+ExecStart=/usr/bin/graphite_exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

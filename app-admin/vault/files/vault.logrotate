@@ -1,0 +1,5 @@
+/var/log/vault/vault.log {
+	notifempty
+	copytruncate
+	missingok
+}

@@ -1,0 +1,28 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+: ${FILEBROWSER_USER:=filebrowser}
+: ${FILEBROWSER_CONFIG:="/etc/filebrowser/filebrowser.yaml"}
+: ${FILEBROWSER_DB:=$(grep database "${FILEBROWSER_CONFIG}" | cut -d '"' -f2)}
+: ${FILEBROWSER_LOG:=$(grep log "${FILEBROWSER_CONFIG}" | cut -d '"' -f2)}
+: ${FILEBROWSER_OPTS:="-c ${FILEBROWSER_CONFIG}"}
+
+name="Filebrowser"
+command="/usr/bin/filebrowser"
+command_args="${FILEBROWSER_OPTS}"
+command_user="${FILEBROWSER_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+required_files="${FILEBROWSER_CONFIG}"
+retry=${FILEBROWSER_TERMTIMEOUT:-"TERM/60/KILL/5"}
+start_stop_daemon_args="${SSD_OPTS:-"-w 1000"}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${FILEBROWSER_USER} \
+		"${FILEBROWSER_DB%/*}" "${FILEBROWSER_LOG%/*}"
+}

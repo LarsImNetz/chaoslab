@@ -1,0 +1,5 @@
+# config file for /etc/init.d/prometheus-script_exporter
+# run /usr/bin/script_exporter -h to see available options
+
+SCRIPT_EXPORTER_CONFIG="/etc/script_exporter/script-exporter.yml"
+SCRIPT_EXPORTER_OPTS="-config.file=${SCRIPT_EXPORTER_CONFIG}"

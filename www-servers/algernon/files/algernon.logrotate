@@ -1,0 +1,5 @@
+/var/log/algernon/algernon.log {
+	notifempty
+	copytruncate
+	missingok
+}

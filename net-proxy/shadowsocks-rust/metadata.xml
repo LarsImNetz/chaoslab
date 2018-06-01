@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">shadowsocks/shadowsocks-rust</remote-id>
+		<bugs-to>https://github.com/shadowsocks/shadowsocks-rust/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Shadowsocks is a lightweight and secure socks5 proxy which can
+		help you get through firewalls. It is a port of shadowsocks.
+		The protocol is compatible with the origin shadowsocks.
+	</longdescription>
+</pkgmetadata>

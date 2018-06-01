@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">fabiolb/fabio</remote-id>
+		<bugs-to>https://github.com/fabiolb/fabio/issues</bugs-to>
+		<doc>https://github.com/fabiolb/fabio/wiki</doc>
+	</upstream>
+	<longdescription lang="en">
+		fabio is a fast, modern, zero-conf load balancing HTTP(S)
+		and TCP router for deploying applications managed by consul.
+		Register your services in consul, provide a health check
+		and fabio will start routing traffic to them. No configuration
+		required.
+	</longdescription>
+	<use>
+		<flag name="caps">Bind to ports below 1024 without running as root</flag>
+	</use>
+</pkgmetadata>

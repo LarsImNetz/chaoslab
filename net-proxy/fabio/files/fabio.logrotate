@@ -1,0 +1,5 @@
+/var/log/fabio/fabio.log {
+	notifempty
+	copytruncate
+	missingok
+}

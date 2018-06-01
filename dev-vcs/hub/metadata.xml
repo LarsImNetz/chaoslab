@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">github/hub</remote-id>
+		<bugs-to>https://github.com/github/hub/issues</bugs-to>
+		<doc>https://hub.github.com/hub.1.html</doc>
+	</upstream>
+	<longdescription lang="en">
+		hub is a command line tool that wraps git in order
+		to extend it with extra features and commands
+		that make working with GitHub easier.
+	</longdescription>
+	<use>
+		<flag name="fish-completion">Enable fish completion support</flag>
+		<flag name="man">Build and install man pages</flag>
+	</use>
+</pkgmetadata>

@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="Prometheus exporter for PostgreSQL server metrics"
+
+: ${POSTGRES_EXPORTER_USER:=postgres_exporter}
+: ${POSTGRES_EXPORTER_LOG:="/var/log/postgres_exporter/postgres_exporter.log"}
+: ${SSD_OPTS:="-1 ${POSTGRES_EXPORTER_LOG} -2 ${POSTGRES_EXPORTER_LOG}"}
+
+name="${POSTGRES_EXPORTER_NAME:-"PostgresSQL Exporter"}"
+command="/usr/bin/postgres_exporter"
+command_args="${POSTGRES_EXPORTER_OPTS}"
+command_user="${POSTGRES_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${POSTGRES_EXPORTER_USER} \
+		"${POSTGRES_EXPORTER_LOG%/*}"
+}

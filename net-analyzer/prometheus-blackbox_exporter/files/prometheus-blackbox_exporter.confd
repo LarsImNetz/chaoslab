@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-blackbox_exporter
+# run /usr/bin/blackbox_exporter -h to see available options
+
+BLACKBOX_EXPORTER_OPTS=""

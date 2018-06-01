@@ -1,0 +1,11 @@
+[Unit]
+Description=Blackbox Exporter service
+After=network.target
+
+[Service]
+User=blackbox_exporter
+ExecStart=/usr/bin/blackbox_exporter --config.file="/etc/blackbox_exporter/blackbox.yml"
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

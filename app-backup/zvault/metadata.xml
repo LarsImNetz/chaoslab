@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">dswd/zvault</remote-id>
+		<bugs-to>https://github.com/dswd/zvault/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		zVault is a highly efficient deduplicating backup
+		solution that supports client-side encryption,
+		compression and remote storage of backup data.
+	</longdescription>
+	<use>
+		<flag name="man">Build and install man pages</flag>
+	</use>
+</pkgmetadata>

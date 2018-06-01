@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-postgres_exporter
+# run /usr/bin/postgres_exporter -h to see available options
+
+POSTGRES_EXPORTER_OPTS=""

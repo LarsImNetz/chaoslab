@@ -1,0 +1,14 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+name="Algernon web server"
+command="/usr/bin/algernon"
+command_args="${ALGERNON_OPTS}"
+command_user="${command_user:-algernon:algernon}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+
+depend() {
+	need net
+}

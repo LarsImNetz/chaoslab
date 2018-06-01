@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">influxdata/kapacitor</remote-id>
+		<bugs-to>https://github.com/influxdata/kapacitor/issues</bugs-to>
+		<doc>https://docs.influxdata.com/kapacitor/</doc>
+	</upstream>
+	<longdescription lang="en">
+		Kapacitor is a data processing engine. It can process both
+		stream and batch data.
+	</longdescription>
+</pkgmetadata>

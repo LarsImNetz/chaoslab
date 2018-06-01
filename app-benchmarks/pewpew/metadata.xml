@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">bengadbois/pewpew</remote-id>
+		<bugs-to>https://github.com/bengadbois/pewpew/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Pewpew is a flexible command line HTTP stress tester.
+		Unlike other stress testers, it can hit multiple targets
+		with multiple configurations, simulating real world
+		load and bypassing caches.
+	</longdescription>
+</pkgmetadata>

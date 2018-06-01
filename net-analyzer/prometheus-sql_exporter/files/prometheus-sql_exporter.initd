@@ -1,0 +1,27 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="Flexible SQL Exporter for Prometheus"
+
+: ${SQL_EXPORTER_USER:=sql_exporter}
+: ${SQL_EXPORTER_LOG:="/var/log/sql_exporter/sql_exporter.log"}
+: ${SSD_OPTS:="-1 ${SQL_EXPORTER_LOG} -2 ${SQL_EXPORTER_LOG}"}
+
+name="${SQL_EXPORTER_NAME:-"SQL Exporter"}"
+command="/usr/bin/sql_exporter"
+command_args="${SQL_EXPORTER_OPTS}"
+command_user="${SQL_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS} \
+	-e \"CONFIG=${SQL_EXPORTER_CONFIG}\""
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${SQL_EXPORTER_USER} \
+		"${SQL_EXPORTER_LOG%/*}"
+}

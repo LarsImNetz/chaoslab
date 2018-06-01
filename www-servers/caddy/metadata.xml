@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">mholt/caddy</remote-id>
+		<bugs-to>https://github.com/mholt/caddy/issues</bugs-to>
+		<doc>https://caddyserver.com/docs</doc>
+	</upstream>
+	<use>
+		<flag name="authz">
+			It provides support for enforcing authorization
+			based on various models like ACL, RBAC, ABAC
+		</flag>
+		<flag name="awses">A plugin for signing and proxying requests to AWS Elasticsearch</flag>
+		<flag name="awslambda">Gateways requests to AWS Lambda functions</flag>
+		<flag name="cache">A simple middleware caching</flag>
+		<flag name="cgi">Implements the Common Gateway Interface (CGI) for Caddy</flag>
+		<flag name="cors">Supports Cross Origin Resource Sharing headers</flag>
+		<flag name="datadog">Allows Caddy to send some metrics to Datadog</flag>
+		<flag name="expires">Allows you to set expiration header relative to the request time</flag>
+		<flag name="filter">Provides a directive to filter response bodies</flag>
+		<flag name="forwardproxy">Enables Caddy to act as a ForwardProxy for http/2.0 and http/1.1 requests</flag>
+		<flag name="geoip">Determine user Geolocation by IP address using MaxMind database</flag>
+		<flag name="git">The git plugin makes it possible to deploy your site with a simple git push</flag>
+		<flag name="grpc">Proxies gRPC calls from clients to gRPC services</flag>
+		<flag name="ipfilter">Adds the ability to allow or block requests based on the client's IP address</flag>
+		<flag name="jwt">An authorization layer based on JSON Web Tokens (JWT)</flag>
+		<flag name="locale">Locale detection for caddy</flag>
+		<flag name="login">Enable login checks against a backend and then returned as JWT token</flag>
+		<flag name="mailout">A SMTP client email middleware with PGP encryption</flag>
+		<flag name="minify">Minify static assets on-the-fly. Supports CSS, HTML, JS, JSON, SVG and XML</flag>
+		<flag name="multipass">
+			Implements the idea to authenticate users based on
+			something they own instead of something they know
+		</flag>
+		<flag name="nobots">A plugin to protect your website against web crawlers and bots</flag>
+		<flag name="prometheus">Enables prometheus metrics for Caddy</flag>
+		<flag name="proxyprotocol">Enables PROXY protocol (v1) support</flag>
+		<flag name="ratelimit">Limit the request processing rate based on client's IP address</flag>
+		<flag name="realip">
+			Allows you to see the actual client IP from X-Forwarded-For
+			headers if you are running behind a CDN or Proxy
+		</flag>
+		<flag name="reauth">
+			A common basis for authenticating with various
+			and multiple authentication systems
+		</flag>
+		<flag name="restic">
+			A plugin that serves a Restic repository at
+			a path, see https://restic.github.io for details
+		</flag>
+		<flag name="telemetry">
+			Produces as a series of reports to Caddy Telemetry Project which aggregates
+			the global data set and makes it queryable (Please read the documentation
+			to stay aware of the privacy implications)
+		</flag>
+		<flag name="upload">Upload files using an API and HTTP method POST or PUT</flag>
+		<flag name="webdav">A plugin that implements WebDAV</flag>
+	</use>
+</pkgmetadata>

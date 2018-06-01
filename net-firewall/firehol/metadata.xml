@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">firehol/firehol</remote-id>
+		<bugs-to>https://github.com/firehol/firehol/issues</bugs-to>
+		<doc>https://firehol.org/documentation/</doc>
+	</upstream>
+	<longdescription lang="en">
+		FireHOL is a language (and a program to run it) which builds secure,
+		tateful firewalls from easy to understand, human-readableconfigurations.
+		The configurations stay readable even for very complex setups.
+		FireQOS is a program which sets up traffic shaping from an
+		easy-to-understand and flexible configuration file.
+	</longdescription>
+	<use>
+		<flag name="ipset">Use <pkg>net-firewall/ipset</pkg> to manage large lists of IPs</flag>
+		<flag name="qos">Enable FireQOS to assist you configure traffic shaping on Linux</flag>
+	</use>
+</pkgmetadata>

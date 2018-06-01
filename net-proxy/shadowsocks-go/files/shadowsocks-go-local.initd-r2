@@ -1,0 +1,33 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+: ${SS_CONFIG:="/etc/shadowsocks-go/local.json"}
+: ${SS_LOG:="/var/log/shadowsocks-go/${RC_SVCNAME}.log"}
+: ${SSD_OPTS:="-1 ${SS_LOG} -2 ${SS_LOG}"}
+
+extra_started_commands="reload"
+description="A lightweight local socks5 proxy"
+description_reload="Reload the ${RC_SVCNAME} configuration"
+
+command="/usr/bin/shadowsocks-local"
+command_args="-c ${SS_CONFIG} ${SS_OPTS}"
+command_user="${SS_USER:-shadowsocks-go}:${SS_GROUP:-shadowsocks-go}"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+required_files="${SS_CONFIG}"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" "${SS_LOG%/*}"
+}
+
+reload() {
+	ebegin "Refreshing ${RC_SVCNAME} configuration"
+	start-stop-daemon --signal HUP --pidfile "${pidfile}"
+	eend $? "Failed to reload ${RC_SVCNAME}"
+}

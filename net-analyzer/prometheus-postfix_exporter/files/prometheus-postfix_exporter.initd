@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="A Prometheus metrics exporter for the Postfix mail server"
+
+: ${POSTFIX_EXPORTER_USER:=postfix_exporter}
+: ${POSTFIX_EXPORTER_LOG:="/var/log/postfix_exporter/postfix_exporter.log"}
+: ${SSD_OPTS:="-1 ${POSTFIX_EXPORTER_LOG} -2 ${POSTFIX_EXPORTER_LOG}"}
+
+name="${POSTFIX_EXPORTER_NAME:-"Postfix Exporter"}"
+command="/usr/bin/postfix_exporter"
+command_args="${POSTFIX_EXPORTER_OPTS}"
+command_user="${POSTFIX_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${POSTFIX_EXPORTER_USER} \
+		"${POSTFIX_EXPORTER_LOG%/*}"
+}

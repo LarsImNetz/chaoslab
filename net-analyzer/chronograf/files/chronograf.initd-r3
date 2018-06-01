@@ -1,0 +1,30 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="Open source monitoring and visualization UI for the entire TICK stack"
+
+: ${CHRONOGRAF_DATADIR:="/var/lib/chronograf"}
+: ${CHRONOGRAF_LOG:="/var/log/${RC_SVCNAME}/chronograf.log"}
+: ${SSD_OPTS:="-1 ${CHRONOGRAF_LOG} -2 ${CHRONOGRAF_LOG}"}
+
+command="/usr/bin/chronograf"
+command_args="${CHRONOGRAF_OPTS}"
+command_user="${CHRONOGRAF_USER:-chronograf}:${CHRONOGRAF_GROUP:-chronograf}"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}
+	-e \"HOST=${CHRONOGRAF_HOST:-127.0.0.1}\"
+	-e \"PORT=${CHRONOGRAF_PORT:-8888}\"
+	-e \"BOLT_PATH=${CHRONOGRAF_BOLT:-${CHRONOGRAF_DATADIR}/chronograf-v1.db}\"
+	-e \"CANNED_PATH=${CHRONOGRAF_CANNED:-/usr/share/chronograf/canned}\"
+"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" \
+		"${CHRONOGRAF_DATADIR}" "${CHRONOGRAF_LOG%/*}"
+}

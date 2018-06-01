@@ -1,0 +1,51 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+name="${RC_SVCNAME}"
+extra_commands="configtest"
+extra_started_commands="reload"
+description_configtest="Run Caddy's internal config check"
+description_reload="Reload Caddy configuration"
+
+command="/usr/sbin/caddy"
+command_args="${CADDY_OPTS}"
+command_user="${command_user:-caddy:caddy}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+
+depend() {
+	use net
+	after dns
+}
+
+start_pre() {
+	export CADDYPATH="${CADDY_CERTPATH}"
+
+	checkpath -d -m 0700 -o "${command_user}" "${CADDY_CERTPATH}" "${CADDY_LOGDIR}"
+
+	if [ "${RC_CMD}" != "restart" ]; then
+		configtest || return 1
+	fi
+}
+
+stop_pre() {
+	if [ "${RC_CMD}" = "restart" ]; then
+		configtest || return 1
+	fi
+}
+
+reload() {
+	configtest || return 1
+	ebegin "Refreshing ${name}'s configuration"
+	start-stop-daemon --signal USR1 --pidfile "${pidfile}"
+	eend $? "Failed to reload ${name}"
+}
+
+configtest() {
+	ebegin "Checking ${name} configuration"
+	if ! ${command} -validate -conf="${CADDY_CONFIG}" >/dev/null 2>&1; then
+		${command} -validate -conf="${CADDY_CONFIG}"
+	fi
+	eend $? "Failed, please correct the errors above"
+}

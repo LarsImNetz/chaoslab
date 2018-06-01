@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">sosedoff/pgweb</remote-id>
+		<bugs-to>https://github.com/sosedoff/pgweb/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Main idea behind using Go for backend development is to utilize 
+		ability of the compiler to produce zero-dependency binaries for
+		multiple platforms. Pgweb was created as an attempt to build
+		very simple and portable application to work with local
+		or remote PostgreSQL databases.
+	</longdescription>
+	<use>
+		<flag name="daemon">
+			Allow pgweb to run as a system-wide service. Installs
+			an init script and creates a pgweb user:group.
+		</flag>
+	</use>
+</pkgmetadata>

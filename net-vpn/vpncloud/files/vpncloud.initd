@@ -1,0 +1,31 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="A fully-meshed VPN network in a peer-to-peer manner"
+
+VPNCLOUD_USER=$(grep user: "${VPNCLOUD_CONFIGFILE}" | cut -d '"' -f2)
+VPNCLOUD_GROUP=$(grep group: "${VPNCLOUD_CONFIGFILE}" | cut -d '"' -f2)
+pidfile=$(grep pid_file: "${VPNCLOUD_CONFIGFILE}" | cut -d '"' -f2)
+
+name="VpnCloud"
+command="/usr/bin/vpncloud"
+command_args="--daemon --pid-file ${pidfile} \
+	--config ${VPNCLOUD_CONFIGFILE} ${VPNCLOUD_OPTS}"
+required_files="$VPNCLOUD_CONFIGFILE"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	if [ "${RC_CMD}" != "restart" ]; then
+		checkpath -d -m 0755 -o "${VPNCLOUD_USER}":"${VPNCLOUD_GROUP}" "${pidfile%/*}"
+	fi
+}
+
+stop_pre() {
+	if [ "${RC_CMD}" = "restart" ]; then
+		checkpath -d -m 0755 -o "${VPNCLOUD_USER}":"${VPNCLOUD_GROUP}" "${pidfile%/*}"
+	fi
+}

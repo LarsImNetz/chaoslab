@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>cmsk+frabjous@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">nodejs/node</remote-id>
+		<bugs-to>https://github.com/nodejs/node/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Node.js is a JavaScript runtime built on Chrome's V8 JavaScript
+		engine. Node.js uses an event-driven, non-blocking I/O model
+		that makes it lightweight and efficient.
+	</longdescription>
+	<use>
+		<flag name="inspector">Enable V8 inspector</flag>
+		<flag name="npm">Enable NPM package manager</flag>
+		<flag name="bundled-ssl">Use bundled OpenSSL instead of system-wide (EXPERIMENTAL)</flag>
+		<flag name="snapshot">Enable snapshot creation for faster startup</flag>
+		<flag name="systemtap">Enable SystemTAP/DTrace tracing</flag>
+	</use>
+</pkgmetadata>

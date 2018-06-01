@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">svenstaro/genact</remote-id>
+		<bugs-to>https://github.com/svenstaro/genact/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Pretend to be busy or waiting for your computer when you
+		should actually be doing real work! Impress people with
+		your insane multitasking skills. Just open a few instances
+		of genact and watch the show. genact has multiple scenes
+		that pretend to be doing something exciting or useful
+		when in reality nothing is happening at all.
+	</longdescription>
+</pkgmetadata>

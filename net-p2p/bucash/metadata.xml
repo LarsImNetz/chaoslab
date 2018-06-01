@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">BitcoinUnlimited/BitcoinUnlimited</remote-id>
+		<bugs-to>https://github.com/BitcoinUnlimited/BitcoinUnlimited/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Bitcoin Unlimited Cash edition is an implementation of the Bitcoin Cash
+		client software that is based on Bitcoin Core. However, Bitcoin Unlimited
+		has a very different philosophy than Core.
+	</longdescription>
+	<use>
+		<flag name="daemon">Build the system daemon</flag>
+		<flag name="gui">Build the end-user Qt GUI for the Bitcoin crypto-currency</flag>
+		<flag name="qrcode">Enable generation of QR Codes for receiving payments</flag>
+		<flag name="reduce-exports">Attempt to reduce exported symbols in the resulting executables</flag>
+		<flag name="upnp">Enable Universal Plug and Play</flag>
+		<flag name="utils">Enable command-line client and transaction tool</flag>
+		<flag name="wallet">Enable wallet support</flag>
+		<flag name="zeromq">Report blocks and transactions via zeromq</flag>
+	</use>
+</pkgmetadata>

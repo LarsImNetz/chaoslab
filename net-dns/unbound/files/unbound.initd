@@ -1,0 +1,50 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+UNBOUND_CONFIG="/etc/unbound/${RC_SVCNAME}.conf"
+
+name="${name:-Unbound daemon}"
+extra_commands="configtest"
+extra_started_commands="reload"
+description="unbound is a Domain Name Server (DNS) that is used to resolve host names to IP address"
+description_configtest="Run syntax tests for configuration files only"
+description_reload="Kills all children and reloads the configuration"
+
+command="/usr/sbin/unbound"
+command_args="-c \"${UNBOUND_CONFIG}\""
+pidfile="$(unbound-checkconf -o pidfile "${UNBOUND_CONFIG}")"
+
+depend() {
+	need net
+	use logger
+	provide dns
+	after auth-dns
+}
+
+start_pre() {
+	if [ "${RC_CMD}" != "restart" ]; then
+		configtest || return 1
+	fi
+}
+
+stop_pre() {
+	if [ "${RC_CMD}" = "restart" ]; then
+		configtest || return 1
+	fi
+}
+
+reload() {
+	configtest || return 1
+	ebegin "Reloading ${RC_SVCNAME}"
+	start-stop-daemon --signal HUP --pidfile "${pidfile}"
+	eend $? "Failed to reload ${RC_SVCNAME}"
+}
+
+configtest() {
+	ebegin "Checking ${RC_SVCNAME} configuration"
+	if ! unbound-checkconf "${UNBOUND_CONFFILE}" >/dev/null 2>&1; then
+		unbound-checkconf "${UNBOUND_CONFFILE}"
+	fi
+	eend $? "Failed, please correct the errors above"
+}

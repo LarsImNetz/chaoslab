@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="pypi">modoboa</remote-id>
+		<remote-id type="github">modoboa/modoboa</remote-id>
+		<bugs-to>https://github.com/modoboa/modoboa/issues</bugs-to>
+		<doc>https://modoboa.readthedocs.io/</doc>
+	</upstream>
+	<longdescription lang="en">
+		Modoboa is a mail hosting and management platform
+		including a modern and simplified Web User Interface.
+		It provides useful components such as an administration
+		panel or a webmail.
+	</longdescription>
+	<use>
+		<flag name="gunicorn">Uses <pkg>www-servers/gunicorn</pkg> to daemonize this application</flag>
+	</use>
+</pkgmetadata>

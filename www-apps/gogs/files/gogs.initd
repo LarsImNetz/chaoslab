@@ -1,0 +1,28 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${GOGS_LOGDIR}/error.log}"
+
+name="${name:-Gogs}"
+command="/usr/bin/gogs"
+command_args="web --config ${GOGS_CONFIG} ${GOGS_OPTS}"
+command_user="${command_user:-${GOGS_USER}}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+required_files="${GOGS_CONFIG}"
+retry="${retry:-TERM/30/KILL/5}"
+start_stop_daemon_args="${SSD_OPTS}
+	-e \"GOGS_CUSTOM=${GOGS_HOME}\"
+	-e \"USER=${GOGS_USER}\"
+	-1 ${output_log} -2 ${error_log}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" "${GOGS_HOME}" "${GOGS_LOGDIR}"
+	checkpath -f -m 0600 -o "${command_user}" "${GOGS_CONFIG}"
+}

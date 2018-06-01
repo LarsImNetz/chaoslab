@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="pypi">modoboa</remote-id>
+		<remote-id type="github">modoboa/modoboa-dmarc</remote-id>
+		<bugs-to>https://github.com/modoboa/modoboa-dmarc/issues</bugs-to>
+		<doc>https://modoboa.readthedocs.io/</doc>
+	</upstream>
+	<longdescription lang="en">
+		This plugin is still in BETA stage, for now it only
+		parses XML aggregated reports and generate visual
+		reports (using c3.js) on a per-domain basis.
+	</longdescription>
+</pkgmetadata>

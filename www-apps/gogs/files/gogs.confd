@@ -1,0 +1,10 @@
+# config file for /etc/init.d/gogs
+
+GOGS_USER="gogs"
+GOGS_HOME="${GOGS_HOME:-/var/lib/gogs}"
+GOGS_CONFIG="${GOGS_CONFIG:-${GOGS_HOME}/conf/app.ini}"
+GOGS_LOGDIR="${GOGS_LOGDIR:-/var/log/gogs}"
+
+# Logging
+#output_log="${GOGS_LOGDIR}/gogs.log"
+#error_log="${GOGS_LOGDIR}/error.log"

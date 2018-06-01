@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-nsq_exporter
+# run /usr/bin/nsq_exporter -h to see available options
+
+NSQ_EXPORTER_OPTS=""

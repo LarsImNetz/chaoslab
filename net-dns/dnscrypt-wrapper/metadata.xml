@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">cofyc/dnscrypt-wrapper</remote-id>
+		<bugs-to>https://github.com/cofyc/dnscrypt-wrapper/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		This is dnscrypt wrapper (server-side dnscrypt proxy), which helps
+		to add dnscrypt support to any name resolver.
+	</longdescription>
+</pkgmetadata>

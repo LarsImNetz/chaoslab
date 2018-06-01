@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-phpfpm_exporter
+# run /usr/bin/phpfpm_exporter -h to see available options
+
+PHPFPM_EXPORTER_OPTS=""

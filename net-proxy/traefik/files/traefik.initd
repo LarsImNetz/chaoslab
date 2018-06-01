@@ -1,0 +1,28 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="A modern HTTP reverse proxy and load balancer made to deploy microservices"
+
+: ${TRAEFIK_USER:=traefik}
+: ${TRAEFIK_CONFIG:="/etc/traefik/traefik.toml"}
+: ${TRAEFIK_LOG:="/var/log/traefik/traefik.log"}
+: ${SSD_OPTS:="-1 ${TRAEFIK_LOG} -2 ${TRAEFIK_LOG}"}
+
+name="${TRAEFIK_NAME:-Traefik}"
+command="/usr/bin/traefik"
+command_args="--configFile=${TRAEFIK_CONFIG} ${TRAEFIK_OPTS}"
+command_user="${TRAEFIK_USER}"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+required_files="${TRAEFIK_CONFIG}"
+retry=${TRAEFIK_TERMTIMEOUT:-"TERM/30/KILL/5"}
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${TRAEFIK_USER} "${TRAEFIK_LOG%/*}"
+}

@@ -1,0 +1,28 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="A load balancing and TCP router for deploying applications managed by consul"
+
+: ${FABIO_USER:=fabio}
+: ${FABIO_DATADIR:="/var/lib/fabio"}
+: ${FABIO_LOG:="/var/log/fabio/fabio.log"}
+: ${SSD_OPTS:="-1 ${FABIO_LOG} -2 ${FABIO_LOG}"}
+
+name="${FABIO_NAME:-Fabio}"
+command="/usr/bin/fabio"
+command_args="${FABIO_OPTS}"
+command_user="${FABIO_USER}"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+retry=${FABIO_TERMTIMEOUT:-"TERM/30/KILL/5"}
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${FABIO_USER} \
+		"${FABIO_DATADIR}" "${FABIO_LOG%/*}"
+}

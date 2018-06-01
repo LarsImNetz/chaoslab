@@ -1,0 +1,27 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="A Prometheus exporter for shell script exit status and duration"
+
+: ${SCRIPT_EXPORTER_USER:=script_exporter}
+: ${SCRIPT_EXPORTER_LOG:="/var/log/script_exporter/script_exporter.log"}
+: ${SSD_OPTS:="-1 ${SCRIPT_EXPORTER_LOG} -2 ${SCRIPT_EXPORTER_LOG}"}
+
+name="${SCRIPT_EXPORTER_NAME:-"Script Exporter"}"
+command="/usr/bin/script_exporter"
+command_args="${SCRIPT_EXPORTER_OPTS}"
+command_user="${SCRIPT_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+required_files="${SCRIPT_EXPORTER_CONFIG}"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${SCRIPT_EXPORTER_USER} \
+		"${SCRIPT_EXPORTER_LOG%/*}"
+}

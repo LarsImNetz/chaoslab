@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<bugs-to>https://www.nlnetlabs.nl/labs/bugs/</bugs-to>
+		<doc>https://www.unbound.net/documentation/index.html</doc>
+	</upstream>
+	<longdescription lang="en">
+		Unbound is designed as a set of modular components, so that also
+		DNSSEC (secure DNS) validation and stub-resolvers (that do not run
+		as a server, but are linked into an application) are easily possible.
+	</longdescription>
+	<use>
+		<flag name="dnscrypt">Enable dnscrypt support</flag>
+		<flag name="dnstap">Enable dnstap support</flag>
+		<flag name="ecdsa">Enable ECDSA support</flag>
+		<flag name="gost">Enable GOST support</flag>
+		<flag name="redis">Enable cachedb backend via <pkg>dev-libs/hiredis</pkg> as the storage</flag>
+	</use>
+</pkgmetadata>

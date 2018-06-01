@@ -1,0 +1,17 @@
+port: 8080
+baseURL: /admin
+noAuth: false
+address: 127.0.0.1
+alternativeReCaptcha: false
+reCaptchaKey: ''
+reCaptchaSecret: ''
+database: "/var/lib/filebrowser/filebrowser.db"
+log: "/var/log/filebrowser/filebrowser.log"
+plugin: ''
+scope: "/var/www/filebrowser"
+allowCommands: true
+allowEdit: true
+allowNew: true
+commands:
+  - git
+  - svn

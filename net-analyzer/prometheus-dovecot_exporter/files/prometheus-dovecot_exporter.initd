@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="A Prometheus metrics exporter for the Dovecot mail server"
+
+: ${DOVECOT_EXPORTER_USER:=dovecot_exporter}
+: ${DOVECOT_EXPORTER_LOG:="/var/log/dovecot_exporter/dovecot_exporter.log"}
+: ${SSD_OPTS:="-1 ${DOVECOT_EXPORTER_LOG} -2 ${DOVECOT_EXPORTER_LOG}"}
+
+name="${DOVECOT_EXPORTER_NAME:-"Dovecot Exporter"}"
+command="/usr/bin/dovecot_exporter"
+command_args="${DOVECOT_EXPORTER_OPTS}"
+command_user="${DOVECOT_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${DOVECOT_EXPORTER_USER} \
+		"${DOVECOT_EXPORTER_LOG%/*}"
+}

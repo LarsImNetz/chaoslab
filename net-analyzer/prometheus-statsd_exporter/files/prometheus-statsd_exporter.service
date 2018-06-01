@@ -1,0 +1,11 @@
+[Unit]
+Description=StatsD Exporter service
+After=network.target
+
+[Service]
+User=statsd_exporter
+ExecStart=/usr/bin/statsd_exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

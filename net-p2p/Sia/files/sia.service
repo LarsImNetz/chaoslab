@@ -1,0 +1,17 @@
+[Unit]
+Description=Sia daemon
+After=network-online.target
+Wants=network-online.target systemd-networkd-wait-online.service
+
+[Service]
+Restart=on-failure
+StartLimitInterval=86400
+StartLimitBurst=5
+
+Type=simple
+User=sia
+Group=sia
+ExecStart=/usr/bin/siad -d /var/lib/sia
+
+[Install]
+WantedBy=multi-user.target

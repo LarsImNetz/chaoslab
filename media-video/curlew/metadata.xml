@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<longdescription lang="en">
+		Easy to use, Free and Open-Source Multimedia converter for Linux.
+		Curlew written in python and GTK3 and it depends on (ffmpeg/avconv).
+	</longdescription>
+	<upstream>
+		<remote-id type="github">chamfay/Curlew</remote-id>
+	</upstream>
+</pkgmetadata>

@@ -1,0 +1,11 @@
+[Unit]
+Description=Collectd Exporter service
+After=network.target
+
+[Service]
+User=collectd_exporter
+ExecStart=/usr/bin/collectd_exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

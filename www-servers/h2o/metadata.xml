@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">h2o/h2o</remote-id>
+		<bugs-to>https://github.com/h2o/h2o/issues</bugs-to>
+		<doc>https://h2o.examp1e.net/configure.html</doc>
+	</upstream>
+	<longdescription lang="en">
+		H2O is a new generation HTTP server. Not only is it very fast,
+		it also provides much quicker response to end-users
+		when compared to older generations of HTTP servers.
+	</longdescription>
+	<use>
+		<flag name="libh2o">Aside from the standalone server, build H2O as a library</flag>
+		<flag name="libuv">Use <pkg>dev-libs/libuv</pkg> at library level</flag>
+		<flag name="mruby">Enable support for mruby</flag>
+		<flag name="websocket">Add support for WebSocket at library level</flag>
+	</use>
+</pkgmetadata>

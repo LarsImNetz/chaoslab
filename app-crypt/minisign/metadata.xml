@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<longdescription lang="en">
+		Minisign is a dead simple tool to sign files and verify
+		signatures. It is portable, lightweight, and uses the highly
+		secure Ed25519 public-key signature system.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">jedisct1/minisign</remote-id>
+		<bugs-to>https://github.com/jedisct1/minisign/issues</bugs-to>
+		<doc>https://jedisct1.github.io/minisign/</doc>
+	</upstream>
+</pkgmetadata>

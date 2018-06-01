@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-haproxy_exporter
+# run /usr/bin/haproxy_exporter -h to see available options
+
+HAPROXY_EXPORTER_OPTS=""

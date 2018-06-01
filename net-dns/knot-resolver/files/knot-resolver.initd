@@ -1,0 +1,32 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+KRESD_CONFIG="${KRESD_CONFIG:-/etc/knot-resolver/config}"
+KRESD_CACHEDIR="${KRESD_CACHEDIR:-/var/cache/knot-resolver}"
+KRESD_LOGDIR="${KRESD_LOGDIR:-/var/log/knot-resolver}"
+
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${KRESD_LOGDIR}/error.log}"
+
+# Note: Do not change --forks=1
+# You can run multiples instances by creating a
+# symbolic link from kresd to kresd.foo in /etc/init.d.
+command="/usr/sbin/kresd"
+command_args="--forks=1 --config=${KRESD_CONFIG} ${KRESD_CACHEDIR}"
+command_background=yes
+directory="${KRESD_CACHEDIR}"
+pidfile="/run/${RC_SVCNAME}.pid"
+required_files="${KRESD_CONFIG}"
+retry=${retry:-"TERM/30/KILL/5"}
+start_stop_daemon_args="${SSD_OPTS}
+	-d ${directory} -1 ${output_log} -2 ${error_log}"
+
+depend() {
+	need net
+	provide dns
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o kresd:kresd "${KRESD_CACHEDIR}" "${KRESD_LOGDIR}"
+}

@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-process_exporter
+# run /usr/bin/process-exporter -h to see available options
+
+PROCESS_EXPORTER_OPTS=""

@@ -1,0 +1,17 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+REST_SERVER_PATH="${REST_SERVER_PATH:-/tmp/restic}"
+REST_SERVER_OPTS="${REST_SERVER_OPTS:---listen 127.0.0.1:8000}"
+
+command="/usr/bin/rest-server"
+command_args="--path ${REST_SERVER_PATH} ${REST_SERVER_OPTS}"
+command_background=yes
+command_user="${command_user:-rest-server:rest-server}"
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need localmount net
+}

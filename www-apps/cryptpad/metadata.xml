@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">xwiki-labs/cryptpad</remote-id>
+		<bugs-to>https://github.com/xwiki-labs/cryptpad/issues</bugs-to>
+		<doc>https://github.com/xwiki-labs/cryptpad/wiki</doc>
+	</upstream>
+	<longdescription lang="en">
+		Encryption carried out in your web browser protects the
+		data from the server, the cloud and the NSA. It relies
+		on the ChainPad realtime engine.
+	</longdescription>
+</pkgmetadata>

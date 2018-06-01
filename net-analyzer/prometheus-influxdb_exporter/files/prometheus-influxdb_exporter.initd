@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="A server that accepts InfluxDB metrics for Prometheus consumption"
+
+: ${INFLUXDB_EXPORTER_USER:=influxdb_exporter}
+: ${INFLUXDB_EXPORTER_LOG:="/var/log/influxdb_exporter/influxdb_exporter.log"}
+: ${SSD_OPTS:="-1 ${INFLUXDB_EXPORTER_LOG} -2 ${INFLUXDB_EXPORTER_LOG}"}
+
+name="${INFLUXDB_EXPORTER_NAME:-"InfluxDB Exporter"}"
+command="/usr/bin/influxdb_exporter"
+command_args="${INFLUXDB_EXPORTER_OPTS}"
+command_user="${INFLUXDB_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${INFLUXDB_EXPORTER_USER} \
+		"${INFLUXDB_EXPORTER_LOG%/*}"
+}

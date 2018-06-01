@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-nginx_vts_exporter
+# run /usr/bin/nginx-vts-exporter -h to see available options
+
+NGINX_VTS_EXPORTER_OPTS=""

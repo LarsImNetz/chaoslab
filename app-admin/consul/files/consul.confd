@@ -1,0 +1,10 @@
+# config file for /etc/init.d/consul
+
+CONSUL_CONFDIR="/etc/consul.d"
+CONSUL_DATADIR="/var/lib/consul"
+CONSUL_LOGDIR="/var/log/consul"
+CONSUL_OPTS=""
+
+# Logging
+#output_log="${CONSUL_LOGDIR}/consul.log"
+#error_log="${CONSUL_LOGDIR}/error.log"

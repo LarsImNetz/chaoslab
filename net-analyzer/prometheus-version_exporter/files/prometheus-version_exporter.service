@@ -1,0 +1,11 @@
+[Unit]
+Description=Version Exporter service
+After=network.target
+
+[Service]
+User=version_exporter
+ExecStart=/usr/bin/version_exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

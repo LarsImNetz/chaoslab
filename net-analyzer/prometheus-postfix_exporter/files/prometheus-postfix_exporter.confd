@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-postfix_exporter
+# run /usr/bin/postfix_exporter -h to see available options
+
+POSTFIX_EXPORTER_OPTS=""

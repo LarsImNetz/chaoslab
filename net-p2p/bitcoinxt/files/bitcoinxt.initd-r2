@@ -1,0 +1,52 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+: ${BITCOIND_USER:="bitcoinxt"}
+: ${BITCOIND_DATADIR:="/var/lib/bitcoinxt"}
+: ${BITCOIND_CONFIGFILE:="/etc/bitcoinxt/bitcoin.conf"}
+: ${BITCOIND_NICE:=0}
+: ${BITCOIND_SIGTERM_TIMEOUT:=60}
+
+name="Bitcoin XT daemon"
+description="Bitcoin cryptocurrency P2P network daemon"
+pidfile="/run/${SVCNAME}/bitcoind.pid"
+command="/usr/bin/bitcoind"
+command_args="-pid=${pidfile} \
+	-conf=${BITCOIND_CONFIGFILE} \
+	-datadir=${BITCOIND_DATADIR} \
+	-daemon ${BITCOIND_OPTS}"
+command_user="${BITCOIND_USER}"
+retry="${BITCOIND_SIGTERM_TIMEOUT}"
+required_files="${BITCOIND_CONFIGFILE}"
+start_stop_daemon_args="-N ${BITCOIND_NICE} -w 2000"
+
+depend() {
+	need localmount net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${BITCOIND_USER} "${pidfile%/*}"
+	checkpath -f -m 0600 -o ${BITCOIND_USER} "${BITCOIND_CONFIGFILE}"
+
+	if [ "${RC_CMD}" != "restart" ]; then
+		checkconfig || return 1
+	fi
+}
+
+checkconfig() {
+	if ! grep -qs '^rpcpassword=' "${BITCOIND_CONFIGFILE}"; then
+		eerror
+		eerror "ERROR: You must set a secure rpcpassword to run bitcoind."
+		eerror "The setting must appear in ${BITCOIND_CONFIGFILE}"
+		eerror
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following"
+		eerror "command from the shell:"
+		eerror
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror
+		return 1
+	fi
+}

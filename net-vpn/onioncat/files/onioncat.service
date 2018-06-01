@@ -1,0 +1,16 @@
+[Unit]
+Description=An IP-Transparent Hidden Service Connector
+After=network.target
+
+[Service]
+Type=forking
+Restart=on-abnormal
+PIDFile=/run/ocatd.pid
+User=onioncat
+Group=onioncat
+PermissionsStartOnly=yes
+ExecStart=/usr/bin/ocat -P /run/ocat.pid -L /var/log/onioncat/ocat.log -4 -C -f /etc/ocat.conf
+
+[Install]
+WantedBy=multi-user.target
+

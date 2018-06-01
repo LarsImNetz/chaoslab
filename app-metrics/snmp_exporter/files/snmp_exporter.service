@@ -1,0 +1,11 @@
+[Unit]
+Description=SNMP Exporter service
+After=network.target
+
+[Service]
+User=snmp_exporter
+ExecStart=/usr/bin/snmp_exporter --config.file="/etc/snmp_exporter/snmp.yml"
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

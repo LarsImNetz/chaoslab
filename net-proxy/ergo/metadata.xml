@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">cristianoliveira/ergo</remote-id>
+		<bugs-to>https://github.com/cristianoliveira/ergo/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Ergo's goal is to be a simple reverse proxy that follows the
+		Unix philosophy of doing only one thing and doing it well.
+		Simplicity means no magic involved. Just a flexible reverse
+		proxy which extends the well-known /etc/hosts declaration.
+	</longdescription>
+</pkgmetadata>

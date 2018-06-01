@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">phw/peek</remote-id>
+		<bugs-to>https://github.com/phw/peek/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		A simple tool that allows you to record short animated
+		GIF images from your screen.
+	</longdescription>
+	<use>
+		<flag name="gnome-shell">Enable gnome-shell recorder</flag>
+		<flag name="keybinder">Enable support for global hotkeys using <pkg>dev-libs/keybinder</pkg></flag>
+		<flag name="open-filemanager">Enable file manager integration</flag>
+	</use>
+</pkgmetadata>

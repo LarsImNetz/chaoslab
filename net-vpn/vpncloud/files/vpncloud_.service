@@ -1,0 +1,12 @@
+[Unit]
+Description=VpnCloud network '%I'
+Before=systemd-user-sessions.service
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/vpncloud --daemon --pid-file /run/vpncloud-%i.pid --config /etc/vpncloud/%i.net
+WorkingDirectory=/etc/vpncloud
+PIDFile=/run/vpncloud-%i.pid
+
+[Install]
+WantedBy=multi-user.target

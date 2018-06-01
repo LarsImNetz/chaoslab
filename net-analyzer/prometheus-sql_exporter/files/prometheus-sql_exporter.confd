@@ -1,0 +1,5 @@
+# config file for /etc/init.d/prometheus-sql_exporter
+# run /usr/bin/sql_exporter -h to see available options
+
+SQL_EXPORTER_OPTS=""
+SQL_EXPORTER_CONFIG="/etc/sql_exporter/config.yml"

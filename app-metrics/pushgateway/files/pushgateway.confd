@@ -1,0 +1,9 @@
+# config file for /etc/init.d/pushgateway
+# run /usr/bin/pushgateway -h to see available options
+
+PUSHGATEWAY_DATADIR="/var/lib/pushgateway"
+PUSHGATEWAY_OPTS="-persistence.interval=\"${PUSHGATEWAY_DATADIR}/persistence.data\""
+
+# Logging
+#output_log="${PUSHGATEWAY_LOGDIR}/pushgateway.log"
+#error_log="${PUSHGATEWAY_LOGDIR}/error.log"

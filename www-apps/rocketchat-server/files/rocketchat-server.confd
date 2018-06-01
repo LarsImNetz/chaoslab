@@ -1,0 +1,12 @@
+# config file for /etc/init.d/rocketchat-server
+
+ROCKETCHAT_LOGDIR="/var/log/rocketchat"
+ROCKETCHAT_MONGO_URL="mongodb://localhost:27017/rocketchat"
+ROCKETCHAT_MONGO_OPLOG_URL="mongodb://localhost:27017/local"
+ROCKETCHAT_ROOT_URL="http://localhost:3000"
+ROCKETCHAT_PORT="3000"
+ROCKETCHAT_MAIL_URL="smtp://user:pass@localhost:25/"
+
+# Logging
+#output_log="${ROCKETCHAT_LOGDIR}/app.log"
+#error_log="${ROCKETCHAT_LOGDIR}/error.log"

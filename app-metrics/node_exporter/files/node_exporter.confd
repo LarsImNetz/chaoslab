@@ -1,0 +1,8 @@
+# config file for /etc/init.d/node_exporter
+
+NODE_EXPORTER_DATADIR="/var/lib/node_exporter"
+NODE_EXPORTER_OPTS="--collector.textfile.directory=${NODE_EXPORTER_DATADIR}"
+
+# Logging
+#output_log="${NODE_EXPORTER_LOGDIR}/node_exporter.log"
+#error_log="${NODE_EXPORTER_LOGDIR}/error.log"

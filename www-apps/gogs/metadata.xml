@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">gogits/gogs</remote-id>
+		<bugs-to>https://github.com/gogits/gogs/issues</bugs-to>
+		<doc>https://gogs.io/docs</doc>
+	</upstream>
+	<use>
+		<flag name="cert">Generate self-signed certificate</flag>
+		<flag name="openssh">Use OpenSSH instead of the builtin SSH server</flag>
+		<flag name="redis">Add support for redis sessions</flag>
+		<flag name="tidb">Enable TiDB database support</flag>
+	</use>
+</pkgmetadata>

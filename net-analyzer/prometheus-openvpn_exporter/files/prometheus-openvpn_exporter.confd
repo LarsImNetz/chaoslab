@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-openvpn_exporter
+# run /usr/bin/openvpn_exporter -h to see available options
+
+OPENVPN_EXPORTER_OPTS=""

@@ -1,0 +1,32 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+extra_started_commands="reload"
+
+GUNICORN_RUNDIR="${GUNICORN_RUNDIR:-/run/${RC_SVCNAME}}"
+GUNICORN_CONFIG="${GUNICORN_CONFIG:-/etc/modoboa/modoboa.conf}"
+GUNICORN_USER="${GUNICORN_USER:-modoboa}"
+GUNICORN_GROUP="${GUNICORN_GROUP:-modoboa}"
+
+pidfile="${GUNICORN_RUNDIR}/modoboa.pid"
+command="/usr/bin/gunicorn"
+command_args="-p ${pidfile} -u ${GUNICORN_USER} -g ${GUNICORN_GROUP}
+	-c ${GUNICORN_CONFIG} ${GUNICORN_OPTS}"
+command_args_background="--daemon"
+required_files="${GUNICORN_CONFIG}"
+start_stop_daemon_args="${SSD_OPTS:--w 1000}"
+
+depend() {
+	use net
+}
+
+start_pre() {
+	checkpath -d -m 0755 -o "${GUNICORN_USER}:${GUNICORN_GROUP}" "${GUNICORN_RUNDIR}"
+}
+
+reload() {
+	ebegin "Refreshing Gunicorn's configuration for ${RC_SVCNAME}"
+	start-stop-daemon --signal HUP --pidfile "${pidfile}"
+	eend $? "Failed to reload Gunicorn's configuration for ${RC_SVCNAME}"
+}

@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-dovecot_exporter
+# run /usr/bin/dovecot_exporter -h to see available options
+
+DOVECOT_EXPORTER_OPTS=""

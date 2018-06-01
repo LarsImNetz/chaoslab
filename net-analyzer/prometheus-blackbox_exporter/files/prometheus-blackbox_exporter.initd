@@ -1,0 +1,28 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="Allows blackbox probing of endpoints over HTTP, HTTPS, DNS, TCP and ICMP"
+
+: ${BLACKBOX_EXPORTER_USER:=blackbox_exporter}
+: ${BLACKBOX_EXPORTER_CONFIG:="/etc/blackbox_exporter/blackbox.yml"}
+: ${BLACKBOX_EXPORTER_LOG:="/var/log/blackbox_exporter/blackbox_exporter.log"}
+: ${SSD_OPTS:="-1 ${BLACKBOX_EXPORTER_LOG} -2 ${BLACKBOX_EXPORTER_LOG}"}
+
+name="${BLACKBOX_EXPORTER_NAME:-"Blackbox Exporter"}"
+command="/usr/bin/blackbox_exporter"
+command_args="--config.file=\"${BLACKBOX_EXPORTER_CONFIG}\" ${BLACKBOX_EXPORTER_OPTS}"
+command_user="${BLACKBOX_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+required_files="${BLACKBOX_EXPORTER_CONFIG}"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${BLACKBOX_EXPORTER_USER} \
+		"${BLACKBOX_EXPORTER_LOG%/*}"
+}

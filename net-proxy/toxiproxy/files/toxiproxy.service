@@ -1,0 +1,10 @@
+[Unit]
+Description=Toxiproxy server
+After=network.target
+
+[Service]
+User=toxiproxy
+ExecStart=/usr/bin/toxiproxy-server
+
+[Install]
+WantedBy=multi-user.target

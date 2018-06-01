@@ -1,0 +1,59 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+extra_commands="configtest"
+extra_started_commands="reload"
+description_configtest="Run Knot' internal config check"
+description_reload="Reload configuration and changed zones"
+
+name="Knot DNS"
+knotc="/usr/sbin/knotc"
+command="/usr/sbin/knotd"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+required_files="/etc/knot/knot.conf"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o knot:knot /run/knot /var/lib/knot
+
+	if [ "${RC_CMD}" != "restart" ]; then
+		configtest || return 1
+	fi
+}
+
+stop_pre() {
+	if [ "${RC_CMD}" = "restart" ]; then
+		configtest || return 1
+	fi
+}
+
+stop() {
+	ebegin "Stopping ${name}"
+	if ! ${knotc} stop >/dev/null 2>&1; then
+		# In case remote control is not working
+		if [ -f "${pidfile}" ]; then
+			start-stop-daemon --stop --pidfile "${pidfile}"
+		fi
+	fi
+	eend $?
+}
+
+reload() {
+	configtest || return 1
+	ebegin "Reloading ${name}"
+	${knotc} reload >/dev/null 2>&1
+	eend $?
+}
+
+configtest() {
+	ebegin "Checking ${name} configuration"
+	if ! ${knotc} conf-check >/dev/null 2>&1; then
+		${knotc} conf-check
+	fi
+	eend $? "Failed, please correct the errors above"
+}

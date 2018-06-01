@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-collectd_exporter
+# run /usr/bin/collectd_exporter -h to see available options
+
+COLLECTD_EXPORTER_OPTS=""

@@ -1,0 +1,11 @@
+[Unit]
+Description=Prometheus Alertmanager service
+After=network.target
+
+[Service]
+User=alertmanager
+ExecStart=/usr/bin/alertmanager --config.file=/etc/alertmanager/alertmanager.yml --storage.path=/var/lib/alertmanager
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

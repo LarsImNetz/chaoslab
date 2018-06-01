@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-influxdb_exporter
+# run /usr/bin/influxdb_exporter -h to see available options
+
+INFLUXDB_EXPORTER_OPTS=""

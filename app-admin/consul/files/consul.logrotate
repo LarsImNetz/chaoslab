@@ -1,0 +1,5 @@
+/var/log/consul/consul.log {
+	notifempty
+	copytruncate
+	missingok
+}

@@ -1,0 +1,56 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+: ${RSPAMD_CONFIG:="/etc/rspamd/rspamd.conf"}
+: ${RSPAMD_DATADIR:="/var/lib/rspamd"}
+: ${RSPAMD_LOGDIR:="/var/log/rspamd"}
+
+extra_commands="checkconfig"
+extra_started_commands="reload"
+
+command="/usr/bin/rspamd"
+command_args="${RSPAMD_OPTS}"
+command_user="${RSPAMD_USER:-rspamd}:${RSPAMD_GROUP:-rspamd}"
+pidfile="/run/${RC_SVCNAME}/${RC_SVCNAME}.pid"
+required_files="${RSPAMD_CONFIG}"
+retry="TERM/30/KILL/5"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0700 -o "${command_user}" \
+		"${RSPAMD_DATADIR}" "${RSPAMD_LOGDIR}"
+
+	checkpath -d -m 2750 -o "${command_user}" \
+		"${pidfile%/*}"
+
+	rm -f "${pidfile%/*}"/*.sock
+	if [ "${RC_CMD}" != "restart" ]; then
+		checkconfig || return 1
+	fi
+}
+
+stop_pre() {
+	if [ "${RC_CMD}" = "restart" ]; then
+		checkconfig || return 1
+	fi
+}
+
+reload() {
+	checkconfig || return 1
+	ebegin "Reloading ${RC_SVCNAME}"
+	start-stop-daemon --signal HUP --pidfile "${pidfile}"
+	eend $? "Failed to reload ${RC_SVCNAME}"
+}
+
+checkconfig() {
+	ebegin "Checking ${RC_SVCNAME} configuration"
+	if ! /usr/bin/rspamadm configtest -c "${RSPAMD_CONFIG}" >/dev/null 2>&1; then
+		/usr/bin/rspamadm configtest -c "${RSPAMD_CONFIG}"
+	fi
+	eend $? "Failed, please correct the errors above"
+}

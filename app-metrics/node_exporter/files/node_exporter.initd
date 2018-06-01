@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+NODE_EXPORTER_LOGDIR="${NODE_EXPORTER_LOGDIR:-/var/log/node_exporter}"
+
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${NODE_EXPORTER_LOGDIR}/error.log}"
+
+name="${name:-"Node Exporter"}"
+command="/usr/sbin/node_exporter"
+command_args="${NODE_EXPORTER_OPTS}"
+command_user="${command_user:-node_exporter:node_exporter}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" \
+		"${NODE_EXPORTER_DATADIR}" "${NODE_EXPORTER_LOGDIR}"
+}

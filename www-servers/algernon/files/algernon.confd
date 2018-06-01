@@ -1,0 +1,3 @@
+# config file for /etc/init.d/algernon
+
+ALGERNON_OPTS="-e -a --domain --server --log /var/log/algernon/algernon.log --addr=:8080 /var/www/algernon"

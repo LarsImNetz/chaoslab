@@ -1,0 +1,30 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${ROCKETCHAT_LOGDIR}/error.log}"
+
+command="/usr/libexec/rocketchat/npm/bin/node"
+command_args="/usr/libexec/rocketchat/main.js"
+command_user="${command_user:-rocketchat:rocketchat}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+retry="${retry:-TERM/60/KILL/5}"
+start_stop_daemon_args="${SSD_OPTS:--w 1000}
+	-1 ${output_log} -2 ${error_log}
+	-e \"MONGO_URL=${ROCKETCHAT_MONGO_URL}\"
+	-e \"MONGO_OPLOG_URL=${ROCKETCHAT_MONGO_OPLOG_URL}\"
+	-e \"ROOT_URL=${ROCKETCHAT_ROOT_URL}\"
+	-e \"PORT=${ROCKETCHAT_PORT}\"
+	-e \"MAIL_URL=${ROCKETCHAT_MAIL_URL}\"
+"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" "${ROCKETCHAT_LOGDIR}"
+	checkpath -d -m 0700 -o "${command_user}" "/tmp/ufs"
+}

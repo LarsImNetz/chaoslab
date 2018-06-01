@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">restic/rest-server</remote-id>
+		<bugs-to>https://github.com/restic/rest-server/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Rest Server is a high performance HTTP server that implements
+		restic's REST backend API. It provides secure and efficient
+		way to backup data remotely, using restic backup client.
+	</longdescription>
+</pkgmetadata>

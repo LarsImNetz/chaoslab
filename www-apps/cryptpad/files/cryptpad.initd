@@ -1,0 +1,27 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+: ${CRYPTPAD_USER:=cryptpad}
+: ${CRYPTPAD_DATADIR:="/var/lib/cryptpad"}
+: ${CRYPTPAD_WORKDIR:="/usr/share/cryptpad"}
+: ${CRYPTPAD_LOG:="/var/log/cryptpad/cryptpad.log"}
+: ${SSD_OPTS:="-w 1000 -1 ${CRYPTPAD_LOG} -2 ${CRYPTPAD_LOG}"}
+
+command="/usr/bin/node"
+command_args="${CRYPTPAD_WORKDIR}/server.js"
+command_user="${CRYPTPAD_USER}"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+retry=${CRYPTPAD_TERMTIMEOUT:-"TERM/60/KILL/5"}
+start_stop_daemon_args="-d \"${CRYPTPAD_WORKDIR}\" \
+	${SSD_OPTS}"
+
+depend() {
+	after net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${CRYPTPAD_USER} \
+	"${CRYPTPAD_LOG%/*}" "${CRYPTPAD_DATADIR}"
+}

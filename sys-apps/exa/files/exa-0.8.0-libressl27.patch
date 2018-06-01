@@ -1,0 +1,24 @@
+--- a/cargo_home/gentoo/libgit2-sys-0.6.14/libgit2/src/openssl_stream.c
++++ a/cargo_home/gentoo/libgit2-sys-0.6.14/libgit2/src/openssl_stream.c
+@@ -103,7 +103,8 @@ int git_openssl_stream_global_init(void)
+ 	ssl_opts |= SSL_OP_NO_COMPRESSION;
+ #endif
+ 
+-#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
++#if OPENSSL_VERSION_NUMBER < 0x10100000L || \
++     (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x20700000)
+ 	SSL_load_error_strings();
+ 	OpenSSL_add_ssl_algorithms();
+ #else
+--- a/cargo_home/gentoo/libgit2-sys-0.6.14/libgit2/src/openssl_stream.h
++++ a/cargo_home/gentoo/libgit2-sys-0.6.14/libgit2/src/openssl_stream.h
+@@ -27,7 +27,8 @@ extern int git_openssl_stream_new(git_stream **out, const char *host, const char
+ 
+ 
+ 
+-# if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
++# if OPENSSL_VERSION_NUMBER < 0x10100000L || \
++      (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x20700000L)
+ 
+ GIT_INLINE(BIO_METHOD*) BIO_meth_new(int type, const char *name)
+ {

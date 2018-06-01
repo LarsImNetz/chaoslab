@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">pingcap/tidb</remote-id>
+		<bugs-to>https://github.com/pingcap/tidb/issues</bugs-to>
+		<doc>https://pingcap.com/docs</doc>
+	</upstream>
+	<longdescription lang="en">
+		TiDB is a distributed SQL database. Inspired by the design of
+		Google F1 and Google Spanner, TiDB supports the best features
+		of both traditional RDBMS and NoSQL.
+	</longdescription>
+</pkgmetadata>

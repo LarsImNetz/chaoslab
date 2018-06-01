@@ -1,0 +1,27 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+ORCHESTRATOR_CONFIG="${ORCHESTRATOR_CONFIG:-/etc/orchestrator/orchestrator.conf.json}"
+ORCHESTRATOR_LOGDIR="${ORCHESTRATOR_LOGDIR:-/var/log/orchestrator}"
+
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${ORCHESTRATOR_LOGDIR}/error.log}"
+
+command="/usr/libexec/orchestrator/orchestrator"
+command_args="-config ${ORCHESTRATOR_CONFIG} ${ORCHESTRATOR_OPTS}"
+command_user="${command_user:-orchestrator:orchestrator}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+required_files="${ORCHESTRATOR_CONFIG}"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -f -m 0600 -o "${command_user}" "${ORCHESTRATOR_CONFIG}"
+	checkpath -d -m 0750 -o "${command_user}" "${ORCHESTRATOR_LOGDIR}"
+}

@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="A server that scrapes Nginx vts stats and exports them for Prometheus"
+
+: ${NGINX_VTS_EXPORTER_USER:=nginx_vts_exporter}
+: ${NGINX_VTS_EXPORTER_LOG:="/var/log/nginx_vts_exporter/nginx_vts_exporter.log"}
+: ${SSD_OPTS:="-1 ${NGINX_VTS_EXPORTER_LOG} -2 ${NGINX_VTS_EXPORTER_LOG}"}
+
+name="${NGINX_VTS_EXPORTER_NAME:-"Nginx vts Exporter"}"
+command="/usr/bin/nginx-vts-exporter"
+command_args="${NGINX_VTS_EXPORTER_OPTS}"
+command_user="${NGINX_VTS_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${NGINX_VTS_EXPORTER_USER} \
+		"${NGINX_VTS_EXPORTER_LOG%/*}"
+}

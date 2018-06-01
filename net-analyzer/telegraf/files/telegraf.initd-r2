@@ -1,0 +1,33 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+: ${TELEGRAF_CONFIG:="/etc/telegraf/telegraf.conf"}
+: ${TELEGRAF_LOG:="/var/log/${RC_SVCNAME}/${RC_SVCNAME}.log"}
+: ${SSD_OPTS:="-1 ${TELEGRAF_LOG} -2 ${TELEGRAF_LOG}"}
+
+extra_started_commands="reload"
+description="The plugin-driven server agent for collecting and reporting metrics"
+description_reload="Reload the ${RC_SVCNAME} configuration"
+
+command="/usr/bin/telegraf"
+command_args="--config ${TELEGRAF_CONFIG} ${TELEGRAF_OPTS}"
+command_user="${TELEGRAF_USER:-telegraf}:${TELEGRAF_GROUP:-telegraf}"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+required_files="${TELEGRAF_CONFIG}"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" "${TELEGRAF_LOG%/*}"
+}
+
+reload() {
+	ebegin "Refreshing ${RC_SVCNAME} configuration"
+	start-stop-daemon --signal HUP --pidfile "${pidfile}"
+	eend $? "Failed to reload ${RC_SVCNAME}"
+}

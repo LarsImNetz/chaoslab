@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">boothj5/libmesode</remote-id>
+		<bugs-to>https://github.com/boothj5/libmesode/issues</bugs-to>
+	</upstream>
+	<use>
+		<flag name="doc">Install doxygen documentation</flag>
+	</use>
+</pkgmetadata>

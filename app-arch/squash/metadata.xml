@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">quixdb/squash</remote-id>
+		<bugs-to>https://github.com/quixdb/squash/issues</bugs-to>
+		<doc>https://quixdb.github.io/squash/</doc>
+	</upstream>
+	<longdescription lang="en">
+		Squash provides a single API to access many compression
+		libraries, allowing applications a great deal of flexibility
+		in choosing compression algorithms, including the option to
+		pass that choice along to the user. 
+	</longdescription>
+</pkgmetadata>

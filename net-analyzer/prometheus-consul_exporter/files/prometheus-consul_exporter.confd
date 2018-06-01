@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-consul_exporter
+# run /usr/bin/consul_exporter -h to see available options
+
+CONSUL_EXPORTER_OPTS=""

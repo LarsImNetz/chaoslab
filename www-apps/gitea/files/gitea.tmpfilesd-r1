@@ -1,0 +1,2 @@
+d /var/lib/gitea 0750 git git -
+d /var/log/gitea 0750 git git -

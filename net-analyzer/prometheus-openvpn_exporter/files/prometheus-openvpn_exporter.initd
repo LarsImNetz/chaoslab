@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="A Prometheus exporter for OpenVPN"
+
+: ${OPENVPN_EXPORTER_USER:=openvpn_exporter}
+: ${OPENVPN_EXPORTER_LOG:="/var/log/openvpn_exporter/openvpn_exporter.log"}
+: ${SSD_OPTS:="-1 ${OPENVPN_EXPORTER_LOG} -2 ${OPENVPN_EXPORTER_LOG}"}
+
+name="${OPENVPN_EXPORTER_NAME:-"OpenVPN Exporter"}"
+command="/usr/bin/openvpn_exporter"
+command_args="${OPENVPN_EXPORTER_OPTS}"
+command_user="${OPENVPN_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${OPENVPN_EXPORTER_USER} \
+		"${OPENVPN_EXPORTER_LOG%/*}"
+}

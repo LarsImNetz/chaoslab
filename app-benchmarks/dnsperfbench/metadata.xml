@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">turbobytes/dnsperfbench</remote-id>
+		<bugs-to>https://github.com/turbobytes/dnsperfbench/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		dnsperfbench is a command line tool to compare performance of
+		popular public DNS resolvers from your computer, including
+		Google Public DNS, OpenDNS and Cloudflare's 1.1.1.1.
+		You may optionally specify IP addresses of additional
+		resolvers to include in the benchmark, for example the
+		IP address of your ISP's resolver.
+	</longdescription>
+</pkgmetadata>

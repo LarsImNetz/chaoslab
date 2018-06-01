@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-memcached_exporter
+# run /usr/bin/memcached_exporter -h to see available options
+
+MEMCACHED_EXPORTER_OPTS=""

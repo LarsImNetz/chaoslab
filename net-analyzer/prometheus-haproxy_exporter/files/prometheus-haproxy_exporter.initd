@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="Scrapes HAProxy stats and exports them via HTTP for Prometheus consumption"
+
+: ${HAPROXY_EXPORTER_USER:=haproxy_exporter}
+: ${HAPROXY_EXPORTER_LOG:="/var/log/haproxy_exporter/haproxy_exporter.log"}
+: ${SSD_OPTS:="-1 ${HAPROXY_EXPORTER_LOG} -2 ${HAPROXY_EXPORTER_LOG}"}
+
+name="${HAPROXY_EXPORTER_NAME:-"HAProxy Exporter"}"
+command="/usr/bin/haproxy_exporter"
+command_args="${HAPROXY_EXPORTER_OPTS}"
+command_user="${HAPROXY_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${HAPROXY_EXPORTER_USER} \
+		"${HAPROXY_EXPORTER_LOG%/*}"
+}

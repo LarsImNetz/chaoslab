@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">gnome-mpv/gnome-mpv</remote-id>
+		<bugs-to>https://github.com/gnome-mpv/gnome-mpv/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		GNOME MPV interacts with mpv via the client API exported by libmpv,
+		allowing access to mpv's powerful playback capabilities.
+	</longdescription>
+</pkgmetadata>

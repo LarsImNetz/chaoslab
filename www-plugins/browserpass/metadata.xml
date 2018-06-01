@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">dannyvankooten/browserpass</remote-id>
+		<bugs-to>https://github.com/dannyvankooten/browserpass/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Browserpass is a Chrome and Firefox extension for
+		<pkg>app-crypt/pass</pkg>. It retrieves your decrypted passwords
+		for the current domain and allows you to auto-fill login forms.
+		If you have multiple logins for the current site, the extension
+		shows you a list of usernames to choose from.
+	</longdescription>
+</pkgmetadata>

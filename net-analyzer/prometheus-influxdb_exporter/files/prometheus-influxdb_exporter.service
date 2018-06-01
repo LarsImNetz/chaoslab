@@ -1,0 +1,11 @@
+[Unit]
+Description=InfluxDB Exporter service
+After=network.target
+
+[Service]
+User=influxdb_exporter
+ExecStart=/usr/bin/influxdb_exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

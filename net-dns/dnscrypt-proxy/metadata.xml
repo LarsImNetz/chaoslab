@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">jedisct1/dnscrypt-proxy</remote-id>
+		<bugs-to>https://github.com/jedisct1/dnscrypt-proxy/issues</bugs-to>
+		<doc>https://github.com/jedisct1/dnscrypt-proxy/wiki</doc>
+	</upstream>
+	<longdescription lang="en">
+		A flexible DNS proxy, with support for modern encrypted
+		DNS protocols such as DNSCrypt v2 and DNS-over-HTTP.
+	</longdescription>
+</pkgmetadata>

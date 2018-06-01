@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">monero-project/monero-core</remote-id>
+		<bugs-to>https://github.com/monero-project/monero-core/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Monero is a private, secure, untraceable, decentralised
+		digital currency. You are your bank, you control your
+		funds, and nobody can trace your transfers unless
+		you allow them to do so.
+	</longdescription>
+	<use>
+		<flag name="daemon">Build the system daemon</flag>
+		<flag name="dot">Allow to create dot graphs using <pkg>media-gfx/graphviz</pkg></flag>
+		<flag name="gui">Build the end-user Qt GUI wallet for the Monero cryptocurrency</flag>
+		<flag name="scanner">Enable support for reading QR Codes</flag>
+		<flag name="simplewallet">Build the CLI wallet</flag>
+		<flag name="system-unbound">Use the system Unbound instead of the bundled one</flag>
+		<flag name="utils">Enable command-line tools</flag>
+	</use>
+</pkgmetadata>

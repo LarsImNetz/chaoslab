@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-unbound_exporter
+# run /usr/bin/unbound_exporter -h to see available options
+
+UNBOUND_EXPORTER_OPTS=""

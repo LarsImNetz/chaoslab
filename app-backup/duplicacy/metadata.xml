@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">gilbertchen/duplicacy</remote-id>
+		<bugs-to>https://github.com/gilbertchen/duplicacy/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Duplicacy is a new generation cross-platform cloud backup
+		tool based on the idea of Lock-Free Deduplication.
+	</longdescription>
+</pkgmetadata>

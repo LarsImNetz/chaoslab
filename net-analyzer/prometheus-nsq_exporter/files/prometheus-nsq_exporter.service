@@ -1,0 +1,11 @@
+[Unit]
+Description=NSQ Exporter service
+After=network.target
+
+[Service]
+User=nsq_exporter
+ExecStart=/usr/bin/nsq_exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

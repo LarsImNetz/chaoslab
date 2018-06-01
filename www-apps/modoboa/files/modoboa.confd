@@ -1,0 +1,5 @@
+# config file for /etc/init.d/modoboa
+
+# Additional command line arguments (avoid -p, -u, -g, -c and --daemon)
+# See http://docs.gunicorn.org/en/stable/settings.html
+#GUNICORN_OPTS="<instance_name>.wsgi:application"

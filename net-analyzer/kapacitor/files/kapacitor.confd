@@ -1,0 +1,3 @@
+# config file for /etc/init.d/kapacitor
+
+KAPACITOR_OPTS=

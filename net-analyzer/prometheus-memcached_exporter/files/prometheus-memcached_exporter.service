@@ -1,0 +1,11 @@
+[Unit]
+Description=Memcached Exporter service
+After=network.target
+
+[Service]
+User=memcached_exporter
+ExecStart=/usr/bin/memcached_exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

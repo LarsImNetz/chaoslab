@@ -1,0 +1,5 @@
+localhost:2020 {
+	root /var/www/localhost
+	log /var/log/caddy/access.log
+	gzip
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=Copy/paste anything over the network
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/piknik -config /etc/piknik.toml -server
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

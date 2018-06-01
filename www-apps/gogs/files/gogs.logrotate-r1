@@ -1,0 +1,8 @@
+/var/log/gogs/* {
+	su gogs gogs
+	missingok
+	size 5M
+	rotate 3
+	compress
+	copytruncate
+}

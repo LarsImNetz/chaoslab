@@ -1,0 +1,13 @@
+# config file for /etc/init.d/docker
+
+DOCKER_LOGDIR="/var/log/${RC_SVCNAME}"
+
+# where the docker daemon stdout gets piped
+# if this is not set, /dev/null is used
+#output_log="${DOCKER_LOGDIR}/docker.log"
+
+# where the docker daemon stderr gets piped
+#error_log="${DOCKER_LOGDIR}/err.log"
+
+# any other random options you want to pass to docker
+DOCKER_OPTS=""

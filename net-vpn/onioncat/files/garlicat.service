@@ -1,0 +1,15 @@
+[Unit]
+Description=An IP-Transparent Hidden Service Connector
+After=network.target
+
+[Service]
+Type=forking
+Restart=on-abnormal
+PIDFile=/run/gcat.pid
+User=onioncat
+Group=onioncat
+PermissionsStartOnly=yes
+ExecStart=/usr/bin/gcat -P /run/gcat.pid -L /var/log/onioncat/gcat.log -4 -C -I -f /etc/gcat.conf
+
+[Install]
+WantedBy=multi-user.target

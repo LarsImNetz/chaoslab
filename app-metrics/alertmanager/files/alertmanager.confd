@@ -1,0 +1,8 @@
+# config file for /etc/init.d/alertmanager
+
+ALERTMANAGER_STORAGEDIR="/var/lib/alertmanager"
+ALERTMANAGER_OPTS="--storage.path=${ALERTMANAGER_STORAGEDIR}"
+
+# Logging
+#output_log="${ALERTMANAGER_LOGDIR}/alertmanager.log"
+#error_log="${ALERTMANAGER_LOGDIR}/error.log"

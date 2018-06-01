@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">codesenberg/bombardier</remote-id>
+		<bugs-to>https://github.com/codesenberg/bombardier/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		bombardier is a HTTP(S) benchmarking tool. It is written
+		in Go programming language and uses excellent fasthttp
+		instead of Go's default http library, because of its
+		lightning fast performance.
+	</longdescription>
+	<use>
+		<flag name="simplebenchserver">Build a simple HTTP server used for benchmarking</flag>
+	</use>
+</pkgmetadata>

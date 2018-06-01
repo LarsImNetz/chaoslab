@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-statsd_exporter
+# run /usr/bin/statsd_exporter -h to see available options
+
+STATSD_EXPORTER_OPTS=""

@@ -1,0 +1,4 @@
+# config file for /etc/init.d/prometheus-version_exporter
+# run /usr/bin/version_exporter -h to see available options
+
+VERSION_EXPORTER_OPTS=""

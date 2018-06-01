@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">jedisct1/piknik</remote-id>
+		<bugs-to>https://github.com/jedisct1/piknik/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Piknik seamlessly and securely transfers URLs, code snippets,
+		documents, virtually anything between arbitrary hosts.
+		No SSH needed, and hosts can sit behind NAT gateways,
+		on different networks.
+	</longdescription>
+</pkgmetadata>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">boothj5/profanity</remote-id>
+		<bugs-to>https://github.com/boothj5/profanity/issues</bugs-to>
+		<doc>http://www.profanity.im/userguide.html</doc>
+	</upstream>
+	<use>
+		<flag name="c-plugins">Enable C plugins</flag>
+		<flag name="icons">Enable GTK tray icons</flag>
+		<flag name="largefile">Enable support for large files</flag>
+		<flag name="otr">Enable Off-the-Record support (encryption)</flag>
+		<flag name="pgp">Enable PGP support</flag>
+		<flag name="plugins">Enable plugins</flag>
+		<flag name="python-plugins">Enable Python plugins</flag>
+		<flag name="themes">Install additional themes</flag>
+		<flag name="xscreensaver">Use x11-libs/libXScrnSaver for checking idle time</flag>
+	</use>
+</pkgmetadata>

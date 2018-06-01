@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">miguelmota/cointop</remote-id>
+		<bugs-to>https://github.com/miguelmota/cointop/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		cointop is a fast and lightweight interactive terminal
+		based UI application for tracking and monitoring
+		cryptocurrency coin stats in real-time.
+	</longdescription>
+</pkgmetadata>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">keybase/kbfs</remote-id>
+		<bugs-to>https://github.com/keybase/kbfs/issues</bugs-to>
+		<doc>https://keybase.io/docs/kbfs</doc>
+	</upstream>
+	<longdescription lang="en">
+		This client allows you to mount KBFS as a proper
+		filesystem at some mountpoint on your local device
+		(by default, /keybase/). It communicates locally
+		with the Keybase service, and remotely with three
+		types of KBFS servers (block servers, metadata
+		servers, and key servers).
+	</longdescription>
+</pkgmetadata>

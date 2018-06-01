@@ -1,0 +1,14 @@
+[Unit]
+Description=Filebrowser Service
+
+[Service]
+Type=simple
+User=filebrowser
+Group=filebrowser
+ExecStart=/usr/bin/filebrowser -c /etc/filebrowser/filebrowser.yaml
+
+Restart=on-failure
+PrivateTmp=false
+
+[Install]
+WantedBy=multi-user.target

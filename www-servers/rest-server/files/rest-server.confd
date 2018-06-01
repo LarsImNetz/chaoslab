@@ -1,0 +1,4 @@
+# config file for /etc/init.d/rest-server
+
+#REST_SERVER_PATH="/tmp/restic"
+#REST_SERVER_OPTS="--listen 127.0.0.1:8000"

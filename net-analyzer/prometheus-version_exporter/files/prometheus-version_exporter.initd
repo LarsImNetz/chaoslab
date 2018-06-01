@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="Exports the expiration time of your domains as prometheus metrics"
+
+: ${VERSION_EXPORTER_USER:=version_exporter}
+: ${VERSION_EXPORTER_LOG:="/var/log/version_exporter/version_exporter.log"}
+: ${SSD_OPTS:="-1 ${VERSION_EXPORTER_LOG} -2 ${VERSION_EXPORTER_LOG}"}
+
+name="${VERSION_EXPORTER_NAME:-"Version Exporter"}"
+command="/usr/bin/version_exporter"
+command_args="${VERSION_EXPORTER_OPTS}"
+command_user="${VERSION_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${VERSION_EXPORTER_USER} \
+		"${VERSION_EXPORTER_LOG%/*}"
+}

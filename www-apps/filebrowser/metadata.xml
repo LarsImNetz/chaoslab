@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">filebrowser/filebrowser</remote-id>
+		<bugs-to>https://github.com/filebrowser/filebrowser/issues</bugs-to>
+		<doc>https://filebrowser.github.io/configuration/</doc>
+	</upstream>
+	<longdescription lang="en">
+		filebrowser provides a file managing interface within a specified
+		directory and it can be used to upload, delete, preview, rename
+		and edit your files. It allows the creation of multiple users
+		and each user can have its own directory.
+	</longdescription>
+	<use>
+		<flag name="daemon">
+			Allow filebrowser to run as a system-wide service. Installs
+			an init script and creates a filebrowser user:group.
+		</flag>
+	</use>
+</pkgmetadata>

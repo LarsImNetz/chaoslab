@@ -1,0 +1,4 @@
+# config file for /etc/init.d/vpncloud
+
+VPNCLOUD_CONFIGFILE="/etc/vpncloud/example.net"
+VPNCLOUD_OPTS=

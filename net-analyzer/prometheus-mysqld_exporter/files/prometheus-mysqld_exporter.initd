@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="Prometheus exporter for MySQL server metrics"
+
+: ${MYSQLD_EXPORTER_USER:=mysqld_exporter}
+: ${MYSQLD_EXPORTER_LOG:="/var/log/mysqld_exporter/mysqld_exporter.log"}
+: ${SSD_OPTS:="-1 ${MYSQLD_EXPORTER_LOG} -2 ${MYSQLD_EXPORTER_LOG}"}
+
+name="${MYSQLD_EXPORTER_NAME:-"MySQL Exporter"}"
+command="/usr/bin/mysqld_exporter"
+command_args="${MYSQLD_EXPORTER_OPTS}"
+command_user="${MYSQLD_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${MYSQLD_EXPORTER_USER} \
+		"${MYSQLD_EXPORTER_LOG%/*}"
+}

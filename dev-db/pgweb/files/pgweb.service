@@ -1,0 +1,12 @@
+[Unit]
+Description=Web-based PostgreSQL database browser written in Go
+After=network.target
+
+[Service]
+Type=simple
+User=pgweb
+ExecStart=/usr/bin/pgweb --bind=127.0.0.1 --listen=8081
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

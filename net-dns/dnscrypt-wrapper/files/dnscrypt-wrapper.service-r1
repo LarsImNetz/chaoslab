@@ -1,0 +1,21 @@
+[Unit]
+Description=A server-side DNSCrypt proxy
+
+[Service]
+Type=forking
+PIDFile=/run/dnscrypt-wrapper.pid
+EnvironmentFile=/etc/default/dnscrypt-wrapper
+ExecStartPre=/bin/rm -f /run/dnscrypt-wrapper.pid
+ExecStart=/usr/sbin/dnscrypt-wrapper -d \
+	-p "/run/dnscrypt-wrapper.pid" \
+	-l "${DNSCRYPT_LOGFILE}" -u ${DNSCRYPT_USER} \
+	-a ${DNSCRYPT_LISTENIP}:${DNSCRYPT_LISTENPORT} \
+	-r ${DNSCRYPT_RESOLVERIP}:${DNSCRYPT_RESOLVERPORT} \
+	--provider-name="${DNSCRYPT_PROVIDER_NAME}" \
+	--crypt-secretkey-file="${DNSCRYPT_SECRET_KEY}" \
+	--provider-cert-file="${DNSCRYPT_PROVIDER_CERT}" \
+	${DNSCRYPT_OPTIONS}
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

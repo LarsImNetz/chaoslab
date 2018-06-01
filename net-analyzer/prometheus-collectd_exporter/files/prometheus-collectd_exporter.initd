@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="A server that accepts collectd stats for Prometheus consumption"
+
+: ${COLLECTD_EXPORTER_USER:=collectd_exporter}
+: ${COLLECTD_EXPORTER_LOG:="/var/log/collectd_exporter/collectd_exporter.log"}
+: ${SSD_OPTS:="-1 ${COLLECTD_EXPORTER_LOG} -2 ${COLLECTD_EXPORTER_LOG}"}
+
+name="${COLLECTD_EXPORTER_NAME:-"Collectd Exporter"}"
+command="/usr/bin/collectd_exporter"
+command_args="${COLLECTD_EXPORTER_OPTS}"
+command_user="${COLLECTD_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${COLLECTD_EXPORTER_USER} \
+		"${COLLECTD_EXPORTER_LOG%/*}"
+}

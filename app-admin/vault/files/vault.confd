@@ -1,0 +1,9 @@
+# config file for /etc/init.d/vault
+
+VAULT_CONFDIR="/etc/vault.d"
+VAULT_LOGDIR="/var/log/vault"
+VAULT_OPTS=""
+
+# Logging
+#output_log="${VAULT_LOGDIR}/vault.log"
+#error_log="${VAULT_LOGDIR}/error.log"

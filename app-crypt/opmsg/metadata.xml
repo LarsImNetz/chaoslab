@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<longdescription lang="en">
+		opmsg is a replacement for gpg which can encrypt/sign/verify
+		your mails or create/verify detached signatures of local files.
+		Even though the opmsg output looks similar, the concept
+		is entirely different.
+	</longdescription>
+	<use>
+		<flag name="contrib">Build additional features, such as from opmux (opmsg/gpg auto forward) or opcoin (using bitcoin network as a web-of-trust)</flag>
+	</use>
+	<upstream>
+		<remote-id type="github">stealth/opmsg</remote-id>
+	</upstream>
+</pkgmetadata>

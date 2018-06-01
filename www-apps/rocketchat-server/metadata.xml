@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">RocketChat/Rocket.Chat</remote-id>
+		<bugs-to>https://github.com/RocketChat/Rocket.Chat/issues</bugs-to>
+		<doc>https://rocket.chat/docs/</doc>
+	</upstream>
+	<longdescription lang="en">
+		Rocket.Chat is a Web Chat Server, developed in JavaScript,
+		using the Meteor fullstack framework. It is a great solution
+		for communities and companies wanting to privately host their
+		own chat service or for developers looking forward to build
+		and evolve their own chat platforms.
+	</longdescription>
+	<use>
+		<flag name="mongodb">Enables <pkg>dev-db/mongodb</pkg> as a dependency</flag>
+	</use>
+</pkgmetadata>

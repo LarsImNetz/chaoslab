@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<bugs-to>https://www.cypherpunk.at/onioncat_trac/report</bugs-to>
+		<doc>https://www.cypherpunk.at/onioncat_trac/wiki</doc>
+	</upstream>
+	<longdescription lang="en">
+		OnionCat is a peer-to-peer layer 3 VPN which is based on
+		Tor or I2P. Thus, it offers typical VPN functionality with
+		the addition of location-based anonymity.
+	</longdescription>
+	<use>
+		<flag name="http">Enable handling of accidental HTTP requests</flag>
+		<flag name="i2p">Install GarliCat (I2P-version)</flag>
+		<flag name="log">Enable packet logging</flag>
+		<flag name="queue">Enable queueuing of packets while connecting setup</flag>
+		<flag name="relay">Disable source IP checking before forwarding</flag>
+		<flag name="rtt">Enable inband RTT measurement</flag>
+	</use>
+</pkgmetadata>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">Shopify/toxiproxy</remote-id>
+		<bugs-to>https://github.com/Shopify/toxiproxy/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Toxiproxy is a framework for simulating network conditions.
+		It's made specifically to work in testing, CI and development
+		environments, supporting deterministic tampering with
+		connections, but with support for randomized chaos and
+		customization.
+	</longdescription>
+</pkgmetadata>

@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+# Copyright 1999-2017 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+description="Export Consul service health to Prometheus"
+
+: ${CONSUL_EXPORTER_USER:=consul_exporter}
+: ${CONSUL_EXPORTER_LOG:="/var/log/consul_exporter/consul_exporter.log"}
+: ${SSD_OPTS:="-1 ${CONSUL_EXPORTER_LOG} -2 ${CONSUL_EXPORTER_LOG}"}
+
+name="${CONSUL_EXPORTER_NAME:-"Consul Exporter"}"
+command="/usr/bin/consul_exporter"
+command_args="${CONSUL_EXPORTER_OPTS}"
+command_user="${CONSUL_EXPORTER_USER}"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o ${CONSUL_EXPORTER_USER} \
+		"${CONSUL_EXPORTER_LOG%/*}"
+}

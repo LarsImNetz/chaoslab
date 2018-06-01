@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">dswd/vpncloud.rs</remote-id>
+		<bugs-to>https://github.com/dswd/vpncloud.rs/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		VpnCloud creates a virtual network interface on the host and forwards
+		all received data via UDP to the destination. VpnCloud establishes
+		a fully-meshed VPN network in a peer-to-peer manner. It can work on
+		TUN devices (IP based) and TAP devices (Ethernet based).
+	</longdescription>
+	<use>
+		<flag name="man">Build and install man pages</flag>
+		<flag name="system-libsodium">Use system libsodium instead of the bundled one</flag>
+	</use>
+</pkgmetadata>
