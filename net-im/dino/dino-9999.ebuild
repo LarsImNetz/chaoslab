@@ -16,7 +16,7 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS=""
 
-REPEND="$(vala_depend)
+RDEPEND="$(vala_depend)
 	>=x11-libs/gtk+-3.22:3
 	app-crypt/gpgme
 	dev-db/sqlite
