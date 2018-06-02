@@ -1,0 +1,25 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -522,7 +522,6 @@
+ ENDIF ()
+ 
+ INSTALL(PROGRAMS share/h2o/annotate-backtrace-symbols share/h2o/fastcgi-cgi share/h2o/fetch-ocsp-response share/h2o/kill-on-close share/h2o/setuidgid share/h2o/start_server DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/h2o)
+-INSTALL(FILES share/h2o/ca-bundle.crt DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/h2o)
+ INSTALL(FILES share/h2o/status/index.html DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/h2o/status)
+ INSTALL(DIRECTORY doc/ DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/doc/h2o PATTERN "Makefile" EXCLUDE PATTERN "h2o.8" EXCLUDE PATTERN "README.md" EXCLUDE)
+ INSTALL(FILES doc/h2o.8 DESTINATION ${CMAKE_INSTALL_MANDIR}/man8/)
+--- a/lib/handler/configurator/proxy.c
++++ b/lib/handler/configurator/proxy.c
+@@ -423,11 +423,10 @@
+     if (ctx->pathconf == NULL && ctx->hostconf == NULL) {
+         /* is global conf, setup the default SSL context */
+         self->vars->ssl_ctx = create_ssl_ctx();
+-        char *ca_bundle = h2o_configurator_get_cmd_path("share/h2o/ca-bundle.crt");
++        const char *ca_bundle = "/etc/ssl/certs/ca-certificates.crt";
+         if (SSL_CTX_load_verify_locations(self->vars->ssl_ctx, ca_bundle, NULL) != 1)
+             fprintf(stderr, "Warning: failed to load the default certificates file at %s. Proxying to HTTPS servers may fail.\n",
+                     ca_bundle);
+-        free(ca_bundle);
+         SSL_CTX_set_verify(self->vars->ssl_ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
+         h2o_cache_t *ssl_session_cache =
+             create_ssl_session_cache(H2O_DEFAULT_PROXY_SSL_SESSION_CACHE_CAPACITY, H2O_DEFAULT_PROXY_SSL_SESSION_CACHE_DURATION);

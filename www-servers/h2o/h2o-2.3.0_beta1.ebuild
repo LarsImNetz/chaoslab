@@ -7,9 +7,11 @@ USE_RUBY="ruby23 ruby24 ruby25"
 
 inherit cmake-utils ruby-single systemd user
 
+MY_PV="${PV/_/-}"
 DESCRIPTION="An optimized HTTP server with support for HTTP/1.x and HTTP/2"
 HOMEPAGE="https://h2o.examp1e.net"
-SRC_URI="https://github.com/h2o/h2o/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/h2o/h2o/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
+RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
@@ -32,19 +34,9 @@ DEPEND="${RDEPEND}
 	)"
 RDEPEND+=" app-misc/ca-certificates"
 
-PATCHES=(
-	"${FILESDIR}/${PN}-2.2.3-system_ca.patch"
-	"${FILESDIR}/${P}-libressl.patch"
-)
+PATCHES=( "${FILESDIR}/${PN}-2.3.0-system_ca.patch" )
 
-src_prepare() {
-	# shellcheck disable=SC2016
-	# Leave optimization level to user CFLAGS
-	sed -i 's/-O2 -g ${CC_WARNING_FLAGS} //g' ./CMakeLists.txt \
-		|| die "sed fix failed!"
-
-	cmake-utils_src_prepare
-}
+S="${WORKDIR}/${PN}-${MY_PV}"
 
 src_configure() {
 	# shellcheck disable=SC2191
@@ -52,7 +44,6 @@ src_configure() {
 		-DCMAKE_INSTALL_SYSCONFDIR="${EPREFIX}"/etc/h2o
 		-DDISABLE_LIBUV="$(usex !libuv)"
 		-DWITHOUT_LIBS="$(usex !libh2o)"
-		-DWITH_BUNDLED_SSL=OFF
 		-DWITH_MRUBY="$(usex mruby)"
 	)
 	cmake-utils_src_configure
