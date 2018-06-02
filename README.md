@@ -6,10 +6,10 @@
 The scope of this overlay is to host ebuilds for packages related to secure communication,
 cryptocurrency, server-side applications, and many other things that I'm interested in. It
 also include full support for `libressl` USE flag and **OpenRC**. You can visit a
-[user-friendly](LISTING.md) list of packages, where I hope that you find it useful.
+[user-friendly](LISTING.md) list of packages, where I hope that you find something useful.
 
 **If you find any bugs, please report them!** You can use the
-[GibLab issue tracker](https://gitlab.com/chaoslab/chaoslab-overlay/issues) to report bugs, ask
+[GitLab issue tracker](https://gitlab.com/chaoslab/chaoslab-overlay/issues) to report bugs, ask
 questions or suggest new features. I am also happy to accept merge requests from anyone. If you
 prefer private communication, feel free to contact by [e-mail](overlay.xml#L9)
 ([PGP Public Key](#signature)).
@@ -27,16 +27,22 @@ the developers know about it.* —
 [Gentoo's Handbook](https://wiki.gentoo.org/wiki/Handbook:AMD64/Full/Portage#Testing) ↩
 
 ## How to install the overlay
-You can use it by adding this in `/etc/portage/repos.conf/chaoslab.conf` (recommended):
+You can clone the repository and create `/etc/portage/repos.conf/chaoslab.conf` with the
+following contents:
 
 ```ini
 [chaoslab]
 priority = 50
-location = /usr/local/overlay/chaoslab
+location = /path/to/local/chaoslab
 sync-type = git
 sync-uri = https://gitlab.com/chaoslab/chaoslab-overlay.git
 auto-sync = Yes
 ```
+
+> **Note:** I recommend that you manually install the overlay, as obviously you will be
+pulling directly from the original source. If you use the automatic installation described
+below, you will be pulling from [gentoo-mirror](https://github.com/gentoo-mirror/chaoslab)'s
+service, in which from time to time have [sync issues](https://bugs.gentoo.org/653472).
 
 Alternatively, for automatic install, you must have
 [`app-eselect/eselect-repository`](https://packages.gentoo.org/packages/app-eselect/eselect-repository)
