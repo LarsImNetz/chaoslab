@@ -59,3 +59,9 @@ src_install() {
 	dobin bin/wtf
 	einstalldocs
 }
+
+pkg_postinst() {
+	einfo
+	elog "See https://wtfutil.com/posts/configuration/ for configuration guide."
+	einfo
+}
