@@ -5,6 +5,7 @@ EAPI=6
 
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 FUSE_COMMIT="a9ddcb8"
+EGO_PN="github.com/rfjakob/${PN}"
 EGO_VENDOR=(
 	"github.com/hanwen/go-fuse ${FUSE_COMMIT}"
 	"github.com/jacobsa/crypto c73681c"
@@ -16,42 +17,46 @@ EGO_VENDOR=(
 
 inherit golang-vcs-snapshot
 
-EGO_PN="github.com/rfjakob/${PN}"
 DESCRIPTION="Encrypted overlay filesystem written in Go"
 HOMEPAGE="https://nuetzlich.net/gocryptfs"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
+RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="libressl +ssl"
+IUSE="libressl pie +ssl"
 
 RDEPEND="sys-fs/fuse:0
 	ssl? (
 		!libressl? ( dev-libs/openssl:0= )
 		libressl? ( dev-libs/libressl:0= )
 	)"
-RESTRICT="mirror strip"
+
+QA_PRESTRIPPED="usr/bin/gocryptfs"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
-	local usessl
-	local GOLDFLAGS="-s -w \
-		-X main.GitVersion=${PV} \
-		-X main.GitVersionFuse=${FUSE_COMMIT} \
-		-X main.BuildTime=$(date +%s)"
-
-	use ssl || usessl="-tags without_openssl"
-
-	go build -v -ldflags \
-		"${GOLDFLAGS}" ${usessl} || die
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w
+			-X main.GitVersion=${PV}
+			-X main.GitVersionFuse=${FUSE_COMMIT}
+			-X main.BuildDate=$(date '+%Y-%m-%d')"
+		$(usex !ssl '-tags without_openssl' '')
+	)
+	go build "${mygoargs[@]}" || die
 }
 
 src_install() {
 	dobin gocryptfs
-	newman "${FILESDIR}"/${P}.1 gocryptfs.1
+	newman "${FILESDIR}/${P}.1" gocryptfs.1
 }
