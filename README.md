@@ -41,7 +41,7 @@ auto-sync = Yes
 
 > **Note:** I recommend that you manually install the overlay, as obviously you will be
 pulling directly from the original source. If you use the automatic installation described
-below, you will be pulling from [gentoo-mirror](https://github.com/gentoo-mirror/chaoslab)'s
+below, you will be pulling from [gentoo-mirror](https://github.com/gentoo-mirror)'s
 service, in which from time to time have [sync issues](https://bugs.gentoo.org/653472).
 
 Alternatively, for automatic install, you must have
