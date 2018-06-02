@@ -69,7 +69,7 @@ dev-python/**[LEPL](dev-python/LEPL)** | A Parser Library for Python 2.6+/3+: Re
 dev-python/**[progressbar33](dev-python/progressbar33)** | Text progressbar library for python
 dev-python/**[pycryptodomex](dev-python/pycryptodomex)** | A self-contained (and independent) cryptographic library for Python
 dev-python/**[py-dateutil](dev-python/py-dateutil)** | Extensions to the standard Python datetime module
-dev-python/**[python-ldap](dev-python/python-ldap)** | https://github.com/python-ldap/python-ldap
+dev-python/**[python-ldap](dev-python/python-ldap)** | LDAP client API for Python
 dev-python/**[requests-file](dev-python/requests-file)** | File transport adapter for Requests
 dev-python/**[rfc6266](dev-python/rfc6266)** | Content-Disposition header support for Python
 dev-python/**[tldextract](dev-python/tldextract)** | Accurately separates the gTLD or ccTLD from the registered domain and subdomains
