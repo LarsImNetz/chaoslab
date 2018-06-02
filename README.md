@@ -1,4 +1,5 @@
-## ChaosLab: Overlay for Gentoo Linux
+ChaosLab: Overlay for Gentoo Linux
+----------------------------------
 
 ![packages 181](https://img.shields.io/badge/packages-181-yellow.svg?style=flat-square)
 ![ebuilds 235](https://img.shields.io/badge/ebuilds-235-orange.svg?style=flat-square)
@@ -33,7 +34,7 @@ following contents:
 ```ini
 [chaoslab]
 priority = 50
-location = /path/to/local/chaoslab
+location = /path/to/local/chaoslab-overlay
 sync-type = git
 sync-uri = https://gitlab.com/chaoslab/chaoslab-overlay.git
 auto-sync = Yes
@@ -50,12 +51,12 @@ or [`app-portage/layman`](https://packages.gentoo.org/packages/app-portage/layma
 installed on your system for this to work.
 
 #### With `eselect-repository`:
-```console
+```
 eselect repository enable chaoslab
 ```
 
 #### With `layman`:
-```console
+```
 layman -fa chaoslab
 ```
 
@@ -70,7 +71,7 @@ All commits and manifests on the first parent (at least) are signed by me.
 * Signing key: `0x5010AD684AB2A4EE` @ _your favorite public key server_
 * Fingerprint: `46D2 70C0 8BAA 08C2 3250  16B4 4B7D 696C 954F 8EDD`
 
-## Donations are welcome 🖤
+## Want to buy me a cup of coffee? ❤
 * Bitcoin _Cash_: `qpgh64feure4a42073wxz3v867t45ht3csxlsx693d`
 * Dash: `Xg8AVx7YLSpTagR5DSzHk9Na1oDMUwb2hk`
 * Ether: `0x002e7A11013BF05D418FD3FbdA4f3381E82e5A23`
