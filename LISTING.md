@@ -1,14 +1,14 @@
 ## Repository tree
 This is a list of packages available and their associated description:
 
-Package | Description
+**Package** | **Description**
 --- | ---
 app-admin/**[consul](app-admin/consul)** `*` | A tool for service discovery, monitoring and configuration
 app-admin/**[doctl](app-admin/doctl)** | A command line tool for DigitalOcean services
 app-admin/**[pick](app-admin/pick)** | A minimal password manager written in Go
 app-admin/**[scaleway-cli](app-admin/scaleway-cli)** | Interact with Scaleway API from the command line
 app-admin/**[terraform](app-admin/terraform)** `*` | A tool for building, changing, and combining infrastructure safely/efficiently
-app-admin/**[vault](app-admin/vault)** | A tool for managing secrets
+app-admin/**[vault](app-admin/vault)** `*` | A tool for managing secrets
 app-arch/**[squash](app-arch/squash)** | Compression abstraction library and utilities
 app-backup/**[duplicacy](app-backup/duplicacy)** | A new generation cloud backup tool
 app-backup/**[restic](app-backup/restic)** `*` | A backup program that is fast, efficient and secure
@@ -75,7 +75,7 @@ dev-python/**[python-ldap](dev-python/python-ldap)** `***` | LDAP client API for
 dev-python/**[requests-file](dev-python/requests-file)** | File transport adapter for Requests
 dev-python/**[rfc6266](dev-python/rfc6266)** | Content-Disposition header support for Python
 dev-python/**[tldextract](dev-python/tldextract)** | Accurately separates the gTLD or ccTLD from the registered domain and subdomains
-dev-util/**[electron-bin](dev-util/electron-bin)** | Cross platform application development framework based on web technologies
+dev-util/**[electron-bin](dev-util/electron-bin)** `*` | Cross platform application development framework based on web technologies
 dev-vcs/**[gitkraken-bin](dev-vcs/gitkraken-bin)** | The intuitive, fast, and beautiful cross-platform Git client
 dev-vcs/**[hub](dev-vcs/hub)** | A command-line wrapper for git that makes you better at GitHub
 gnome-extra/**[gnome-pomodoro](gnome-extra/gnome-pomodoro)** | A Pomodoro timer for Gnome
@@ -147,13 +147,13 @@ www-apps/**[gogs](www-apps/gogs)** | A painless self-hosted Git service
 www-apps/**[gotty](www-apps/gotty)** | A simple command line tool that turns your CLI tools into web applications
 www-apps/**[grafana](www-apps/grafana)** `*` | Grafana is an open source metric analytics & visualization suite
 www-apps/**[hiawatha-monitor](www-apps/hiawatha-monitor)** `*` | Monitoring application for www-servers/hiawatha
-www-apps/**[hugo](www-apps/hugo)** | A static HTML and CSS website generator written in Go
+www-apps/**[hugo](www-apps/hugo)** `*` | A static HTML and CSS website generator written in Go
 www-apps/**[mattermost-server](www-apps/mattermost-server)** | Open source Slack-alternative in Golang and React
 www-apps/**[modoboa](www-apps/modoboa)** | A mail hosting and management platform with a modern and simplified Web UI
 www-apps/**[modoboa-dmarc](www-apps/modoboa-dmarc)** | A set of tools to use DMARC through Modoboa
 www-apps/**[rocketchat-server](www-apps/rocketchat-server)** `**` | A Web Chat Server developed in JavaScript, using the Meteor framework
 www-client/**[inox](www-client/inox)** | Chromium spin-off to enhance privacy by disabling data transmission to Google
-www-plugins/**[browserpass](www-plugins/browserpass)** | WebExtension host binary for app-admin/pass, a UNIX password manager
+www-plugins/**[browserpass](www-plugins/browserpass)** `*` | WebExtension host binary for app-admin/pass, a UNIX password manager
 www-servers/**[algernon](www-servers/algernon)** | Pure Go web server with Lua, Markdown, QUIC and Pongo2 support
 www-servers/**[caddy](www-servers/caddy)** `*` | Fast, cross-platform HTTP/2 web server with automatic HTTPS
 www-servers/**[h2o](www-servers/h2o)** `*` | An optimized HTTP server with support for HTTP/1.x and HTTP/2
@@ -163,8 +163,8 @@ www-servers/**[rest-server](www-servers/rest-server)** | A high performance HTTP
 x11-misc/**[noti](x11-misc/noti)** | Trigger notifications when a process completes
 
 * `*` Packages that have similar ebuild in the main tree, but for personal reasons,
-we maintain our own version. This doesn't mean that we have better or worse version,
+we maintain our own version. This doesn't mean that we have a better or worse version,
 just different. Judge for yourself.
-* `**` [Masked package](profiles/package.mask), probably too unstable or experimental.
+* `**` [Masked package](profiles/package.mask), probably too unstable and/or experimental.
 * `***` Temporary package, you shouldn't rely on it. We probably have it because
 it's a dependency for other packages, and the main tree still doesn't have said package.
