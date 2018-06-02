@@ -37,11 +37,6 @@ PATCHES=(
 	"${FILESDIR}/${P}-libressl.patch"
 )
 
-pkg_setup() {
-	enewgroup h2o
-	enewuser h2o -1 -1 -1 h2o
-}
-
 src_prepare() {
 	# shellcheck disable=SC2016
 	# Leave optimization level to user CFLAGS
@@ -75,6 +70,11 @@ src_install() {
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}"/h2o.logrotate-r3 h2o
 
-	diropts -o h2o -g h2o -m 0700
+	diropts -m 0700
 	keepdir /var/log/h2o
+}
+
+pkg_preinst() {
+	enewgroup h2o
+	enewuser h2o -1 -1 -1 h2o
 }

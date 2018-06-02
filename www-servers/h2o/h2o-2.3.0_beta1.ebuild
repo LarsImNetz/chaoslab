@@ -38,11 +38,6 @@ PATCHES=( "${FILESDIR}/${PN}-2.3.0-system_ca.patch" )
 
 S="${WORKDIR}/${PN}-${MY_PV}"
 
-pkg_setup() {
-	enewgroup h2o
-	enewuser h2o -1 -1 -1 h2o
-}
-
 src_configure() {
 	# shellcheck disable=SC2191
 	local mycmakeargs=(
@@ -66,6 +61,11 @@ src_install() {
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}"/h2o.logrotate-r3 h2o
 
-	diropts -o h2o -g h2o -m 0700
+	diropts -m 0700
 	keepdir /var/log/h2o
+}
+
+pkg_preinst() {
+	enewgroup h2o
+	enewuser h2o -1 -1 -1 h2o
 }
