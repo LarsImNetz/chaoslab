@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">senorprogrammer/wtf</remote-id>
+		<bugs-to>https://github.com/senorprogrammer/wtf/issues</bugs-to>
+		<doc>https://wtfutil.com/</doc>
+	</upstream>
+	<longdescription lang="en">
+		WTF is a personal information dashboard for your
+		terminal, developed for those who spend most of
+		their day in the command line.
+		It provides a framework for rapidly viewing
+		important at-a-glance information easily. 
+	</longdescription>
+</pkgmetadata>

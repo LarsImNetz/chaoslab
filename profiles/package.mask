@@ -29,6 +29,11 @@
 
 #--- END OF EXAMPLES ---
 
+# Ian Moone <gentoo@chaoslab.org> (2 Jun 2018)
+# The build process is failing for me, requires
+# more investigation.
+>=www-client/inox-67
+
 # Ian Moone <gentoo@chaoslab.org> (21 May 2018)
 # Experimental ebuild, needs more tests.
 www-apps/rocketchat-server
