@@ -3,15 +3,15 @@ This is a list of packages available and their associated description:
 
 Package | Description
 --- | ---
-app-admin/**[consul](app-admin/consul)** | A tool for service discovery, monitoring and configuration
+app-admin/**[consul](app-admin/consul)** `*` | A tool for service discovery, monitoring and configuration
 app-admin/**[doctl](app-admin/doctl)** | A command line tool for DigitalOcean services
 app-admin/**[pick](app-admin/pick)** | A minimal password manager written in Go
 app-admin/**[scaleway-cli](app-admin/scaleway-cli)** | Interact with Scaleway API from the command line
-app-admin/**[terraform](app-admin/terraform)** | A tool for building, changing, and combining infrastructure safely/efficiently
+app-admin/**[terraform](app-admin/terraform)** `*` | A tool for building, changing, and combining infrastructure safely/efficiently
 app-admin/**[vault](app-admin/vault)** | A tool for managing secrets
 app-arch/**[squash](app-arch/squash)** | Compression abstraction library and utilities
 app-backup/**[duplicacy](app-backup/duplicacy)** | A new generation cloud backup tool
-app-backup/**[restic](app-backup/restic)** | A backup program that is fast, efficient and secure
+app-backup/**[restic](app-backup/restic)** `*` | A backup program that is fast, efficient and secure
 app-backup/**[zvault](app-backup/zvault)** | A highly efficient deduplicating backup solution
 app-benchmarks/**[bombardier](app-benchmarks/bombardier)** | Fast cross-platform HTTP benchmarking tool written in Go
 app-benchmarks/**[dnsperfbench](app-benchmarks/dnsperfbench)** | A command line tool to compare performance of DNS resolvers
@@ -20,43 +20,45 @@ app-benchmarks/**[pewpew](app-benchmarks/pewpew)** | Flexible HTTP command line 
 app-benchmarks/**[vegeta](app-benchmarks/vegeta)** | HTTP load testing tool and library. It's over 9000!
 app-crypt/**[certspotter](app-crypt/certspotter)** | A Certificate Transparency log monitor from SSLMate
 app-crypt/**[enchive](app-crypt/enchive)** | A tool to encrypt files to yourself for long-term archival
-app-crypt/**[kbfs](app-crypt/kbfs)** | Keybase Filesystem (KBFS)
-app-crypt/**[keybase](app-crypt/keybase)** | Client for Keybase
+app-crypt/**[kbfs](app-crypt/kbfs)** `*` | Keybase Filesystem (KBFS)
+app-crypt/**[keybase](app-crypt/keybase)** `*` | Client for Keybase
 app-crypt/**[minisign](app-crypt/minisign)** | A dead simple tool to sign files and verify digital signatures
 app-crypt/**[opmsg](app-crypt/opmsg)** | opmsg message encryption (an alternative to GnuPG)
 app-crypt/**[ssh-vault](app-crypt/ssh-vault)** | Encrypt/Decrypt using SSH private keys
 app-editors/**[micro](app-editors/micro)** | A modern and intuitive terminal-based text editor
-app-emulation/**[containerd](app-emulation/containerd)** | A daemon to control runC
-app-emulation/**[docker](app-emulation/docker)** | The core functions you need to create Docker images and run Docker containers
-app-emulation/**[docker-proxy](app-emulation/docker-proxy)** | Docker container networking
-app-emulation/**[runc](app-emulation/runc)** | CLI tool for spawning and running containers
-app-metrics/**[alertmanager](app-metrics/alertmanager)** | Handles alerts sent by client applications such as the Prometheus
-app-metrics/**[node_exporter](app-metrics/node_exporter)** | Prometheus exporter for hardware and OS metrics exposed by *NIX kernels
-app-metrics/**[prometheus](app-metrics/prometheus)** | The Prometheus monitoring system and time series database
-app-metrics/**[pushgateway](app-metrics/pushgateway)** | Push acceptor for ephemeral and batch jobs to expose their metrics to Prometheus
-app-metrics/**[snmp_exporter](app-metrics/snmp_exporter)** | An exporter that exposes information gathered from SNMP for Prometheus
+app-emulation/**[containerd](app-emulation/containerd)** `*` | A daemon to control runC
+app-emulation/**[docker](app-emulation/docker)** `*` `**` | The core functions you need to create Docker images and run Docker containers
+app-emulation/**[docker-proxy](app-emulation/docker-proxy)** `*` | Docker container networking
+app-emulation/**[runc](app-emulation/runc)** `*` | CLI tool for spawning and running containers
+app-metrics/**[alertmanager](app-metrics/alertmanager)** `*` | Handles alerts sent by client applications such as the Prometheus
+app-metrics/**[node_exporter](app-metrics/node_exporter)** `*` | Prometheus exporter for hardware and OS metrics exposed by *NIX kernels
+app-metrics/**[prometheus](app-metrics/prometheus)** `*` | The Prometheus monitoring system and time series database
+app-metrics/**[pushgateway](app-metrics/pushgateway)** `*` | Push acceptor for ephemeral and batch jobs to expose their metrics to Prometheus
+app-metrics/**[snmp_exporter](app-metrics/snmp_exporter)** `*` | An exporter that exposes information gathered from SNMP for Prometheus
 app-misc/**[bat](app-misc/bat)** | A 'cat' clone with syntax highlighting and Git integration
 app-misc/**[genact](app-misc/genact)** | A nonsense activity generator
 app-misc/**[watchexec](app-misc/watchexec)** | Executes commands in response to file modifications
 app-misc/**[watchman](app-misc/watchman)** | An inotify-based file watching and job triggering command line utility
 app-shells/**[antibody](app-shells/antibody)** | The fastest shell plugin manager
-app-shells/**[fzf](app-shells/fzf)** | A general-purpose command-line fuzzy finder
-app-shells/**[peco](app-shells/peco)** | Simplistic interactive filtering tool
-app-shells/**[skim](app-shells/skim)** | Fuzzy finder in Rust
-dev-db/**[influxdb](dev-db/influxdb)** | Scalable datastore for metrics, events, and real-time analytics
+app-shells/**[fzf](app-shells/fzf)** `*` | A general-purpose command-line fuzzy finder
+app-shells/**[peco](app-shells/peco)** `*` | Simplistic interactive filtering tool
+app-shells/**[skim](app-shells/skim)** `*` | Fuzzy finder in Rust
+dev-db/**[influxdb](dev-db/influxdb)** `*` | Scalable datastore for metrics, events, and real-time analytics
 dev-db/**[orchestrator](dev-db/orchestrator)** | A MySQL high availability and replication management tool
 dev-db/**[pgweb](dev-db/pgweb)** | Web-based PostgreSQL database browser written in Go
 dev-db/**[tidb](dev-db/tidb)** | A distributed NewSQL database compatible with MySQL protocol
 dev-go/**[depth](dev-go/depth)** | Retrieve and visualize Go source code dependency trees
+dev-lang/**[vala](dev-lang/vala)** `***` | Compiler for the GObject type system
 dev-libs/**[libbaseencode](dev-libs/libbaseencode)** | Library written in C for encoding and decoding data using base32 or base64
 dev-libs/**[libcotp](dev-libs/libcotp)** | C library that generates TOTP and HOTP
 dev-libs/**[libmesode](dev-libs/libmesode)** | Fork of libstrophe for use with Profanity XMPP Client
 dev-libs/**[libstrophe](dev-libs/libstrophe)** | A simple, lightweight C library for writing XMPP clients
+dev-libs/**[vala-common](dev-libs/vala-common)** `***` | Build infrastructure for packages that use Vala
 dev-python/**[coreapi](dev-python/coreapi)** | Python client library for Core API
 dev-python/**[coreapi-cli](dev-python/coreapi-cli)** | An interactive command line client for Core API
 dev-python/**[coreschema](dev-python/coreschema)** | Core Schema
-dev-python/**[django](dev-python/django)** | High-level Python web framework
-dev-python/**[django-auth-ldap](dev-python/django-auth-ldap)** | Django LDAP authentication backend
+dev-python/**[django](dev-python/django)** `***` | High-level Python web framework
+dev-python/**[django-auth-ldap](dev-python/django-auth-ldap)** `***` | Django LDAP authentication backend
 dev-python/**[django-braces](dev-python/django-braces)** | Reusable, generic mixins for Django
 dev-python/**[django-ckeditor](dev-python/django-ckeditor)** | Django admin CKEditor integration
 dev-python/**[djangorestframework](dev-python/djangorestframework)** | Web APIs for Django, made easy
@@ -64,12 +66,12 @@ dev-python/**[django-reversion](dev-python/django-reversion)** | A Django extens
 dev-python/**[django-subcommand2](dev-python/django-subcommand2)** | Support subcommands in management commands
 dev-python/**[django-xforwardedfor-middleware](dev-python/django-xforwardedfor-middleware)** | Django X-Forwarded-For Middleware
 dev-python/**[itypes](dev-python/itypes)** | Basic immutable container types for Python
-dev-python/**[jsonfield](dev-python/jsonfield)** | A reusable JSONField model for Django to store ad-hoc data
+dev-python/**[jsonfield](dev-python/jsonfield)** `***` | A reusable JSONField model for Django to store ad-hoc data
 dev-python/**[LEPL](dev-python/LEPL)** | A Parser Library for Python 2.6+/3+: Recursive Descent; Full Backtracking
 dev-python/**[progressbar33](dev-python/progressbar33)** | Text progressbar library for python
 dev-python/**[pycryptodomex](dev-python/pycryptodomex)** | A self-contained (and independent) cryptographic library for Python
 dev-python/**[py-dateutil](dev-python/py-dateutil)** | Extensions to the standard Python datetime module
-dev-python/**[python-ldap](dev-python/python-ldap)** | LDAP client API for Python
+dev-python/**[python-ldap](dev-python/python-ldap)** `***` | LDAP client API for Python
 dev-python/**[requests-file](dev-python/requests-file)** | File transport adapter for Requests
 dev-python/**[rfc6266](dev-python/rfc6266)** | Content-Disposition header support for Python
 dev-python/**[tldextract](dev-python/tldextract)** | Accurately separates the gTLD or ccTLD from the registered domain and subdomains
@@ -78,28 +80,28 @@ dev-vcs/**[gitkraken-bin](dev-vcs/gitkraken-bin)** | The intuitive, fast, and be
 dev-vcs/**[hub](dev-vcs/hub)** | A command-line wrapper for git that makes you better at GitHub
 gnome-extra/**[gnome-pomodoro](gnome-extra/gnome-pomodoro)** | A Pomodoro timer for Gnome
 gnome-extra/**[nautilus-git](gnome-extra/nautilus-git)** | Nautilus extension to add important information about the current git directory
-mail-filter/**[rspamd](mail-filter/rspamd)** | Rapid spam filtering system
+mail-filter/**[rspamd](mail-filter/rspamd)** `*` | Rapid spam filtering system
 media-gfx/**[gifski](media-gfx/gifski)** | GIF encoder based on libimagequant
 media-video/**[curlew](media-video/curlew)** | Easy to use and Free Multimedia Converter for Linux
-media-video/**[gnome-mpv](media-video/gnome-mpv)** | A simple GTK+ frontend for mpv
-media-video/**[peek](media-video/peek)** | Simple animated GIF screen recorder with an easy to use interface
-net-analyzer/**[chronograf](net-analyzer/chronograf)** | Open source monitoring and visualization UI for the TICK stack
-net-analyzer/**[goaccess](net-analyzer/goaccess)** | A real-time web log analyzer and interactive viewer that runs in a terminal
-net-analyzer/**[kapacitor](net-analyzer/kapacitor)** | A framework for processing, monitoring, and alerting on time series data
-net-analyzer/**[telegraf](net-analyzer/telegraf)** | An agent for collecting, processing, aggregating, and writing metrics
+media-video/**[gnome-mpv](media-video/gnome-mpv)** `*` | A simple GTK+ frontend for mpv
+media-video/**[peek](media-video/peek)** `*` | Simple animated GIF screen recorder with an easy to use interface
+net-analyzer/**[chronograf](net-analyzer/chronograf)** `*` | Open source monitoring and visualization UI for the TICK stack
+net-analyzer/**[goaccess](net-analyzer/goaccess)** `*` | A real-time web log analyzer and interactive viewer that runs in a terminal
+net-analyzer/**[kapacitor](net-analyzer/kapacitor)** `*` | A framework for processing, monitoring, and alerting on time series data
+net-analyzer/**[telegraf](net-analyzer/telegraf)** `*` | An agent for collecting, processing, aggregating, and writing metrics
 net-analyzer/**[wuzz](net-analyzer/wuzz)** | Interactive cli tool for HTTP inspection
-net-dns/**[dnscrypt-proxy](net-dns/dnscrypt-proxy)** | A tool for securing communications between a client and a DNS resolver
+net-dns/**[dnscrypt-proxy](net-dns/dnscrypt-proxy)** `*` | A tool for securing communications between a client and a DNS resolver
 net-dns/**[dnscrypt-wrapper](net-dns/dnscrypt-wrapper)** | A server-side DNSCrypt proxy
 net-dns/**[knot-resolver](net-dns/knot-resolver)** | A caching full DNS resolver implementation written in C and LuaJIT
-net-dns/**[knot](net-dns/knot)** | High-performance authoritative-only DNS server
-net-dns/**[unbound](net-dns/unbound)** | A validating, recursive and caching DNS resolver
-net-firewall/**[firehol](net-firewall/firehol)** | A firewall for humans...
+net-dns/**[knot](net-dns/knot)** `*` | High-performance authoritative-only DNS server
+net-dns/**[unbound](net-dns/unbound)** `*` | A validating, recursive and caching DNS resolver
+net-firewall/**[firehol](net-firewall/firehol)** `*` | A firewall for humans...
 net-im/**[dino](net-im/dino)** | A modern Jabber/XMPP Client using GTK+/Vala
 net-im/**[profanity](net-im/profanity)** | A console based XMPP client inspired by Irssi
-net-libs/**[nodejs](net-libs/nodejs)** | A JavaScript runtime built on Chrome's V8 JavaScript engine
+net-libs/**[nodejs](net-libs/nodejs)** `*` | A JavaScript runtime built on Chrome's V8 JavaScript engine
 net-libs/**[wslay](net-libs/wslay)** | The WebSocket library written in C
 net-misc/**[cointop](net-misc/cointop)** | A terminal based UI application for tracking cryptocurrencies
-net-misc/**[electron-cash](net-misc/electron-cash)** | Lightweight Bitcoin Cash client
+net-misc/**[electron-cash](net-misc/electron-cash)** `*` | Lightweight Bitcoin Cash client
 net-misc/**[gotty-client](net-misc/gotty-client)** | A terminal client for GoTTY
 net-misc/**[pget](net-misc/pget)** | A parallel file download client in Go
 net-misc/**[piknik](net-misc/piknik)** | Copy/paste anything over the network
@@ -129,33 +131,40 @@ net-proxy/**[traefik](net-proxy/traefik)** | A modern HTTP reverse proxy and loa
 net-vpn/**[onioncat](net-vpn/onioncat)** | An IP-Transparent Tor Hidden Service Connector
 net-vpn/**[vpncloud](net-vpn/vpncloud)** | A fully-meshed VPN network in a peer-to-peer manner
 sys-apps/**[bane](sys-apps/bane)** | AppArmor profile generator for docker containers
-sys-apps/**[exa](sys-apps/exa)** | A replacement for 'ls' written in Rust
-sys-apps/**[fd](sys-apps/fd)** | A simple, fast and user-friendly alternative to 'find'
-sys-apps/**[yarn](sys-apps/yarn)** | Fast, reliable, and secure node dependency management
+sys-apps/**[exa](sys-apps/exa)** `*` | A replacement for 'ls' written in Rust
+sys-apps/**[fd](sys-apps/fd)** `*` | A simple, fast and user-friendly alternative to 'find'
+sys-apps/**[yarn](sys-apps/yarn)** `*` | Fast, reliable, and secure node dependency management
 sys-auth/**[otpclient](sys-auth/otpclient)** | Simple GTK+ 3 OTP client (TOTP and HOTP)
-sys-auth/**[pam_u2f](sys-auth/pam_u2f)** | Library for authenticating against PAM with a Yubikey
+sys-auth/**[pam_u2f](sys-auth/pam_u2f)** `***` | Library for authenticating against PAM with a Yubikey
 sys-auth/**[yubikey-touch-detector](sys-auth/yubikey-touch-detector)** | A tool that can detect when your YubiKey is waiting for a touch
 sys-fs/**[gocryptfs](sys-fs/gocryptfs)** | Encrypted overlay filesystem written in Go
-sys-fs/**[tmsu](sys-fs/tmsu)** | Files tagger and virtual tag-based filesystem
+sys-fs/**[tmsu](sys-fs/tmsu)** `*` | Files tagger and virtual tag-based filesystem
 sys-process/**[gkill](sys-process/gkill)** | An interactive process killer
 www-apps/**[cryptpad](www-apps/cryptpad)** | The zero knowledge realtime collaborative editor
 www-apps/**[filebrowser](www-apps/filebrowser)** | A stylish web file manager
-www-apps/**[gitea](www-apps/gitea)** | Gitea - Git with a cup of tea
+www-apps/**[gitea](www-apps/gitea)** `*` | Gitea - Git with a cup of tea
 www-apps/**[gogs](www-apps/gogs)** | A painless self-hosted Git service
 www-apps/**[gotty](www-apps/gotty)** | A simple command line tool that turns your CLI tools into web applications
-www-apps/**[grafana](www-apps/grafana)** | Grafana is an open source metric analytics & visualization suite
-www-apps/**[hiawatha-monitor](www-apps/hiawatha-monitor)** | Monitoring application for www-servers/hiawatha
+www-apps/**[grafana](www-apps/grafana)** `*` | Grafana is an open source metric analytics & visualization suite
+www-apps/**[hiawatha-monitor](www-apps/hiawatha-monitor)** `*` | Monitoring application for www-servers/hiawatha
 www-apps/**[hugo](www-apps/hugo)** | A static HTML and CSS website generator written in Go
 www-apps/**[mattermost-server](www-apps/mattermost-server)** | Open source Slack-alternative in Golang and React
 www-apps/**[modoboa](www-apps/modoboa)** | A mail hosting and management platform with a modern and simplified Web UI
 www-apps/**[modoboa-dmarc](www-apps/modoboa-dmarc)** | A set of tools to use DMARC through Modoboa
-www-apps/**[rocketchat-server](www-apps/rocketchat-server)** | A Web Chat Server developed in JavaScript, using the Meteor framework
+www-apps/**[rocketchat-server](www-apps/rocketchat-server)** `**` | A Web Chat Server developed in JavaScript, using the Meteor framework
 www-client/**[inox](www-client/inox)** | Chromium spin-off to enhance privacy by disabling data transmission to Google
 www-plugins/**[browserpass](www-plugins/browserpass)** | WebExtension host binary for app-admin/pass, a UNIX password manager
 www-servers/**[algernon](www-servers/algernon)** | Pure Go web server with Lua, Markdown, QUIC and Pongo2 support
-www-servers/**[caddy](www-servers/caddy)** | Fast, cross-platform HTTP/2 web server with automatic HTTPS
-www-servers/**[h2o](www-servers/h2o)** | An optimized HTTP server with support for HTTP/1.x and HTTP/2
-www-servers/**[hiawatha](www-servers/hiawatha)** | Advanced and secure webserver
-www-servers/**[nginx](www-servers/nginx)** | Robust, small and high performance http and reverse proxy server
+www-servers/**[caddy](www-servers/caddy)** `*` | Fast, cross-platform HTTP/2 web server with automatic HTTPS
+www-servers/**[h2o](www-servers/h2o)** `*` | An optimized HTTP server with support for HTTP/1.x and HTTP/2
+www-servers/**[hiawatha](www-servers/hiawatha)** `*` | Advanced and secure webserver
+www-servers/**[nginx](www-servers/nginx)** `*` | Robust, small and high performance http and reverse proxy server
 www-servers/**[rest-server](www-servers/rest-server)** | A high performance HTTP server that implements restic's REST backend API
 x11-misc/**[noti](x11-misc/noti)** | Trigger notifications when a process completes
+
+* `*` Packages that have similar ebuild in the main tree, but for personal reasons,
+we maintain our own version. This doesn't mean that we have better or worse version,
+just different. Judge for yourself.
+* `**` [Masked package](profiles/package.mask), probably too unstable or experimental.
+* `***` Temporary package, you shouldn't rely on it. We probably have it because
+it's a dependency for other packages, and the main tree still doesn't have said package.
