@@ -46,6 +46,7 @@ src_prepare() {
 
 src_compile() {
 	export GOPATH="${G}"
+	# shellcheck disable=SC2207
 	local mygoargs=(
 		-v -work -x
 		$(usex pie '-buildmode=pie' '')
