@@ -1,37 +1,36 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-: ${BITCOIND_USER:="bitcoin"}
-: ${BITCOIND_DATADIR:="/var/lib/bitcoin/.bitcoin"}
-: ${BITCOIND_CONFIGFILE:="/etc/bitcoin/bitcoin.conf"}
-: ${BITCOIND_NICE:=0}
-: ${BITCOIND_SIGTERM_TIMEOUT:=60}
+extra_commands="checkconfig"
+extra_started_commands="reload"
 
-name="Bitcoin ABC daemon"
-description="Bitcoin Cash cryptocurrency P2P network daemon"
-pidfile="/run/${SVCNAME}/bitcoind.pid"
 command="/usr/bin/bitcoind"
-command_args="-pid=${pidfile} \
-	-conf=${BITCOIND_CONFIGFILE} \
-	-datadir=${BITCOIND_DATADIR} \
-	-daemon ${BITCOIND_OPTS}"
-command_user="${BITCOIND_USER}"
+command_args="-daemon=0 -conf=${BITCOIND_CONFIG} -datadir=${BITCOIND_DATADIR} ${BITCOIND_OPTS}"
+command_user="${BITCOIND_UG}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
 retry="${BITCOIND_SIGTERM_TIMEOUT}"
-required_files="${BITCOIND_CONFIGFILE}"
-start_stop_daemon_args="-N ${BITCOIND_NICE} -w 2000"
+required_files="${BITCOIND_CONFIG}"
+start_stop_daemon_args="${SSD_OPTS:--N ${BITCOIND_NICE} -w 2000}"
 
 depend() {
 	need localmount net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${BITCOIND_USER} "${pidfile%/*}"
-	checkpath -f -m 0600 -o ${BITCOIND_USER} "${BITCOIND_CONFIGFILE}"
+	checkpath -f -m 0600 -o "${BITCOIND_UG}" "${BITCOIND_CONFIG}"
 
 	if [ "${RC_CMD}" != "restart" ]; then
 		checkconfig || return 1
 	fi
+}
+
+reload() {
+	checkconfig || return 1
+	ebegin "Reloading ${RC_SVCNAME}"
+	start-stop-daemon --signal HUP --pidfile "${pidfile}"
+	eend $? "Failed to reload ${RC_SVCNAME}"
 }
 
 checkconfig() {
