@@ -34,10 +34,10 @@ reload() {
 }
 
 checkconfig() {
-	if ! grep -qs '^rpcpassword=' "${BITCOIND_CONFIGFILE}"; then
+	if ! grep -qs '^rpcpassword=' "${BITCOIND_CONFIG}"; then
 		eerror
 		eerror "ERROR: You must set a secure rpcpassword to run bitcoind."
-		eerror "The setting must appear in ${BITCOIND_CONFIGFILE}"
+		eerror "The setting must appear in ${BITCOIND_CONFIG}"
 		eerror
 		eerror "This password is security critical to securing wallets "
 		eerror "and must not be the same as the rpcuser setting."
