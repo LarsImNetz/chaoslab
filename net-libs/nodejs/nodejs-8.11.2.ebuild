@@ -72,7 +72,8 @@ src_prepare() {
 	sed -i -e "/print/d" tools/install.py || die
 
 	# proper libdir, hat tip @ryanpcmcquen https://github.com/iojs/io.js/issues/504
-	local LIBDIR=$(get_libdir)
+	local LIBDIR
+	LIBDIR=$(get_libdir)
 	sed -i -e "s|lib/|${LIBDIR}/|g" tools/install.py || die
 	sed -i -e "s/'lib'/'${LIBDIR}'/" lib/module.js deps/npm/lib/npm.js || die
 
@@ -97,6 +98,7 @@ src_prepare() {
 	default
 }
 
+# shellcheck disable=SC2191
 src_configure() {
 	local myconf=( --shared-http-parser --shared-libuv --shared-nghttp2 --shared-zlib )
 	use debug && myconf+=( --debug )
@@ -118,12 +120,13 @@ src_configure() {
 		*) myarch="${ABI}";;
 	esac
 
+	# shellcheck disable=SC2046
 	GYP_DEFINES="linux_use_gold_flags=0
 		linux_use_bundled_binutils=0
 		linux_use_bundled_gold=0" \
 	"${PYTHON}" configure \
 		--prefix="${EPREFIX}"/usr \
-		--dest-cpu=${myarch} \
+		--dest-cpu="${myarch}" \
 		$(use_with systemtap dtrace) \
 		"${myconf[@]}" || die
 }
@@ -135,7 +138,8 @@ src_compile() {
 }
 
 src_install() {
-	local LIBDIR="${ED%/}/usr/$(get_libdir)"
+	local LIBDIR npm_config tmp_npm_completion_file
+	LIBDIR="${ED%/}/usr/$(get_libdir)"
 	emake install DESTDIR="${D%/}"
 	pax-mark -m "${ED%/}"usr/bin/node
 
@@ -148,8 +152,9 @@ src_install() {
 
 	if use doc; then
 		# Patch docs to make them offline readable
-		for i in `grep -rl 'fonts.googleapis.com' "${S}"/out/doc/api/*`; do
-			sed -i '/fonts.googleapis.com/ d' $i;
+		# shellcheck disable=SC2013
+		for i in $(grep -rl 'fonts.googleapis.com' "${S}"/out/doc/api/*); do
+			sed -i '/fonts.googleapis.com/ d' "$i";
 		done
 		# Install docs!
 		HTML_DOCS=( doc/* )
@@ -162,9 +167,9 @@ src_install() {
 		# Install bash completion for `npm`
 		# We need to temporarily replace default config path since
 		# npm otherwise tries to write outside of the sandbox
-		local npm_config="usr/$(get_libdir)/node_modules/npm/lib/config/core.js"
+		npm_config="usr/$(get_libdir)/node_modules/npm/lib/config/core.js"
 		sed -i -e "s|'/etc'|'${ED%/}/etc'|g" "${ED%/}/${npm_config}" || die
-		local tmp_npm_completion_file="$(emktemp)"
+		tmp_npm_completion_file="$(emktemp)"
 		"${ED%/}/usr/bin/npm" completion > "${tmp_npm_completion_file}"
 		newbashcomp "${tmp_npm_completion_file}" npm
 		sed -i -e "s|'${ED%/}/etc'|'/etc'|g" "${ED%/}/${npm_config}" || die
@@ -181,7 +186,7 @@ src_install() {
 		for match in "AUTHORS*" "CHANGELOG*" "CONTRIBUT*" "README*" \
 			".travis.yml" ".eslint*" ".wercker.yml" ".npmignore" \
 			"*.md" "*.markdown" "*.bat" "*.cmd"; do
-			find_name+=( ${find_exp} "${match}" )
+			find_name+=( "${find_exp}" "${match}" )
 		done
 
 		# Remove various development and/or inappropriate files and

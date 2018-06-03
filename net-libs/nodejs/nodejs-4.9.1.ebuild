@@ -57,7 +57,8 @@ src_prepare() {
 	sed -i -e "/print/d" tools/install.py || die
 
 	# proper libdir, hat tip @ryanpcmcquen https://github.com/iojs/io.js/issues/504
-	local LIBDIR=$(get_libdir)
+	local LIBDIR
+	LIBDIR=$(get_libdir)
 	sed -i -e "s|lib/|${LIBDIR}/|g" tools/install.py || die
 	sed -i -e "s/'lib'/'${LIBDIR}'/" lib/module.js || die
 	sed -i -e "s|\"lib\"|\"${LIBDIR}\"|" deps/npm/lib/npm.js || die
@@ -78,8 +79,9 @@ src_prepare() {
 	default
 }
 
+# shellcheck disable=SC2191
 src_configure() {
-	local myarch=""
+	local myarch
 	local myconf+=( --shared-libuv --shared-http-parser --shared-zlib )
 	use npm || myconf+=( --without-npm )
 	use icu && myconf+=( --with-intl=system-icu )
@@ -115,11 +117,13 @@ src_compile() {
 }
 
 src_install() {
-	local LIBDIR="${ED%/}/usr/$(get_libdir)"
-	emake install DESTDIR="${ED%/}" PREFIX=/usr
+	local LIBDIR
+	LIBDIR="${ED%/}/usr/$(get_libdir)"
+	emake install DESTDIR="${ED}" PREFIX=/usr
 	if use npm; then
 		dodoc -r "${LIBDIR}"/node_modules/npm/html
 		rm -rf "${LIBDIR}"/node_modules/npm/{doc,html} || die
+		# shellcheck disable=SC2146
 		find "${LIBDIR}"/node_modules -type f -name "LICENSE*" -or -name "LICENCE*" -delete || die
 	fi
 
