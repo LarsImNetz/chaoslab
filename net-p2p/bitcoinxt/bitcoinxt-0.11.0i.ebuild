@@ -44,20 +44,17 @@ RDEPEND="${CDEPEND}
 		!net-p2p/bitcoind
 		!net-p2p/bitcoin-abc[daemon]
 		!net-p2p/bitcoin-unlimited[daemon]
-		!net-p2p/bucash[daemon]
 	)
 	gui?  (
 		!net-p2p/bitcoin-qt
 		!net-p2p/bitcoin-abc[gui]
 		!net-p2p/bitcoin-unlimited[gui]
-		!net-p2p/bucash[gui]
 	)
 	utils? (
 		!net-p2p/bitcoin-cli
 		!net-p2p/bitcoin-tx
 		!net-p2p/bitcoin-abc[utils]
 		!net-p2p/bitcoin-unlimited[utils]
-		!net-p2p/bucash[utils]
 	)"
 
 REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
@@ -77,15 +74,18 @@ bitcoin_langs_prep
 
 bitcoin_lang2use() {
 	local l
+	# shellcheck disable=SC2086
 	for l; do
 		echo l10n_${LANG2USE["${l}"]}
 	done
 }
 
+# shellcheck disable=SC2068
 IUSE+=" $(bitcoin_lang2use ${!LANG2USE[@]})"
 
 bitcoin_lang_requireduse() {
 	local lang l10n
+	# shellcheck disable=SC2068
 	for l10n in ${!USE2LANGS[@]}; do
 		for lang in ${USE2LANGS["${l10n}"]}; do
 			continue 2
@@ -110,12 +110,13 @@ pkg_setup() {
 src_prepare() {
 	if use gui; then
 		# Fix compatibility with LibreSSL
-		eapply "${FILESDIR}"/${PN}-0.11.0g-libressl.patch
+		eapply "${FILESDIR}/${PN}-0.11.0g-libressl.patch"
 
-		local filt= yeslang= nolang= lan ts x
+		local filt yeslang nolang lan ts x
 
 		for lan in $LANGS; do
 			lan="${lan/*:/}"
+			# shellcheck disable=SC2086
 			if [ ! -e src/qt/locale/bitcoin_$lan.ts ]; then
 				continue
 				die "Language '$lan' no longer supported. Ebuild needs update."
@@ -134,8 +135,10 @@ src_prepare() {
 			fi
 		done
 
+		# shellcheck disable=SC1117
 		filt="bitcoin_\\(${filt:2}\\)\\.\(qm\|ts\)"
 		sed "/${filt}/d" -i 'src/qt/bitcoin_locale.qrc' || die
+		# shellcheck disable=SC1117
 		sed "s/locale\/${filt}/bitcoin.qrc/" -i 'src/Makefile.qt.include' || die
 		einfo "Languages -- Enabled:$yeslang -- Disabled:$nolang"
 	fi
@@ -151,43 +154,48 @@ src_prepare() {
 }
 
 src_configure() {
-	econf \
-		--without-libs \
-		--disable-bench \
-		--disable-ccache \
-		--disable-maintainer-mode \
-		$(usex gui "--with-gui=qt5" --without-gui) \
-		$(use_with daemon) \
-		$(use_with qrcode qrencode) \
-		$(use_with upnp miniupnpc) \
-		$(use_with utils) \
-		$(use_enable reduce-exports) \
-		$(use_enable test tests) \
-		$(use_enable wallet) \
-		$(use_enable zeromq zmq) \
-		|| die "econf failed"
+	# shellcheck disable=SC2207
+	local myeconf=(
+		--without-libs
+		--disable-bench
+		--disable-ccache
+		--disable-maintainer-mode
+		$(usex gui "--with-gui=qt5" --without-gui)
+		$(use_with daemon)
+		$(use_with qrcode qrencode)
+		$(use_with upnp miniupnpc)
+		$(use_with utils)
+		$(use_enable reduce-exports)
+		$(use_enable test tests)
+		$(use_enable wallet)
+		$(use_enable zeromq zmq)
+	)
+	econf "${myeconf[@]}"
 }
 
 src_install() {
 	default
 
 	if use daemon; then
+		newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+		newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+		systemd_newunit "${FILESDIR}/${PN}.service-r1" "${PN}.service"
+		systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
+
 		insinto /etc/bitcoinxt
-		newins "${FILESDIR}"/${PN}.conf bitcoin.conf
+		newins "${FILESDIR}/${PN}.conf" bitcoin.conf
 		fowners bitcoinxt:bitcoinxt /etc/bitcoinxt/bitcoin.conf
 		fperms 600 /etc/bitcoinxt/bitcoin.conf
 		newins contrib/debian/examples/bitcoin.conf bitcoin.conf.example
-
-		newinitd "${FILESDIR}"/${PN}.initd-r2 ${PN}
-		newconfd "${FILESDIR}"/${PN}.confd-r2 ${PN}
-		systemd_newunit "${FILESDIR}"/${PN}.service-r1 ${PN}.service
-		systemd_newtmpfilesd "${FILESDIR}"/${PN}.tmpfilesd-r1 ${PN}.conf
 
 		doman contrib/debian/manpages/{bitcoind.1,bitcoin.conf.5}
 		newbashcomp contrib/bitcoind.bash-completion bitcoin
 
 		insinto /etc/logrotate.d
-		newins "${FILESDIR}"/${PN}.logrotate-r1 ${PN}
+		newins "${FILESDIR}/${PN}.logrotate-r1" "${PN}"
+
+		diropts -o bitcoinxt -g bitcoinxt -m 0750
+		keepdir /var/lib/bitcoinxt/.bitcoin
 	fi
 
 	if use gui; then
@@ -195,6 +203,7 @@ src_install() {
 		for X in 16 32 64 128 256; do
 			newicon -s ${X} "share/pixmaps/bitcoin${X}.png" bitcoin.png
 		done
+		# shellcheck disable=SC1117
 		make_desktop_entry "bitcoin-qt %u" "Bitcoin XT" "bitcoin" \
 			"Qt;Network;P2P;Office;Finance;" "MimeType=x-scheme-handler/bitcoincash;\nTerminal=false"
 

@@ -1,17 +1,17 @@
-# /etc/conf.d/bitcoinxt: config file for /etc/init.d/bitcoinxt
+# file for /etc/init.d/bitcoinxt
 
 # Config file location (-conf option)
-#BITCOIND_CONFIGFILE="/etc/bitcoinxt/bitcoin.conf"
+BITCOIND_CONFIG="/etc/bitcoinxt/bitcoin.conf"
 
 # Where to write bitcoind data (-datadir option)
 # Be mindful that the blockchain is large
-#BITCOIND_DATADIR="/var/lib/bitcoinxt/.bitcoin"
+BITCOIND_DATADIR="/var/lib/bitcoinxt/.bitcoin"
 
 # Additional options (avoid -conf and -datadir, use flags above)
 BITCOIND_OPTS="-disablewallet"
 
 # User to own bitcoind process
-#BITCOIND_USER="bitcoinxt"
+BITCOIND_UG="bitcoinxt:bitcoinxt"
 
 # Nice value to run bitcoind under
 BITCOIND_NICE=19
