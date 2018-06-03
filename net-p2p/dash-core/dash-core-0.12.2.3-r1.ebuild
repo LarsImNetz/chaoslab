@@ -53,15 +53,18 @@ dash_langs_prep
 
 dash_lang2use() {
 	local l
+	# shellcheck disable=SC2086
 	for l; do
 		echo l10n_${LANG2USE["${l}"]}
 	done
 }
 
+# shellcheck disable=SC2068
 IUSE+=" $(dash_lang2use ${!LANG2USE[@]})"
 
 dash_lang_requireduse() {
 	local lang l10n
+	# shellcheck disable=SC2068
 	for l10n in ${!USE2LANGS[@]}; do
 		for lang in ${USE2LANGS["${l10n}"]}; do
 			continue 2
@@ -72,7 +75,7 @@ dash_lang_requireduse() {
 
 REQUIRED_USE+=" $(dash_lang_requireduse)"
 
-S="${WORKDIR}/dash-${PV}"
+S="${WORKDIR}/${P/-core}"
 
 pkg_setup() {
 	if use daemon; then
@@ -83,20 +86,21 @@ pkg_setup() {
 
 src_prepare() {
 	if use gui; then
-		local filt= yeslang= nolang= lan ts x
+		local filt yeslang nolang lan ts x
 
 		# Fix compatibility with LibreSSL
-		eapply "${FILESDIR}"/${PN}-0.12.1-libressl.patch
+		eapply "${FILESDIR}/${PN}-0.12.1-libressl.patch"
 
 		for lan in $LANGS; do
 			lan="${lan/*:/}"
+			# shellcheck disable=SC2086
 			if [ ! -e src/qt/locale/dash_$lan.ts ]; then
 				continue
 				die "Language '$lan' no longer supported. Ebuild needs update."
 			fi
 		done
 
-		for ts in $(ls src/qt/locale/*.ts); do
+		for ts in src/qt/locale/*.ts; do
 			x="${ts/*dash_/}"
 			x="${x/.ts/}"
 			if ! use "$(dash_lang2use "$x")"; then
@@ -108,8 +112,10 @@ src_prepare() {
 			fi
 		done
 
+		# shellcheck disable=SC1117
 		filt="dash_\\(${filt:2}\\)\\.\(qm\|ts\)"
 		sed "/${filt}/d" -i 'src/qt/dash_locale.qrc' || die
+		# shellcheck disable=SC1117
 		sed "s/locale\/${filt}/dash.qrc/" -i 'src/Makefile.qt.include' || die
 		einfo "Languages -- Enabled:$yeslang -- Disabled:$nolang"
 	fi
@@ -119,22 +125,24 @@ src_prepare() {
 }
 
 src_configure() {
-	econf \
-		--without-libs \
-		--disable-bench \
-		--disable-ccache \
-		--disable-maintainer-mode \
-		$(usex gui "--with-gui=qt5" --without-gui) \
-		$(use_with daemon) \
-		$(use_with qrcode qrencode) \
-		$(use_with upnp miniupnpc) \
-		$(use_with utils) \
-		$(use_enable hardened hardening) \
-		$(use_enable reduce-exports) \
-		$(use_enable test tests) \
-		$(use_enable wallet) \
-		$(use_enable zeromq zmq) \
-		|| die "econf failed"
+	# shellcheck disable=SC2207
+	local myeconf=(
+		--without-libs
+		--disable-bench
+		--disable-ccache
+		--disable-maintainer-mode
+		$(usex gui "--with-gui=qt5" --without-gui)
+		$(use_with daemon)
+		$(use_with qrcode qrencode)
+		$(use_with upnp miniupnpc)
+		$(use_with utils)
+		$(use_enable hardened hardening)
+		$(use_enable reduce-exports)
+		$(use_enable test tests)
+		$(use_enable wallet)
+		$(use_enable zeromq zmq)
+	)
+	econf "${myeconf[@]}"
 }
 
 src_test() {
@@ -145,13 +153,13 @@ src_install() {
 	default
 
 	if use daemon; then
-		newinitd "${FILESDIR}"/${PN}.initd-r2 ${PN}
-		newconfd "${FILESDIR}"/${PN}.confd-r2 ${PN}
-		systemd_newunit "${FILESDIR}"/${PN}.service-r1 ${PN}.service
-		systemd_newtmpfilesd "${FILESDIR}"/${PN}.tmpfilesd-r1 ${PN}.conf
+		newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+		newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+		systemd_newunit "${FILESDIR}/${PN}.service-r1" "${PN}.service"
+		systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 		insinto /etc/dash
-		newins "${FILESDIR}"/${PN}.conf dash.conf
+		newins "${FILESDIR}/${PN}.conf" dash.conf
 		fowners dash:dash /etc/dash/dash.conf
 		fperms 600 /etc/dash/dash.conf
 		newins contrib/debian/examples/dash.conf dash.conf.example
@@ -161,7 +169,7 @@ src_install() {
 		newbashcomp contrib/dashd.bash-completion dashd
 
 		insinto /etc/logrotate.d
-		newins "${FILESDIR}"/${PN}.logrotate ${PN}
+		newins "${FILESDIR}/${PN}.logrotate" "${PN}"
 	fi
 
 	if use gui; then
@@ -169,6 +177,7 @@ src_install() {
 		for X in 16 32 64 128 256; do
 			newicon -s ${X} "share/pixmaps/dash${X}.png" dash.png
 		done
+		# shellcheck disable=SC1117
 		make_desktop_entry "dash-qt %u" "Dash Core" "dash" \
 			"Qt;Network;P2P;Office;Finance;" "MimeType=x-scheme-handler/dash;\nTerminal=false"
 
