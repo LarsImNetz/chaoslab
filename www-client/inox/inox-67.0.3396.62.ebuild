@@ -537,7 +537,6 @@ src_configure() {
 	# SC2155
 	local myarch
 	myarch="$(tc-arch)"
-	local myarch="$(tc-arch)"
 	if [[ $myarch = amd64 ]] ; then
 		myconf_gn+=" target_cpu=\"x64\""
 		ffmpeg_target_arch=x64
@@ -598,8 +597,9 @@ src_configure() {
 		# Re-configure bundled ffmpeg. See bug #491378 for example reasons.
 		einfo "Configuring bundled ffmpeg..."
 		pushd third_party/ffmpeg > /dev/null || die
-		chromium/scripts/build_ffmpeg.py linux "${ffmpeg_target_arch}" \
-			--branding "${ffmpeg_branding}" -- "${build_ffmpeg_args}" || die
+		# shellcheck disable=SC2086
+		chromium/scripts/build_ffmpeg.py linux ${ffmpeg_target_arch} \
+			--branding ${ffmpeg_branding} -- ${build_ffmpeg_args} || die
 		chromium/scripts/copy_config.sh || die
 		chromium/scripts/generate_gn.py || die
 		popd > /dev/null || die

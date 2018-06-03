@@ -34,7 +34,7 @@ CDEPEND="dev-libs/boost:0=[threads(+)]
 	libressl? ( dev-libs/libressl:0= )
 	system-univalue? ( dev-libs/univalue )
 	upnp? ( net-libs/miniupnpc )
-	wallet? ( sys-libs/db:4.8[cxx] )
+	wallet? ( sys-libs/db:5.3[cxx] )
 	zeromq? ( net-libs/zeromq )"
 DEPEND="${CDEPEND}
 	gui? ( dev-qt/linguist-tools )"
