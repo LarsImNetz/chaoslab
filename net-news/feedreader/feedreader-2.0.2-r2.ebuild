@@ -35,8 +35,8 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
 PATCHES=(
-	"${FILESDIR}"/${P}-fix_vala.patch
-	"${FILESDIR}"/${P}-fix_webkit2gtk_vapi.patch
+	"${FILESDIR}/${P}-fix_vala.patch"
+	"${FILESDIR}/${P}-fix_webkit2gtk_vapi.patch"
 )
 
 S="${WORKDIR}/FeedReader-${PV}"
@@ -47,6 +47,7 @@ src_prepare() {
 }
 
 src_configure() {
+	# shellcheck disable=SC2191
 	local mycmakeargs=(
 		-DVALA_EXECUTABLE="${VALAC}"
 		-DCMAKE_INSTALL_PREFIX="${PREFIX}/usr"
