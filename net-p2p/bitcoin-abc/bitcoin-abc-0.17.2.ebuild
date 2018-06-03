@@ -43,20 +43,17 @@ RDEPEND="${CDEPEND}
 		!net-p2p/bitcoind
 		!net-p2p/bitcoinxt[daemon]
 		!net-p2p/bitcoin-unlimited[daemon]
-		!net-p2p/bucash[daemon]
 	)
 	gui?  (
 		!net-p2p/bitcoin-qt
 		!net-p2p/bitcoinxt[gui]
 		!net-p2p/bitcoin-unlimited[gui]
-		!net-p2p/bucash[gui]
 	)
 	utils? (
 		!net-p2p/bitcoin-cli
 		!net-p2p/bitcoin-tx
 		!net-p2p/bitcoinxt[utils]
 		!net-p2p/bitcoin-unlimited[utils]
-		!net-p2p/bucash[utils]
 	)"
 
 REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"

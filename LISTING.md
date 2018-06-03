@@ -111,9 +111,8 @@ net-news/**[feedreader](net-news/feedreader)** | A modern desktop application de
 net-p2p/**[Sia-UI](net-p2p/Sia-UI)** | The graphical front-end for Sia
 net-p2p/**[Sia](net-p2p/Sia)** | Blockchain-based marketplace for file storage
 net-p2p/**[bitcoin-abc](net-p2p/bitcoin-abc)** | A full node Bitcoin Cash implementation with GUI, daemon and utils
-net-p2p/**[bitcoin-unlimited](net-p2p/bitcoin-unlimited)** | A full node Bitcoin implementation with GUI, daemon and utils
+net-p2p/**[bitcoin-unlimited](net-p2p/bitcoin-unlimited)** | A full node Bitcoin (and Bitcoin Cash) implementation with GUI, daemon and utils
 net-p2p/**[bitcoinxt](net-p2p/bitcoinxt)** | A full node Bitcoin Cash implementation with GUI, daemon and utils
-net-p2p/**[bucash](net-p2p/bucash)** | A full node Bitcoin Cash implementation with GUI, daemon and utils
 net-p2p/**[dash-core](net-p2p/dash-core)** | A peer-to-peer privacy-centric digital currency
 net-p2p/**[drops](net-p2p/drops)** | A p2p transport network for opmsg end2end encrypted messages
 net-p2p/**[go-ipfs](net-p2p/go-ipfs)** | IPFS implementation written in Go

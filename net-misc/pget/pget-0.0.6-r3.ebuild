@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -31,22 +31,30 @@ DESCRIPTION="A parallel file download client in Go"
 HOMEPAGE="https://github.com/Code-Hex/pget"
 SRC_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
+RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-
-RESTRICT="mirror strip"
+IUSE="pie"
 
 DOCS=( README.md )
+QA_PRESTRIPPED="usr/bin/pget"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
-	go build -v -ldflags "-s -w" \
-		./cmd/pget || die
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w"
+	)
+	go build "${mygoargs[@]}" ./cmd/pget || die
 }
 
 src_test() {

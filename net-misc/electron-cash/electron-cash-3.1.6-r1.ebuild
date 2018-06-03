@@ -56,7 +56,7 @@ DOCS=( AUTHORS README.rst RELEASE-NOTES )
 S="${WORKDIR}/${PN/on-cash/um}-${PV}"
 
 src_prepare() {
-	eapply "${FILESDIR}"/${PN}-2.9.4-no_user_root.patch
+	eapply "${FILESDIR}/${PN}-2.9.4-no_user_root.patch"
 
 	# Prevent icon from being installed in the wrong location
 	sed -i '/icons/d' setup.py || die
@@ -140,7 +140,7 @@ src_compile() {
 }
 
 src_install() {
-	doicon -s 128 icons/${PN}.png
+	doicon -s 128 "icons/${PN}.png"
 	distutils-r1_src_install
 }
 

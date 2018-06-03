@@ -102,9 +102,14 @@ KEYWORDS="~amd64 ~x86"
 IUSE="video openmp"
 
 RDEPEND="media-gfx/libimagequant[openmp?]
-	video? ( <media-video/ffmpeg-4 )"
+	video? (
+		<media-video/ffmpeg-4
+		|| (
+			sys-devel/clang:6
+			sys-devel/clang:5
+		)
+	)"
 DEPEND="${RDEPEND}
-	sys-devel/clang:5
 	>=virtual/rust-1.23.0"
 
 pkg_setup() {
@@ -118,6 +123,7 @@ pkg_setup() {
 src_compile() {
 	# shellcheck disable=SC2153
 	export CARGO_HOME="${ECARGO_HOME}"
+	local LIBCLANG_PATH
 
 	# shellcheck disable=SC2207
 	# build up optional flags
@@ -126,7 +132,15 @@ src_compile() {
 		$(usex openmp 'openmp' '')
 	)
 
-	LIBCLANG_PATH="/usr/lib/llvm/5/$(get_libdir)" \
+	if use video; then
+		if has_version '>sys-devel/clang-5'; then
+			LIBCLANG_PATH="/usr/lib/llvm/6/$(get_libdir)"
+		else
+			LIBCLANG_PATH="/usr/lib/llvm/5/$(get_libdir)"
+		fi
+	fi
+
+	LIBCLANG_PATH="${LIBCLANG_PATH}" \
 		cargo build -v "$(usex debug '' --release)" \
 		--features "${options[*]}" || die
 }

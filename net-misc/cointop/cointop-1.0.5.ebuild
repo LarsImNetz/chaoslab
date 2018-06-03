@@ -15,7 +15,7 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE=""
+IUSE="pie"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/cointop"
@@ -25,12 +25,14 @@ S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
+	# shellcheck disable=SC2207
 	local mygoargs=(
 		-v -work -x
+		$(usex pie '-buildmode=pie' '')
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "-s -w"
-		-o ./bin/${PN}
+		-o ./bin/cointop
 	)
 	go build "${mygoargs[@]}" || die
 }

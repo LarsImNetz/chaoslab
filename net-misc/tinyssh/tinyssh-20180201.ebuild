@@ -34,16 +34,16 @@ src_compile() {
 }
 
 src_install() {
-	dosbin build/bin/${PN}d{,-makekey}
-	dobin build/bin/${PN}d-printkey
+	dosbin build/bin/tinysshd{,-makekey}
+	dobin build/bin/tinysshd-printkey
 	doman man/*
 
-	newinitd "${FILESDIR}"/${PN}.initd-r1 ${PN}
-	newconfd "${FILESDIR}"/${PN}.confd ${PN}
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 
-	systemd_newunit "${FILESDIR}"/${PN}.service "${PN}@.service"
-	systemd_newunit "${FILESDIR}"/${PN}.socket "${PN}@.socket"
-	systemd_dounit "${FILESDIR}"/${PN}-makekey.service
+	systemd_newunit "${FILESDIR}/${PN}.service" "${PN}@.service"
+	systemd_newunit "${FILESDIR}/${PN}.socket" "${PN}@.socket"
+	systemd_dounit "${FILESDIR}/${PN}-makekey.service"
 }
 
 pkg_postinst() {
