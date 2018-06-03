@@ -5,9 +5,8 @@ EAPI=6
 
 inherit autotools bash-completion-r1 gnome2-utils systemd user xdg-utils
 
-UG="bitcoin"
 MY_PN="BitcoinUnlimited"
-DESCRIPTION="A full node Bitcoin implementation with GUI, daemon and utils"
+DESCRIPTION="A full node Bitcoin (and Bitcoin Cash) implementation with GUI, daemon and utils"
 HOMEPAGE="https://www.bitcoinunlimited.info"
 SRC_URI="https://github.com/${MY_PN}/${MY_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
@@ -75,15 +74,18 @@ bitcoin_langs_prep
 
 bitcoin_lang2use() {
 	local l
+	# shellcheck disable=SC2086
 	for l; do
 		echo l10n_${LANG2USE["${l}"]}
 	done
 }
 
+# shellcheck disable=SC2068
 IUSE+=" $(bitcoin_lang2use ${!LANG2USE[@]})"
 
 bitcoin_lang_requireduse() {
 	local lang l10n
+	# shellcheck disable=SC2068
 	for l10n in ${!USE2LANGS[@]}; do
 		for lang in ${USE2LANGS["${l10n}"]}; do
 			continue 2
@@ -98,17 +100,18 @@ S="${WORKDIR}/${MY_PN}-${PV}"
 
 pkg_setup() {
 	if use daemon; then
-		enewgroup ${UG}
-		enewuser ${UG} -1 -1 /var/lib/bitcoin ${UG}
+		enewgroup bitcoin
+		enewuser bitcoin -1 -1 /var/lib/bitcoin bitcoin
 	fi
 }
 
 src_prepare() {
 	if use gui; then
-		local filt= yeslang= nolang= lan ts x
+		local filt yeslang nolang lan ts x
 
 		for lan in $LANGS; do
 			lan="${lan/*:/}"
+			# shellcheck disable=SC2086
 			if [ ! -e src/qt/locale/bitcoin_$lan.ts ]; then
 				continue
 				die "Language '$lan' no longer supported. Ebuild needs update."
@@ -127,8 +130,10 @@ src_prepare() {
 			fi
 		done
 
+		# shellcheck disable=SC1117
 		filt="bitcoin_\\(${filt:2}\\)\\.\(qm\|ts\)"
 		sed "/${filt}/d" -i 'src/qt/bitcoin_locale.qrc' || die
+		# shellcheck disable=SC1117
 		sed "s/locale\/${filt}/bitcoin.qrc/" -i 'src/Makefile.qt.include' || die
 		einfo "Languages -- Enabled:$yeslang -- Disabled:$nolang"
 	fi
@@ -144,35 +149,37 @@ src_prepare() {
 }
 
 src_configure() {
-	econf \
-		--without-libs \
-		--disable-bench \
-		--disable-ccache \
-		--disable-maintainer-mode \
-		--disable-tests \
-		$(usex gui "--with-gui=qt5" --without-gui) \
-		$(use_with daemon) \
-		$(use_with qrcode qrencode) \
-		$(use_with upnp miniupnpc) \
-		$(use_with utils) \
-		$(use_enable hardened hardening) \
-		$(use_enable reduce-exports) \
-		$(use_enable wallet) \
-		$(use_enable zeromq zmq) \
-		|| die "econf failed"
+	# shellcheck disable=SC2207
+	local myeconf=(
+		--without-libs
+		--disable-bench
+		--disable-ccache
+		--disable-maintainer-mode
+		--disable-tests
+		$(usex gui "--with-gui=qt5" --without-gui)
+		$(use_with daemon)
+		$(use_with qrcode qrencode)
+		$(use_with upnp miniupnpc)
+		$(use_with utils)
+		$(use_enable hardened hardening)
+		$(use_enable reduce-exports)
+		$(use_enable wallet)
+		$(use_enable zeromq zmq)
+	)
+	econf "${myeconf[@]}"
 }
 
 src_install() {
 	default
 
 	if use daemon; then
-		newinitd "${FILESDIR}"/${PN}.initd-r3 ${PN}
-		newconfd "${FILESDIR}"/${PN}.confd-r3 ${PN}
-		systemd_newunit "${FILESDIR}"/${PN}.service-r1 ${PN}.service
-		systemd_newtmpfilesd "${FILESDIR}"/${PN}.tmpfilesd-r1 ${PN}.conf
+		newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+		newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+		systemd_newunit "${FILESDIR}/${PN}.service-r1" "${PN}.service"
+		systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 		insinto /etc/bitcoin
-		newins "${FILESDIR}"/${PN}.conf bitcoin.conf
+		newins "${FILESDIR}/${PN}.conf" bitcoin.conf
 		fowners bitcoin:bitcoin /etc/bitcoin/bitcoin.conf
 		fperms 600 /etc/bitcoin/bitcoin.conf
 		newins contrib/debian/examples/bitcoin.conf bitcoin.conf.example
@@ -180,13 +187,13 @@ src_install() {
 
 		dodoc doc/{bips,bu-xthin,tor}.md
 		doman contrib/debian/manpages/{bitcoind.1,bitcoin.conf.5}
-		newbashcomp contrib/bitcoind.bash-completion ${UG}
+		newbashcomp contrib/bitcoind.bash-completion bitcoin
 
 		insinto /etc/logrotate.d
-		newins "${FILESDIR}"/${PN}.logrotate ${PN}
+		newins "${FILESDIR}/${PN}.logrotate" "${PN}"
 
 		diropts -o bitcoin -g bitcoin -m 0750
-		dodir /var/lib/bitcoin/.bitcoin
+		keepdir /var/lib/bitcoin/.bitcoin
 	fi
 
 	if use gui; then
@@ -194,6 +201,7 @@ src_install() {
 		for X in 16 24 32 64 128 256 512; do
 			newicon -s ${X} "share/pixmaps/bitcoin${X}.png" bitcoin.png
 		done
+		# shellcheck disable=SC1117
 		make_desktop_entry "bitcoin-qt %u" "Bitcoin Unlimited" "bitcoin" \
 			"Qt;Network;P2P;Office;Finance;" "MimeType=x-scheme-handler/bitcoin;\nTerminal=false"
 
@@ -203,7 +211,7 @@ src_install() {
 
 	if use utils; then
 		doman contrib/debian/manpages/bitcoin-cli.1
-		use daemon || newbashcomp contrib/bitcoind.bash-completion ${UG}
+		use daemon || newbashcomp contrib/bitcoind.bash-completion bitcoin
 	fi
 }
 

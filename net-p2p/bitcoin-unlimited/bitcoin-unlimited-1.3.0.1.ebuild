@@ -7,7 +7,7 @@ inherit autotools bash-completion-r1 gnome2-utils systemd user xdg-utils
 
 MY_PN="BitcoinUnlimited"
 MY_P="bucash${PV}"
-DESCRIPTION="A full node Bitcoin Cash implementation with GUI, daemon and utils"
+DESCRIPTION="A full node Bitcoin (and Bitcoin Cash) implementation with GUI, daemon and utils"
 HOMEPAGE="https://www.bitcoinunlimited.info"
 SRC_URI="https://github.com/${MY_PN}/${MY_PN}/archive/${MY_P}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
@@ -75,35 +75,37 @@ src_prepare() {
 }
 
 src_configure() {
-	econf \
-		--without-libs \
-		--disable-bench \
-		--disable-ccache \
-		--disable-maintainer-mode \
-		--disable-tests \
-		$(usex gui "--with-gui=qt5" --without-gui) \
-		$(use_with daemon) \
-		$(use_with qrcode qrencode) \
-		$(use_with upnp miniupnpc) \
-		$(use_with utils) \
-		$(use_enable hardened hardening) \
-		$(use_enable reduce-exports) \
-		$(use_enable wallet) \
-		$(use_enable zeromq zmq) \
-		|| die "econf failed"
+	# shellcheck disable=SC2207
+	local myeconf=(
+		--without-libs
+		--disable-bench
+		--disable-ccache
+		--disable-maintainer-mode
+		--disable-tests
+		$(usex gui "--with-gui=qt5" --without-gui)
+		$(use_with daemon)
+		$(use_with qrcode qrencode)
+		$(use_with upnp miniupnpc)
+		$(use_with utils)
+		$(use_enable hardened hardening)
+		$(use_enable reduce-exports)
+		$(use_enable wallet)
+		$(use_enable zeromq zmq)
+	)
+	econf "${myeconf[@]}"
 }
 
 src_install() {
 	default
 
 	if use daemon; then
-		newinitd "${FILESDIR}"/${PN}.initd-r3 ${PN}
-		newconfd "${FILESDIR}"/${PN}.confd-r3 ${PN}
-		systemd_newunit "${FILESDIR}"/${PN}.service-r1 ${PN}.service
-		systemd_newtmpfilesd "${FILESDIR}"/${PN}.tmpfilesd-r1 ${PN}.conf
+		newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+		newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+		systemd_newunit "${FILESDIR}/${PN}.service-r1" "${PN}.service"
+		systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 		insinto /etc/bitcoin
-		newins "${FILESDIR}"/${PN}.conf bitcoin.conf
+		newins "${FILESDIR}/${PN}.conf" bitcoin.conf
 		fowners bitcoin:bitcoin /etc/bitcoin/bitcoin.conf
 		fperms 600 /etc/bitcoin/bitcoin.conf
 		newins contrib/debian/examples/bitcoin.conf bitcoin.conf.example
@@ -114,10 +116,10 @@ src_install() {
 		newbashcomp contrib/bitcoind.bash-completion bitcoin
 
 		insinto /etc/logrotate.d
-		newins "${FILESDIR}"/${PN}.logrotate ${PN}
+		newins "${FILESDIR}/${PN}.logrotate" "${PN}"
 
 		diropts -o bitcoin -g bitcoin -m 0750
-		dodir /var/lib/bitcoin/.bitcoin
+		keepdir /var/lib/bitcoin/.bitcoin
 	fi
 
 	if use gui; then
@@ -125,6 +127,7 @@ src_install() {
 		for X in 16 24 32 64 128 256 512; do
 			newicon -s ${X} "share/pixmaps/bitcoin${X}.png" bitcoin.png
 		done
+		# shellcheck disable=SC1117
 		make_desktop_entry "bitcoin-qt %u" "Bitcoin Unlimited Cash" "bitcoin" \
 			"Qt;Network;P2P;Office;Finance;" "MimeType=x-scheme-handler/bitcoincash;\nTerminal=false"
 
