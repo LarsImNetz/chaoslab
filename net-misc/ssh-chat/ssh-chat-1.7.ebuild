@@ -4,7 +4,7 @@
 EAPI=6
 
 #TODO: Add an init script!
-
+EGO_PN="github.com/shazow/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 EGO_VENDOR=(
 	"github.com/alexcesaro/log 61e6862"
@@ -17,27 +17,34 @@ EGO_VENDOR=(
 
 inherit golang-vcs-snapshot
 
-EGO_PN="github.com/shazow/${PN}"
 DESCRIPTION="A chat over SSH server written in Go"
 HOMEPAGE="https://github.com/shazow/ssh-chat"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
-RESTRICT="mirror strip"
+RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
+IUSE="pie"
+
+DOCS=( README.md )
+QA_PRESTRIPPED="usr/bin/ssh-chat"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
-	local GOLDFLAGS="-s -w \
-		-X main.Version=${PV}"
-
-	go build -v -ldflags "${GOLDFLAGS}" \
-		./cmd/ssh-chat || die
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w -X main.Version=${PV}"
+	)
+	go build "${mygoargs[@]}" ./cmd/ssh-chat || die
 }
 
 src_test() {
@@ -46,5 +53,5 @@ src_test() {
 
 src_install() {
 	dobin ssh-chat
-	dodoc README.md
+	einstalldocs
 }
