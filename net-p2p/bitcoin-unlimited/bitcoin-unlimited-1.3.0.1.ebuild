@@ -6,14 +6,14 @@ EAPI=6
 inherit autotools bash-completion-r1 gnome2-utils systemd user xdg-utils
 
 MY_PN="BitcoinUnlimited"
-MY_PV="bucash${PV}"
+MY_P="bucash${PV}"
 DESCRIPTION="A full node Bitcoin Cash implementation with GUI, daemon and utils"
 HOMEPAGE="https://www.bitcoinunlimited.info"
-SRC_URI="https://github.com/${MY_PN}/${MY_PN}/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/${MY_PN}/${MY_PN}/archive/${MY_P}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="MIT"
-SLOT="0"
+SLOT="bucash"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 IUSE="daemon dbus +gui hardened libressl +qrcode reduce-exports upnp utils +wallet zeromq"
 
@@ -39,25 +39,22 @@ RDEPEND="${CDEPEND}
 		!net-p2p/bitcoind
 		!net-p2p/bitcoinxt[daemon]
 		!net-p2p/bitcoin-abc[daemon]
-		!net-p2p/bitcoin-unlimited[daemon]
 	)
 	gui?  (
 		!net-p2p/bitcoin-qt
 		!net-p2p/bitcoinxt[gui]
 		!net-p2p/bitcoin-abc[gui]
-		!net-p2p/bitcoin-unlimited[gui]
 	)
 	utils? (
 		!net-p2p/bitcoin-cli
 		!net-p2p/bitcoin-tx
 		!net-p2p/bitcoinxt[utils]
 		!net-p2p/bitcoin-abc[utils]
-		!net-p2p/bitcoin-unlimited[utils]
 	)"
 
 REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
 
-S="${WORKDIR}/${MY_PN}-${MY_PV}"
+S="${WORKDIR}/${MY_PN}-${MY_P}"
 
 pkg_setup() {
 	if use daemon; then
