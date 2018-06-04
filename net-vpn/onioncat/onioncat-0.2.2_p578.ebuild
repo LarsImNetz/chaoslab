@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -9,6 +9,7 @@ MY_P=${P/_p/.r}
 DESCRIPTION="An IP-Transparent Tor Hidden Service Connector"
 HOMEPAGE="https://www.onioncat.org"
 SRC_URI="https://www.cypherpunk.at/ocat/download/Source/current/${MY_P}.tar.gz -> ${P}.tar.gz"
+RESTRICT="mirror"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -19,8 +20,6 @@ RDEPEND="net-vpn/tor
 	i2p? (
 		|| ( net-vpn/i2pd net-vpn/i2p )
 	)"
-
-RESTRICT="mirror"
 
 S="${WORKDIR}/${MY_P}"
 
@@ -39,6 +38,7 @@ src_prepare() {
 }
 
 src_configure() {
+	# shellcheck disable=SC2207
 	local myeconf=(
 		$(use_enable debug)
 		$(use_enable log packet-log)
@@ -47,29 +47,28 @@ src_configure() {
 		$(use_enable !relay check-ipsrc)
 		$(use_enable rtt)
 	)
-	econf ${myeconf[@]}
+	econf "${myeconf[@]}"
 }
 
 src_install() {
 	default
 
-	use i2p || rm "${ED%/}/usr/bin/gcat" || die
-
 	if use i2p; then
+		rm "${ED%/}/usr/bin/gcat" || die
 		newinitd "${FILESDIR}"/garlicat.initd garlicat
 		newconfd "${FILESDIR}"/garlicat.confd garlicat
 		systemd_dounit "${FILESDIR}"/garlicat.service
 	fi
 
-	newinitd "${FILESDIR}"/onioncat.initd ${PN}
-	newconfd "${FILESDIR}"/onioncat.confd ${PN}
+	newinitd "${FILESDIR}"/onioncat.initd "${PN}"
+	newconfd "${FILESDIR}"/onioncat.confd "${PN}"
 	systemd_dounit "${FILESDIR}"/onioncat.service
 
 	insinto /var/lib/tor
 	doins glob_id.txt hosts.onioncat
 
 	diropts -o onioncat -g onioncat -m 0750
-	dodir /var/log/onioncat
+	keepdir /var/log/onioncat
 }
 
 pkg_postinst() {

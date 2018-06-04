@@ -1,10 +1,11 @@
 # config file for /etc/init.d/garlicat
 
 # log file destination
-GCAT_LOG="/var/log/onioncat/gcat.log"
+GCAT_LOGDIR="/var/log/onioncat"
+GCAT_LOG="${GCAT_LOGDIR}/gcat.log"
 
 # onioncat hidden service hostname file
-GCAT_HOSTNAME=$(hostname)
+GCAT_HOSTNAME="$(hostname)"
 
 # options
 GCAT_OPTS="-I -C -4 -L \"${GCAT_LOG}\" ${GCAT_HOSTNAME}"
