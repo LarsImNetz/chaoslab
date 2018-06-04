@@ -35,6 +35,7 @@ pkg_setup() {
 src_compile() {
 	export GOPATH="${G}"
 	local PATH="${G}/bin:$PATH"
+	# shellcheck disable=SC2207
 	local mygoargs=(
 		-v -work -x
 		$(usex pie '-buildmode=pie' '')
@@ -61,8 +62,8 @@ src_install() {
 	dobin traefik
 	einstalldocs
 
-	newinitd "${FILESDIR}"/${PN}.initd ${PN}
-	systemd_dounit "${FILESDIR}"/${PN}.service
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	insinto /etc/traefik
 	newins traefik.sample.toml traefik.toml.example
@@ -70,7 +71,7 @@ src_install() {
 	if use examples; then
 		docinto examples
 		dodoc -r examples/*
-		docompress -x /usr/share/doc/${PF}/examples
+		docompress -x "/usr/share/doc/${PF}/examples"
 	fi
 
 	diropts -o traefik -g traefik -m 0750
@@ -78,9 +79,9 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/etc/${PN}/traefik.toml ]; then
+	if [ ! -e "${EROOT%/}"/etc/traefik/traefik.toml ]; then
 		elog "No traefik.toml found, copying the example over"
-		cp "${EROOT%/}"/etc/${PN}/traefik.toml{.example,} || die
+		cp "${EROOT%/}"/etc/traefik/traefik.toml{.example,} || die
 	else
 		elog "traefik.toml found, please check example file for possible changes"
 	fi

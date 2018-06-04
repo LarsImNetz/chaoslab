@@ -64,7 +64,7 @@ EGO_VENDOR=(
 inherit golang-vcs-snapshot systemd user
 
 DESCRIPTION="A stylish web file manager"
-HOMEPAGE="https://filebrowser.github.io/"
+HOMEPAGE="https://filebrowser.github.io"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
 RESTRICT="mirror"
@@ -88,6 +88,7 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
+	# shellcheck disable=SC2207
 	local mygoargs=(
 		-v -work -x
 		$(usex pie '-buildmode=pie' '')
@@ -95,15 +96,15 @@ src_compile() {
 		-gcflags "-trimpath=${S}"
 		-ldflags "-s -w -X filebrowser.Version=${PV}"
 	)
-	go build "${mygoargs[@]}" ./cmd/${PN} || die
+	go build "${mygoargs[@]}" ./cmd/filebrowser || die
 }
 
 src_install() {
 	dobin filebrowser
 
 	if use daemon; then
-		newinitd "${FILESDIR}"/${PN}.initd ${PN}
-		systemd_dounit "${FILESDIR}"/${PN}.service
+		newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+		systemd_dounit "${FILESDIR}/${PN}.service"
 
 		insinto /etc/filebrowser
 		newins "${FILESDIR}"/filebrowser.conf-r1 \

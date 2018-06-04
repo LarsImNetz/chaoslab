@@ -3,19 +3,23 @@
 
 EAPI=6
 
+EGO_PN="github.com/Shopify/${PN}"
+
 inherit golang-vcs-snapshot systemd user
 
-EGO_PN="github.com/Shopify/${PN}"
 DESCRIPTION="A TCP proxy to simulate network and system conditions"
 HOMEPAGE="https://github.com/Shopify/toxiproxy"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-RESTRICT="mirror strip"
+RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
+IUSE="pie"
 
 DOCS=( {CHANGELOG,README}.md )
+QA_PRESTRIPPED="usr/bin/toxiproxy-cli
+	usr/bin/toxiproxy-server"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -27,14 +31,16 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-	local GOLDFLAGS="-s -w \
-		-X ${EGO_PN}.Version=${PV}"
-
-	go build -v -ldflags "${GOLDFLAGS}" \
-		-o "${S}"/toxiproxy-server ./cmd || die
-
-	go build -v -ldflags "${GOLDFLAGS}" \
-		-o "${S}"/toxiproxy-cli ./cli || die
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w -X ${EGO_PN}.Version=${PV}"
+	)
+	go build "${mygoargs[@]}" -o ./toxiproxy-cli ./cli  || die
+	go build "${mygoargs[@]}" -o ./toxiproxy-server ./cmd  || die
 }
 
 src_test() {
@@ -42,9 +48,9 @@ src_test() {
 }
 
 src_install() {
-	dobin toxiproxy-{server,cli}
+	dobin toxiproxy-{cli,server}
 	einstalldocs
 
-	newinitd "${FILESDIR}"/${PN}.initd ${PN}
-	systemd_dounit "${FILESDIR}"/${PN}.service
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	systemd_dounit "${FILESDIR}/${PN}.service"
 }

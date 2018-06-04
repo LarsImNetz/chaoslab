@@ -1,28 +1,28 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-description="A modern HTTP reverse proxy and load balancer made to deploy microservices"
+TRAEFIK_CONFIG="${TRAEFIK_CONFIG:-/etc/traefik/traefik.toml}"
+TRAEFIK_LOGDIR="${TRAEFIK_LOGDIR:-/var/log/traefik}"
 
-: ${TRAEFIK_USER:=traefik}
-: ${TRAEFIK_CONFIG:="/etc/traefik/traefik.toml"}
-: ${TRAEFIK_LOG:="/var/log/traefik/traefik.log"}
-: ${SSD_OPTS:="-1 ${TRAEFIK_LOG} -2 ${TRAEFIK_LOG}"}
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${TRAEFIK_LOGDIR}/error.log}"
 
-name="${TRAEFIK_NAME:-Traefik}"
+name="${name:-Traefik}"
 command="/usr/bin/traefik"
 command_args="--configFile=${TRAEFIK_CONFIG} ${TRAEFIK_OPTS}"
-command_user="${TRAEFIK_USER}"
-command_background=true
+command_user="${command_user:-traefik:traefik}"
+command_background=yes
 pidfile="/run/${RC_SVCNAME}.pid"
 required_files="${TRAEFIK_CONFIG}"
-retry=${TRAEFIK_TERMTIMEOUT:-"TERM/30/KILL/5"}
-start_stop_daemon_args="${SSD_OPTS}"
+retry="${retry:-TERM/30/KILL/5}"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${TRAEFIK_USER} "${TRAEFIK_LOG%/*}"
+	checkpath -d -m 0750 -o "${command_user}" "${TRAEFIK_LOGDIR}"
 }

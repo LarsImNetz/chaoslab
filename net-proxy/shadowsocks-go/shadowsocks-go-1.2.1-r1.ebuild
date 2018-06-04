@@ -38,6 +38,7 @@ pkg_setup() {
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
+	# shellcheck disable=SC2207
 	local mygoargs=(
 		-v -work -x
 		$(usex pie '-buildmode=pie' '')
@@ -53,13 +54,13 @@ src_install() {
 	dobin bin/shadowsocks-{httpget,local,server}
 	einstalldocs
 
-	newinitd "${FILESDIR}"/${PN}-local.initd-r2 ${PN}-local
-	newinitd "${FILESDIR}"/${PN}-server.initd-r2 ${PN}-server
+	newinitd "${FILESDIR}/${PN}-local.initd" "${PN}-local"
+	newinitd "${FILESDIR}/${PN}-server.initd" "${PN}-server"
 
 	diropts -o shadowsocks-go -g shadowsocks-go -m 0700
 	keepdir /{etc,var/log}/shadowsocks-go
 
 	insinto /etc/shadowsocks-go
-	newins "${FILESDIR}"/${PN}-local.conf local.json.example
-	newins "${FILESDIR}"/${PN}-server.conf server.json.example
+	newins "${FILESDIR}/${PN}-local.conf" local.json.example
+	newins "${FILESDIR}/${PN}-server.conf" server.json.example
 }

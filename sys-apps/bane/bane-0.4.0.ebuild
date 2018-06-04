@@ -3,8 +3,8 @@
 
 EAPI=6
 
-EGO_PN="github.com/genuinetools/${PN}"
 GIT_COMMIT="299e87b" # Change this when you update the ebuild
+EGO_PN="github.com/genuinetools/${PN}"
 
 inherit golang-vcs-snapshot
 
@@ -16,7 +16,6 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE=""
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/bane"
@@ -34,7 +33,6 @@ src_compile() {
 			-X ${EGO_PN}/version.GITCOMMIT=${GIT_COMMIT}
 			-X ${EGO_PN}/version.VERSION=${PV}"
 	)
-
 	go build "${mygoargs[@]}" || die
 }
 
