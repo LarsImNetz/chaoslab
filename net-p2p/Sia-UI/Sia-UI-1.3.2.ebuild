@@ -20,6 +20,7 @@ RDEPEND="net-p2p/Sia
 	dev-util/electron-bin:${ELECTRON_SLOT}"
 
 pkg_setup() {
+	# shellcheck disable=SC2086
 	has network-sandbox $FEATURES && \
 		die "net-p2p/Sia-UI requires 'network-sandbox' to be disabled in FEATURES"
 }
