@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -71,9 +71,11 @@ Na_URI="https://github.com/jedisct1/libsodium/archive/${Na_PV}.tar.gz"
 
 DESCRIPTION="A fully-meshed VPN network in a peer-to-peer manner"
 HOMEPAGE="https://github.com/dswd/vpncloud.rs"
+# shellcheck disable=SC2086
 SRC_URI="https://github.com/dswd/${MY_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	!system-libsodium? ( ${Na_URI} -> ${Na_P}.tar.gz )
 	$(cargo_crate_uris ${CRATES})"
+RESTRICT="mirror"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -83,7 +85,7 @@ IUSE="man system-libsodium"
 DEPEND="man? ( app-text/ronn )
 	system-libsodium? ( >=dev-libs/libsodium-1.0.12[static-libs] )"
 
-RESTRICT="mirror"
+DOCS=( vpncloud.md )
 
 S="${WORKDIR}/${MY_PN}-${PV}"
 
@@ -92,34 +94,40 @@ src_prepare() {
 		rmdir "${S}/libsodium" || die
 		mv "${WORKDIR}/${Na_P}" "${S}/libsodium" || die
 	fi
-
 	default
 }
 
 src_compile() {
+	# shellcheck disable=SC2153
 	export CARGO_HOME="${ECARGO_HOME}"
 
+	# shellcheck disable=SC2046
 	cargo build -v \
 		$(usex debug "" --release) \
 		$(usex system-libsodium "--features system-libsodium" "") \
 		|| die "cargo build failed"
-}
-
-src_install() {
-	dobin target/release/${PN}
-
-	newinitd "${FILESDIR}"/${PN}.initd ${PN}
-	newconfd "${FILESDIR}"/${PN}.confd ${PN}
-	systemd_dounit "${FILESDIR}"/${PN}.service
-	systemd_newunit "${FILESDIR}"/${PN}_.service "${PN}@.service"
-
-	insinto /etc/${PN}
-	newins "${FILESDIR}"/${PN}.example example.net
-
-	dodoc vpncloud.md
 
 	if use man; then
 		ronn -r vpncloud.md || die
-		doman vpncloud.1
 	fi
+}
+
+src_install() {
+	dobin target/release/vpncloud
+	einstalldocs
+
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+	systemd_dounit "${FILESDIR}/${PN}.service"
+	systemd_newunit "${FILESDIR}/${PN}_.service" "${PN}@.service"
+
+	insinto /etc/vpncloud
+	newins "${FILESDIR}/${PN}.example" example.net
+
+	use man && doman vpncloud.1
+}
+
+pkg_preinst() {
+	enewgroup vpncloud
+	enewuser vpncloud -1 -1 -1 vpncloud
 }
