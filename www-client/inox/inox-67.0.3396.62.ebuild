@@ -104,6 +104,7 @@ DEPEND="${COMMON_DEPEND}
 	>=sys-devel/bison-2.4.3
 	sys-devel/flex
 	>=sys-devel/clang-5
+	>=sys-devel/lld-5
 	virtual/pkgconfig
 	dev-vcs/git
 "
@@ -335,9 +336,6 @@ src_prepare() {
 		third_party/spirv-headers
 		third_party/spirv-tools-angle
 		third_party/sqlite
-		third_party/swiftshader
-		third_party/swiftshader/third_party/llvm-subzero
-		third_party/swiftshader/third_party/subzero
 		third_party/unrar
 		third_party/usrsctp
 		third_party/vulkan
@@ -485,9 +483,10 @@ src_configure() {
 	myconf_gn+=" use_system_harfbuzz=true"
 
 	# Inox
-	myconf_gn+=" is_official_build=false"
+	myconf_gn+=" is_cfi=true"
 	myconf_gn+=" remove_webcore_debug_symbols=true"
 	myconf_gn+=" enable_hangout_services_extension=false"
+	myconf_gn+=" link_pulseaudio=$(usex pulseaudio true false)"
 	myconf_gn+=" enable_nacl_nonsfi=false"
 	myconf_gn+=" enable_swiftshader=false"
 	myconf_gn+=" enable_remoting=false"
@@ -514,10 +513,10 @@ src_configure() {
 	# Never use bundled gold binary. Disable gold linker flags for now.
 	# Do not use bundled clang.
 	# Trying to use gold results in linker crash.
-	myconf_gn+=" use_gold=false use_sysroot=false linux_use_bundled_binutils=false use_custom_libcxx=false"
+	myconf_gn+=" use_gold=true use_sysroot=false linux_use_bundled_binutils=false use_custom_libcxx=false"
 
 	# Disable forced lld, bug 641556
-	myconf_gn+=" use_lld=false"
+	myconf_gn+=" use_lld=true"
 
 	ffmpeg_branding="$(usex proprietary-codecs Chrome Chromium)"
 	myconf_gn+=" proprietary_codecs=$(usex proprietary-codecs true false)"
