@@ -3,11 +3,11 @@
 
 EAPI=6
 
+EGO_PN="code.gitea.io/gitea"
 EGO_VENDOR=( "github.com/kevinburke/go-bindata 2197b05" )
 
 inherit golang-vcs-snapshot systemd user
 
-EGO_PN="code.gitea.io/gitea"
 DESCRIPTION="Gitea - Git with a cup of tea"
 HOMEPAGE="https://gitea.io"
 SRC_URI="https://github.com/go-gitea/gitea/archive/v${PV/_/-}.tar.gz -> ${P}.tar.gz
@@ -41,8 +41,8 @@ pkg_setup() {
 
 src_prepare() {
 	local GITEA_PREFIX="${EPREFIX}/var/lib/gitea"
-
-	sed -i -e "s:^TEMP_PATH =.*:TEMP_PATH = ${GITEA_PREFIX}/data/tmp/uploads:" \
+	sed -i \
+		-e "s:^TEMP_PATH =.*:TEMP_PATH = ${GITEA_PREFIX}/data/tmp/uploads:" \
 		-e "s:^STATIC_ROOT_PATH =:STATIC_ROOT_PATH = ${EPREFIX}/usr/share/gitea:" \
 		-e "s:^APP_DATA_PATH =.*:APP_DATA_PATH = ${GITEA_PREFIX}/data:" \
 		-e "s:^PATH = data/gitea.db:PATH = ${GITEA_PREFIX}/data/gitea.db:" \
@@ -53,6 +53,7 @@ src_prepare() {
 		-e "s:^ROOT_PATH =:ROOT_PATH = ${EPREFIX}/var/log/gitea:" \
 		custom/conf/app.ini.sample || die
 
+	# shellcheck disable=SC2086,SC2016
 	sed -i 's:Version=.*:Version='${PV}'" -X "main.Tags=$(TAGS)":' \
 		Makefile || die
 
@@ -63,35 +64,31 @@ src_compile() {
 	export GOPATH="${G}"
 	local PATH="${G}/bin:$PATH"
 
-	ebegin "Building go-bindata locally"
-	pushd vendor/github.com/kevinburke/go-bindata > /dev/null || die
-	go build -v -ldflags "-s -w" -o \
-		"${G}"/bin/go-bindata ./go-bindata || die
-	popd > /dev/null || die
-	eend $?
+	# Build go-bindata locally
+	go install ./vendor/github.com/kevinburke/go-bindata/go-bindata || die
 
 	# build up optional flags
+	# shellcheck disable=SC2207
 	local options=(
 		$(usex pam pam '')
 		$(usex sqlite sqlite '')
 		$(usex tidb tidb '')
 	)
 
-	emake \
-		TAGS="${options[*]}" \
-		generate build
+	emake TAGS="${options[*]}" generate build
 }
 
 src_test() {
+	# shellcheck disable=SC2046
 	go test -v $(go list ./... | grep -v /integrations) || die
 }
 
 src_install() {
 	dobin gitea
 
-	newinitd "${FILESDIR}"/${PN}.initd-r4 ${PN}
-	systemd_dounit "${FILESDIR}"/${PN}.service
-	systemd_newtmpfilesd "${FILESDIR}"/${PN}.tmpfilesd-r1 ${PN}.conf
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	systemd_dounit "${FILESDIR}/${PN}.service"
+	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 	insinto /var/lib/gitea/conf
 	newins custom/conf/app.ini.sample app.ini.example
@@ -101,7 +98,7 @@ src_install() {
 	doins -r {public,templates}
 
 	insinto /etc/logrotate.d
-	newins "${FILESDIR}"/${PN}.logrotate ${PN}
+	newins "${FILESDIR}/${PN}.logrotate" "${PN}"
 
 	diropts -m 0750
 	keepdir /var/lib/gitea/data /var/log/gitea
