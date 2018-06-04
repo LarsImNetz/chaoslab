@@ -1,15 +1,14 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 name="Sia daemon"
 command="/usr/bin/siad"
 command_args="${SIA_OPTS:-"-d /var/lib/sia"}"
+command_user="${command_user:-sia:sia}"
 command_background=yes
-command_user="${SIA_USER:-"sia"}"
-pidfile="/run/${SVCNAME}.pid"
+pidfile="/run/${RC_SVCNAME}.pid"
 
 depend() {
 	use net
-	after dns
 }

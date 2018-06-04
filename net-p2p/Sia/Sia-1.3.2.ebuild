@@ -3,6 +3,8 @@
 
 EAPI=6
 
+GIT_COMMIT="72938f5" # Change this when you update the ebuild
+EGO_PN="github.com/NebulousLabs/Sia"
 EGO_VENDOR=(
 	"github.com/NebulousLabs/demotemutex 235395f"
 	"github.com/NebulousLabs/fastrand 3cf7173"
@@ -35,17 +37,19 @@ EGO_VENDOR=(
 
 inherit golang-vcs-snapshot systemd user
 
-GIT_COMMIT="72938f5"
-EGO_PN="github.com/NebulousLabs/Sia"
 DESCRIPTION="Blockchain-based marketplace for file storage"
 HOMEPAGE="https://sia.tech"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
-RESTRICT="mirror strip"
+RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
+IUSE="pie"
+
+QA_PRESTRIPPED="usr/bin/siac
+	usr/bin/siad"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -57,19 +61,25 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-	local GOLDFLAGS="-s -w
-		-X ${EGO_PN}/Sia/build.GitRevision=${GIT_COMMIT}
-		-X '${EGO_PN}/build.BuildTime=$(date)'"
-
-	go install -v -ldflags "${GOLDFLAGS}" \
-		./cmd/sia{c,d} || die
+	export GOBIN="${S}"
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w
+			-X ${EGO_PN}/Sia/build.GitRevision=${GIT_COMMIT}
+			-X '${EGO_PN}/build.BuildTime=$(date)'"
+	)
+	go install "${mygoargs[@]}" ./cmd/sia{c,d} || die
 }
 
 src_install() {
-	dobin "${G}"/bin/sia{c,d}
+	dobin siac siad
 	dodoc doc/*.md
 
-	newinitd "${FILESDIR}"/sia.initd-r2 sia
+	newinitd "${FILESDIR}"/sia.initd sia
 	systemd_dounit "${FILESDIR}"/sia.service
 
 	diropts -o sia -g sia -m 0750

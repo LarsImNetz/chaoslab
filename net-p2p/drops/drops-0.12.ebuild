@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -9,6 +9,7 @@ MY_PV="rel-${PV}s-newkey"
 DESCRIPTION="A p2p transport network for opmsg end2end encrypted messages"
 HOMEPAGE="https://github.com/stealth/drops"
 SRC_URI="https://github.com/stealth/${PN}/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
+RESTRICT="mirror"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -21,12 +22,13 @@ DEPEND="
 RDEPEND="${DEPEND}
 	app-crypt/opmsg"
 
-RESTRICT="mirror"
+DOCS=( README.md )
 
 S="${WORKDIR}/${PN}-${MY_PV}"
 
 src_prepare() {
-	sed -i -e "/^CXXFLAGS/s:CXXFLAGS=:CXXFLAGS+=:" \
+	sed -i \
+		-e "/^CXXFLAGS/s:CXXFLAGS=:CXXFLAGS+=:" \
 		-e "/^CXXFLAGS/s/-O2 //" \
 		src/Makefile || die
 
@@ -42,7 +44,7 @@ src_compile() {
 
 src_install() {
 	dobin src/dropsd
-	dodoc README.md
+	einstalldocs
 }
 
 pkg_postinst() {

@@ -1,16 +1,13 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-
-: ${GCAT_USER:=onioncat}
-: ${GCAT_PIDFILE:="/run/${SVCNAME}.pid"}
 
 name="GaliCat"
 command="/usr/bin/gcat"
-command_args="-P ${GCAT_PIDFILE} ${GCAT_OPTS}"
-command_user="${GCAT_USER}"
-command_background=true
-pidfile="${GCAT_PIDFILE}"
+command_args="${GCAT_OPTS}"
+command_user="${command_user:-onioncat:onioncat}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
 
 depend() {
 	use net
@@ -18,5 +15,5 @@ depend() {
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${GCAT_USER} "${GCAT_LOG%/*}"
+	checkpath -d -m 0750 -o "${command_user}" "${GCAT_LOGDIR}"
 }
