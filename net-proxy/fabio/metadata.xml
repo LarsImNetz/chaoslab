@@ -17,7 +17,4 @@
 		and fabio will start routing traffic to them. No configuration
 		required.
 	</longdescription>
-	<use>
-		<flag name="caps">Bind to ports below 1024 without running as root</flag>
-	</use>
 </pkgmetadata>
