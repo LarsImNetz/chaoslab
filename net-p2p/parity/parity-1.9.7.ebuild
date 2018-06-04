@@ -275,6 +275,7 @@ inherit cargo systemd user
 
 DESCRIPTION="Fast, light, and robust Ethereum client"
 HOMEPAGE="https://parity.io"
+# shellcheck disable=SC2086
 SRC_URI="https://github.com/paritytech/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	$(cargo_crate_uris ${CRATES})"
 RESTRICT="mirror"
@@ -292,8 +293,7 @@ DEPEND="${RDEPEND}
 DOCS=( {CHANGELOG,README,SECURITY}.md )
 
 pkg_setup() {
-	# Unfortunately 'network-sandbox' needs to
-	# disabled because Cargo fetches a few dependencies.
+	# shellcheck disable=SC2086
 	has network-sandbox $FEATURES && \
 		die "net-p2p/parity requires 'network-sandbox' to be disabled in FEATURES"
 
@@ -303,17 +303,14 @@ pkg_setup() {
 	fi
 }
 
+# shellcheck disable=SC2046,SC2153
 src_compile() {
 	export CARGO_HOME="${ECARGO_HOME}"
 
-	cargo build -v $(usex debug '' --release) \
-		--features final || die
-	cargo build -v $(usex debug '' --release) \
-		-p evmbin || die
-	cargo build -v $(usex debug '' --release) \
-		-p ethstore-cli || die
-	cargo build -v $(usex debug '' --release) \
-		-p ethkey-cli || die
+	cargo build -v $(usex debug '' --release) --features final || die
+	cargo build -v $(usex debug '' --release) -p evmbin || die
+	cargo build -v $(usex debug '' --release) -p ethstore-cli || die
+	cargo build -v $(usex debug '' --release) -p ethkey-cli || die
 }
 
 src_install() {
@@ -321,7 +318,7 @@ src_install() {
 	einstalldocs
 
 	if use daemon; then
-		newinitd "${FILESDIR}"/${PN}.initd ${PN}
-		systemd_dounit scripts/${PN}.service
+		newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+		systemd_dounit "scripts/${PN}.service"
 	fi
 }

@@ -1,18 +1,15 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-: ${PARITY_USER:=parity}
-: ${PARITY_BASE_PATH:="/var/lib/parity"}
-: ${PARITY_OPTS:="-d ${PARITY_BASE_PATH}"}
+PARITY_DATADIR="${PARITY_DATADIR:-/var/lib/parity}"
 
-name="${PARITY_NAME:-"Parity"}"
 command="/usr/bin/parity"
-command_args="${PARITY_OPTS}"
-command_user="${PARITY_USER}"
-command_background=true
-pidfile="/run/${SVCNAME}.pid"
-retry=${PARITY_TERMTIMEOUT:-"TERM/60/KILL/5"}
+command_args="${PARITY_OPTS:--d ${PARITY_DATADIR}}"
+command_user="${command_user:-parity:parity}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+retry="${retry:-TERM/60/KILL/5}"
 start_stop_daemon_args="${SSD_OPTS:-"-w 1000"}"
 
 depend() {
@@ -20,5 +17,5 @@ depend() {
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${PARITY_USER} "${PARITY_BASE_PATH}"
+	checkpath -d -m 0750 -o "${command_user}" "${PARITY_DATADIR}"
 }
