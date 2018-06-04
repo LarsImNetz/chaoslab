@@ -3,10 +3,11 @@
 
 EAPI=6
 
+GIT_COMMIT="7853e53" # Change this when you update the ebuild
+EGO_PN="github.com/ipfs/${PN}"
+
 inherit golang-vcs-snapshot systemd user
 
-GIT_COMMIT="7853e53"
-EGO_PN="github.com/ipfs/${PN}"
 DESCRIPTION="IPFS implementation written in Go"
 HOMEPAGE="https://ipfs.io"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
@@ -22,21 +23,22 @@ DEPEND="|| ( net-misc/curl net-misc/wget )
 	test? ( net-analyzer/netcat[crypt] )"
 
 DOCS=( {CHANGELOG,README}.md )
-
 QA_PRESTRIPPED="usr/bin/ipfs"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
+	# shellcheck disable=SC2086
 	has network-sandbox $FEATURES && \
 		die "net-p2p/go-ipfs requires 'network-sandbox' to be disabled in FEATURES"
 }
 
 src_prepare() {
+	# shellcheck disable=SC2016
 	sed -i \
-		-e "s:-X:-s -w -X:" \
-		-e "s:CurrentCommit=.*:CurrentCommit=${GIT_COMMIT}\":" \
+		-e "s:-X :-s -w -X :" \
+		-e 's:$(git-hash):'${GIT_COMMIT}':' \
 		cmd/ipfs/Rules.mk || die
 
 	default
@@ -49,8 +51,7 @@ src_compile() {
 }
 
 src_test() {
-	TEST_NO_FUSE=1 \
-		emake test_go_short
+	TEST_NO_FUSE=1 emake test_go_short
 }
 
 src_install() {
