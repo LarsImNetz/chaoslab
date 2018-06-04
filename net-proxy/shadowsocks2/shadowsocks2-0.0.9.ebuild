@@ -3,6 +3,9 @@
 
 EAPI=6
 
+#TODO: We an init script!
+
+EGO_PN="github.com/shadowsocks/go-${PN}"
 EGO_VENDOR=(
 	"github.com/Yawning/chacha20 e3b1f96"
 	"golang.org/x/crypto 2b6c088 github.com/golang/crypto"
@@ -10,36 +13,43 @@ EGO_VENDOR=(
 
 inherit golang-vcs-snapshot user
 
-EGO_PN="github.com/shadowsocks/go-${PN}"
 DESCRIPTION="A fresh implementation of Shadowsocks in Go"
 HOMEPAGE="https://github.com/shadowsocks/go-shadowsocks2"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
-RESTRICT="mirror strip"
+RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
+IUSE="pie"
 
 DOCS=( README.md )
+QA_PRESTRIPPED="usr/bin/shadowsocks2"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 #pkg_setup() {
-#	enewgroup shadowsocks
-#	enewuser shadowsocks -1 -1 -1 shadowsocks
+#	enewgroup shadowsocks2
+#	enewuser shadowsocks2 -1 -1 -1 shadowsocks2
 #}
 
 src_compile() {
 	export GOPATH="${G}"
-	go build -v -ldflags "-s -w" \
-		-o ${PN} || die
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w"
+		-o shadowsocks2
+	)
+	go build "${mygoargs[@]}" || die
 }
 
 src_install() {
-	dobin ${PN}
+	dobin shadowsocks2
 	einstalldocs
-
-	#TODO: Add an init script!
 }
