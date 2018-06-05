@@ -21,3 +21,4 @@ move net-analyzer/prometheus-nginx_vts_exporter app-metrics/nginx-vts-exporter
 move net-analyzer/prometheus-nsq_exporter app-metrics/nsq_exporter
 move net-analyzer/prometheus-openvpn_exporter app-metrics/openvpn_exporter
 move net-analyzer/prometheus-phpfpm_exporter app-metrics/phpfpm_exporter
+move net-analyzer/prometheus-postfix_exporter app-metrics/postfix_exporter
