@@ -1,4 +1,4 @@
-# config file for /etc/init.d/prometheus-elasticsearch_exporter
+# config file for /etc/init.d/elasticsearch_exporter
 # run /usr/bin/elasticsearch_exporter -h to see available options
 
 ELASTICSEARCH_EXPORTER_OPTS=""
