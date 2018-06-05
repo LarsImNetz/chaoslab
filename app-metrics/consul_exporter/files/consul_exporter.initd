@@ -1,26 +1,26 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-description="Export Consul service health to Prometheus"
+CONSUL_EXPORTER_LOGDIR="${CONSUL_EXPORTER_LOGDIR:-/var/log/${RC_SVCNAME}}"
 
-: ${CONSUL_EXPORTER_USER:=consul_exporter}
-: ${CONSUL_EXPORTER_LOG:="/var/log/consul_exporter/consul_exporter.log"}
-: ${SSD_OPTS:="-1 ${CONSUL_EXPORTER_LOG} -2 ${CONSUL_EXPORTER_LOG}"}
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${CONSUL_EXPORTER_LOGDIR}/error.log}"
 
-name="${CONSUL_EXPORTER_NAME:-"Consul Exporter"}"
+name="${name:-"Consul Exporter"}"
 command="/usr/bin/consul_exporter"
 command_args="${CONSUL_EXPORTER_OPTS}"
-command_user="${CONSUL_EXPORTER_USER}"
-command_background=true
+command_user="${command_user:-consul_exporter:consul_exporter}"
+command_background=yes
 pidfile="/run/${RC_SVCNAME}.pid"
-start_stop_daemon_args="${SSD_OPTS}"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${CONSUL_EXPORTER_USER} \
-		"${CONSUL_EXPORTER_LOG%/*}"
+	checkpath -d -m 0750 -o "${command_user}" \
+		"${CONSUL_EXPORTER_LOGDIR}"
 }
