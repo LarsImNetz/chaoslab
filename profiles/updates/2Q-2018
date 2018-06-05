@@ -13,3 +13,4 @@ move net-analyzer/prometheus-consul_exporter app-metrics/consul_exporter
 move net-analyzer/prometheus-dovecot_exporter app-metrics/dovecot_exporter
 move net-analyzer/prometheus-elasticsearch_exporter app-metrics/elasticsearch_exporter
 move net-analyzer/prometheus-graphite_exporter app-metrics/graphite_exporter
+move net-analyzer/prometheus-haproxy_exporter app-metrics/haproxy_exporter
