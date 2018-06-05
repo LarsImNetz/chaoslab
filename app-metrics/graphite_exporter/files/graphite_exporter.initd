@@ -1,26 +1,26 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-description="A server that accepts Graphite metrics for Prometheus consumption"
+GRAPHITE_EXPORTER_LOGDIR="${GRAPHITE_EXPORTER_LOGDIR:-/var/log/${RC_SVCNAME}}"
 
-: ${GRAPHITE_EXPORTER_USER:=graphite_exporter}
-: ${GRAPHITE_EXPORTER_LOG:="/var/log/graphite_exporter/graphite_exporter.log"}
-: ${SSD_OPTS:="-1 ${GRAPHITE_EXPORTER_LOG} -2 ${GRAPHITE_EXPORTER_LOG}"}
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${GRAPHITE_EXPORTER_LOGDIR}/error.log}"
 
-name="${GRAPHITE_EXPORTER_NAME:-"Graphite Exporter"}"
+name="${name:-"Graphite Exporter"}"
 command="/usr/bin/graphite_exporter"
 command_args="${GRAPHITE_EXPORTER_OPTS}"
-command_user="${GRAPHITE_EXPORTER_USER}"
-command_background=true
-pidfile="/run/${SVCNAME}.pid"
-start_stop_daemon_args="${SSD_OPTS}"
+command_user="${command_user:-graphite_exporter:graphite_exporter}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${GRAPHITE_EXPORTER_USER} \
-		"${GRAPHITE_EXPORTER_LOG%/*}"
+	checkpath -d -m 0750 -o "${command_user}" \
+		"${GRAPHITE_EXPORTER_LOGDIR}"
 }
