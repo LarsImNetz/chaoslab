@@ -1,26 +1,26 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-description="Elasticsearch stats exporter for Prometheus"
+ELASTICSEARCH_EXPORTER_LOGDIR="${ELASTICSEARCH_EXPORTER_LOGDIR:-/var/log/${RC_SVCNAME}}"
 
-: ${ELASTICSEARCH_EXPORTER_USER:=elasticsearch_exporter}
-: ${ELASTICSEARCH_EXPORTER_LOG:="/var/log/elasticsearch_exporter/elasticsearch_exporter.log"}
-: ${SSD_OPTS:="-1 ${ELASTICSEARCH_EXPORTER_LOG} -2 ${ELASTICSEARCH_EXPORTER_LOG}"}
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${ELASTICSEARCH_EXPORTER_LOGDIR}/error.log}"
 
-name="${ELASTICSEARCH_EXPORTER_NAME:-"Elasticsearch Exporter"}"
+name="${name:-"Elasticsearch Exporter"}"
 command="/usr/bin/elasticsearch_exporter"
 command_args="${ELASTICSEARCH_EXPORTER_OPTS}"
-command_user="${ELASTICSEARCH_EXPORTER_USER}"
-command_background=true
+command_user="${command_user:-elasticsearch_exporter:elasticsearch_exporter}"
+command_background=yes
 pidfile="/run/${RC_SVCNAME}.pid"
-start_stop_daemon_args="${SSD_OPTS}"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${ELASTICSEARCH_EXPORTER_USER} \
-		"${ELASTICSEARCH_EXPORTER_LOG%/*}"
+	checkpath -d -m 0750 -o "${command_user}" \
+		"${ELASTICSEARCH_EXPORTER_LOGDIR}"
 }
