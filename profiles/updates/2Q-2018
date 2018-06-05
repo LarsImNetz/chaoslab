@@ -17,3 +17,4 @@ move net-analyzer/prometheus-haproxy_exporter app-metrics/haproxy_exporter
 move net-analyzer/prometheus-influxdb_exporter app-metrics/influxdb_exporter
 move net-analyzer/prometheus-memcached_exporter app-metrics/memcached_exporter
 move net-analyzer/prometheus-mysqld_exporter app-metrics/mysqld_exporter
+move net-analyzer/prometheus-nginx_vts_exporter app-metrics/nginx-vts-exporter
