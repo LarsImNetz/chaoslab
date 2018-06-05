@@ -19,3 +19,4 @@ move net-analyzer/prometheus-memcached_exporter app-metrics/memcached_exporter
 move net-analyzer/prometheus-mysqld_exporter app-metrics/mysqld_exporter
 move net-analyzer/prometheus-nginx_vts_exporter app-metrics/nginx-vts-exporter
 move net-analyzer/prometheus-nsq_exporter app-metrics/nsq_exporter
+move net-analyzer/prometheus-openvpn_exporter app-metrics/openvpn_exporter
