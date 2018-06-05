@@ -1,4 +1,0 @@
-# config file for /etc/init.d/prometheus-graphite_exporter
-# run /usr/bin/graphite_exporter -h to see available options
-
-GRAPHITE_EXPORTER_OPTS=""

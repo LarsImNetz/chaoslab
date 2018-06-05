@@ -8,3 +8,12 @@ move net-analyzer/prometheus-alertmanager app-metrics/alertmanager
 move net-analyzer/prometheus-node_exporter app-metrics/node_exporter
 move app-shells/skim app-misc/skim
 move net-analyzer/prometheus-blackbox_exporter app-metrics/blackbox_exporter
+move net-analyzer/prometheus-collectd_exporter app-metrics/collectd_exporter
+move net-analyzer/prometheus-consul_exporter app-metrics/consul_exporter
+move net-analyzer/prometheus-dovecot_exporter app-metrics/dovecot_exporter
+move net-analyzer/prometheus-elasticsearch_exporter app-metrics/elasticsearch_exporter
+move net-analyzer/prometheus-graphite_exporter app-metrics/graphite_exporter
+move net-analyzer/prometheus-haproxy_exporter app-metrics/haproxy_exporter
+move net-analyzer/prometheus-influxdb_exporter app-metrics/influxdb_exporter
+move net-analyzer/prometheus-memcached_exporter app-metrics/memcached_exporter
+move net-analyzer/prometheus-mysqld_exporter app-metrics/mysqld_exporter
