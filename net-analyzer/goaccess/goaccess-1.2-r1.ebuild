@@ -1,7 +1,9 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
+
+#TODO: Add an init script
 
 inherit autotools
 
@@ -13,6 +15,7 @@ LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="btree bzip2 debug geoip geoipv2 getline libressl ssl tokyocabinet +unicode zlib"
+REQUIRED_USE="btree? ( tokyocabinet ) bzip2? ( btree ) geoipv2? ( geoip ) zlib? ( btree )"
 
 RDEPEND="sys-libs/ncurses:0=[unicode?]
 	geoip? (
@@ -34,12 +37,9 @@ RDEPEND="sys-libs/ncurses:0=[unicode?]
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
-REQUIRED_USE="btree? ( tokyocabinet ) bzip2? ( btree ) geoipv2? ( geoip ) zlib? ( btree )"
-
 src_prepare() {
 	# Change path to GeoIP bases in config
-	sed -i "s:/usr/local:/usr:" \
-		config/goaccess.conf || die
+	sed -i "s:/usr/local:/usr:" config/goaccess.conf || die
 
 	# Leave optimization level to user CFLAGS
 	sed -i 's/-O2 //g' ./Makefile.am || die
@@ -49,15 +49,18 @@ src_prepare() {
 }
 
 src_configure() {
-	econf \
-		$(use_enable bzip2 bzip) \
-		$(use_enable zlib) \
-		$(use_enable debug) \
-		$(use_enable geoip geoip $(usex geoipv2 mmdb legacy)) \
-		$(use_enable tokyocabinet tcb $(usex btree btree memhash)) \
-		$(use_enable unicode utf8) \
-		$(use_with getline) \
+	# shellcheck disable=SC2207,SC2046
+	myeconf=(
+		$(use_enable bzip2 bzip)
+		$(use_enable zlib)
+		$(use_enable debug)
+		$(use_enable geoip geoip $(usex geoipv2 mmdb legacy))
+		$(use_enable tokyocabinet tcb $(usex btree btree memhash))
+		$(use_enable unicode utf8)
+		$(use_with getline)
 		$(use_with ssl openssl)
+	)
+	econf "${myeconf[@]}"
 }
 
 pkg_preinst() {
