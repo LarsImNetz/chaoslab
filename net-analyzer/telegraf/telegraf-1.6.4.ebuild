@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="890f1d3" # Change this when you update the ebuild
+GIT_COMMIT="b24e864" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Godeps
 # Deps that are not needed:
@@ -19,7 +19,7 @@ EGO_PN="github.com/influxdata/${PN}"
 # gopkg.in/tomb.v1 dd63297
 EGO_VENDOR=(
 	"collectd.org 2ce1445 github.com/collectd/go-collectd"
-	"github.com/aerospike/aerospike-client-go 9701404"
+	"github.com/aerospike/aerospike-client-go 95e1ad7"
 	"github.com/amir/raidman c74861f"
 	"github.com/apache/thrift 4aaa92e"
 	"github.com/aws/aws-sdk-go c861d27"
