@@ -10,3 +10,4 @@ move app-shells/skim app-misc/skim
 move net-analyzer/prometheus-blackbox_exporter app-metrics/blackbox_exporter
 move net-analyzer/prometheus-collectd_exporter app-metrics/collectd_exporter
 move net-analyzer/prometheus-consul_exporter app-metrics/consul_exporter
+move net-analyzer/prometheus-dovecot_exporter app-metrics/dovecot_exporter
