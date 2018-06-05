@@ -1,26 +1,26 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-description="A server that accepts collectd stats for Prometheus consumption"
+COLLECTD_EXPORTER_LOGDIR="${COLLECTD_EXPORTER_LOGDIR:-/var/log/${RC_SVCNAME}}"
 
-: ${COLLECTD_EXPORTER_USER:=collectd_exporter}
-: ${COLLECTD_EXPORTER_LOG:="/var/log/collectd_exporter/collectd_exporter.log"}
-: ${SSD_OPTS:="-1 ${COLLECTD_EXPORTER_LOG} -2 ${COLLECTD_EXPORTER_LOG}"}
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${COLLECTD_EXPORTER_LOGDIR}/error.log}"
 
-name="${COLLECTD_EXPORTER_NAME:-"Collectd Exporter"}"
+name="${name:-"Collectd Exporter"}"
 command="/usr/bin/collectd_exporter"
 command_args="${COLLECTD_EXPORTER_OPTS}"
-command_user="${COLLECTD_EXPORTER_USER}"
-command_background=true
-pidfile="/run/${SVCNAME}.pid"
-start_stop_daemon_args="${SSD_OPTS}"
+command_user="${command_user:-collectd_exporter:collectd_exporter}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${COLLECTD_EXPORTER_USER} \
-		"${COLLECTD_EXPORTER_LOG%/*}"
+	checkpath -d -m 0750 -o "${command_user}" \
+		"${COLLECTD_EXPORTER_LOGDIR}"
 }
