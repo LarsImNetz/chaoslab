@@ -2,28 +2,28 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-: ${TELEGRAF_CONFIG:="/etc/telegraf/telegraf.conf"}
-: ${TELEGRAF_LOG:="/var/log/${RC_SVCNAME}/${RC_SVCNAME}.log"}
-: ${SSD_OPTS:="-1 ${TELEGRAF_LOG} -2 ${TELEGRAF_LOG}"}
+TELEGRAF_CONFIG="${TELEGRAF_CONFIG:-/etc/telegraf/telegraf.conf}"
+TELEGRAF_LOGDIR="${TELEGRAF_LOGDIR:-/var/log/${RC_SVCNAME}}"
 
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${TELEGRAF_LOGDIR}/error.log}"
 extra_started_commands="reload"
-description="The plugin-driven server agent for collecting and reporting metrics"
-description_reload="Reload the ${RC_SVCNAME} configuration"
 
 command="/usr/bin/telegraf"
 command_args="--config ${TELEGRAF_CONFIG} ${TELEGRAF_OPTS}"
-command_user="${TELEGRAF_USER:-telegraf}:${TELEGRAF_GROUP:-telegraf}"
-command_background=true
+command_user="${command_user:-telegraf:telegraf}"
+command_background=yes
 pidfile="/run/${RC_SVCNAME}.pid"
 required_files="${TELEGRAF_CONFIG}"
-start_stop_daemon_args="${SSD_OPTS}"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" "${TELEGRAF_LOG%/*}"
+	checkpath -d -m 0750 -o "${command_user}" "${TELEGRAF_LOGDIR}"
 }
 
 reload() {

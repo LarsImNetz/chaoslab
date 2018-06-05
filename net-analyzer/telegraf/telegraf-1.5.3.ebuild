@@ -3,6 +3,8 @@
 
 EAPI=6
 
+GIT_COMMIT="1e51969"
+EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Godeps
 # Deps that are not needed:
 # github.com/go-ini/ini 9144852
@@ -101,25 +103,25 @@ EGO_VENDOR=(
 
 inherit golang-vcs-snapshot systemd user
 
-MY_PV="${PV/_/-}"
-GIT_COMMIT="1e51969"
-EGO_PN="github.com/influxdata/${PN}"
 DESCRIPTION="An agent for collecting, processing, aggregating, and writing metrics"
 HOMEPAGE="https://influxdata.com"
-SRC_URI="https://${EGO_PN}/archive/${MY_PV}.tar.gz -> ${P}.tar.gz
+SRC_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
-RESTRICT="mirror strip"
+RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="test"
+IUSE="pie test"
+
+QA_PRESTRIPPED="usr/bin/telegraf"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
 	if use test; then
+		# shellcheck disable=SC2086
 		has network-sandbox $FEATURES && \
 			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 	fi
@@ -130,13 +132,18 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-	local GOLDFLAGS="-s -w \
-		-X main.version=${MY_PV} \
-		-X main.branch=${MY_PV} \
-		-X main.commit=${GIT_COMMIT}"
-
-	go build -v -ldflags "${GOLDFLAGS}" \
-		./cmd/telegraf || die
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w
+			-X main.version=${PV}
+			-X main.branch=${PV}
+			-X main.commit=${GIT_COMMIT}"
+	)
+	go build "${mygoargs[@]}" ./cmd/telegraf || die
 }
 
 src_test() {
@@ -146,10 +153,10 @@ src_test() {
 src_install() {
 	dobin telegraf
 
-	newinitd "${FILESDIR}"/${PN}.initd-r2 ${PN}
-	newconfd "${FILESDIR}"/${PN}.confd-r1 ${PN}
-	systemd_dounit scripts/${PN}.service
-	systemd_newtmpfilesd "${FILESDIR}"/${PN}.tmpfilesd-r1 ${PN}.conf
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd-r1" "${PN}"
+	systemd_dounit "scripts/${PN}.service"
+	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 	dodir /etc/telegraf/telegraf.d
 	insinto /etc/telegraf
@@ -163,9 +170,9 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/etc/${PN}/telegraf.conf ]; then
+	if [ ! -e "${EROOT%/}"/etc/telegraf/telegraf.conf ]; then
 		elog "No telegraf.conf found, copying the example over"
-		cp "${EROOT%/}"/etc/${PN}/telegraf.conf{.example,} || die
+		cp "${EROOT%/}"/etc/telegraf/telegraf.conf{.example,} || die
 	else
 		elog "telegraf.conf found, please check example file for possible changes"
 	fi
