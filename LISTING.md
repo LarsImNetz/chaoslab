@@ -37,6 +37,7 @@ app-metrics/**[pushgateway](app-metrics/pushgateway)** `*` | Push acceptor for e
 app-metrics/**[snmp_exporter](app-metrics/snmp_exporter)** `*` | An exporter that exposes information gathered from SNMP for Prometheus
 app-misc/**[bat](app-misc/bat)** | A 'cat' clone with syntax highlighting and Git integration
 app-misc/**[genact](app-misc/genact)** | A nonsense activity generator
+app-misc/**[skim](app-misc/skim)** `*` | Fuzzy finder in Rust
 app-misc/**[vanity-monero](app-misc/vanity-monero)** | Generate vanity address for CryptoNote currency
 app-misc/**[watchexec](app-misc/watchexec)** | Executes commands in response to file modifications
 app-misc/**[watchman](app-misc/watchman)** | An inotify-based file watching and job triggering command line utility
@@ -44,7 +45,6 @@ app-misc/**[wtf](app-misc/wtf)** | A personal information dashboard for your ter
 app-shells/**[antibody](app-shells/antibody)** | The fastest shell plugin manager
 app-shells/**[fzf](app-shells/fzf)** `*` | A general-purpose command-line fuzzy finder
 app-shells/**[peco](app-shells/peco)** `*` | Simplistic interactive filtering tool
-app-shells/**[skim](app-shells/skim)** `*` | Fuzzy finder in Rust
 dev-db/**[influxdb](dev-db/influxdb)** `*` | Scalable datastore for metrics, events, and real-time analytics
 dev-db/**[orchestrator](dev-db/orchestrator)** | A MySQL high availability and replication management tool
 dev-db/**[pgweb](dev-db/pgweb)** | Web-based PostgreSQL database browser written in Go

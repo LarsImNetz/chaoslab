@@ -1,0 +1,17 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+KAPACITOR_CONFIG="${KAPACITOR_CONFIG:-/etc/kapacitor/kapacitor.conf}"
+
+command="/usr/bin/kapacitord"
+command_args="--config ${KAPACITOR_CONFIG} ${KAPACITOR_OPTS}"
+command_background=yes
+command_user="${command_user:-kapacitor:kapacitor}"
+pidfile="/run/${RC_SVCNAME}.pid"
+required_files="${KAPACITOR_CONFIG}"
+
+depend() {
+	need net
+	after bootmisc
+}

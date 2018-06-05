@@ -127,6 +127,7 @@ S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
 	if use test; then
+		# shellcheck disable=SC2086
 		has network-sandbox $FEATURES && \
 			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 	fi
@@ -137,6 +138,7 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
+	# shellcheck disable=SC2207
 	local mygoargs=(
 		-v -work -x
 		$(usex pie '-buildmode=pie' '')
@@ -157,10 +159,10 @@ src_test() {
 src_install() {
 	dobin telegraf
 
-	newinitd "${FILESDIR}"/${PN}.initd-r2 ${PN}
-	newconfd "${FILESDIR}"/${PN}.confd-r1 ${PN}
-	systemd_dounit scripts/${PN}.service
-	systemd_newtmpfilesd "${FILESDIR}"/${PN}.tmpfilesd-r1 ${PN}.conf
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd-r1" "${PN}"
+	systemd_dounit "scripts/${PN}.service"
+	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 	dodir /etc/telegraf/telegraf.d
 	insinto /etc/telegraf
@@ -174,9 +176,9 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/etc/${PN}/telegraf.conf ]; then
+	if [ ! -e "${EROOT%/}"/etc/telegraf/telegraf.conf ]; then
 		elog "No telegraf.conf found, copying the example over"
-		cp "${EROOT%/}"/etc/${PN}/telegraf.conf{.example,} || die
+		cp "${EROOT%/}"/etc/telegraf/telegraf.conf{.example,} || die
 	else
 		elog "telegraf.conf found, please check example file for possible changes"
 	fi

@@ -1,0 +1,28 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+
+BLACKBOX_EXPORTER_CONFIG="${BLACKBOX_EXPORTER_CONFIG:-/etc/blackbox_exporter/blackbox.yml}"
+BLACKBOX_EXPORTER_LOGDIR="${BLACKBOX_EXPORTER_LOGDIR:-/var/log/${RC_SVCNAME}}"
+
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${BLACKBOX_EXPORTER_LOGDIR}/error.log}"
+
+name="${name:-"Blackbox Exporter"}"
+command="/usr/bin/blackbox_exporter"
+command_args="--config.file=${BLACKBOX_EXPORTER_CONFIG} ${BLACKBOX_EXPORTER_OPTS}"
+command_user="${command_user:-blackbox_exporter:blackbox_exporter}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+required_files="${BLACKBOX_EXPORTER_CONFIG}"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" "${BLACKBOX_EXPORTER_LOGDIR}"
+}

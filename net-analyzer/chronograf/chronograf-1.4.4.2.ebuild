@@ -31,6 +31,7 @@ G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
+	# shellcheck disable=SC2086
 	has network-sandbox $FEATURES && \
 		die "www-apps/chronograf requires 'network-sandbox' to be disabled in FEATURES"
 
@@ -45,7 +46,6 @@ src_prepare() {
 		Makefile || die
 
 	emake .jsdep
-	touch .godep || die
 	default
 }
 
@@ -55,9 +55,9 @@ src_compile() {
 
 	# Build go-bindata locally
 	go install ./vendor/github.com/kevinburke/go-bindata/go-bindata || die
+	touch .godep || die
 
-	make \
-		VERSION="${PV}" \
+	make VERSION="${PV}" \
 		COMMIT="${GIT_COMMIT}" \
 		build || die
 }
@@ -66,10 +66,10 @@ src_install() {
 	dobin {chronoctl,chronograf}
 	einstalldocs
 
-	newinitd "${FILESDIR}"/${PN}.initd-r3 ${PN}
-	newconfd "${FILESDIR}"/${PN}.confd-r2 ${PN}
-	systemd_dounit etc/scripts/${PN}.service
-	systemd_newtmpfilesd "${FILESDIR}"/${PN}.tmpfilesd-r1 ${PN}.conf
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd-r2" "${PN}"
+	systemd_dounit "etc/scripts/${PN}.service"
+	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 	dodir /usr/share/chronograf/resources
 	insinto /usr/share/chronograf/canned
