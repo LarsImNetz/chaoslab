@@ -34,6 +34,7 @@ pkg_setup() {
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
+	# shellcheck disable=SC2207
 	local mygoargs=(
 		-v -work -x
 		$(usex pie '-buildmode=pie' '')
@@ -44,8 +45,7 @@ src_compile() {
 			-X main.branch=${MY_PV}
 			-X main.commit=${GIT_COMMIT}"
 	)
-	go install "${mygoargs[@]}" \
-		./cmd/kapacitor{,d} || die
+	go install "${mygoargs[@]}" ./cmd/kapacitor{,d} || die
 }
 
 src_test() {
@@ -55,10 +55,10 @@ src_test() {
 src_install() {
 	dobin kapacitor{,d}
 
-	newinitd "${FILESDIR}"/${PN}.initd-r2 ${PN}
-	newconfd "${FILESDIR}"/${PN}.confd ${PN}
-	systemd_dounit scripts/${PN}.service
-	systemd_newtmpfilesd "${FILESDIR}"/${PN}.tmpfilesd ${PN}.conf
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+	systemd_dounit "scripts/${PN}.service"
+	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd" "${PN}.conf"
 
 	insinto /etc/kapacitor
 	newins etc/kapacitor/kapacitor.conf kapacitor.conf.example
@@ -73,7 +73,7 @@ src_install() {
 	if use examples; then
 		docinto examples
 		dodoc -r examples/*
-		docompress -x /usr/share/doc/${PF}/examples
+		docompress -x "/usr/share/doc/${PF}/examples"
 	fi
 
 	diropts -o kapacitor -g kapacitor -m 0750
@@ -81,9 +81,9 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/etc/${PN}/kapacitor.conf ]; then
+	if [ ! -e "${EROOT%/}"/etc/kapacitor/kapacitor.conf ]; then
 		elog "No kapacitor.conf found, copying the example over"
-		cp "${EROOT%/}"/etc/${PN}/kapacitor.conf{.example,} || die
+		cp "${EROOT%/}"/etc/kapacitor/kapacitor.conf{.example,} || die
 	else
 		elog "kapacitor.conf found, please check example file for possible changes"
 	fi
