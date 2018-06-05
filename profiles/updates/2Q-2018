@@ -24,3 +24,4 @@ move net-analyzer/prometheus-phpfpm_exporter app-metrics/phpfpm_exporter
 move net-analyzer/prometheus-postfix_exporter app-metrics/postfix_exporter
 move net-analyzer/prometheus-postgres_exporter app-metrics/postgres_exporter
 move net-analyzer/prometheus-process_exporter app-metrics/process_exporter
+move net-analyzer/prometheus-redis_exporter app-metrics/redis_exporter
