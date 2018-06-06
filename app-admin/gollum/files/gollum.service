@@ -1,0 +1,16 @@
+[Unit]
+Description=Gollum message multiplexer
+Documentation=http://gollum.readthedocs.org/
+After=network.target
+
+[Service]
+Type=simple
+Environment=GOTRACEBACK=crash
+PIDFile=/run/gollum.pid
+ExecStart=/usr/bin/gollum \
+	-c /etc/gollum/gollum.conf \
+	-p /run/gollum.pid \
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
