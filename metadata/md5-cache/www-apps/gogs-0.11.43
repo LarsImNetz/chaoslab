@@ -11,4 +11,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/gogits/gogs/archive/v0.11.43.tar.gz -> gogs-0.11.43.tar.gz https://github.com/kevinburke/go-bindata/archive/2197b05.tar.gz -> github.com-kevinburke-go-bindata-2197b05.tar.gz
 _eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	a31844b675f1a1fea87fbe1144aee5f5	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=cbd4831c658773b20bc647fa9b34ee78
+_md5_=beaa8140287caa0cfba8d565a217c411
