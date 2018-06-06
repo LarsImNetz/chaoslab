@@ -115,6 +115,7 @@ net-analyzer/**[goaccess](net-analyzer/goaccess)** `*` | A real-time web log ana
 net-analyzer/**[kapacitor](net-analyzer/kapacitor)** `*` | A framework for processing, monitoring, and alerting on time series data
 net-analyzer/**[telegraf](net-analyzer/telegraf)** `*` | An agent for collecting, processing, aggregating, and writing metrics
 net-analyzer/**[wuzz](net-analyzer/wuzz)** | Interactive cli tool for HTTP inspection
+net-dns/**[acme-dns](net-dns/acme-dns)** | A simplified DNS server with a RESTful HTTP API to provide ACME DNS challenges
 net-dns/**[dnscrypt-proxy](net-dns/dnscrypt-proxy)** `*` | A tool for securing communications between a client and a DNS resolver
 net-dns/**[dnscrypt-wrapper](net-dns/dnscrypt-wrapper)** | A server-side DNSCrypt proxy
 net-dns/**[knot-resolver](net-dns/knot-resolver)** | A caching full DNS resolver implementation written in C and LuaJIT
