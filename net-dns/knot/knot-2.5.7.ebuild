@@ -99,6 +99,6 @@ src_install() {
 
 		rmdir "${D%/}"/var/run/knot "${D%/}"/var/run || die
 		diropts -o knot -g knot -m750
-		dodir /var/lib/knot
+		keepdir /var/lib/knot
 	fi
 }
