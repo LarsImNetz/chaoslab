@@ -7,7 +7,7 @@ EGO_PN="github.com/wrouesnel/${PN}"
 
 inherit golang-vcs-snapshot systemd user
 
-DESCRIPTION="Prometheus exporter for PostgreSQL server metrics"
+DESCRIPTION="PostgreSQL stats exporter for Prometheus"
 HOMEPAGE="https://github.com/wrouesnel/postgres_exporter"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
