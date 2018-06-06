@@ -1,5 +1,7 @@
 # config file for /etc/init.d/alertmanager
 
+ALERTMANAGER_CONFIG="/etc/alertmanager/alertmanager.yml"
+ALERTMANAGER_LOGDIR="/var/log/${RC_SVCNAME}"
 ALERTMANAGER_STORAGEDIR="/var/lib/alertmanager"
 ALERTMANAGER_OPTS="--storage.path=${ALERTMANAGER_STORAGEDIR}"
 

@@ -1,4 +1,9 @@
 # config file for /etc/init.d/redis_exporter
 # run /usr/bin/redis_exporter -h to see available options
 
+REDIS_EXPORTER_LOG="/var/log/${RC_SVCNAME}"
 REDIS_EXPORTER_OPTS=""
+
+# Logging
+#output_log="${REDIS_EXPORTER_LOGDIR}/redis_exporter.log"
+#error_log="${REDIS_EXPORTER_LOGDIR}/error.log"

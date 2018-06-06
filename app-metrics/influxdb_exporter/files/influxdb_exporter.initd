@@ -2,12 +2,10 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-INFLUXDB_EXPORTER_LOGDIR="${INFLUXDB_EXPORTER_LOGDIR:-/var/log/${RC_SVCNAME}}"
-
 output_log="${output_log:-/dev/null}"
 error_log="${error_log:-${INFLUXDB_EXPORTER_LOGDIR}/error.log}"
 
-name="${name:-"InfluxDB Exporter"}"
+name="${name:-InfluxDB Exporter}"
 command="/usr/bin/influxdb_exporter"
 command_args="${INFLUXDB_EXPORTER_OPTS}"
 command_user="${command_user:-influxdb_exporter:influxdb_exporter}"
@@ -21,6 +19,5 @@ depend() {
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" \
-		"${INFLUXDB_EXPORTER_LOGDIR}"
+	checkpath -d -m 0750 -o "${command_user}" "${INFLUXDB_EXPORTER_LOGDIR}"
 }

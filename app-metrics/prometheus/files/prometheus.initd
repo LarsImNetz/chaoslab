@@ -2,12 +2,10 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-PROMETHEUS_CONFIG="${PROMETHEUS_CONFIG:-/etc/prometheus/prometheus.yml}"
-PROMETHEUS_LOGDIR="${PROMETHEUS_LOGDIR:-/var/log/prometheus}"
-
 output_log="${output_log:-/dev/null}"
 error_log="${error_log:-${PROMETHEUS_LOGDIR}/error.log}"
 
+name="${name:-Prometheus}"
 command="/usr/bin/prometheus"
 command_args="--config.file=${PROMETHEUS_CONFIG} ${PROMETHEUS_OPTS}"
 command_user="${command_user:-prometheus:prometheus}"
@@ -23,5 +21,5 @@ depend() {
 
 start_pre() {
 	checkpath -d -m 0750 -o "${command_user}" \
-	"${PROMETHEUS_DATADIR}" "${PROMETHEUS_LOGDIR}"
+		"${PROMETHEUS_DATADIR}" "${PROMETHEUS_LOGDIR}"
 }

@@ -1,4 +1,9 @@
 # config file for /etc/init.d/phpfpm_exporter
 # run /usr/bin/phpfpm_exporter -h to see available options
 
+PHPFPM_EXPORTER_LOGDIR="/var/log/${RC_SVCNAME}"
 PHPFPM_EXPORTER_OPTS=""
+
+# Logging
+#output_log="${PHPFPM_EXPORTER_LOGDIR}/phpfpm_exporter.log"
+#error_log="${PHPFPM_EXPORTER_LOGDIR}/error.log"

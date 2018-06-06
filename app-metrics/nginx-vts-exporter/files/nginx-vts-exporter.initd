@@ -2,12 +2,10 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-NGINX_VTS_EXPORTER_LOGDIR="${NGINX_VTS_EXPORTER_LOGDIR:-/var/log/${RC_SVCNAME}}"
-
 output_log="${output_log:-/dev/null}"
 error_log="${error_log:-${NGINX_VTS_EXPORTER_LOGDIR}/error.log}"
 
-name="${name:-"Nginx vts Exporter"}"
+name="${name:-Nginx vts Exporter}"
 command="/usr/bin/nginx-vts-exporter"
 command_args="${NGINX_VTS_EXPORTER_OPTS}"
 command_user="${command_user:-nginx-vts-exporter:nginx-vts-exporter}"
@@ -21,6 +19,5 @@ depend() {
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" \
-		"${NGINX_VTS_EXPORTER_LOGDIR}"
+	checkpath -d -m 0750 -o "${command_user}" "${NGINX_VTS_EXPORTER_LOGDIR}"
 }

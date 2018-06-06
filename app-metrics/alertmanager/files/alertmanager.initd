@@ -2,12 +2,10 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-ALERTMANAGER_CONFIG="${ALERTMANAGER_CONFIG:-/etc/alertmanager/alertmanager.yml}"
-ALERTMANAGER_LOGDIR="${ALERTMANAGER_LOGDIR:-/var/log/alertmanager}"
-
 output_log="${output_log:-/dev/null}"
 error_log="${error_log:-${ALERTMANAGER_LOGDIR}/error.log}"
 
+name="${name:-Prometheus Alertmanager}"
 command="/usr/bin/alertmanager"
 command_args="--config.file=${ALERTMANAGER_CONFIG} ${ALERTMANAGER_OPTS}"
 command_user="${command_user:-alertmanager:alertmanager}"

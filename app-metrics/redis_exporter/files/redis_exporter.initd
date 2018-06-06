@@ -1,26 +1,23 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-description="A server that export Redis metrics for Prometheus consumption"
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${REDIS_EXPORTER_LOGDIR}/error.log}"
 
-: ${REDIS_EXPORTER_USER:=redis_exporter}
-: ${REDIS_EXPORTER_LOG:="/var/log/redis_exporter/redis_exporter.log"}
-: ${SSD_OPTS:="-1 ${REDIS_EXPORTER_LOG} -2 ${REDIS_EXPORTER_LOG}"}
-
-name="${REDIS_EXPORTER_NAME:-"Redis Exporter"}"
+name="${name:-Redis Exporter}"
 command="/usr/bin/redis_exporter"
 command_args="${REDIS_EXPORTER_OPTS}"
-command_user="${REDIS_EXPORTER_USER}"
-command_background=true
-pidfile="/run/${SVCNAME}.pid"
-start_stop_daemon_args="${SSD_OPTS}"
+command_user="${command_user:-redis_exporter:redis_exporter}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${REDIS_EXPORTER_USER} \
-		"${REDIS_EXPORTER_LOG%/*}"
+	checkpath -d -m 0750 -o "${command_user}" "${REDIS_EXPORTER_LOGDIR}"
 }
