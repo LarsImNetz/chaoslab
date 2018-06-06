@@ -4,6 +4,7 @@
 
 GITEA_USER="${GITEA_USER:-git}"
 GITEA_HOME="${GITEA_HOME:-/var/lib/gitea}"
+GITEA_CONFIG="${GITEA_CONFIG:-${GITEA_HOME}/conf/app.ini}"
 GITEA_LOGDIR="${GITEA_LOGDIR:-/var/log/${RC_SVCNAME}}"
 
 output_log="${output_log:-/dev/null}"

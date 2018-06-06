@@ -1,26 +1,26 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-description="A server that scrapes Nginx vts stats and exports them for Prometheus"
+NGINX_VTS_EXPORTER_LOGDIR="${NGINX_VTS_EXPORTER_LOGDIR:-/var/log/${RC_SVCNAME}}"
 
-: ${NGINX_VTS_EXPORTER_USER:=nginx_vts_exporter}
-: ${NGINX_VTS_EXPORTER_LOG:="/var/log/nginx_vts_exporter/nginx_vts_exporter.log"}
-: ${SSD_OPTS:="-1 ${NGINX_VTS_EXPORTER_LOG} -2 ${NGINX_VTS_EXPORTER_LOG}"}
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${NGINX_VTS_EXPORTER_LOGDIR}/error.log}"
 
-name="${NGINX_VTS_EXPORTER_NAME:-"Nginx vts Exporter"}"
+name="${name:-"Nginx vts Exporter"}"
 command="/usr/bin/nginx-vts-exporter"
 command_args="${NGINX_VTS_EXPORTER_OPTS}"
-command_user="${NGINX_VTS_EXPORTER_USER}"
-command_background=true
-pidfile="/run/${SVCNAME}.pid"
-start_stop_daemon_args="${SSD_OPTS}"
+command_user="${command_user:-nginx-vts-exporter:nginx-vts-exporter}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${NGINX_VTS_EXPORTER_USER} \
-		"${NGINX_VTS_EXPORTER_LOG%/*}"
+	checkpath -d -m 0750 -o "${command_user}" \
+		"${NGINX_VTS_EXPORTER_LOGDIR}"
 }

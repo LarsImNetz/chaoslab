@@ -91,7 +91,6 @@ src_install() {
 	dobin gogs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
-	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
