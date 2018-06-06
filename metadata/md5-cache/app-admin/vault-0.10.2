@@ -1,12 +1,13 @@
-DEFINED_PHASES=compile install postinst prepare setup unpack
+DEFINED_PHASES=compile install postinst setup unpack
 DEPEND=filecaps? ( sys-libs/libcap ) >=dev-lang/go-1.9 virtual/pkgconfig
-DESCRIPTION=A flexible DNS proxy, with support for modern encrypted DNS protocols
+DESCRIPTION=A tool for managing secrets
 EAPI=6
-HOMEPAGE=https://dnscrypt.info
-IUSE=pie systemd +filecaps
-KEYWORDS=~amd64 ~arm ~x86
-LICENSE=ISC
+HOMEPAGE=https://vaultproject.io
+IUSE=pie +filecaps
+KEYWORDS=~amd64
+LICENSE=MPL-2.0
+RESTRICT=test
 SLOT=0
-SRC_URI=https://github.com/jedisct1/dnscrypt-proxy/archive/2.0.14.tar.gz -> dnscrypt-proxy-2.0.14.tar.gz
+SRC_URI=https://github.com/hashicorp/vault/archive/v0.10.2.tar.gz -> vault-0.10.2.tar.gz
 _eclasses_=fcaps	9445d60c1eb084a91c38ef4c070b2f16	golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	a31844b675f1a1fea87fbe1144aee5f5	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=6404ae33917dc8580a940bf95e88fc6e
+_md5_=b69b28506ae86d0e340d96b424c709da
