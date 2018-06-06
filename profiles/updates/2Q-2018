@@ -29,3 +29,4 @@ move app-metrics/process_exporter app-metrics/process-exporter
 move net-analyzer/prometheus-script_exporter app-metrics/script_exporter
 move net-analyzer/prometheus-sql_exporter app-metrics/sql_exporter
 move net-analyzer/prometheus-statsd_exporter app-metrics/statsd_exporter
+move net-analyzer/prometheus-unbound_exporter app-metrics/unbound_exporter
