@@ -1,26 +1,25 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-description="A Prometheus exporter for PHP-FPM"
+PHPFPM_EXPORTER_LOGDIR="${PHPFPM_EXPORTER_LOGDIR:-/var/log/${RC_SVCNAME}}"
 
-: ${PHPFPM_EXPORTER_USER:=phpfpm_exporter}
-: ${PHPFPM_EXPORTER_LOG:="/var/log/phpfpm_exporter/phpfpm_exporter.log"}
-: ${SSD_OPTS:="-1 ${PHPFPM_EXPORTER_LOG} -2 ${PHPFPM_EXPORTER_LOG}"}
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${PHPFPM_EXPORTER_LOGDIR}/error.log}"
 
-name="${PHPFPM_EXPORTER_NAME:-"PHP-FPM Exporter"}"
+name="${name:-PHP-FPM Exporter}"
 command="/usr/bin/phpfpm_exporter"
 command_args="${PHPFPM_EXPORTER_OPTS}"
-command_user="${PHPFPM_EXPORTER_USER}"
-command_background=true
-pidfile="/run/${SVCNAME}.pid"
-start_stop_daemon_args="${SSD_OPTS}"
+command_user="${command_user:-phpfpm_exporter:phpfpm_exporter}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${PHPFPM_EXPORTER_USER} \
-		"${PHPFPM_EXPORTER_LOG%/*}"
+	checkpath -d -m 0750 -o "${command_user}" "${PHPFPM_EXPORTER_LOGDIR}"
 }

@@ -3,6 +3,7 @@
 
 EAPI=6
 
+EGO_PN="github.com/kumina/${PN}"
 EGO_VENDOR=(
 	"github.com/beorn7/perks 3a771d9"
 	"github.com/golang/protobuf b4deda0"
@@ -17,19 +18,19 @@ EGO_VENDOR=(
 
 inherit golang-vcs-snapshot systemd user
 
-EGO_PN="github.com/kumina/${PN/prometheus-}"
 DESCRIPTION="A Prometheus metrics exporter for the Postfix mail server"
 HOMEPAGE="https://github.com/kumina/postfix_exporter"
 SRC_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
-RESTRICT="mirror strip"
+RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="systemd"
+IUSE="pie systemd"
 
-DOCS=( {CHANGELOG,README}.md )
+DOCS=( CHANGELOG README.md )
+QA_PRESTRIPPED="usr/bin/postfix_exporter"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -41,18 +42,25 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-
-	go build -v $(usex !systemd '-tags nosystemd' '') \
-		-ldflags "-s -w" || die
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w"
+		$(usex !systemd '-tags nosystemd' '')
+	)
+	go build "${mygoargs[@]}" || die
 }
 
 src_install() {
 	dobin postfix_exporter
 	einstalldocs
 
-	newinitd "${FILESDIR}"/${PN}.initd ${PN}
-	newconfd "${FILESDIR}"/${PN}.confd ${PN}
-	systemd_dounit "${FILESDIR}"/${PN}.service
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	diropts -o postfix_exporter -g postfix_exporter -m 0750
 	keepdir /var/log/postfix_exporter
