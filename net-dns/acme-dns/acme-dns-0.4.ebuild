@@ -1,0 +1,81 @@
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+EAPI=6
+
+EGO_PN="github.com/joohoi/${PN}"
+
+inherit fcaps golang-vcs-snapshot user
+
+DESCRIPTION="A simplified DNS server with a RESTful HTTP API to provide ACME DNS challenges"
+HOMEPAGE="https://github.com/joohoi/acme-dns"
+SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+RESTRICT="mirror"
+
+LICENSE="MIT"
+SLOT="0"
+KEYWORDS="~amd64 ~x86"
+IUSE="pie postgres +sqlite"
+REQUIRED_USE="|| ( postgres sqlite )"
+
+RDEPEND="postgres? ( dev-db/postgresql )
+	sqlite? ( dev-db/sqlite:3 )"
+
+DOCS=( README.md )
+FILECAPS=( cap_net_bind_service+ep usr/bin/acme-dns )
+QA_PRESTRIPPED="usr/bin/acme-dns"
+
+G="${WORKDIR}/${P}"
+S="${G}/src/${EGO_PN}"
+
+pkg_setup() {
+	enewgroup acme-dns
+	enewuser acme-dns -1 -1 /var/lib/acme-dns acme-dns
+}
+
+src_compile() {
+	export GOPATH="${G}"
+
+	# build up optional flags
+	# shellcheck disable=SC2207
+	local options=(
+		$(usex postgres postgres '')
+		$(usex sqlite sqlite3 '')
+	)
+
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w"
+		-tags "${options[*]}"
+	)
+	go build "${mygoargs[@]}" || die
+}
+
+src_install() {
+	dobin acme-dns
+	einstalldocs
+
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+
+	insinto /var/lib/acme-dns
+	newins config.cfg config.cfg.example
+
+	diropts -o acme-dns -g acme-dns -m 0750
+	keepdir /var/log/acme-dns
+}
+
+pkg_postinst() {
+	if ! use filecaps; then
+		ewarn
+		ewarn "'filecaps' USE flag is disabled"
+		ewarn "${PN} will fail to listen on port 53 if started via OpenRC"
+		ewarn "please either change port to > 1024, configure to run ${PN} as root"
+		ewarn "or re-enable 'filecaps'"
+		ewarn
+	fi
+}
