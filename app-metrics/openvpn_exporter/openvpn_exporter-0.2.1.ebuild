@@ -3,6 +3,7 @@
 
 EAPI=6
 
+EGO_PN="github.com/kumina/${PN}"
 EGO_VENDOR=(
 	"github.com/beorn7/perks 3a771d9"
 	"github.com/golang/protobuf b4deda0"
@@ -15,19 +16,19 @@ EGO_VENDOR=(
 
 inherit golang-vcs-snapshot systemd user
 
-EGO_PN="github.com/kumina/${PN/prometheus-}"
 DESCRIPTION="A Prometheus exporter for OpenVPN"
 HOMEPAGE="https://github.com/kumina/openvpn_exporter"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
-RESTRICT="mirror strip"
+RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="examples"
+IUSE="examples pie"
 
 DOCS=( {CHANGELOG,README}.md )
+QA_PRESTRIPPED="usr/bin/openvpn_exporter"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -39,21 +40,29 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-	go build -v -ldflags "-s -w" || die
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w"
+	)
+	go build "${mygoargs[@]}" || die
 }
 
 src_install() {
 	dobin openvpn_exporter
 	einstalldocs
 
-	newinitd "${FILESDIR}"/${PN}.initd ${PN}
-	newconfd "${FILESDIR}"/${PN}.confd ${PN}
-	systemd_dounit "${FILESDIR}"/${PN}.service
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	if use examples; then
 		docinto examples
 		dodoc -r examples/*
-		docompress -x /usr/share/doc/${PF}/examples
+		docompress -x "/usr/share/doc/${PF}/examples"
 	fi
 
 	diropts -o openvpn_exporter -g openvpn_exporter -m 0750
