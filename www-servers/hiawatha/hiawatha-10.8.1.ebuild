@@ -73,5 +73,5 @@ src_install() {
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	diropts -o hiawatha -g hiawatha -m 0750
-	dodir /var/{lib,log}/hiawatha
+	keepdir /var/{lib,log}/hiawatha
 }

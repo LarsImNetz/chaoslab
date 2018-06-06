@@ -37,6 +37,7 @@ pkg_setup() {
 
 src_prepare() {
 	# fix compiling with multilib-strict feature enabled
+	# shellcheck disable=SC2046,SC2016
 	sed -i 's:^LIBDIR.*:LIBDIR ?= $(PREFIX)/'$(get_libdir)':' \
 		./config.mk || die
 
