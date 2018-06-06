@@ -1,4 +1,9 @@
 # config file for /etc/init.d/version_exporter
 # run /usr/bin/version_exporter -h to see available options
 
+VERSION_EXPORTER_LOGDIR="/var/log/${RC_SVCNAME}"
 VERSION_EXPORTER_OPTS=""
+
+# Logging
+#output_log="${VERSION_EXPORTER_LOGDIR}/version_exporter.log"
+#error_log="${VERSION_EXPORTER_LOGDIR}/error.log"

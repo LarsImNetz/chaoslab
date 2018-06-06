@@ -3,6 +3,7 @@
 
 EAPI=6
 
+EGO_PN="github.com/caarlos0/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 EGO_VENDOR=(
 	"github.com/pierrre/gotestcover 924dca7"
@@ -26,19 +27,19 @@ EGO_VENDOR=(
 
 inherit golang-vcs-snapshot systemd user
 
-EGO_PN="github.com/caarlos0/${PN/prometheus-}"
 DESCRIPTION="Exports the expiration time of your domains as prometheus metrics"
 HOMEPAGE="https://github.com/caarlos0/version_exporter"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
-RESTRICT="mirror strip"
+RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="test"
+IUSE="pie test"
 
 DOCS=( README.md )
+QA_PRESTRIPPED="usr/bin/version_exporter"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -50,24 +51,24 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-	local GOLDFLAGS="-s -w
-		-X main.version=${PV}"
-
-	go build -v -ldflags \
-		"${GOLDFLAGS}" || die
+	export GOBIN="${S}/bin"
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w -X main.version=${PV}"
+	)
+	go build "${mygoargs[@]}" || die
 
 	if use test; then
-		ebegin "Building gotestcover locally"
-		pushd vendor/github.com/pierrre/gotestcover > /dev/null || die
-		go build -v -ldflags "-s -w" \
-			-o "${G}"/bin/gotestcover || die
-		popd > /dev/null || die
-		eend $?
+		go install ./vendor/github.com/pierrre/gotestcover || die
 	fi
 }
 
 src_test() {
-	local PATH="${G}/bin:$PATH"
+	local PATH="${S}/bin:$PATH"
 	default
 }
 
@@ -75,9 +76,9 @@ src_install() {
 	dobin version_exporter
 	einstalldocs
 
-	newinitd "${FILESDIR}"/${PN}.initd ${PN}
-	newconfd "${FILESDIR}"/${PN}.confd ${PN}
-	systemd_dounit "${FILESDIR}"/${PN}.service
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	diropts -o version_exporter -g version_exporter -m 0750
 	keepdir /var/log/version_exporter
