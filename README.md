@@ -1,8 +1,8 @@
 ChaosLab: Overlay for Gentoo Linux
 ----------------------------------
 
-![packages 182](https://img.shields.io/badge/packages-182-blue.svg?style=flat-square)
-![ebuilds 235](https://img.shields.io/badge/ebuilds-235-orange.svg?style=flat-square)
+![packages 182](https://img.shields.io/badge/packages-182-4472c0.svg?style=flat-square)
+![ebuilds 235](https://img.shields.io/badge/ebuilds-235-f2693b.svg?style=flat-square)
 
 The scope of this overlay is to host ebuilds for packages related to secure communication,
 cryptocurrency, server-side applications, and many other things that I'm interested in. It
@@ -76,6 +76,5 @@ All commits and manifests on the first parent (at least) are signed by me.
 * Dash: `Xg8AVx7YLSpTagR5DSzHk9Na1oDMUwb2hk`
 * Ether: `0x002e7A11013BF05D418FD3FbdA4f3381E82e5A23`
 * Zcash: `zcX1qbN2YJKARPmFcrU3HgpQfYbWe9yy4YsogDA4gpwJ6NGk2bXZ6nyNDo3HLBkAKizRPkASSEduGeVtzj3VfixFey9y1Yx`
-* Monero: ↴
-`4KseVC8hDgP27ata3RuhyFbr1YMYn24hKDQixKTiQTufGX6Fn9vYTsvNY3uaZwivEQXXeewBk6d8eFymEGCU8pArN5m8JxkAcAu5CQRwat`
+* Monero: `88FJacypy5kiY1FuHoowEeEpAThvM9pd5CF4U6GZvAJ3Jgfh4oZ3GdUBwkkaonjAJAFnzgFVkFXZVd38w4EdYxsWGYuzSri`
 
