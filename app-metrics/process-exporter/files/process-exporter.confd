@@ -1,4 +1,9 @@
 # config file for /etc/init.d/process-exporter
 # run /usr/bin/process-exporter -h to see available options
 
+PROCESS_EXPORTER_LOG="/var/log/${RC_SVCNAME}"
 PROCESS_EXPORTER_OPTS=""
+
+# Logging
+#output_log="${PROCESS_EXPORTER_LOGDIR}/process-exporter.log"
+#error_log="${PROCESS_EXPORTER_LOGDIR}/error.log"
