@@ -5,6 +5,7 @@ This is a list of packages available and their associated description:
 --- | ---
 app-admin/**[consul](app-admin/consul)** `*` | A tool for service discovery, monitoring and configuration
 app-admin/**[doctl](app-admin/doctl)** | A command line tool for DigitalOcean services
+app-admin/**[gollum](app-admin/gollum)** | An n:m message multiplexer written in Go
 app-admin/**[pick](app-admin/pick)** | A minimal password manager written in Go
 app-admin/**[scaleway-cli](app-admin/scaleway-cli)** | Interact with Scaleway API from the command line
 app-admin/**[terraform](app-admin/terraform)** `*` | A tool for building, changing, and combining infrastructure safely/efficiently
