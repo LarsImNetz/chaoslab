@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="f23ac85" # Change this when you update the ebuild
+GIT_COMMIT="e1372f6" # Change this when you update the ebuild
 EGO_PN="github.com/senorprogrammer/${PN}"
 EGO_VENDOR=(
 	"github.com/briandowns/openweathermap 722564b"
@@ -11,9 +11,11 @@ EGO_VENDOR=(
 	"github.com/gdamore/tcell 3d5f294"
 	"github.com/google/go-github 2ae5df7"
 	"github.com/google/go-querystring 53e6ce1"
+	"github.com/jessevdk/go-flags 1c38ed7"
 	"github.com/lucasb-eyer/go-colorful 345fbb3" #v1.0
 	"github.com/mattn/go-runewidth ce7b0b5"
 	"github.com/olebedev/config 9a10d05"
+	"github.com/radovskyb/watcher 0d9d326"
 	"github.com/rivo/tview 71ecf1f"
 	"github.com/yfronto/newrelic f7fa0c6"
 	"golang.org/x/net 1e49130 github.com/golang/net"

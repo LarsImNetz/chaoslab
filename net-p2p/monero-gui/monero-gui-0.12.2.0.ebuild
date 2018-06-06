@@ -5,28 +5,38 @@ EAPI=6
 
 inherit cmake-utils gnome2-utils qmake-utils systemd user
 
-MO_GUI_COMMIT="755977d"
-MO_PV="c29890c2c03f7f24aa4970b3ebbfe2dbb95b24eb" # tag v0.12.0.0
+MO_GUI_COMMIT="d85f3ea"
+MO_PV="e2c39f6b59fcf5c623c814dfefc518ab0b7eca32" # tag v0.12.2.0
 MO_URI="https://github.com/monero-project/monero/archive/${MO_PV}.tar.gz"
 MO_P="monero-${MO_PV}"
+
+# Keep this in sync with ../monero/external/{miniupnp,unbound}
+MINIUPNP_COMMIT="6a63f9954959119568fbc4af57d7b491b9428d87"
+RAPIDJSON_COMMIT="af223d44f4e8d3772cb1ac0ce8bc2a132b51717f"
+UNBOUND_COMMIT="193bdc4ee3fe2b0d17e547e86512528c2614483a"
+MINIUPNP_P="miniupnp-${MINIUPNP_COMMIT}"
+RAPIDJSON_P="rapidjson-${RAPIDJSON_COMMIT}"
+UNBOUND_P="unbound-${UNBOUND_COMMIT}"
 
 DESCRIPTION="The secure, private and untraceable cryptocurrency (with GUI wallet)"
 HOMEPAGE="https://getmonero.org"
 SRC_URI="https://github.com/monero-project/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	${MO_URI} -> ${MO_P}.tar.gz"
+	${MO_URI} -> ${MO_P}.tar.gz
+	https://github.com/monero-project/miniupnp/archive/${MINIUPNP_COMMIT}.tar.gz -> ${MINIUPNP_P}.tar.gz
+	https://github.com/Tencent/rapidjson/archive/${RAPIDJSON_COMMIT}.tar.gz -> ${RAPIDJSON_P}.tar.gz
+	!system-unbound? ( https://github.com/monero-project/unbound/archive/${UNBOUND_COMMIT}.tar.gz -> ${UNBOUND_P}.tar.gz )"
 RESTRICT="mirror"
 
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+daemon doc dot +gui libressl readline scanner simplewallet unwind utils"
+IUSE="+daemon doc dot +gui libressl readline scanner simplewallet +system-unbound unwind utils"
 REQUIRED_USE="dot? ( doc ) scanner? ( gui )"
 
 CDEPEND="app-arch/xz-utils
 	dev-libs/boost:0=[nls,threads(+)]
 	dev-libs/expat
 	dev-libs/libsodium
-	net-dns/unbound[threads]
 	net-libs/cppzmq
 	net-libs/ldns
 	net-libs/miniupnpc
@@ -44,6 +54,7 @@ CDEPEND="app-arch/xz-utils
 	!libressl? ( dev-libs/openssl:0=[-bindist] )
 	libressl? ( dev-libs/libressl:0= )
 	readline? ( sys-libs/readline:0= )
+	system-unbound? ( net-dns/unbound[threads] )
 	unwind? ( sys-libs/libunwind )"
 DEPEND="${CDEPEND}
 	doc? ( app-doc/doxygen[dot?] )
@@ -53,7 +64,7 @@ RDEPEND="${CDEPEND}
 	simplewallet? ( !net-p2p/monero[simplewallet] )
 	utils? ( !net-p2p/monero[utils] )"
 
-PATCHES=( "${FILESDIR}/${P}-fix_cmake.patch" )
+PATCHES=( "${FILESDIR}/${PN}-0.12.1.0-fix_cmake.patch" )
 
 CMAKE_USE_DIR="${S}/monero"
 BUILD_DIR="${CMAKE_USE_DIR}/build/release"
@@ -71,6 +82,14 @@ src_prepare() {
 
 	mkdir -p "${S}/build" "${BUILD_DIR}" || die
 
+	rmdir monero/external/{miniupnp,rapidjson,unbound} || die
+	# Move dependencies
+	mv "${WORKDIR}/${MINIUPNP_P}" monero/external/miniupnp || die
+	mv "${WORKDIR}/${RAPIDJSON_P}" monero/external/rapidjson || die
+	if ! use system-unbound; then
+		mv "${WORKDIR}/${UNBOUND_P}" monero/external/unbound || die
+	fi
+
 	# shellcheck disable=SC2086
 	# Fix hardcoded translations path
 	sed -i 's:"/translations":"/../share/'${PN}'/translations":' \
@@ -84,12 +103,12 @@ src_configure() {
 		echo "var GUI_VERSION = \"${MO_GUI_COMMIT}\"" > version.js || die
 		echo "var GUI_MONERO_VERSION = \"${MO_PV:0:7}\"" >> version.js || die
 
-		pushd "${S}"/build >/dev/null || die
+		pushd "${S}"/build || die
 		eqmake5 ../monero-wallet-gui.pro \
 			"CONFIG+=release \
 			$(usex !scanner '' WITH_SCANNER) \
 			$(usex unwind '' libunwind_off)"
-		popd > /dev/null || die
+		popd || die
 	fi
 
 	# shellcheck disable=SC2191,SC2207
@@ -97,6 +116,7 @@ src_configure() {
 		-DCMAKE_INSTALL_PREFIX="${CMAKE_USE_DIR}"
 		-DBUILD_DOCUMENTATION=$(usex doc ON OFF)
 		-DBUILD_GUI_DEPS=ON
+		-DINSTALL_VENDORED_LIBUNBOUND=$(usex system-unbound OFF ON)
 		-DSTACK_TRACE=$(usex unwind ON OFF)
 		-DUSE_READLINE=$(usex readline ON OFF)
 	)
@@ -113,17 +133,10 @@ src_compile() {
 	emake -C "${BUILD_DIR}"/external/easylogging++ all install
 	emake -C "${BUILD_DIR}"/external/db_drivers/liblmdb all install
 
-	use daemon && \
-		emake -C "${BUILD_DIR}"/src/daemon
-
-	use simplewallet && \
-		emake -C "${BUILD_DIR}"/src/simplewallet
-
-	use utils && \
-		emake -C "${BUILD_DIR}"/src/blockchain_utilities
-
-	use gui && \
-		emake -C src/zxcvbn-c && emake -C build
+	use daemon && emake -C "${BUILD_DIR}"/src/daemon
+	use simplewallet && emake -C "${BUILD_DIR}"/src/simplewallet
+	use utils && emake -C "${BUILD_DIR}"/src/blockchain_utilities
+	use gui && emake -C src/zxcvbn-c && emake -C build
 
 	if use doc; then
 		pushd "${CMAKE_USE_DIR}" || die
@@ -148,7 +161,7 @@ src_install() {
 			"MimeType=x-scheme-handler/monero;\nTerminal=false"
 
 		insinto "/usr/share/${PN}/translations"
-		for lang in build/release/bin/translations/*.qm; do
+		for lang in build/translations/*.qm; do
 			doins "${lang}"
 		done
 	fi
@@ -161,15 +174,13 @@ src_install() {
 		systemd_newunit "${FILESDIR}/${PN}.service" monero.service
 
 		insinto /etc/monero
-		newins "${S}"/monero/utils/conf/monerod.conf \
-			monerod.conf.example
+		newins "${S}"/monero/utils/conf/monerod.conf monerod.conf.example
 
 		diropts -o monero -g monero -m 0750
 		keepdir /var/log/monero
 	fi
 
-	use simplewallet && \
-		dobin monero-wallet-cli
+	use simplewallet && dobin monero-wallet-cli
 
 	if use utils; then
 		dobin monero-blockchain-export

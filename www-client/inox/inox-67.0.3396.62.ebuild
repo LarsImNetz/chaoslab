@@ -375,6 +375,10 @@ src_prepare() {
 
 	# Remove most bundled libraries. Some are still needed.
 	build/linux/unbundle/remove_bundled_libraries.py "${keeplibs[@]}" --do-remove || die
+
+	# Allow building against system libraries in official builds
+	sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
+		tools/generate_shim_headers/generate_shim_headers.py
 }
 
 bootstrap_gn() {
@@ -483,7 +487,7 @@ src_configure() {
 	myconf_gn+=" use_system_harfbuzz=true"
 
 	# Inox
-	myconf_gn+=" is_cfi=true"
+	myconf_gn+=" is_official_build=true" # implies is_cfi=true on x86_64
 	myconf_gn+=" remove_webcore_debug_symbols=true"
 	myconf_gn+=" enable_hangout_services_extension=false"
 	myconf_gn+=" link_pulseaudio=$(usex pulseaudio true false)"
@@ -506,17 +510,10 @@ src_configure() {
 	myconf_gn+=" use_kerberos=$(usex kerberos true false)"
 	myconf_gn+=" use_pulseaudio=$(usex pulseaudio true false)"
 
-	# TODO: link_pulseaudio=true for GN.
-
 	myconf_gn+=" fieldtrial_testing_like_official_build=true"
 
-	# Never use bundled gold binary. Disable gold linker flags for now.
 	# Do not use bundled clang.
-	# Trying to use gold results in linker crash.
-	myconf_gn+=" use_gold=true use_sysroot=false linux_use_bundled_binutils=false use_custom_libcxx=false"
-
-	# Disable forced lld, bug 641556
-	myconf_gn+=" use_lld=true"
+	myconf_gn+=" use_sysroot=false linux_use_bundled_binutils=false use_custom_libcxx=false"
 
 	ffmpeg_branding="$(usex proprietary-codecs Chrome Chromium)"
 	myconf_gn+=" proprietary_codecs=$(usex proprietary-codecs true false)"
