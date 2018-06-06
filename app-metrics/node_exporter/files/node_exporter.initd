@@ -2,12 +2,10 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-NODE_EXPORTER_LOGDIR="${NODE_EXPORTER_LOGDIR:-/var/log/node_exporter}"
-
 output_log="${output_log:-/dev/null}"
 error_log="${error_log:-${NODE_EXPORTER_LOGDIR}/error.log}"
 
-name="${name:-"Node Exporter"}"
+name="${name:-Node Exporter}"
 command="/usr/sbin/node_exporter"
 command_args="${NODE_EXPORTER_OPTS}"
 command_user="${command_user:-node_exporter:node_exporter}"
