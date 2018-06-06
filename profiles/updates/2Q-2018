@@ -17,3 +17,11 @@ move net-analyzer/prometheus-haproxy_exporter app-metrics/haproxy_exporter
 move net-analyzer/prometheus-influxdb_exporter app-metrics/influxdb_exporter
 move net-analyzer/prometheus-memcached_exporter app-metrics/memcached_exporter
 move net-analyzer/prometheus-mysqld_exporter app-metrics/mysqld_exporter
+move net-analyzer/prometheus-nginx_vts_exporter app-metrics/nginx-vts-exporter
+move net-analyzer/prometheus-nsq_exporter app-metrics/nsq_exporter
+move net-analyzer/prometheus-openvpn_exporter app-metrics/openvpn_exporter
+move net-analyzer/prometheus-phpfpm_exporter app-metrics/phpfpm_exporter
+move net-analyzer/prometheus-postfix_exporter app-metrics/postfix_exporter
+move net-analyzer/prometheus-postgres_exporter app-metrics/postgres_exporter
+move net-analyzer/prometheus-process_exporter app-metrics/process_exporter
+move net-analyzer/prometheus-redis_exporter app-metrics/redis_exporter
