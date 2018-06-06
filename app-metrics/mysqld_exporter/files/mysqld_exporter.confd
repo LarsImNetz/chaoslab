@@ -1,4 +1,9 @@
 # config file for /etc/init.d/mysqld_exporter
 # run /usr/bin/mysqld_exporter -h to see available options
 
+MYSQLD_EXPORTER_LOGDIR="/var/log/${RC_SVCNAME}"
 MYSQLD_EXPORTER_OPTS=""
+
+# Logging
+#output_log="${MYSQLD_EXPORTER_LOGDIR}/mysqld_exporter.log"
+#error_log="${MYSQLD_EXPORTER_LOGDIR}/error.log"
