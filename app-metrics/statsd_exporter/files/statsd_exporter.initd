@@ -1,26 +1,23 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-description="Receives StatsD-style metrics and exports them as Prometheus metrics"
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${STATSD_EXPORTER_LOGDIR}/error.log}"
 
-: ${STATSD_EXPORTER_USER:=statsd_exporter}
-: ${STATSD_EXPORTER_LOG:="/var/log/statsd_exporter/statsd_exporter.log"}
-: ${SSD_OPTS:="-1 ${STATSD_EXPORTER_LOG} -2 ${STATSD_EXPORTER_LOG}"}
-
-name="${STATSD_EXPORTER_NAME:-"StatsD Exporter"}"
+name="${name:-StatsD Exporter}"
 command="/usr/bin/statsd_exporter"
 command_args="${STATSD_EXPORTER_OPTS}"
-command_user="${STATSD_EXPORTER_USER}"
-command_background=true
-pidfile="/run/${SVCNAME}.pid"
-start_stop_daemon_args="${SSD_OPTS}"
+command_user="${command_user:-statsd_exporter:statsd_exporter}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${STATSD_EXPORTER_USER} \
-		"${STATSD_EXPORTER_LOG%/*}"
+	checkpath -d -m 0750 -o "${command_user}" "${STATSD_EXPORTER_LOGDIR}"
 }

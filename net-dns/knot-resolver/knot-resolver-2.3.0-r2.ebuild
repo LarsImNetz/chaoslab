@@ -36,6 +36,10 @@ pkg_setup() {
 }
 
 src_prepare() {
+	# fix compiling with multilib-strict feature enabled
+	sed -i 's:^LIBDIR.*:LIBDIR ?= $(PREFIX)/'$(get_libdir)':' \
+		./config.mk || die
+
 	sed -i \
 		-e "s:'knot-resolver':'kresd':g" \
 		-e "s:root.keys:${EPREFIX}/var/lib/knot-resolver/root.keys:g" \
@@ -52,7 +56,6 @@ src_compile() {
 	emake \
 		LDFLAGS="${LDFLAGS}" \
 		PREFIX="${EPREFIX}/usr" \
-		LIBDIR="${EPREFIX}/usr/$(get_libdir)" \
 		ETCDIR="${EPREFIX}/etc/knot-resolver" \
 		ENABLE_DNSTAP=$(usex dnstap) \
 		HARDENING=$(usex pie) \
@@ -76,7 +79,7 @@ src_install() {
 	newconfd "${FILESDIR}/${PN}.confd-r1" kresd
 
 	diropts -o kresd -g kresd -m750
-	dodir /var/log/knot
+	keepdir /var/log/knot
 
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}/${PN}.logrotate-r1" "${PN}"

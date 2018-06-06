@@ -1,26 +1,23 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-description="A Prometheus exporter for Unbound"
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${UNBOUND_EXPORTER_LOGDIR}/error.log}"
 
-: ${UNBOUND_EXPORTER_USER:=unbound_exporter}
-: ${UNBOUND_EXPORTER_LOG:="/var/log/unbound_exporter/unbound_exporter.log"}
-: ${SSD_OPTS:="-1 ${UNBOUND_EXPORTER_LOG} -2 ${UNBOUND_EXPORTER_LOG}"}
-
-name="${UNBOUND_EXPORTER_NAME:-"Unbound Exporter"}"
+name="${name:-Unbound Exporter}"
 command="/usr/bin/unbound_exporter"
 command_args="${UNBOUND_EXPORTER_OPTS}"
-command_user="${UNBOUND_EXPORTER_USER}"
-command_background=true
-pidfile="/run/${SVCNAME}.pid"
-start_stop_daemon_args="${SSD_OPTS}"
+command_user="${command_user:-unbound_exporter:unbound_exporter}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}
+	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${UNBOUND_EXPORTER_USER} \
-		"${UNBOUND_EXPORTER_LOG%/*}"
+	checkpath -d -m 0750 -o "${command_user}" "${UNBOUND_EXPORTER_LOGDIR}"
 }

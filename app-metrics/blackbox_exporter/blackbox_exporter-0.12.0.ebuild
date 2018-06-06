@@ -8,7 +8,7 @@ EGO_PN="github.com/prometheus/${PN}"
 
 inherit golang-vcs-snapshot systemd user
 
-DESCRIPTION="Allows blackbox probing of endpoints over HTTP, HTTPS, DNS, TCP and ICMP"
+DESCRIPTION="Prometheus exporter for blackbox probing via HTTP, HTTPS, DNS, TCP and ICMP"
 HOMEPAGE="https://prometheus.io"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"

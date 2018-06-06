@@ -1,27 +1,25 @@
 #!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-description="Flexible SQL Exporter for Prometheus"
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${SQL_EXPORTER_LOGDIR}/error.log}"
 
-: ${SQL_EXPORTER_USER:=sql_exporter}
-: ${SQL_EXPORTER_LOG:="/var/log/sql_exporter/sql_exporter.log"}
-: ${SSD_OPTS:="-1 ${SQL_EXPORTER_LOG} -2 ${SQL_EXPORTER_LOG}"}
-
-name="${SQL_EXPORTER_NAME:-"SQL Exporter"}"
+name="${name:-SQL Exporter}"
 command="/usr/bin/sql_exporter"
 command_args="${SQL_EXPORTER_OPTS}"
-command_user="${SQL_EXPORTER_USER}"
-command_background=true
+command_user="${command_user:-sql_exporter:sql_exporter}"
+command_background=yes
 pidfile="/run/${RC_SVCNAME}.pid"
-start_stop_daemon_args="${SSD_OPTS} \
-	-e \"CONFIG=${SQL_EXPORTER_CONFIG}\""
+required_files="${SQL_EXPORTER_CONFIG}"
+start_stop_daemon_args="${SSD_OPTS}
+	-e \"CONFIG=${SQL_EXPORTER_CONFIG}\"
+	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o ${SQL_EXPORTER_USER} \
-		"${SQL_EXPORTER_LOG%/*}"
+	checkpath -d -m 0750 -o "${command_user}" "${SQL_EXPORTER_LOGDIR}"
 }
