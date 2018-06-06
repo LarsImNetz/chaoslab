@@ -1,4 +1,9 @@
 # config file for /etc/init.d/influxdb_exporter
 # run /usr/bin/influxdb_exporter -h to see available options
 
+INFLUXDB_EXPORTER_LOGDIR="/var/log/${RC_SVCNAME}"
 INFLUXDB_EXPORTER_OPTS=""
+
+# Logging
+#output_log="${INFLUXDB_EXPORTER_LOGDIR}/influxdb_exporter.log"
+#error_log="${INFLUXDB_EXPORTER_LOGDIR}/error.log"
