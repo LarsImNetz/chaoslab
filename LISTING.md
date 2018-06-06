@@ -31,10 +31,32 @@ app-emulation/**[docker](app-emulation/docker)** `*` `**` | The core functions y
 app-emulation/**[docker-proxy](app-emulation/docker-proxy)** `*` | Docker container networking
 app-emulation/**[runc](app-emulation/runc)** `*` | CLI tool for spawning and running containers
 app-metrics/**[alertmanager](app-metrics/alertmanager)** `*` | Handles alerts sent by client applications such as the Prometheus
+app-metrics/**[blackbox_exporter](app-metrics/blackbox_exporter)** `*` | Prometheus exporter for blackbox probing via HTTP, HTTPS, DNS, TCP and ICMP
+app-metrics/**[collectd_exporter](app-metrics/collectd_exporter)** | A server that accepts collectd stats for Prometheus consumption
+app-metrics/**[consul_exporter](app-metrics/consul_exporter)** | Export Consul service health to Prometheus
+app-metrics/**[dovecot_exporter](app-metrics/dovecot_exporter)** | A Prometheus metrics exporter for the Dovecot mail server
+app-metrics/**[elasticsearch_exporter](app-metrics/elasticsearch_exporter)** `*` | Elasticsearch stats exporter for Prometheus
+app-metrics/**[graphite_exporter](app-metrics/graphite_exporter)** | A server that accepts Graphite metrics for Prometheus consumption
+app-metrics/**[haproxy_exporter](app-metrics/haproxy_exporter)** | Scrapes HAProxy stats and exports them via HTTP for Prometheus consumption
+app-metrics/**[influxdb_exporter](app-metrics/influxdb_exporter)** | A server that accepts InfluxDB metrics for Prometheus consumption
+app-metrics/**[memcached_exporter](app-metrics/memcached_exporter)** | Exports metrics from memcached servers for consumption by Prometheus
+app-metrics/**[mysqld_exporter](app-metrics/mysqld_exporter)** `*` | Prometheus exporter for MySQL server metrics
+app-metrics/**[nginx-vts-exporter](app-metrics/nginx-vts-exporter)** `*` | A server that scrapes Nginx vts stats and exports them for Prometheus
 app-metrics/**[node_exporter](app-metrics/node_exporter)** `*` | Prometheus exporter for hardware and OS metrics exposed by *NIX kernels
+app-metrics/**[nsq_exporter](app-metrics/nsq_exporter)** | A Prometheus metrics exporter for NSQ
+app-metrics/**[openvpn_exporter](app-metrics/openvpn_exporter)** `*` | A Prometheus exporter for OpenVPN
+app-metrics/**[phpfpm_exporter](app-metrics/phpfpm_exporter)** | A Prometheus exporter for PHP-FPM
+app-metrics/**[postfix_exporter](app-metrics/postfix_exporter)** | A Prometheus metrics exporter for the Postfix mail server
+app-metrics/**[postgres_exporter](app-metrics/postgres_exporter)** `*` | PostgreSQL stats exporter for Prometheus
+app-metrics/**[process-exporter](app-metrics/process-exporter)** | A Prometheus exporter that mines /proc to report on selected processes
 app-metrics/**[prometheus](app-metrics/prometheus)** `*` | The Prometheus monitoring system and time series database
 app-metrics/**[pushgateway](app-metrics/pushgateway)** `*` | Push acceptor for ephemeral and batch jobs to expose their metrics to Prometheus
+app-metrics/**[redis_exporter](app-metrics/redis_exporter)** `*` | A server that export Redis metrics for Prometheus consumption
+app-metrics/**[script_exporter](app-metrics/script_exporter)** | A Prometheus exporter for shell script exit status and duration
 app-metrics/**[snmp_exporter](app-metrics/snmp_exporter)** `*` | An exporter that exposes information gathered from SNMP for Prometheus
+app-metrics/**[sql_exporter](app-metrics/sql_exporter)** | Flexible SQL Exporter for Prometheus
+app-metrics/**[statsd_exporter](app-metrics/statsd_exporter)** | Receives StatsD-style metrics and exports them as Prometheus metrics
+app-metrics/**[unbound_exporter](app-metrics/unbound_exporter)** | A Prometheus exporter for Unbound
 app-misc/**[bat](app-misc/bat)** | A 'cat' clone with syntax highlighting and Git integration
 app-misc/**[genact](app-misc/genact)** | A nonsense activity generator
 app-misc/**[skim](app-misc/skim)** `*` | Fuzzy finder in Rust
