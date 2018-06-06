@@ -11,8 +11,7 @@ inherit bash-completion-r1 golang-vcs-snapshot systemd user
 
 DESCRIPTION="A framework for processing, monitoring, and alerting on time series data"
 HOMEPAGE="https://influxdata.com"
-SRC_URI="https://${EGO_PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+SRC_URI="https://${EGO_PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="MIT"
