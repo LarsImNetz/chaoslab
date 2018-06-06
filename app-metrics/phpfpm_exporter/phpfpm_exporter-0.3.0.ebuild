@@ -3,21 +3,23 @@
 
 EAPI=6
 
+GIT_COMMIT="2cd2fd5" # Change this when you update the ebuild
+EGO_PN="github.com/Lusitaniae/${PN}"
+
 inherit golang-vcs-snapshot systemd user
 
-GIT_COMMIT="2cd2fd5"
-EGO_PN="github.com/Lusitaniae/${PN/prometheus-}"
 DESCRIPTION="A Prometheus exporter for PHP-FPM"
 HOMEPAGE="https://github.com/Lusitaniae/phpfpm_exporter"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
-RESTRICT="mirror strip"
+SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
+IUSE="pie"
 
 DOCS=( README.md )
+QA_PRESTRIPPED="usr/bin/phpfpm_exporter"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -29,16 +31,21 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-	local PROMU="vendor/github.com/prometheus/common"
-	local GOLDFLAGS="-s -w
-		-X ${EGO_PN}/${PROMU}/version.Version=${PV}
-		-X ${EGO_PN}/${PROMU}/version.Revision=${GIT_COMMIT}
-		-X ${EGO_PN}/${PROMU}/version.Branch=non-git
-		-X ${EGO_PN}/${PROMU}/version.BuildUser=$(id -un)@$(hostname -f)
-		-X ${EGO_PN}/${PROMU}/version.BuildDate=$(date -u '+%Y%m%d-%I:%M:%S')"
-
-	go build -v -ldflags \
-		"${GOLDFLAGS}" || die
+	local PROMU="${EGO_PN}/vendor/github.com/prometheus/common/version"
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w
+			-X ${PROMU}.Version=${PV}
+			-X ${PROMU}.Revision=${GIT_COMMIT}
+			-X ${PROMU}.Branch=non-git
+			-X ${PROMU}.BuildUser=$(id -un)@$(hostname -f)
+			-X ${PROMU}.BuildDate=$(date -u '+%Y%m%d-%I:%M:%S')"
+	)
+	go build "${mygoargs[@]}" || die
 }
 
 src_test() {
@@ -49,9 +56,9 @@ src_install() {
 	dobin phpfpm_exporter
 	einstalldocs
 
-	newinitd "${FILESDIR}"/${PN}.initd ${PN}
-	newconfd "${FILESDIR}"/${PN}.confd ${PN}
-	systemd_dounit "${FILESDIR}"/${PN}.service
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	diropts -o phpfpm_exporter -g phpfpm_exporter -m 0750
 	keepdir /var/log/phpfpm_exporter
