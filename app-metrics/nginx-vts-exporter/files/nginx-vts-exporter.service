@@ -3,7 +3,7 @@ Description=Nginx vts stats Exporter service
 After=network.target
 
 [Service]
-User=nginx_vts_exporter
+User=nginx-vts-exporter
 ExecStart=/usr/bin/nginx-vts-exporter
 ExecReload=/bin/kill -HUP $MAINPID
 

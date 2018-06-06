@@ -3,51 +3,59 @@
 
 EAPI=6
 
+GIT_COMMIT="8aa2881" # Change this when you update the ebuild
+EGO_PN="github.com/hnlq715/${PN}"
+
 inherit golang-vcs-snapshot systemd user
 
-COMMIT_HASH="8aa2881"
-EGO_PN="github.com/hnlq715/nginx-vts-exporter"
 DESCRIPTION="A server that scrapes Nginx vts stats and exports them for Prometheus"
 HOMEPAGE="https://github.com/hnlq715/nginx-vts-exporter"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-RESTRICT="mirror strip"
+RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
+IUSE="pie"
 
 DOCS=( README.md )
+QA_PRESTRIPPED="usr/bin/nginx-vts-exporter"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
-	enewgroup nginx_vts_exporter
-	enewuser nginx_vts_exporter -1 -1 -1 nginx_vts_exporter
+	enewgroup nginx-vts-exporter
+	enewuser nginx-vts-exporter -1 -1 -1 nginx-vts-exporter
 }
 
 src_compile() {
 	export GOPATH="${G}"
-	local PROMU="vendor/github.com/prometheus/common"
-	local GOLDFLAGS="-s -w
-		-X ${EGO_PN}/${PROMU}/version.Version=${PV}
-		-X ${EGO_PN}/${PROMU}/version.Revision=${COMMIT_HASH}
-		-X ${EGO_PN}/${PROMU}/version.BuildUser=$(id -un)@$(hostname -f)
-		-X ${EGO_PN}/${PROMU}/version.Branch=non-git
-		-X ${EGO_PN}/${PROMU}/version.BuildDate=$(date -u '+%Y%m%d-%I:%M:%S')"
-
-	go build -v -ldflags \
-		"${GOLDFLAGS}" || die
+	local PROMU="${EGO_PN}/vendor/github.com/prometheus/common/version"
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w
+			-X ${PROMU}.Version=${PV}
+			-X ${PROMU}.Revision=${GIT_COMMIT}
+			-X ${PROMU}.Branch=non-git
+			-X ${PROMU}.BuildUser=$(id -un)@$(hostname -f)
+			-X ${PROMU}.BuildDate=$(date -u '+%Y%m%d-%I:%M:%S')"
+	)
+	go build "${mygoargs[@]}" || die
 }
 
 src_install() {
 	dobin nginx-vts-exporter
 	einstalldocs
 
-	newinitd "${FILESDIR}"/${PN}.initd ${PN}
-	newconfd "${FILESDIR}"/${PN}.confd ${PN}
-	systemd_dounit "${FILESDIR}"/${PN}.service
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+	systemd_dounit "${FILESDIR}/${PN}.service"
 
-	diropts -o nginx_vts_exporter -g nginx_vts_exporter -m 0750
-	keepdir /var/log/nginx_vts_exporter
+	diropts -o nginx-vts-exporter -g nginx-vts-exporter -m 0750
+	keepdir /var/log/nginx-vts-exporter
 }
