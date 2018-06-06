@@ -1,0 +1,10 @@
+# config file for /etc/init.d/gollum
+# run /usr/bin/gollum -h to see available options
+
+GOLLUM_LOGDIR="/var/log/${RC_SVCNAME}"
+GOLLUM_CONFIG="/etc/gollum/gollum.conf"
+GOLLUM_OPTS=""
+
+# Logging
+#output_log="${GOLLUM_LOGDIR}/gollum.log"
+#error_log="${GOLLUM_LOGDIR}/error.log"
