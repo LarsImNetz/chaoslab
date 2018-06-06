@@ -88,7 +88,7 @@ pkg_setup() {
 
 src_prepare() {
 	if use gui; then
-		local filt= yeslang= nolang= lan ts x
+		local filt yeslang nolang lan ts x
 
 		for lan in $LANGS; do
 			lan="${lan/*:/}"
