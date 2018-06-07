@@ -1,0 +1,15 @@
+# config file for /etc/init.d/transmission-exporter
+
+# Note: If you define any passwords here, keep this file only readable by
+# the user that owns the process, which probably is "transmission-exporter".
+
+TRANSMISSION_EXPORTER_LOGDIR="/var/log/${RC_SVCNAME}"
+TRANSMISSION_EXPORTER_ADDR="http://localhost:9091"
+TRANSMISSION_EXPORTER_PASSWORD=""
+TRANSMISSION_EXPORTER_USERNAME=""
+TRANSMISSION_EXPORTER_WEB_ADDR=":19091"
+TRANSMISSION_EXPORTER_WEB_PATH="/metrics"
+
+# Logging
+#output_log="${TRANSMISSION_EXPORTER_LOGDIR}/transmission-exporter.log"
+#error_log="${TRANSMISSION_EXPORTER_LOGDIR}/error.log"
