@@ -3,7 +3,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${DOCKER_LOGDIR}/err.log}"
+error_log="${error_log:-${DOCKER_LOGDIR}/error.log}"
 
 pidfile="/run/${RC_SVCNAME}.pid"
 command="/usr/bin/dockerd"
