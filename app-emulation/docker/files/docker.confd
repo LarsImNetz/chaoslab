@@ -7,7 +7,7 @@ DOCKER_LOGDIR="/var/log/${RC_SVCNAME}"
 #output_log="${DOCKER_LOGDIR}/docker.log"
 
 # where the docker daemon stderr gets piped
-#error_log="${DOCKER_LOGDIR}/err.log"
+#error_log="${DOCKER_LOGDIR}/error.log"
 
 # any other random options you want to pass to docker
 DOCKER_OPTS=""
