@@ -57,6 +57,7 @@ app-metrics/**[script_exporter](app-metrics/script_exporter)** | A Prometheus ex
 app-metrics/**[snmp_exporter](app-metrics/snmp_exporter)** `*` | An exporter that exposes information gathered from SNMP for Prometheus
 app-metrics/**[sql_exporter](app-metrics/sql_exporter)** | Flexible SQL Exporter for Prometheus
 app-metrics/**[statsd_exporter](app-metrics/statsd_exporter)** | Receives StatsD-style metrics and exports them as Prometheus metrics
+app-metrics/**[transmission-exporter](app-metrics/transmission-exporter)** | Transmission Exporter for Prometheus
 app-metrics/**[unbound_exporter](app-metrics/unbound_exporter)** | A Prometheus exporter for Unbound
 app-misc/**[bat](app-misc/bat)** | A 'cat' clone with syntax highlighting and Git integration
 app-misc/**[genact](app-misc/genact)** | A nonsense activity generator
