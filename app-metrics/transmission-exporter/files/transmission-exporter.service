@@ -1,0 +1,12 @@
+[Unit]
+Description=Transmission Exporter service
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/default/transmission-exporter
+User=transmission-exporter
+ExecStart=/usr/bin/transmission-exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

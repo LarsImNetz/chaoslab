@@ -1,0 +1,27 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${TRANSMISSION_EXPORTER_LOGDIR}/error.log}"
+
+name="${name:-Transmission Exporter}"
+command="/usr/bin/transmission-exporter"
+command_user="${command_user:-transmission-exporter:transmission-exporter}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}
+	-e \"TRANSMISSION_ADDR=${TRANSMISSION_EXPORTER_ADDR}\"
+	-e \"TRANSMISSION_PASSWORD=${TRANSMISSION_EXPORTER_PASSWORD}\"
+	-e \"TRANSMISSION_USERNAME=${TRANSMISSION_EXPORTER_USERNAME}\"
+	-e \"WEB_ADDR=${TRANSMISSION_EXPORTER_WEB_ADDR}\"
+	-e \"WEB_PATH=${TRANSMISSION_EXPORTER_WEB_PATH}\"
+	-1 ${output_log} -2 ${error_log}"
+
+depend() {
+	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" "${TRANSMISSION_EXPORTER_LOGDIR}"
+}
