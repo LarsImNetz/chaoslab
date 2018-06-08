@@ -169,7 +169,8 @@ src_compile() {
 		eend $?
 	else
 		ewarn "WARNING: prebuilt docker images will be embedded in gitlab-runner"
-		ewarn "WARNING: to use images compiled from your system, enable 'build-images'"
+		ewarn "WARNING: it is NOT safe, as it may contain outdated code, to use"
+		ewarn "WARNING: images compiled from your system, enable 'build-images'"
 	fi
 
 	# Build go-bindata locally
