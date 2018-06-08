@@ -21,8 +21,12 @@ RDEPEND="net-p2p/Sia
 
 pkg_setup() {
 	# shellcheck disable=SC2086
-	has network-sandbox $FEATURES && \
-		die "net-p2p/Sia-UI requires 'network-sandbox' to be disabled in FEATURES"
+	if has network-sandbox $FEATURES; then
+		ewarn ""
+		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
+		ewarn ""
+		die "[network-sandbox] is enabled in FEATURES"
+	fi
 }
 
 src_prepare() {

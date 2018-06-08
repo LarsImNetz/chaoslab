@@ -27,12 +27,16 @@ S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
 	if use test; then
+		ewarn ""
+		ewarn "The test phase requires a local Redis server running on default port"
+		ewarn ""
 		# shellcheck disable=SC2086
-		has network-sandbox $FEATURES && \
-			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn
-		ewarn "The test phase requires a local Redis server running on the default port"
-		ewarn
+		if has network-sandbox $FEATURES; then
+			ewarn ""
+			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
+			ewarn ""
+			die "[network-sandbox] is enabled in FEATURES"
+		fi
 	fi
 
 	enewgroup redis_exporter

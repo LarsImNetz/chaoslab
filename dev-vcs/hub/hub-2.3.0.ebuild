@@ -29,10 +29,14 @@ G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_setup() {
-	# shellcheck disable=SC2086
 	if use man; then
-		has network-sandbox $FEATURES && \
-			die "dev-vcs/hub[man] require 'network-sandbox' to be disabled in FEATURES"
+		# shellcheck disable=SC2086
+		if has network-sandbox $FEATURES; then
+			ewarn ""
+			ewarn "${CATEGORY}/${PN}[man] requires 'network-sandbox' to be disabled in FEATURES"
+			ewarn ""
+			die "[network-sandbox] is enabled in FEATURES"
+		fi
 	fi
 }
 
