@@ -102,6 +102,7 @@ dev-python/**[requests-file](dev-python/requests-file)** | File transport adapte
 dev-python/**[rfc6266](dev-python/rfc6266)** | Content-Disposition header support for Python
 dev-python/**[tldextract](dev-python/tldextract)** | Accurately separates the gTLD or ccTLD from the registered domain and subdomains
 dev-util/**[electron-bin](dev-util/electron-bin)** `*` | Cross platform application development framework based on web technologies
+dev-util/**[gitlab-runner](dev-util/gitlab-runner)** | The official GitLab Runner, written in Go
 dev-vcs/**[gitkraken-bin](dev-vcs/gitkraken-bin)** | The intuitive, fast, and beautiful cross-platform Git client
 dev-vcs/**[hub](dev-vcs/hub)** | A command-line wrapper for git that makes you better at GitHub
 gnome-extra/**[gnome-pomodoro](gnome-extra/gnome-pomodoro)** | A Pomodoro timer for Gnome

@@ -1,0 +1,20 @@
+[Unit]
+Description=GitLab Runner service
+After=syslog.target network.target
+ConditionFileIsExecutable=/usr/bin/gitlab-runner
+
+[Service]
+User=runner
+Group=gitlab
+StartLimitInterval=5
+StartLimitBurst=10
+WorkingDirectory=/var/lib/gitlab-runner
+ExecStart=/usr/bin/gitlab-runner run --config /etc/gitlab-runner/config.toml
+Restart=always
+RestartSec=120
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=gitlab-runner
+
+[Install]
+WantedBy=multi-user.target

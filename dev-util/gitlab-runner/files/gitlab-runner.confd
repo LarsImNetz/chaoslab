@@ -1,0 +1,12 @@
+# config file for /etc/init.d/gitlab-runner
+# run /usr/bin/gitlab-runner -h to see available options
+
+RUNNER_LOGDIR="/var/log/${RC_SVCNAME}"
+RUNNER_CONFIG="/etc/gitlab-runner/config.toml"
+
+# Additional options (avoid --config, use variable above)
+RUNNER_OPTS=""
+
+# Logging
+#output_log="${RUNNER_LOGDIR}/gitlab-runner.log"
+#error_log="${RUNNER_LOGDIR}/error.log"
