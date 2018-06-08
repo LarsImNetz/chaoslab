@@ -4,7 +4,7 @@
 RUNNER_LOGDIR="/var/log/${RC_SVCNAME}"
 RUNNER_CONFIG="/etc/gitlab-runner/config.toml"
 
-# Additional options (avoid --config, use variable above)
+# Additional options (avoid --config, use the variable above)
 RUNNER_OPTS=""
 
 # Logging
