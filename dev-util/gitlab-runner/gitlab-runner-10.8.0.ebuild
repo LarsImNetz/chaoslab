@@ -51,7 +51,7 @@ pkg_setup() {
 		# shellcheck disable=SC2086
 		if has network-sandbox $FEATURES; then
 			ewarn ""
-			ewarn "dev-util/gitlab-runner requires internet access during"
+			ewarn "${CATEGORY}/${PN} requires internet access during"
 			ewarn "compile phase, you must disable 'network-sandbox'"
 			ewarn "in FEATURES (/etc/portage/make.conf)."
 			ewarn ""
@@ -84,7 +84,7 @@ pkg_setup() {
 			ewarn "You must enable support for ARM binaries through Qemu."
 			ewarn ""
 			ewarn "Please execute (as root) the script described here:"
-			ewarn "https://gitlab.com/gitlab-org/gitlab-runner/blob/v${PV}/docs/development/README.md#2-install-docker-engine"
+			ewarn "https://${EGO_PN}/blob/v${PV}/docs/development/README.md#2-install-docker-engine"
 			ewarn ""
 			ewarn "Note: You probably don't need to modprobe or mount binfmt_misc,"
 			ewarn "so comment out those parts in the aforementioned script."
@@ -115,19 +115,20 @@ src_compile() {
 	export GOPATH="${G}"
 	local PATH="${G}/bin:$PATH" BUILT
 	BUILT="$(date -u '+%Y-%m-%dT%H:%M:%S%:z')"
-	local GO_LDFLAGS="-s -w
-		-X ${EGO_PN}/common.NAME=${PN}
-		-X ${EGO_PN}/common.VERSION=${PV}
-		-X ${EGO_PN}/common.REVISION=${GIT_COMMIT}
-		-X ${EGO_PN}/common.BUILT=${BUILT}
-		-X ${EGO_PN}/common.BRANCH=non-git"
+	local GO_LDFLAGS=( -s -w
+		-X "${EGO_PN}/common.NAME=${PN}"
+		-X "${EGO_PN}/common.VERSION=${PV}"
+		-X "${EGO_PN}/common.REVISION=${GIT_COMMIT}"
+		-X "${EGO_PN}/common.BUILT=${BUILT}"
+		-X "${EGO_PN}/common.BRANCH=non-git"
+	)
 	# shellcheck disable=SC2207
 	local mygoargs=(
 		-v -work -x
 		$(usex pie '-buildmode=pie' '')
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "${GO_LDFLAGS}"
+		-ldflags "${GO_LDFLAGS[*]}"
 	)
 
 	if use build-images; then
@@ -137,9 +138,9 @@ src_compile() {
 		ebegin "Building gitlab-runner-prebuilt-x86_64-${GIT_COMMIT}"
 		# Building gitlab-runner-helper
 		gox -osarch=linux/amd64 \
-			-ldflags "${GO_LDFLAGS}" \
+			-ldflags "${GO_LDFLAGS[*]}" \
 			-output="dockerfiles/build/gitlab-runner-helper" \
-			./apps/gitlab-runner-helper
+			./apps/gitlab-runner-helper || die
 
 		# Build docker images
 		docker build -t gitlab/gitlab-runner-helper:x86_64-${GIT_COMMIT} \
@@ -154,9 +155,9 @@ src_compile() {
 		ebegin "Building gitlab-runner-prebuilt-arm-${GIT_COMMIT}"
 		# Building gitlab-runner-helper
 		gox -osarch=linux/arm \
-			-ldflags "${GO_LDFLAGS}" \
+			-ldflags "${GO_LDFLAGS[*]}" \
 			-output="dockerfiles/build/gitlab-runner-helper" \
-			./apps/gitlab-runner-helper
+			./apps/gitlab-runner-helper || die
 
 		# Build docker images
 		docker build -t gitlab/gitlab-runner-helper:arm-${GIT_COMMIT} \

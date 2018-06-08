@@ -10,9 +10,15 @@ CHROMIUM_LANGS="am ar bg bn ca cs da de el en-GB es es-419 et fa fi fil fr gu he
 
 inherit check-reqs chromium-2 eutils gnome2-utils flag-o-matic multilib ninja-utils pax-utils portability python-any-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
+INOX_PV="${PV}"
+INOX_P="inox-patchset-${INOX_PV}"
+INOX_COMMIT="65798d850849c66e35e10a4e6611867178413abc"
+INOX_WORKDIR="${WORKDIR}/${INOX_P}-${INOX_COMMIT}"
+
 DESCRIPTION="Chromium spin-off to enhance privacy by disabling data transmission to Google"
 HOMEPAGE="http://chromium.org/"
-SRC_URI="https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${PV}.tar.xz"
+SRC_URI="https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${PV}.tar.xz
+	https://gitlab.com/chaoslab/inox-patchset/repository/${INOX_PV}/archive.tar.gz -> ${INOX_P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
@@ -142,29 +148,6 @@ PATCHES=(
 	"${FILESDIR}/chromium-stdint.patch"
 	"${FILESDIR}/chromium-ffmpeg-r1.patch"
 	"${FILESDIR}/chromium-ffmpeg-clang.patch"
-
-	"${FILESDIR}/inox-67/0001-fix-building-without-safebrowsing-part1.patch"
-	"${FILESDIR}/inox-67/0001-fix-building-without-safebrowsing-part2.patch"
-	"${FILESDIR}/inox-67/0002-fix-building-without-reporting.patch"
-	"${FILESDIR}/inox-67/0003-disable-autofill-download-manager.patch"
-	"${FILESDIR}/inox-67/0004-disable-google-url-tracker.patch"
-	"${FILESDIR}/inox-67/0005-disable-default-extensions.patch"
-	"${FILESDIR}/inox-67/0006-modify-default-prefs.patch"
-	"${FILESDIR}/inox-67/0007-disable-web-resource-service.patch"
-	"${FILESDIR}/inox-67/0008-restore-classic-ntp.patch"
-	"${FILESDIR}/inox-67/0009-disable-google-ipv6-probes.patch"
-	"${FILESDIR}/inox-67/0010-disable-gcm-status-check.patch"
-	"${FILESDIR}/inox-67/0011-add-duckduckgo-search-engine.patch"
-	"${FILESDIR}/inox-67/0012-branding.patch"
-	"${FILESDIR}/inox-67/0013-disable-missing-key-warning.patch"
-	"${FILESDIR}/inox-67/0014-disable-translation-lang-fetch.patch"
-	"${FILESDIR}/inox-67/0015-disable-update-pings.patch"
-	"${FILESDIR}/inox-67/0016-chromium-sandbox-pie.patch"
-	"${FILESDIR}/inox-67/0017-disable-new-avatar-menu.patch"
-	"${FILESDIR}/inox-67/0018-disable-first-run-behaviour.patch"
-	"${FILESDIR}/inox-67/0019-disable-battery-status-service.patch"
-	"${FILESDIR}/inox-67/0021-disable-rlz.patch"
-	"${FILESDIR}/inox-67/9000-disable-metrics.patch"
 )
 
 S="${WORKDIR}/chromium-${PV}"
@@ -211,6 +194,12 @@ src_prepare() {
 	python_setup
 
 	default
+
+	local ip
+	for ip in "${INOX_WORKDIR}"/*.patch; do
+		[ -f "$ip" ] || die
+		eapply "${ip}"
+	done
 
 	mkdir -p third_party/node/linux/node-linux-x64/bin || die
 	ln -s "${EPREFIX}"/usr/bin/node third_party/node/linux/node-linux-x64/bin/node || die
@@ -689,7 +678,7 @@ src_install() {
 	# Install icons and desktop entry.
 	local size
 	for size in 16 22 24 32 48 64 128 256 ; do
-		newicon -s ${size} "${FILESDIR}/icons/product_logo_${size}.png" \
+		newicon -s ${size} "${INOX_WORKDIR}/product_logo_${size}.png" \
 			inox-browser.png
 	done
 
