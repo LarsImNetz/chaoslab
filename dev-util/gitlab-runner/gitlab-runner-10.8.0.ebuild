@@ -50,11 +50,12 @@ pkg_setup() {
 
 		# shellcheck disable=SC2086
 		if has network-sandbox $FEATURES; then
-				ewarn ""
-				ewarn "dev-util/gitlab-runner requires internet access,"
-				ewarn "'network-sandbox' must be disabled in FEATURES."
-				ewarn ""
-				die "'network-sandbox' is enabled in FEATURES"
+			ewarn ""
+			ewarn "dev-util/gitlab-runner requires internet access during"
+			ewarn "compile phase, you must disable 'network-sandbox'"
+			ewarn "in FEATURES (/etc/portage/make.conf)."
+			ewarn ""
+			die "'network-sandbox' is enabled in FEATURES"
 		fi
 
 		# Does portage have access to docker's socket?
