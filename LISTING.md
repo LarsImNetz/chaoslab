@@ -188,7 +188,6 @@ www-servers/**[algernon](www-servers/algernon)** | Pure Go web server with Lua, 
 www-servers/**[caddy](www-servers/caddy)** `*` | Fast, cross-platform HTTP/2 web server with automatic HTTPS
 www-servers/**[h2o](www-servers/h2o)** `*` | An optimized HTTP server with support for HTTP/1.x and HTTP/2
 www-servers/**[hiawatha](www-servers/hiawatha)** `*` | Advanced and secure webserver
-www-servers/**[nginx](www-servers/nginx)** `*` | Robust, small and high performance http and reverse proxy server
 www-servers/**[rest-server](www-servers/rest-server)** | A high performance HTTP server that implements restic's REST backend API
 x11-misc/**[noti](x11-misc/noti)** | Trigger notifications when a process completes
 
