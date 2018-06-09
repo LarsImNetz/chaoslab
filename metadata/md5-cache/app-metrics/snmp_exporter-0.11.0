@@ -10,4 +10,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/prometheus/snmp_exporter/archive/v0.11.0.tar.gz -> snmp_exporter-0.11.0.tar.gz
 _eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	a31844b675f1a1fea87fbe1144aee5f5	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=abfe0edb66bc8c5a6e65703bccb6c876
+_md5_=b3dde73fd149dbd29d7c6fcfab2addd8

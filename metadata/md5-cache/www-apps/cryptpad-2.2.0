@@ -10,4 +10,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/xwiki-labs/cryptpad/archive/2.2.0.tar.gz -> cryptpad-2.2.0.tar.gz
 _eclasses_=multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	a31844b675f1a1fea87fbe1144aee5f5	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=c06c6d15b5272595a7b12df453d071f0
+_md5_=9d726e62c3eb8f5d692b5cd8f54f13d1
