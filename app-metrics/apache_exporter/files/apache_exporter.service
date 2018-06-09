@@ -1,0 +1,11 @@
+[Unit]
+Description=Apache Exporter service
+After=network.target
+
+[Service]
+User=apache_exporter
+ExecStart=/usr/bin/apache_exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

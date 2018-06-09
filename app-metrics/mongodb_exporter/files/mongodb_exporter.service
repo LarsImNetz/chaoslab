@@ -1,0 +1,12 @@
+[Unit]
+Description=MongoDB Exporter service
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/default/mongodb_exporter
+User=mongodb_exporter
+ExecStart=/usr/bin/mongodb_exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
