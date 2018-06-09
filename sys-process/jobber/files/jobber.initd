@@ -1,0 +1,13 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+command="/usr/libexec/jobbermaster"
+command_args="${JOBBER_OPTS}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	need logger
+}

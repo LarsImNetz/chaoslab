@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">dshearer/jobber</remote-id>
+		<bugs-to>https://github.com/dshearer/jobber/issues</bugs-to>
+		<doc>https://dshearer.github.io/jobber/doc/</doc>
+	</upstream>
+	<longdescription lang="en">
+		Jobber is a utility for Unix-like systems that can run
+		arbitrary commands, or “jobs”, according to a schedule.
+		It is meant to be a better alternative to the classic
+		Unix utility cron. 
+	</longdescription>
+</pkgmetadata>
