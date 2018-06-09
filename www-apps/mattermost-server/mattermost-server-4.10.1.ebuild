@@ -31,8 +31,12 @@ S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
 	# shellcheck disable=SC2086
-	has network-sandbox $FEATURES && \
-		die "www-apps/mattermost-server requires 'network-sandbox' to be disabled in FEATURES"
+	if has network-sandbox $FEATURES; then
+		ewarn ""
+		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
+		ewarn ""
+		die "[network-sandbox] is enabled in FEATURES"
+	fi
 
 	enewgroup mattermost
 	enewuser mattermost -1 -1 -1 mattermost

@@ -25,13 +25,16 @@ G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
-	# shellcheck disable=SC2086
 	if use test; then
-		has network-sandbox $FEATURES && \
-			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn
-		ewarn "The tests requires a local PostgreSQL server running on the default port"
-		ewarn
+		ewarn ""
+		ewarn "The tests requires a local PostgreSQL server running on default port"
+		ewarn ""
+		# shellcheck disable=SC2086
+		if has network-sandbox $FEATURES; then
+			ewarn ""
+			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
+			ewarn ""
+			die "[network-sandbox] is enabled in FEATURES"
 	fi
 
 	if use daemon; then

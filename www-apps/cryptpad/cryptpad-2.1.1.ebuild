@@ -21,8 +21,12 @@ DOCS=( docs/{ARCHITECTURE.md,cryptpad-docker.md,example.nginx.conf} )
 
 pkg_setup() {
 	# shellcheck disable=SC2086
-	has network-sandbox $FEATURES && \
-		die "www-apps/cryptpad requires 'network-sandbox' to be disabled in FEATURES"
+	if has network-sandbox $FEATURES; then
+		ewarn ""
+		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
+		ewarn ""
+		die "[network-sandbox] is enabled in FEATURES"
+	fi
 
 	enewgroup cryptpad
 	enewuser cryptpad -1 -1 -1 cryptpad

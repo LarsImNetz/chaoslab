@@ -114,10 +114,12 @@ DEPEND="${RDEPEND}
 
 pkg_setup() {
 	# shellcheck disable=SC2086
-	# Unfortunately 'network-sandbox' needs to be
-	# disabled because Cargo fetches a few dependencies.
-	has network-sandbox $FEATURES && \
-		die "media-gfx/gifski requires 'network-sandbox' to be disabled in FEATURES"
+	if has network-sandbox $FEATURES; then
+		ewarn ""
+		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
+		ewarn ""
+		die "[network-sandbox] is enabled in FEATURES"
+	fi
 }
 
 src_compile() {

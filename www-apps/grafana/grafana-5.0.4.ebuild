@@ -32,8 +32,12 @@ S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
 	# shellcheck disable=SC2086
-	has network-sandbox $FEATURES && \
-		die "www-apps/grafana requires 'network-sandbox' to be disabled in FEATURES"
+	if has network-sandbox $FEATURES; then
+		ewarn ""
+		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
+		ewarn ""
+		die "[network-sandbox] is enabled in FEATURES"
+	fi
 
 	enewgroup grafana
 	enewuser grafana -1 -1 /usr/share/grafana grafana
