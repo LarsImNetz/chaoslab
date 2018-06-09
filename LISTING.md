@@ -170,6 +170,7 @@ sys-auth/**[yubikey-touch-detector](sys-auth/yubikey-touch-detector)** | A tool 
 sys-fs/**[gocryptfs](sys-fs/gocryptfs)** | Encrypted overlay filesystem written in Go
 sys-fs/**[tmsu](sys-fs/tmsu)** `*` | Files tagger and virtual tag-based filesystem
 sys-process/**[gkill](sys-process/gkill)** | An interactive process killer
+sys-process/**[jobber](sys-process/jobber)** | A replacement for cron, with sophisticated status-reporting and error-handling
 www-apps/**[cryptpad](www-apps/cryptpad)** | The zero knowledge realtime collaborative editor
 www-apps/**[filebrowser](www-apps/filebrowser)** | A stylish web file manager
 www-apps/**[gitea](www-apps/gitea)** `*` | Gitea - Git with a cup of tea
