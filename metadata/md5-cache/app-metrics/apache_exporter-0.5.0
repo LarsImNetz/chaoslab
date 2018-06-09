@@ -1,13 +1,13 @@
 DEFINED_PHASES=compile install setup test unpack
 DEPEND=>=dev-lang/go-1.9 virtual/pkgconfig
-DESCRIPTION=Web-based PostgreSQL database browser written in Go
+DESCRIPTION=Exports apache mod_status statistics via HTTP for Prometheus consumption
 EAPI=6
-HOMEPAGE=https://sosedoff.github.io/pgweb/
-IUSE=+daemon pie test
+HOMEPAGE=https://github.com/Lusitaniae/apache_exporter
+IUSE=pie
 KEYWORDS=~amd64
 LICENSE=MIT
 RESTRICT=mirror
 SLOT=0
-SRC_URI=https://github.com/sosedoff/pgweb/archive/v0.9.12.tar.gz -> pgweb-0.9.12.tar.gz
+SRC_URI=https://github.com/Lusitaniae/apache_exporter/archive/v0.5.0.tar.gz -> apache_exporter-0.5.0.tar.gz
 _eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	a31844b675f1a1fea87fbe1144aee5f5	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=f138ad1a6dc4e1581c1a1e6a61f5dca2
+_md5_=fa1c4e2998739cc5c1c1a365b495e3e4
