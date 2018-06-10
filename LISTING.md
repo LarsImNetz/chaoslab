@@ -73,7 +73,6 @@ app-shells/**[antibody](app-shells/antibody)** | The fastest shell plugin manage
 app-shells/**[fzf](app-shells/fzf)** `*` | A general-purpose command-line fuzzy finder
 app-shells/**[peco](app-shells/peco)** `*` | Simplistic interactive filtering tool
 dev-db/**[influxdb](dev-db/influxdb)** `*` | Scalable datastore for metrics, events, and real-time analytics
-dev-db/**[orchestrator](dev-db/orchestrator)** | A MySQL high availability and replication management tool
 dev-db/**[pgweb](dev-db/pgweb)** | Web-based PostgreSQL database browser written in Go
 dev-db/**[tidb](dev-db/tidb)** | A distributed NewSQL database compatible with MySQL protocol
 dev-go/**[depth](dev-go/depth)** | Retrieve and visualize Go source code dependency trees
