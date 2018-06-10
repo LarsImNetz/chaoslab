@@ -3,7 +3,10 @@ Description=MongoDB Exporter service
 After=network.target
 
 [Service]
-EnvironmentFile=/etc/default/mongodb_exporter
+# Note: If you define any passwords here, keep this file only readable by
+# the user that owns the process, which probably is "mongodb_exporter".
+Environment=MONGODB_URL=http://localhost:9091
+Environment=HTTP_AUTH="user:password"
 User=mongodb_exporter
 ExecStart=/usr/bin/mongodb_exporter
 ExecReload=/bin/kill -HUP $MAINPID

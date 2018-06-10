@@ -87,10 +87,6 @@ src_install() {
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
-	# ENV file for systemd
-	insinto /etc/default
-	newins "${FILESDIR}/${PN}.conf" mongodb_exporter
-
 	diropts -m 0750 -o mongodb_exporter -g mongodb_exporter
 	keepdir /var/log/mongodb_exporter
 }
