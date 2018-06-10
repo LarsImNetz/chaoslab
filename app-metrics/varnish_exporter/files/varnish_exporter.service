@@ -1,0 +1,11 @@
+[Unit]
+Description=Varnish Exporter service
+After=network.target
+
+[Service]
+User=varnish_exporter
+ExecStart=/usr/bin/prometheus_varnish_exporter
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
