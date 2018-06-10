@@ -10,4 +10,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/percona/mongodb_exporter/archive/v0.5.0.tar.gz -> mongodb_exporter-0.5.0.tar.gz https://github.com/AlekSi/gocoverutil/archive/c7c9efd.tar.gz -> github.com-AlekSi-gocoverutil-c7c9efd.tar.gz https://github.com/stretchr/testify/archive/c679ae2.tar.gz -> github.com-stretchr-testify-c679ae2.tar.gz https://github.com/golang/tools/archive/c65208e.tar.gz -> github.com-golang-tools-c65208e.tar.gz
 _eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	a31844b675f1a1fea87fbe1144aee5f5	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=613814cde2af7c39957c6bec81ff99b9
+_md5_=2b721cb888701d75f9a167e3e136c4fa
