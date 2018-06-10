@@ -49,10 +49,6 @@ src_install() {
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
-	# ENV file for systemd
-	insinto /etc/default
-	newins "${FILESDIR}/${PN}.conf" transmission-exporter
-
 	diropts -m 0750 -o transmission-exporter -g transmission-exporter
 	keepdir /var/log/transmission-exporter
 }

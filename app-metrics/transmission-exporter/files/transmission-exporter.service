@@ -3,7 +3,13 @@ Description=Transmission Exporter service
 After=network.target
 
 [Service]
-EnvironmentFile=/etc/default/transmission-exporter
+# Note: If you define any passwords here, keep this file only readable by
+# the user that owns the process, which probably is "transmission-exporter".
+Environment=TRANSMISSION_ADDR=http://localhost:9091
+Environment=TRANSMISSION_PASSWORD=
+Environment=TRANSMISSION_USERNAME=
+Environment=WEB_ADDR=:19091
+Environment=WEB_PATH=/metrics
 User=transmission-exporter
 ExecStart=/usr/bin/transmission-exporter
 ExecReload=/bin/kill -HUP $MAINPID
