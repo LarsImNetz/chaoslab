@@ -45,7 +45,7 @@ EGO_VENDOR=(
 
 inherit golang-vcs-snapshot systemd user
 
-DESCRIPTION="A prometheus exporter for PHP-FPM"
+DESCRIPTION="A Prometheus exporter that connects directly to PHP-FPM"
 HOMEPAGE="https://github.com/hipages/php-fpm_exporter"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
