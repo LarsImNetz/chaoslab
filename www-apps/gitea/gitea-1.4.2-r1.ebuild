@@ -17,7 +17,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="memcached mysql openssh pam postgres redis sqlite tidb"
+IUSE="memcached mysql openssh pam pie postgres redis sqlite tidb"
 
 RDEPEND="dev-vcs/git[curl,threads]
 	memcached? ( net-misc/memcached )
@@ -40,22 +40,14 @@ pkg_setup() {
 }
 
 src_prepare() {
-	local GITEA_PREFIX="${EPREFIX}/var/lib/gitea"
+	# The tarball isn't a proper git repository,
+	# so let's silence the "fatal" message.
+	sed -i "/LDFLAGS :=/d" Makefile || die
+
 	sed -i \
-		-e "s:^TEMP_PATH =.*:TEMP_PATH = ${GITEA_PREFIX}/data/tmp/uploads:" \
 		-e "s:^STATIC_ROOT_PATH =:STATIC_ROOT_PATH = ${EPREFIX}/usr/share/gitea:" \
-		-e "s:^APP_DATA_PATH =.*:APP_DATA_PATH = ${GITEA_PREFIX}/data:" \
-		-e "s:^PATH = data/gitea.db:PATH = ${GITEA_PREFIX}/data/gitea.db:" \
-		-e "s:^ISSUE_INDEXER_PATH =.*:ISSUE_INDEXER_PATH = ${GITEA_PREFIX}/indexers/issues.bleve:" \
-		-e "s:^PROVIDER_CONFIG =.*:PROVIDER_CONFIG = ${GITEA_PREFIX}/data/sessions:" \
-		-e "s:^AVATAR_UPLOAD_PATH =.*:AVATAR_UPLOAD_PATH = ${GITEA_PREFIX}/data/avatars:" \
-		-e "s:^PATH = data/attachments:PATH = ${GITEA_PREFIX}/data/attachments:" \
 		-e "s:^ROOT_PATH =:ROOT_PATH = ${EPREFIX}/var/log/gitea:" \
 		custom/conf/app.ini.sample || die
-
-	# shellcheck disable=SC2086,SC2016
-	sed -i 's:Version=.*:Version='${PV}'" -X "main.Tags=$(TAGS)":' \
-		Makefile || die
 
 	default
 }
@@ -66,6 +58,8 @@ src_compile() {
 
 	# Build go-bindata locally
 	go install ./vendor/github.com/kevinburke/go-bindata/go-bindata || die
+	# Generate embedded data
+	emake generate
 
 	# build up optional flags
 	# shellcheck disable=SC2207
@@ -74,8 +68,18 @@ src_compile() {
 		$(usex sqlite sqlite '')
 		$(usex tidb tidb '')
 	)
-
-	emake TAGS="${options[*]}" generate build
+	# shellcheck disable=SC2207
+	local mygoargs=(
+		-v -work -x
+		$(usex pie '-buildmode=pie' '')
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
+		-ldflags "-s -w
+			-X main.Version=${PV/_/-}
+			-X 'main.Tags=${options[*]}'"
+		-tags "${options[*]}"
+	)
+	go build "${mygoargs[@]}" || die
 }
 
 src_test() {
@@ -90,12 +94,15 @@ src_install() {
 	systemd_dounit "${FILESDIR}/${PN}.service"
 	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
+	insinto /var/lib/gitea/custom
+	doins -r options
+
 	insinto /var/lib/gitea/conf
 	newins custom/conf/app.ini.sample app.ini.example
-	doins -r options/*
+	dosym ../custom/options/locale /var/lib/gitea/conf/locale
 
 	insinto /usr/share/gitea
-	doins -r {public,templates}
+	doins -r public templates
 
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}/${PN}.logrotate" "${PN}"
@@ -106,7 +113,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/var/lib/gitea/conf/app.ini ]; then
+	if [ ! -f "${EROOT%/}"/var/lib/gitea/conf/app.ini ]; then
 		elog "No app.ini found, copying the example over"
 		cp "${EROOT%/}"/var/lib/gitea/conf/app.ini{.example,} || die
 	else

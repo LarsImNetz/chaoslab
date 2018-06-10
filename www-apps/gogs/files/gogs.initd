@@ -2,7 +2,7 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-GOGS_USER="gogs"
+GOGS_USER="${GOGS_USER:-gogs}"
 GOGS_HOME="${GOGS_HOME:-/var/lib/gogs}"
 GOGS_CONFIG="${GOGS_CONFIG:-${GOGS_HOME}/conf/app.ini}"
 GOGS_LOGDIR="${GOGS_LOGDIR:-/var/log/${RC_SVCNAME}}"
@@ -20,7 +20,7 @@ pidfile="/run/${RC_SVCNAME}.pid"
 required_files="${GOGS_CONFIG}"
 retry="${retry:-TERM/30/KILL/5}"
 start_stop_daemon_args="${SSD_OPTS}
-	-e \"GOGS_CUSTOM=${GOGS_HOME}\"
+	-e \"GOGS_WORK_DIR=${GOGS_HOME}\"
 	-e \"USER=${GOGS_USER}\"
 	-d ${directory} -1 ${output_log} -2 ${error_log}"
 
