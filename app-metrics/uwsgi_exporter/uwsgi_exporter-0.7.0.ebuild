@@ -8,7 +8,7 @@ EGO_PN="github.com/timonwong/${PN}"
 
 inherit golang-vcs-snapshot systemd user
 
-DESCRIPTION="Prometheus exporter for uWSGI metrics"
+DESCRIPTION="uWSGI metrics exporter for prometheus.io"
 HOMEPAGE="https://github.com/timonwong/uwsgi_exporter"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
