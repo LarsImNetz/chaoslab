@@ -48,6 +48,7 @@ app-metrics/**[nginx-vts-exporter](app-metrics/nginx-vts-exporter)** `*` | A ser
 app-metrics/**[node_exporter](app-metrics/node_exporter)** `*` | Prometheus exporter for hardware and OS metrics exposed by *NIX kernels
 app-metrics/**[nsq_exporter](app-metrics/nsq_exporter)** | A Prometheus metrics exporter for NSQ
 app-metrics/**[openvpn_exporter](app-metrics/openvpn_exporter)** `*` | A Prometheus exporter for OpenVPN
+app-metrics/**[php-fpm_exporter](app-metrics/php-fpm_exporter)** | A Prometheus exporter that connects directly to PHP-FPM
 app-metrics/**[phpfpm_exporter](app-metrics/phpfpm_exporter)** | A Prometheus exporter for PHP-FPM
 app-metrics/**[postfix_exporter](app-metrics/postfix_exporter)** | A Prometheus metrics exporter for the Postfix mail server
 app-metrics/**[postgres_exporter](app-metrics/postgres_exporter)** `*` | PostgreSQL stats exporter for Prometheus
@@ -62,6 +63,8 @@ app-metrics/**[ssl_exporter](app-metrics/ssl_exporter)** | Exports Prometheus me
 app-metrics/**[statsd_exporter](app-metrics/statsd_exporter)** | Receives StatsD-style metrics and exports them as Prometheus metrics
 app-metrics/**[transmission-exporter](app-metrics/transmission-exporter)** | Transmission Exporter for Prometheus
 app-metrics/**[unbound_exporter](app-metrics/unbound_exporter)** | A Prometheus exporter for Unbound
+app-metrics/**[uwsgi_exporter](app-metrics/uwsgi_exporter)** `*` | uWSGI metrics exporter for prometheus.io
+app-metrics/**[varnish_exporter](app-metrics/varnish_exporter)** | Varnish exporter for Prometheus
 app-misc/**[bat](app-misc/bat)** | A 'cat' clone with syntax highlighting and Git integration
 app-misc/**[genact](app-misc/genact)** | A nonsense activity generator
 app-misc/**[skim](app-misc/skim)** `*` | Fuzzy finder in Rust
