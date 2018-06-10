@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile install test unpack
+DEPEND=>=dev-lang/go-1.9
+DESCRIPTION=A general-purpose command-line fuzzy finder
+EAPI=6
+HOMEPAGE=https://github.com/junegunn/fzf
+IUSE=bash-completion fish-completion neovim pie tmux vim zsh-completion
+KEYWORDS=~amd64 ~x86
+LICENSE=MIT
+RDEPEND=fish-completion? ( app-shells/fish ) neovim? ( app-editors/neovim ) tmux? ( app-misc/tmux ) vim? ( app-editors/vim ) zsh-completion? ( app-shells/zsh )
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/junegunn/fzf/archive/0.17.4.tar.gz -> fzf-0.17.4.tar.gz https://github.com/mattn/go-isatty/archive/66b8e73.tar.gz -> github.com-mattn-go-isatty-66b8e73.tar.gz https://github.com/mattn/go-runewidth/archive/14207d2.tar.gz -> github.com-mattn-go-runewidth-14207d2.tar.gz https://github.com/mattn/go-shellwords/archive/02e3cf0.tar.gz -> github.com-mattn-go-shellwords-02e3cf0.tar.gz https://github.com/golang/crypto/archive/e1a4589.tar.gz -> github.com-golang-crypto-e1a4589.tar.gz
+_eclasses_=bash-completion-r1	7e76462890d7d19cad453151876b0ecf	golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	multilib	97f470f374f2e94ccab04a2fb21d811e	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607
+_md5_=22249dcbf4abd0bcc24a73575413d47a
