@@ -19,7 +19,7 @@ Group=gogs
 WorkingDirectory=/var/lib/gogs
 ExecStart=/usr/bin/gogs web --config /var/lib/gogs/conf/app.ini
 Restart=always
-Environment=USER=gogs GOGS_CUSTOM=/var/lib/gogs
+Environment=USER=gogs GOGS_WORK_DIR=/var/lib/gogs
 
 [Install]
 WantedBy=multi-user.target
