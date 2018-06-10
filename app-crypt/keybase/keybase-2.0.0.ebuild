@@ -18,7 +18,8 @@ KEYWORDS="~amd64 ~x86"
 IUSE="pie"
 
 DEPEND="app-crypt/kbfs"
-RDEPEND="app-crypt/gnupg"
+RDEPEND="${DEPEND}
+	app-crypt/gnupg"
 
 QA_PRESTRIPPED="usr/bin/keybase"
 
