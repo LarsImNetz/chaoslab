@@ -78,8 +78,8 @@ pkg_setup() {
 		fi
 
 		# Is 'arm' and 'armeb' registered?
-		if ! test -f /proc/sys/fs/binfmt_misc/arm && \
-			! test -f /proc/sys/fs/binfmt_misc/armeb; then
+		if [ ! -f /proc/sys/fs/binfmt_misc/arm ] && \
+			[ ! -f /proc/sys/fs/binfmt_misc/armeb ]; then
 			ewarn ""
 			ewarn "You must enable support for ARM binaries through Qemu."
 			ewarn ""
