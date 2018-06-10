@@ -74,6 +74,7 @@ app-shells/**[fzf](app-shells/fzf)** `*` | A general-purpose command-line fuzzy 
 app-shells/**[peco](app-shells/peco)** `*` | Simplistic interactive filtering tool
 dev-db/**[influxdb](dev-db/influxdb)** `*` | Scalable datastore for metrics, events, and real-time analytics
 dev-db/**[pgweb](dev-db/pgweb)** | Web-based PostgreSQL database browser written in Go
+dev-db/**[sequeler](dev-db/sequeler)** | A native Linux SQL client built in Vala and GTK+
 dev-db/**[tidb](dev-db/tidb)** | A distributed NewSQL database compatible with MySQL protocol
 dev-go/**[depth](dev-go/depth)** | Retrieve and visualize Go source code dependency trees
 dev-lang/**[vala](dev-lang/vala)** `***` | Compiler for the GObject type system
