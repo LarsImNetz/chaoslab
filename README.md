@@ -11,11 +11,10 @@ mean that there no support for **systemd**, it has, the problem is that I don't 
 to test its unit files, hence the support have been less-than-stellar. If you have spare time
 and would like to improve it, please contribute.
 
-Check [LISTING.md](LISTING.md) to see a list of available packages, where I hope that you find
-something useful. **If you find any bugs, please report them!** You can use the
-[GitLab issue tracker](https://gitlab.com/chaoslab/chaoslab-overlay/issues) to report bugs, ask
-questions or suggest new features. I am also happy to accept merge requests from anyone. If you
-prefer private communication, feel free to contact by [e-mail](overlay.xml#L9)
+Check [LISTING.md](LISTING.md) to see a (user-friendly) list of available packages. **If you find
+any bugs, please report them!** You can use the [GitLab issue tracker](https://gitlab.com/chaoslab/chaoslab-overlay/issues)
+to report bugs, ask questions or suggest new features. I am also happy to accept merge requests
+from anyone. If you prefer private communication, feel free to contact by [e-mail](overlay.xml#L9)
 ([PGP Public Key](#signature)).
 
 **DISCLAIMER:** As I don't have the resources, nor the time to make stable ebuilds

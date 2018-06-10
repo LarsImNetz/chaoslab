@@ -6,8 +6,7 @@
 		<name>Ian Moone</name>
 	</maintainer>
 	<upstream>
-		<remote-id type="github">github/orchestrator</remote-id>
-		<bugs-to>https://github.com/github/orchestrator/issues</bugs-to>
-		<doc>https://github.com/github/orchestrator/tree/master/docs</doc>
+		<remote-id type="github">hipages/php-fpm_exporter</remote-id>
+		<bugs-to>https://github.com/hipages/php-fpm_exporter/issues</bugs-to>
 	</upstream>
 </pkgmetadata>

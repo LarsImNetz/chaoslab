@@ -1,0 +1,9 @@
+# config file for /etc/init.d/php-fpm_exporter
+# run /usr/bin/php-fpm_exporter -h to see available options
+
+PHP-FPM_EXPORTER_LOGDIR="/var/log/${RC_SVCNAME}"
+PHP-FPM_EXPORTER_OPTS="--phpfpm.scrape-uri tcp://127.0.0.1:9000/status"
+
+# Logging
+#output_log="${PHP-FPM_EXPORTER_LOGDIR}/php-fpm_exporter.log"
+#error_log="${PHP-FPM_EXPORTER_LOGDIR}/error.log"

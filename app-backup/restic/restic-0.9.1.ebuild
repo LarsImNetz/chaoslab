@@ -9,7 +9,7 @@ inherit bash-completion-r1 golang-vcs-snapshot
 
 DESCRIPTION="A backup program that is fast, efficient and secure"
 HOMEPAGE="https://restic.github.io"
-SRC_URI="https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://${EGO_PN}/releases/download/v${PV}/${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="BSD-2"
