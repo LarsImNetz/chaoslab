@@ -122,10 +122,9 @@ src_compile() {
 		-X "${EGO_PN}/common.BUILT=${BUILT}"
 		-X "${EGO_PN}/common.BRANCH=non-git"
 	)
-	# shellcheck disable=SC2207
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
