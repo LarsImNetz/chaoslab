@@ -41,17 +41,18 @@ S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
-	# shellcheck disable=SC2207
+	local myldflags=( -s -w
+		-X "main.GitVersion=${PV}"
+		-X "main.GitVersionFuse=${FUSE_COMMIT}"
+		-X "main.BuildDate=$(date '+%Y-%m-%d')"
+	)
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X main.GitVersion=${PV}
-			-X main.GitVersionFuse=${FUSE_COMMIT}
-			-X main.BuildDate=$(date '+%Y-%m-%d')"
-		$(usex !ssl '-tags without_openssl' '')
+		-ldflags "${myldflags[*]}"
+		"$(usex !ssl '-tags without_openssl' '')"
 	)
 	go build "${mygoargs[@]}" || die
 }

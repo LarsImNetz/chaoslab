@@ -36,32 +36,30 @@ src_compile() {
 	CGO_CFLAGS="-I${ROOT}/usr/include"
 	CGO_LDFLAGS="-L${ROOT}/usr/$(get_libdir)"
 
-	# build up optional flags
-	# shellcheck disable=SC2207
-	local options=(
-		$(usex ambient ambient '')
-		$(usex apparmor apparmor '')
-		$(usex seccomp seccomp '')
+	local myldflags=( -s -w
+		-X "main.gitCommit=${GIT_COMMIT}"
+		-X "main.version=${PV/_/-}"
 	)
+
+	# build up optional flags
+	local opts
+	use ambient && opts+=" ambient"
+	use apparmor && opts+=" apparmor"
+	use seccomp && opts+=" seccomp"
 
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=pie"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X main.gitCommit=${GIT_COMMIT}
-			-X main.version=${PV/_/-}"
-		-tags "${options[*]}"
+		-ldflags "${myldflags[*]}"
+		-tags "${opts/ /}"
 	)
 	go build "${mygoargs[@]}" || die
 
 	# build man pages
 	local PATH="${G}/bin:$PATH"
-	pushd vendor/github.com/cpuguy83/go-md2man || die
-	go install || die
-	popd || die
-
+	go install ./vendor/github.com/cpuguy83/go-md2man || die
 	./man/md2man-all.sh || die
 }
 
@@ -71,6 +69,5 @@ src_install() {
 
 	doman man/man8/*
 
-	use bash-completion && \
-		dobashcomp contrib/completions/bash/runc
+	use bash-completion && dobashcomp contrib/completions/bash/runc
 }

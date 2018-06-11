@@ -37,20 +37,16 @@ src_compile() {
 	export GOPATH="${G}"
 
 	# build up optional flags
-	# shellcheck disable=SC2207
-	local options=(
-		$(usex postgres postgres '')
-		$(usex sqlite sqlite3 '')
-	)
+	use postgres && opts+=" postgres"
+	use sqlite && opts+=" sqlite3"
 
-	# shellcheck disable=SC2207
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "-s -w"
-		-tags "${options[*]}"
+		-tags "${opts/ /}"
 	)
 	go build "${mygoargs[@]}" || die
 }

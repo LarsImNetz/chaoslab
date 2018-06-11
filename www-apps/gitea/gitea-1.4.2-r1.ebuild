@@ -62,22 +62,23 @@ src_compile() {
 	emake generate
 
 	# build up optional flags
-	# shellcheck disable=SC2207
-	local options=(
-		$(usex pam pam '')
-		$(usex sqlite sqlite '')
-		$(usex tidb tidb '')
+	local opts
+	use pam && opts+=" pam"
+	use sqlite && opts+=" sqlite"
+	use tidb && opts+=" tidb"
+
+	local myldflags=( -s -w
+		-X "main.Version=${PV/_/-}"
+		-X "'main.Tags=${opts/ /}'"
 	)
-	# shellcheck disable=SC2207
+
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X main.Version=${PV/_/-}
-			-X 'main.Tags=${options[*]}'"
-		-tags "${options[*]}"
+		-ldflags "${myldflags[*]}"
+		-tags "${opts/ /}"
 	)
 	go build "${mygoargs[@]}" || die
 }

@@ -35,18 +35,19 @@ src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
 	local PROMU="${EGO_PN}/vendor/${EGO_PN%/*}/common/version"
-	# shellcheck disable=SC2207
+	local myldflags=( -s -w
+		-X "${PROMU}.Version=${PV}"
+		-X "${PROMU}.Revision=${GIT_COMMIT}"
+		-X "${PROMU}.Branch=non-git"
+		-X "${PROMU}.BuildUser=$(id -un)@$(hostname -f)"
+		-X "${PROMU}.BuildDate=$(date -u '+%Y%m%d-%I:%M:%S')"
+	)
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X ${PROMU}.Version=${PV/_rc/-rc.}
-			-X ${PROMU}.Revision=${GIT_COMMIT}
-			-X ${PROMU}.Branch=non-git
-			-X ${PROMU}.BuildUser=$(id -un)@$(hostname -f)
-			-X ${PROMU}.BuildDate=$(date -u '+%Y%m%d-%I:%M:%S')"
+		-ldflags "${myldflags[*]}"
 	)
 	go install "${mygoargs[@]}" ./cmd/{alertmanager,amtool} || die
 }

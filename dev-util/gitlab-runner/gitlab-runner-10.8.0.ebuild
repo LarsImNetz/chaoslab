@@ -115,7 +115,7 @@ src_compile() {
 	export GOPATH="${G}"
 	local PATH="${G}/bin:$PATH" BUILT
 	BUILT="$(date -u '+%Y-%m-%dT%H:%M:%S%:z')"
-	local GO_LDFLAGS=( -s -w
+	local myldflags=( -s -w
 		-X "${EGO_PN}/common.NAME=${PN}"
 		-X "${EGO_PN}/common.VERSION=${PV}"
 		-X "${EGO_PN}/common.REVISION=${GIT_COMMIT}"
@@ -128,7 +128,7 @@ src_compile() {
 		$(usex pie '-buildmode=pie' '')
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "${GO_LDFLAGS[*]}"
+		-ldflags "${myldflags[*]}"
 	)
 
 	if use build-images; then
@@ -138,7 +138,7 @@ src_compile() {
 		ebegin "Building gitlab-runner-prebuilt-x86_64-${GIT_COMMIT}"
 		# Building gitlab-runner-helper
 		gox -osarch=linux/amd64 \
-			-ldflags "${GO_LDFLAGS[*]}" \
+			-ldflags "${myldflags[*]}" \
 			-output="dockerfiles/build/gitlab-runner-helper" \
 			./apps/gitlab-runner-helper || die
 
@@ -155,7 +155,7 @@ src_compile() {
 		ebegin "Building gitlab-runner-prebuilt-arm-${GIT_COMMIT}"
 		# Building gitlab-runner-helper
 		gox -osarch=linux/arm \
-			-ldflags "${GO_LDFLAGS[*]}" \
+			-ldflags "${myldflags[*]}" \
 			-output="dockerfiles/build/gitlab-runner-helper" \
 			./apps/gitlab-runner-helper || die
 

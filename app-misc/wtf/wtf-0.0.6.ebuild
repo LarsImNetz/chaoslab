@@ -25,13 +25,15 @@ S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
+	local myldflags=( -s -w
+		-X "main.version=v${PV}-${GIT_COMMIT}"
+		-X "'main.date=$(date -u '+%FT%T%z')'"
+	)
 	local mygoargs=(
 		-v -work -x
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X main.version=v${PV}-${GIT_COMMIT}
-			-X 'main.date=$(date -u '+%FT%T%z')'"
+		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" -o bin/wtf || die
 }

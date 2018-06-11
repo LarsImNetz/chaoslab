@@ -14,6 +14,7 @@ RESTRICT="mirror"
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
+IUSE="pie"
 
 QA_PRESTRIPPED="usr/bin/gotty"
 
@@ -22,14 +23,17 @@ S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
+	local myldflags=( -s -w
+		-X "main.version=${PV}"
+		-X "main.commit=${GIT_COMMIT}"
+		-X "main.buildstamp=$(date -u '+%s')"
+	)
 	local mygoargs=(
 		-v -work -x
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-		-X main.version=${PV}
-		-X main.commit=${GIT_COMMIT}
-		-X main.buildstamp=$(date -u '+%s')"
+		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
 }

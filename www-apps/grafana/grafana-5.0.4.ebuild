@@ -53,16 +53,17 @@ src_prepare() {
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}/bin"
-	# shellcheck disable=SC2207
+	local myldflags=( -s -w
+		-X "main.version=${PV}"
+		-X "main.commit=${GIT_COMMIT}"
+		-X "main.buildstamp=$(date -u '+%s')"
+	)
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-		-X main.version=${PV}
-		-X main.commit=${GIT_COMMIT}
-		-X main.buildstamp=$(date -u '+%s')"
+		-ldflags "${myldflags[*]}"
 	)
 	go install "${mygoargs[@]}" ./pkg/cmd/grafana-{cli,server} || die
 

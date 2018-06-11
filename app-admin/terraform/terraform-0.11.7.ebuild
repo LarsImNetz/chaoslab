@@ -31,13 +31,16 @@ S="${G}/src/${EGO_PN}"
 src_compile() {
 	export GOPATH="${G}"
 	export PATH="${G}/bin:$PATH"
+	local myldflags=( -s -w
+		-X "main.GitCommit=${GIT_COMMIT}"
+		-X "${EGO_PN}/terraform.VersionPrerelease="
+	)
 	local mygoargs=(
 		-v -work -x
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X main.GitCommit=${GIT_COMMIT}
-			-X ${EGO_PN}/terraform.VersionPrerelease="
+		-ldflags "${myldflags[*]}"
 		-o ./bin/terraform
 	)
 	local mygoargs2=(

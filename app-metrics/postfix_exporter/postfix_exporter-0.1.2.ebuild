@@ -42,14 +42,13 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-	# shellcheck disable=SC2207
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "-s -w"
-		$(usex !systemd '-tags nosystemd' '')
+		"$(usex !systemd '-tags nosystemd' '')"
 	)
 	go build "${mygoargs[@]}" || die
 }

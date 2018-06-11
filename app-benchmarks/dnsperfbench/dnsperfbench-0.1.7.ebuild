@@ -36,13 +36,15 @@ S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
+	local myldflags=( -s -w
+		-X "main.versionString=${PV}"
+		-X "'main.goVersionString=$(go version)'"
+	)
 	local mygoargs=(
 		-v -work -x
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X main.versionString=${PV}
-			-X 'main.goVersionString=$(go version)'"
+		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
 }
