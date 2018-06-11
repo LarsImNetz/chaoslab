@@ -34,18 +34,19 @@ src_prepare() {
 
 src_compile() {
 	export GOPATH="${G}"
-	# shellcheck disable=SC2207
+	local myldflags=( -s -w
+		-X "${EGO_PN}/mysql.TiDBReleaseVersion=${PV}"
+		-X "'${EGO_PN}/util/printer.TiDBBuildTS=$(date -u '+%Y-%m-%d %I:%M:%S')'"
+		-X "${EGO_PN}/util/printer.TiDBGitHash=${GIT_COMMIT}"
+		-X "${EGO_PN}/util/printer.TiDBGitBranch=non-git"
+		-X "'${EGO_PN}/util/printer.GoVersion=$(go version)'"
+	)
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X ${EGO_PN}/mysql.TiDBReleaseVersion=${PV}
-			-X '${EGO_PN}/util/printer.TiDBBuildTS=$(date -u '+%Y-%m-%d %I:%M:%S')'
-			-X ${EGO_PN}/util/printer.TiDBGitHash=${GIT_COMMIT}
-			-X ${EGO_PN}/util/printer.TiDBGitBranch=non-git
-			-X '${EGO_PN}/util/printer.GoVersion=$(go version)'"
+		-ldflags "${myldflags[*]}"
 		-o ./bin/tidb-server
 	)
 	emake parser

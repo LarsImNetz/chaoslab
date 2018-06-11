@@ -62,15 +62,16 @@ pkg_setup() {
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
-	# shellcheck disable=SC2207
+	local myldflags=( -s -w
+		-X "${EGO_PN}/Sia/build.GitRevision=${GIT_COMMIT}"
+		-X "'${EGO_PN}/build.BuildTime=$(date)'"
+	)
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X ${EGO_PN}/Sia/build.GitRevision=${GIT_COMMIT}
-			-X '${EGO_PN}/build.BuildTime=$(date)'"
+		-ldflags "${myldflags[*]}"
 	)
 	go install "${mygoargs[@]}" ./cmd/sia{c,d} || die
 }

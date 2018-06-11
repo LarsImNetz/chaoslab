@@ -33,37 +33,32 @@ S="${G}/src/${EGO_PN}"
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
-	# shellcheck disable=SC2207
-	local options=( $(usex !btrfs no_btrfs '') )
+	local myldflags=( -s -w
+		-X "${EGO_PN}/version.Version=${PV}"
+		-X "${EGO_PN}/version.Revision=${GIT_COMMIT}"
+		-X "${EGO_PN}/version.Package=${EGO_PN}"
+	)
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=pie"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X ${EGO_PN}/version.Version=${PV}
-			-X ${EGO_PN}/version.Revision=${GIT_COMMIT}
-			-X ${EGO_PN}/version.Package=${EGO_PN}"
-		-tags "${options[*]}"
+		-ldflags "${myldflags[*]}"
+		-tags "$(usex !btrfs 'no_btrfs' '')"
 	)
-
 	# set !cgo and omit pie for a static shim
 	local mygoargs2=(
 		-v -work -x
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-extldflags '-static'
-			-X ${EGO_PN}/version.Version=${PV}
-			-X ${EGO_PN}/version.Revision=${GIT_COMMIT}
-			-X ${EGO_PN}/version.Package=${EGO_PN}"
-		-tags "${options[*]}"
+		-ldflags "${myldflags[*]} -extldflags '-static'"
+		-tags "$(usex !btrfs 'no_btrfs' '')"
 	)
 
 	go install "${mygoargs[@]}" \
 		./cmd/{containerd{,-stress},ctr} || die
 
-	CGO_ENABLED=0 go build "${mygoargs2[@]}" \
+	CGO_ENABLED=0 go install "${mygoargs2[@]}" \
 		./cmd/containerd-shim || die
 }
 

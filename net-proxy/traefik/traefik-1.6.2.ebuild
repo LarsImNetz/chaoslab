@@ -35,16 +35,17 @@ pkg_setup() {
 src_compile() {
 	export GOPATH="${G}"
 	local PATH="${G}/bin:$PATH"
-	# shellcheck disable=SC2207
+	local myldflags=( -s -w
+		-X "${EGO_PN}/version.Version=${MY_PV}"
+		-X "${EGO_PN}/version.Codename=${CODENAME}"
+		-X "'${EGO_PN}/version.BuildDate=$(date -u '+%Y-%m-%d_%I:%M:%S%p')'"
+	)
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X ${EGO_PN}/version.Version=${MY_PV}
-			-X ${EGO_PN}/version.Codename=${CODENAME}
-			-X '${EGO_PN}/version.BuildDate=$(date -u '+%Y-%m-%d_%I:%M:%S%p')'"
+		-ldflags "${myldflags[*]}"
 	)
 
 	# Build go-bindata locally

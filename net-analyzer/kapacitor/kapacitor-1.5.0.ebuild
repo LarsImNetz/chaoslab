@@ -33,16 +33,17 @@ pkg_setup() {
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
-	# shellcheck disable=SC2207
+	local myldflags=( -s -w
+		-X "main.version=${MY_PV}"
+		-X "main.branch=${MY_PV}"
+		-X "main.commit=${GIT_COMMIT}"
+	)
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X main.version=${MY_PV}
-			-X main.branch=${MY_PV}
-			-X main.commit=${GIT_COMMIT}"
+		-ldflags "${myldflags[*]}"
 	)
 	go install "${mygoargs[@]}" ./cmd/kapacitor{,d} || die
 }

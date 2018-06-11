@@ -83,15 +83,16 @@ S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
-	# shellcheck disable=SC2207
+	local myldflags=( -s -w
+		-X "${EGO_PN}/hugolib.CommitHash=${GIT_COMMIT}"
+		-X "${EGO_PN}/hugolib.BuildDate=$(date +%FT%T%z)"
+	)
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X ${EGO_PN}/hugolib.CommitHash=${GIT_COMMIT}
-			-X ${EGO_PN}/hugolib.BuildDate=$(date +%FT%T%z)"
+		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
 
@@ -106,7 +107,5 @@ src_install() {
 	dobin hugo
 	doman "${T}"/man/*
 
-	if use bash-completion; then
-		dobashcomp "${T}"/hugo
-	fi
+	use bash-completion && dobashcomp "${T}"/hugo
 }

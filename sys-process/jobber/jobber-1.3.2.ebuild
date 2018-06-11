@@ -28,10 +28,9 @@ S="${G}/src/${EGO_PN}"
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}/bin"
-	# shellcheck disable=SC2207
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "-s -w -X ${EGO_PN}/common.jobberVersion=${PV}"

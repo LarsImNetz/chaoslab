@@ -223,14 +223,16 @@ src_compile() {
 	# build cli
 	pushd ../cli || die
 	local EGO_PNCLI="${EGO_PN/docker-ce/cli}"
+	local myldflags=( -s -w
+		-X "${EGO_PNCLI}/cli.GitCommit=${GIT_COMMIT}"
+		-X "'${EGO_PNCLI}/cli.BuildTime=${BUILD_TIME}'"
+		-X "${EGO_PNCLI}/cli.Version=$(cat VERSION)"
+	)
 	local mygoargs2=(
 		-v -work -x
 		-asmflags "-trimpath=${G}/src/${EGO_PNCLI}"
 		-gcflags "-trimpath=${G}/src/${EGO_PNCLI}"
-		-ldflags "-s -w
-			-X ${EGO_PNCLI}/cli.GitCommit=${GIT_COMMIT}
-			-X '${EGO_PNCLI}/cli.BuildTime=${BUILD_TIME}'
-			-X ${EGO_PNCLI}/cli.Version=$(cat VERSION)"
+		-ldflags "${myldflags[*]}"
 		-tags pkcs11
 	)
 	go build "${mygoargs2[@]}" ./cmd/docker || die
@@ -281,9 +283,7 @@ src_install() {
 
 	doman man/man1/*
 
-	if use bash-completion; then
-		dobashcomp contrib/completion/bash/docker
-	fi
+	use bash-completion && dobashcomp contrib/completion/bash/docker
 
 	if use zsh-completion; then
 		insinto /usr/share/zsh/site-functions

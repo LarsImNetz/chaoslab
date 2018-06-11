@@ -569,16 +569,15 @@ src_prepare() {
 src_compile() {
 	export GOPATH="${G}"
 	local PKG="${EGO_PN}/${CADDYMAIN}"
-	# shellcheck disable=SC2207
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "-s -w -X ${PKG}.gitTag=${PV}"
-		-o bin/caddy ./caddy
+		-o bin/caddy
 	)
-	go build -v "${mygoargs[@]}" || die
+	go build -v "${mygoargs[@]}" ./caddy || die
 }
 
 src_test() {

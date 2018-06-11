@@ -46,15 +46,16 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-	# shellcheck disable=SC2207
+	local myldflags=( -s -w
+		-X "'${EGO_PN}/pkg/command.BuildTime=$(date -u +'%Y-%m-%dT%H:%M:%SZ')'"
+		-X "${EGO_PN}/pkg/command.GitCommit=${GIT_COMMIT}"
+	)
 	local mygoargs=(
 		-v -work -x
-		$(usex pie '-buildmode=pie' '')
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w
-			-X '${EGO_PN}/pkg/command.BuildTime=$(date -u +'%Y-%m-%dT%H:%M:%SZ')'
-			-X ${EGO_PN}/pkg/command.GitCommit=${GIT_COMMIT}"
+		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
 }
