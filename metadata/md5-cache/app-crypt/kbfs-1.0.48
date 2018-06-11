@@ -11,4 +11,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/keybase/kbfs/archive/v1.0.48.tar.gz -> kbfs-1.0.48.tar.gz
 _eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536
-_md5_=aab8da2af2e541c006b3a4f01043b9c0
+_md5_=46e1bdc8c6e4b978606627c31f5cbdb2

@@ -9,4 +9,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/genuinetools/bane/archive/v0.4.0.tar.gz -> bane-0.4.0.tar.gz
 _eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536
-_md5_=444603980c4ae05f6cd3fc9f7f693af5
+_md5_=0ebf0b1dfd8227d3d41ddfa769592f40

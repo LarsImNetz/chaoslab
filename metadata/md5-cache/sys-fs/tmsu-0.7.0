@@ -11,4 +11,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/oniony/TMSU/archive/v0.7.0.tar.gz -> tmsu-0.7.0.tar.gz https://github.com/hanwen/go-fuse/archive/363c44c.tar.gz -> github.com-hanwen-go-fuse-363c44c.tar.gz https://github.com/mattn/go-sqlite3/archive/615c193.tar.gz -> github.com-mattn-go-sqlite3-615c193.tar.gz https://github.com/golang/net/archive/a337091.tar.gz -> github.com-golang-net-a337091.tar.gz https://github.com/golang/sys/archive/75813c6.tar.gz -> github.com-golang-sys-75813c6.tar.gz
 _eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536
-_md5_=2a7a8cffd642cbe3731c149dc7400461
+_md5_=c4f380bed571e3e54ac6e2633c295462
