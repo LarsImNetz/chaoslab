@@ -52,7 +52,7 @@ src_compile() {
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
-		"$(usex !ssl '-tags without_openssl' '')"
+		-tags "$(usex !ssl 'without_openssl' '')"
 	)
 	go build "${mygoargs[@]}" || die
 }
