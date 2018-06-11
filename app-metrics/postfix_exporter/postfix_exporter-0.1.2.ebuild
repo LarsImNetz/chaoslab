@@ -48,7 +48,7 @@ src_compile() {
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "-s -w"
-		"$(usex !systemd '-tags nosystemd' '')"
+		-tags "$(usex !systemd 'nosystemd' '')"
 	)
 	go build "${mygoargs[@]}" || die
 }
