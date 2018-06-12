@@ -3,7 +3,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 CRYPTPAD_DATADIR="${CRYPTPAD_DATADIR:-/var/lib/cryptpad}"
-CRYPTPAD_LOG="${CRYPTPAD_LOG:-/var/log/cryptpad}"
+CRYPTPAD_LOGDIR="${CRYPTPAD_LOGDIR:-/var/log/cryptpad}"
 
 output_log="${output_log:-/dev/null}"
 error_log="${error_log:-${CRYPTPAD_LOGDIR}/error.log}"

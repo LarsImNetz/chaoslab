@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="c31d16f" # Change this when you update the ebuild
+GIT_COMMIT="f4d22dd" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Godeps
 # Deps that are not needed:
@@ -68,7 +68,6 @@ EGO_VENDOR=(
 	"github.com/naoina/go-stringutil 6b638e9"
 	"github.com/nats-io/gnatsd 393bbb7"
 	"github.com/nats-io/go-nats ea95856"
-	"github.com/nats-io/nats ea95856"
 	"github.com/nats-io/nuid 289cccf"
 	"github.com/nsqio/go-nsq eee57a3"
 	"github.com/opencontainers/runc 89ab7f2"
@@ -186,7 +185,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/etc/telegraf/telegraf.conf ]; then
+	if [ ! -f "${EROOT%/}"/etc/telegraf/telegraf.conf ]; then
 		elog "No telegraf.conf found, copying the example over"
 		cp "${EROOT%/}"/etc/telegraf/telegraf.conf{.example,} || die
 	else
