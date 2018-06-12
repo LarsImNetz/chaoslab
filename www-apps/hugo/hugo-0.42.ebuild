@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="171caf2" # Change this when you update the ebuild
+GIT_COMMIT="ffb609f" # Change this when you update the ebuild
 EGO_PN="github.com/gohugoio/hugo"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
@@ -18,11 +18,11 @@ EGO_VENDOR=(
 	"github.com/BurntSushi/toml a368813"
 	"github.com/PuerkitoBio/purell 0bcb03f"
 	"github.com/PuerkitoBio/urlesc de5bf2a"
-	"github.com/alecthomas/chroma 6b1131c"
+	"github.com/alecthomas/chroma 1b755a9"
 	"github.com/bep/debounce 844797fa"
 	"github.com/bep/gitmap 012701e"
 	"github.com/chaseadamsio/goorgeous dcf1ef8"
-	"github.com/cpuguy83/go-md2man 20f5889"
+	"github.com/cpuguy83/go-md2man a65d4d2"
 	"github.com/danwakefield/fnmatch cbb64ac"
 	"github.com/disintegration/imaging dd50a3e"
 	"github.com/dlclark/regexp2 487489b"
@@ -44,9 +44,9 @@ EGO_VENDOR=(
 	"github.com/nicksnyder/go-i18n 0dc1626"
 	"github.com/olekukonko/tablewriter b8a9be0"
 	"github.com/pelletier/go-toml acdc450"
-	"github.com/russross/blackfriday 55d61fa"
+	"github.com/russross/blackfriday 11635eb"
 	"github.com/shurcooL/sanitized_anchor_name 86672fc"
-	"github.com/spf13/afero 6364489"
+	"github.com/spf13/afero 787d034"
 	"github.com/spf13/cast 8965335"
 	"github.com/spf13/cobra a1f051b"
 	"github.com/spf13/fsync 12a01e6"
@@ -85,7 +85,7 @@ src_compile() {
 	export GOPATH="${G}"
 	local myldflags=( -s -w
 		-X "${EGO_PN}/hugolib.CommitHash=${GIT_COMMIT}"
-		-X "${EGO_PN}/hugolib.BuildDate=$(date -u '+%FT%T%z')"
+		-X "${EGO_PN}/hugolib.BuildDate=$(date +%FT%T%z)"
 	)
 	local mygoargs=(
 		-v -work -x
