@@ -18,8 +18,8 @@ DEPEND="${RDEPEND}"
 S="${WORKDIR}/${PN}-v${PV}"
 
 src_install() {
-	local install_dir
-	install_dir="/usr/$(get_libdir)/node_modules/yarn" path
+	local install_dir path
+	install_dir="/usr/$(get_libdir)/node_modules/yarn"
 	insinto "${install_dir}"
 	doins -r .
 	dosym "../$(get_libdir)/node_modules/yarn/bin/yarn.js" "/usr/bin/yarn"

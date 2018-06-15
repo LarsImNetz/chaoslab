@@ -6,6 +6,7 @@ EAPI=6
 DESCRIPTION="Fast, reliable, and secure node dependency management"
 HOMEPAGE="https://yarnpkg.com"
 SRC_URI="https://github.com/yarnpkg/yarn/releases/download/v${PV}/yarn-v${PV}.tar.gz"
+RESTRICT="mirror"
 
 LICENSE="BSD-2"
 SLOT="0"
@@ -18,8 +19,8 @@ DEPEND="${RDEPEND}"
 S="${WORKDIR}/${PN}-v${PV}"
 
 src_install() {
-	local install_dir
-	install_dir="/usr/$(get_libdir)/node_modules/yarn" path
+	local install_dir path
+	install_dir="/usr/$(get_libdir)/node_modules/yarn"
 	insinto "${install_dir}"
 	doins -r .
 	dosym "../$(get_libdir)/node_modules/yarn/bin/yarn.js" "/usr/bin/yarn"
