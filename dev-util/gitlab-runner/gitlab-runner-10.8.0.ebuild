@@ -10,7 +10,7 @@ EGO_VENDOR=(
 	"github.com/kevinburke/go-bindata 2197b05"
 )
 
-inherit golang-vcs-snapshot linux-info systemd user
+inherit golang-vcs-snapshot linux-info systemd tmpfiles user
 
 PREBUILT_SRC_URI="https://${PN}-downloads.s3.amazonaws.com/v${PV}/docker"
 DESCRIPTION="The official GitLab Runner, written in Go"
@@ -197,6 +197,7 @@ src_install() {
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+	newtmpfiles "${FILESDIR}/${PN}.tmpfilesd" "${PN}.conf"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	diropts -m 0750 -o runner -g gitlab
@@ -210,6 +211,7 @@ src_install() {
 }
 
 pkg_postinst() {
+	tmpfiles_process "${PN}.conf"
 	if use build-images; then
 		ewarn ""
 		ewarn "As a security measure, you should remove portage from"

@@ -22,6 +22,5 @@ depend() {
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" \
-		"${directory}" "${RUNNER_LOGDIR}"
+	checkpath -d -m 0750 -o "${command_user}" "${RUNNER_LOGDIR}"
 }
