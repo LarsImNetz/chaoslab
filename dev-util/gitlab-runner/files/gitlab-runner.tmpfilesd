@@ -1,1 +1,1 @@
-d /var/lib/gitlab-runner 0700 runner gitlab -
+d /var/lib/gitlab-runner 0700 gitlab-runner gitlab-runner -

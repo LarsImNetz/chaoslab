@@ -92,9 +92,6 @@ pkg_setup() {
 			die "arm and armeb doesn't seems to be registered"
 		fi
 	fi
-
-	enewgroup gitlab
-	enewuser runner -1 -1 /var/lib/gitlab-runner gitlab
 }
 
 src_unpack() {
@@ -200,14 +197,18 @@ src_install() {
 	newtmpfiles "${FILESDIR}/${PN}.tmpfilesd" "${PN}.conf"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
-	diropts -m 0750 -o runner -g gitlab
+	diropts -m 0700
 	dodir /etc/gitlab-runner
 
 	insinto /etc/gitlab-runner
 	doins config.toml.example
 
-	diropts -m 0750 -o runner -g gitlab
 	keepdir /var/log/gitlab-runner
+}
+
+pkg_preinst() {
+	enewgroup gitlab-runner
+	enewuser gitlab-runner -1 /bin/bash /var/lib/gitlab-runner gitlab-runner
 }
 
 pkg_postinst() {

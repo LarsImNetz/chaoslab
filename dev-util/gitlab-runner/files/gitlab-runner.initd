@@ -8,22 +8,17 @@ error_log="${error_log:-${RUNNER_LOGDIR}/error.log}"
 
 name="${name:-GitLab Runner}"
 command="/usr/bin/gitlab-runner"
-command_args="run --config ${RUNNER_CONFIG} ${RUNNER_OPTS}"
-command_user="${command_user:-runner:gitlab}"
+command_args="run -c ${RUNNER_CONFIG} ${RUNNER_OPTS}"
 command_background=yes
-directory="${directory:-/var/lib/gitlab-runner}"
 pidfile="/run/${RC_SVCNAME}.pid"
 required_files="${RUNNER_CONFIG}"
+retry="${retry:-TERM/30/KILL/5}"
 start_stop_daemon_args="${SSD_OPTS}
-	-d ${directory} -1 ${output_log} -2 ${error_log}"
+	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need localmount net
 	after sshd
-}
-
-start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" "${RUNNER_LOGDIR}"
 }
 
 reload() {
