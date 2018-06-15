@@ -2,6 +2,7 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
+extra_started_commands="reload"
 output_log="${output_log:-/dev/null}"
 error_log="${error_log:-${RUNNER_LOGDIR}/error.log}"
 
@@ -23,4 +24,10 @@ depend() {
 
 start_pre() {
 	checkpath -d -m 0750 -o "${command_user}" "${RUNNER_LOGDIR}"
+}
+
+reload() {
+	ebegin "Reloading ${name} configuration"
+	start-stop-daemon --signal HUP --pidfile "${pidfile}"
+	eend $? "Failed to reload ${name}"
 }
