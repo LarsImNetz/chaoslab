@@ -10,7 +10,7 @@ EGO_VENDOR=(
 	"github.com/kevinburke/go-bindata 2197b05"
 )
 
-inherit golang-vcs-snapshot linux-info systemd user
+inherit golang-vcs-snapshot linux-info systemd tmpfiles user
 
 PREBUILT_SRC_URI="https://${PN}-downloads.s3.amazonaws.com/v${PV}/docker"
 DESCRIPTION="The official GitLab Runner, written in Go"
@@ -92,9 +92,6 @@ pkg_setup() {
 			die "arm and armeb doesn't seems to be registered"
 		fi
 	fi
-
-	enewgroup gitlab
-	enewuser runner -1 -1 /var/lib/gitlab-runner gitlab
 }
 
 src_unpack() {
@@ -197,19 +194,25 @@ src_install() {
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+	newtmpfiles "${FILESDIR}/${PN}.tmpfilesd" "${PN}.conf"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
-	diropts -m 0750 -o runner -g gitlab
+	diropts -m 0700
 	dodir /etc/gitlab-runner
 
 	insinto /etc/gitlab-runner
 	doins config.toml.example
 
-	diropts -m 0750 -o runner -g gitlab
 	keepdir /var/log/gitlab-runner
 }
 
+pkg_preinst() {
+	enewgroup gitlab-runner
+	enewuser gitlab-runner -1 /bin/bash /var/lib/gitlab-runner gitlab-runner
+}
+
 pkg_postinst() {
+	tmpfiles_process "${PN}.conf"
 	if use build-images; then
 		ewarn ""
 		ewarn "As a security measure, you should remove portage from"

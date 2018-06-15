@@ -1,8 +1,9 @@
 ChaosLab: Overlay for Gentoo Linux
 ----------------------------------
 
-![packages 191](https://img.shields.io/badge/packages-191-4472c0.svg)
-![ebuilds 255](https://img.shields.io/badge/ebuilds-255-8c71cc.svg)
+[![packages 190](https://img.shields.io/badge/packages-190-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![ebuilds 255](https://img.shields.io/badge/ebuilds-255-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
 
 The purpose and scope of this overlay is to maintain ebuilds for packages related to secure
 communication, cryptocurrency, server-side applications, and other things that I'm interested
