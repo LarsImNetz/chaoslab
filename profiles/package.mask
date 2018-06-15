@@ -29,10 +29,6 @@
 
 #--- END OF EXAMPLES ---
 
-# Ian Moone <gentoo@chaoslab.org> (21 May 2018)
-# Experimental ebuild, needs more tests.
-www-apps/rocketchat-server
-
 # Ian Moone <gentoo@chaoslab.org> (15 May 2018)
 # Although the ebuild hosted here is based on the one in main tree, I still
 # think that it is quite experimental. You should NOT use this, unless you really
