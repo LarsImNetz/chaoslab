@@ -50,7 +50,7 @@ app-metrics/**[nsq_exporter](app-metrics/nsq_exporter)** | A Prometheus metrics 
 app-metrics/**[openvpn_exporter](app-metrics/openvpn_exporter)** `*` | A Prometheus exporter for OpenVPN
 app-metrics/**[php-fpm_exporter](app-metrics/php-fpm_exporter)** | A Prometheus exporter that connects directly to PHP-FPM
 app-metrics/**[phpfpm_exporter](app-metrics/phpfpm_exporter)** | A Prometheus exporter for PHP-FPM
-app-metrics/**[postfix_exporter](app-metrics/postfix_exporter)** | A Prometheus metrics exporter for the Postfix mail server
+app-metrics/**[postfix_exporter](app-metrics/postfix_exporter)** `*` | A Prometheus metrics exporter for the Postfix mail server
 app-metrics/**[postgres_exporter](app-metrics/postgres_exporter)** `*` | PostgreSQL stats exporter for Prometheus
 app-metrics/**[process-exporter](app-metrics/process-exporter)** | A Prometheus exporter that mines /proc to report on selected processes
 app-metrics/**[prometheus](app-metrics/prometheus)** `*` | The Prometheus monitoring system and time series database
