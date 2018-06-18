@@ -2,7 +2,7 @@ ChaosLab: Overlay for Gentoo Linux
 ----------------------------------
 
 [![packages 190](https://img.shields.io/badge/packages-190-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
-[![ebuilds 256](https://img.shields.io/badge/ebuilds-256-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![ebuilds 254](https://img.shields.io/badge/ebuilds-254-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
 
 The purpose and scope of this overlay is to maintain ebuilds for packages related to secure
@@ -14,9 +14,8 @@ and would like to improve it, please contribute.
 
 Check [LISTING.md](LISTING.md) to see a (user-friendly) list of available packages. **If you find
 any bugs, please report them!** You can use the [GitLab issue tracker](https://gitlab.com/chaoslab/chaoslab-overlay/issues)
-to report bugs, ask questions or suggest new features. I am also happy to accept merge requests
-from anyone. If you prefer private communication, feel free to contact by [e-mail](overlay.xml#L9)
-([PGP Public Key](#signature)).
+to report bugs, ask questions or suggest new features. If you prefer private communication,
+feel free to contact by [e-mail](overlay.xml#L9)([PGP Public Key](#signature)).
 
 **DISCLAIMER:** As I don't have the resources, nor the time to make stable ebuilds
 in the same way Gentoo developers do, all ebuilds are permanently kept in the _testing
@@ -28,7 +27,7 @@ as I use many of these packages in a production environment.
 but has not been thoroughly tested. Users using the testing branch might very well be the
 first to discover a bug in the package in which case they should file a bug report to let
 the developers know about it.* —
-[Gentoo's Handbook](https://wiki.gentoo.org/wiki/Handbook:AMD64/Full/Portage#Testing) ↩
+[Gentoo's Handbook](https://wiki.gentoo.org/wiki/Handbook:AMD64/Full/Portage#Testing)S
 
 ## How to install the overlay
 You can clone the repository and create `/etc/portage/repos.conf/chaoslab.conf` with the
@@ -73,7 +72,7 @@ All commits and manifests on the first parent (at least) are signed by me.
 * Signing key: `0x5010AD684AB2A4EE` @ _your favorite public key server_
 * Fingerprint: `46D2 70C0 8BAA 08C2 3250  16B4 4B7D 696C 954F 8EDD`
 
-## Want to buy me a cup of coffee? ❤
+## Want to buy me a cup of coffee?
 * Bitcoin _Cash_: `qpgh64feure4a42073wxz3v867t45ht3csxlsx693d`
 * Dash: `Xg8AVx7YLSpTagR5DSzHk9Na1oDMUwb2hk`
 * Ether: `0x002e7A11013BF05D418FD3FbdA4f3381E82e5A23`

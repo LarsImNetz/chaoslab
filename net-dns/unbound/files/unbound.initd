@@ -43,8 +43,8 @@ reload() {
 
 configtest() {
 	ebegin "Checking ${RC_SVCNAME} configuration"
-	if ! unbound-checkconf "${UNBOUND_CONFFILE}" >/dev/null 2>&1; then
-		unbound-checkconf "${UNBOUND_CONFFILE}"
+	if ! unbound-checkconf "${UNBOUND_CONFIG}" >/dev/null 2>&1; then
+		unbound-checkconf "${UNBOUND_CONFIG}"
 	fi
 	eend $? "Failed, please correct the errors above"
 }
