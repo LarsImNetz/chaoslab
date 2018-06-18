@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="ec2cc57" # Change this when you update the ebuild
+GIT_COMMIT="5e86f61" # Change this when you update the ebuild
 EGO_PN="github.com/prometheus/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -73,7 +73,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/etc/alertmanager/alertmanager.yml ]; then
+	if [ ! -f "${EROOT%/}"/etc/alertmanager/alertmanager.yml ]; then
 		elog "No alertmanager.yml found, copying the example over"
 		cp "${EROOT%/}"/etc/alertmanager/alertmanager.yml{.example,} || die
 	else
