@@ -7,7 +7,7 @@ stages:
 
 repoman:
   image:
-    name: chaoslab/alpine-repoman:latest
+    name: chaoslab/repoman:latest
     entrypoint: ["/bin/bash", "-c"]
   stage: repoman
   script:

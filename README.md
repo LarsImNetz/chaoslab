@@ -15,7 +15,7 @@ and would like to improve it, please contribute.
 Check [LISTING.md](LISTING.md) to see a (user-friendly) list of available packages. **If you find
 any bugs, please report them!** You can use the [GitLab issue tracker](https://gitlab.com/chaoslab/chaoslab-overlay/issues)
 to report bugs, ask questions or suggest new features. If you prefer private communication,
-feel free to contact by [e-mail](overlay.xml#L9)([PGP Public Key](#signature)).
+feel free to contact by [e-mail](overlay.xml#L9) ([PGP Public Key](#signature)).
 
 **DISCLAIMER:** As I don't have the resources, nor the time to make stable ebuilds
 in the same way Gentoo developers do, all ebuilds are permanently kept in the _testing
@@ -27,7 +27,7 @@ as I use many of these packages in a production environment.
 but has not been thoroughly tested. Users using the testing branch might very well be the
 first to discover a bug in the package in which case they should file a bug report to let
 the developers know about it.* —
-[Gentoo's Handbook](https://wiki.gentoo.org/wiki/Handbook:AMD64/Full/Portage#Testing)S
+[Gentoo's Handbook](https://wiki.gentoo.org/wiki/Handbook:AMD64/Full/Portage#Testing)
 
 ## How to install the overlay
 You can clone the repository and create `/etc/portage/repos.conf/chaoslab.conf` with the
