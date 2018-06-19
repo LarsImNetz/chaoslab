@@ -9,8 +9,8 @@ EGO_VENDOR=(
 	"github.com/alecthomas/chroma 222a1f0"
 	"github.com/bifurcation/mint 1983579"
 	"github.com/bmizerany/assert b7ed37b"
-	"github.com/boltdb/bolt fd01fc7"
 	"github.com/chzyer/readline f6d7a1f"
+	"github.com/coreos/bbolt af9db20"
 	"github.com/danwakefield/fnmatch cbb64ac"
 	"github.com/didip/tollbooth b10a036"
 	"github.com/dlclark/regexp2 7632a26"
@@ -19,10 +19,10 @@ EGO_VENDOR=(
 	"github.com/fatih/color 507f605"
 	"github.com/flosch/pongo2 e7cf9ea"
 	"github.com/fsnotify/fsnotify c282820"
-	"github.com/garyburd/redigo 569eae5"
 	"github.com/getwe/figlet4go bc87934"
 	"github.com/go-sourcemap/sourcemap b019cc3"
 	"github.com/go-sql-driver/mysql 3287d94"
+	"github.com/gomodule/redigo 9352ab6"
 	"github.com/hashicorp/golang-lru 0fb14ef"
 	"github.com/juju/errors c7d06af"
 	"github.com/juju/ratelimit 59fac50"
@@ -56,10 +56,10 @@ EGO_VENDOR=(
 	"github.com/xyproto/pinterface 05fa0e3"
 	"github.com/xyproto/pstore 65a49d4"
 	"github.com/xyproto/recwatch aaa94ab"
-	"github.com/xyproto/simplebolt c36bc96"
+	"github.com/xyproto/simplebolt a133a5e"
 	"github.com/xyproto/simplehstore e029054"
 	"github.com/xyproto/simplemaria 014c7f7"
-	"github.com/xyproto/simpleredis 82a64a0"
+	"github.com/xyproto/simpleredis 2f4b48d"
 	"github.com/xyproto/splash 349c2b9"
 	"github.com/xyproto/term 77ad530"
 	"github.com/xyproto/unzip 8239505"
@@ -85,7 +85,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="examples mysql postgres redis"
+IUSE="examples mysql pie postgres redis"
 
 RDEPEND="mysql? ( virtual/mysql )
 	postgres? ( dev-db/postgresql:* )
@@ -122,8 +122,8 @@ src_install() {
 	dobin algernon desktop/mdview
 	einstalldocs
 
-	newinitd "${FILESDIR}/${PN}.initd-r1" "${PN}"
-	newconfd "${FILESDIR}/${PN}.confd-r1" "${PN}"
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	insinto /etc/algernon
@@ -139,6 +139,6 @@ src_install() {
 	newins "${FILESDIR}/${PN}.logrotate" "${PN}"
 
 	keepdir /var/www/algernon
-	diropts -o algernon -g algernon -m 0700
+	diropts  -m 0700 -o algernon -g algernon
 	keepdir /var/log/algernon
 }
