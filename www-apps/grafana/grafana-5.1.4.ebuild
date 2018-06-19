@@ -3,25 +3,26 @@
 
 EAPI=6
 
-GIT_COMMIT="7dc36ae"
 EGO_PN="github.com/${PN}/${PN}"
+GIT_COMMIT="a5fe24f" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
 DESCRIPTION="Grafana is an open source metric analytics & visualization suite"
 HOMEPAGE="https://grafana.com"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://${EGO_PN}/archive/v${PV/_/-}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
+IUSE="pie"
 
 RDEPEND="!www-apps/grafana-bin"
 DEPEND=">=net-libs/nodejs-6
 	sys-apps/yarn"
 
-DOCS=( {README,CHANGELOG}.md )
+DOCS=( README.md CHANGELOG.md )
 
 QA_PRESTRIPPED="usr/bin/grafana-cli
 	usr/bin/grafana-server
@@ -101,12 +102,12 @@ src_install() {
 		/usr/share/grafana/tools/phantomjs/phantomjs
 
 	diropts -o grafana -g grafana -m 0750
-	keepdir /var/{lib,log}/grafana
+	keepdir /var/log/grafana
 	keepdir /var/lib/grafana/{dashboards,plugins}
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/etc/grafana/grafana.ini ]; then
+	if [ ! -f "${EROOT%/}"/etc/grafana/grafana.ini ]; then
 		elog "No grafana.ini found, copying the example over"
 		cp "${EROOT%/}"/etc/grafana/grafana.ini{.example,} || die
 	else
