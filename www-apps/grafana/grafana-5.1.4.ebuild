@@ -4,7 +4,7 @@
 EAPI=6
 
 EGO_PN="github.com/${PN}/${PN}"
-GIT_COMMIT="0871432" # Change this when you update the ebuild
+GIT_COMMIT="a5fe24f" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
@@ -22,7 +22,7 @@ RDEPEND="!www-apps/grafana-bin"
 DEPEND=">=net-libs/nodejs-6
 	sys-apps/yarn"
 
-DOCS=( {README,CHANGELOG}.md )
+DOCS=( README.md CHANGELOG.md )
 
 QA_PRESTRIPPED="usr/bin/grafana-cli
 	usr/bin/grafana-server
@@ -107,7 +107,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/etc/grafana/grafana.ini ]; then
+	if [ ! -f "${EROOT%/}"/etc/grafana/grafana.ini ]; then
 		elog "No grafana.ini found, copying the example over"
 		cp "${EROOT%/}"/etc/grafana/grafana.ini{.example,} || die
 	else
