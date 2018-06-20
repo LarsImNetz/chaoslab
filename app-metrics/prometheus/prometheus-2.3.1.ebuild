@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="290d717" # Change this when you update the ebuild
+GIT_COMMIT="188ca45" # Change this when you update the ebuild
 EGO_PN="github.com/${PN}/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -81,12 +81,12 @@ src_install() {
 		docompress -x "/usr/share/doc/${PF}/examples"
 	fi
 
-	diropts -o prometheus -g prometheus -m 0750
-	keepdir /var/{lib,log}/prometheus
+	diropts -m 0750 -o prometheus -g prometheus
+	keepdir /var/log/prometheus
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/etc/prometheus/prometheus.yml ]; then
+	if [ ! -f "${EROOT%/}"/etc/prometheus/prometheus.yml ]; then
 		elog "No prometheus.yml found, copying the example over"
 		cp "${EROOT%/}"/etc/prometheus/prometheus.yml{.example,} || die
 	else
