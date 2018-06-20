@@ -2,7 +2,7 @@ ChaosLab: Overlay for Gentoo Linux
 ----------------------------------
 
 [![packages 190](https://img.shields.io/badge/packages-190-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
-[![ebuilds 253](https://img.shields.io/badge/ebuilds-253-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![ebuilds 251](https://img.shields.io/badge/ebuilds-251-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/pipelines)
 
 The purpose and scope of this overlay is to maintain ebuilds for packages related to secure
