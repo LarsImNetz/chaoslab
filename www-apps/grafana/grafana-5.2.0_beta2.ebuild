@@ -4,7 +4,7 @@
 EAPI=6
 
 EGO_PN="github.com/${PN}/${PN}"
-GIT_COMMIT="faa5e69" # Change this when you update the ebuild
+GIT_COMMIT="f76cafa" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
@@ -107,7 +107,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/etc/grafana/grafana.ini ]; then
+	if [ ! -f "${EROOT%/}"/etc/grafana/grafana.ini ]; then
 		elog "No grafana.ini found, copying the example over"
 		cp "${EROOT%/}"/etc/grafana/grafana.ini{.example,} || die
 	else
