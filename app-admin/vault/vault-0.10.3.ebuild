@@ -4,21 +4,21 @@
 EAPI=6
 
 EGO_PN="github.com/hashicorp/${PN}"
-GIT_COMMIT="3ee0802" # Change this when you update the ebuild
+GIT_COMMIT="533003e" # Change this when you update the ebuild
 
 inherit fcaps golang-vcs-snapshot systemd user
 
 DESCRIPTION="A tool for managing secrets"
 HOMEPAGE="https://vaultproject.io"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-RESTRICT="test"
+RESTRICT="mirror test"
 
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE="pie"
 
-DOCS=( {CHANGELOG,README}.md )
+DOCS=( CHANGELOG.md README.md )
 FILECAPS=( -m 755 'cap_ipc_lock=+ep' usr/bin/vault )
 QA_PRESTRIPPED="usr/bin/vault"
 
@@ -43,6 +43,7 @@ src_compile() {
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-tags vault
 		-o ./bin/vault
 	)
 	go build "${mygoargs[@]}" || die
@@ -62,6 +63,6 @@ src_install() {
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}/${PN}.logrotate" "${PN}"
 
-	diropts -o vault -g vault -m 0750
+	diropts  -m 0750 -o vault -g vault
 	keepdir /var/log/vault
 }
