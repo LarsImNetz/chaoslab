@@ -4,12 +4,14 @@ This is a list of packages available and their associated description:
 **Package** | **Description**
 --- | ---
 app-admin/**[consul](app-admin/consul)** `*` | A tool for service discovery, monitoring and configuration
+app-admin/**[corgi](app-admin/corgi)** | A CLI workflow manager that helps with your repetitive command usages
 app-admin/**[doctl](app-admin/doctl)** | A command line tool for DigitalOcean services
 app-admin/**[gollum](app-admin/gollum)** | An n:m message multiplexer written in Go
 app-admin/**[pick](app-admin/pick)** | A minimal password manager written in Go
 app-admin/**[scaleway-cli](app-admin/scaleway-cli)** | Interact with Scaleway API from the command line
 app-admin/**[terraform](app-admin/terraform)** `*` | A tool for building, changing, and combining infrastructure safely/efficiently
 app-admin/**[vault](app-admin/vault)** `*` | A tool for managing secrets
+app-admin/**[vault-client](app-admin/vault-client)** | A CLI to HashiCorp's Vault inspired by pass
 app-arch/**[squash](app-arch/squash)** | Compression abstraction library and utilities
 app-backup/**[duplicacy](app-backup/duplicacy)** | A new generation cloud backup tool
 app-backup/**[restic](app-backup/restic)** `*` | A backup program that is fast, efficient and secure
