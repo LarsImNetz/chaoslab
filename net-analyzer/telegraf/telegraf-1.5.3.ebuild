@@ -137,9 +137,9 @@ pkg_setup() {
 src_compile() {
 	export GOPATH="${G}"
 	local myldflags=( -s -w
-			-X "main.version=${PV}"
-			-X "main.branch=${PV}"
-			-X "main.commit=${GIT_COMMIT}"
+		-X "main.version=${PV}"
+		-X "main.branch=${PV}"
+		-X "main.commit=${GIT_COMMIT}"
 	)
 	local mygoargs=(
 		-v -work -x
