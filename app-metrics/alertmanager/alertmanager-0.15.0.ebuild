@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="5e86f61" # Change this when you update the ebuild
+GIT_COMMIT="462c969" # Change this when you update the ebuild
 EGO_PN="github.com/prometheus/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -18,7 +18,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="pie"
 
-DOCS=( NOTICE {CHANGELOG,README}.md )
+DOCS=( NOTICE CHANGELOG.md README.md )
 
 QA_PRESTRIPPED="usr/bin/alertmanager
 	usr/bin/amtool"
@@ -68,12 +68,12 @@ src_install() {
 	insinto /etc/alertmanager
 	newins doc/examples/simple.yml alertmanager.yml.example
 
-	diropts -o alertmanager -g alertmanager -m 0750
-	keepdir /var/{lib,log}/alertmanager
+	diropts -m 0750 -o alertmanager -g alertmanager
+	keepdir /var/log/alertmanager
 }
 
 pkg_postinst() {
-	if [ ! -f "${EROOT%/}"/etc/alertmanager/alertmanager.yml ]; then
+	if [[ ! -f "${EROOT%/}"/etc/alertmanager/alertmanager.yml ]]; then
 		elog "No alertmanager.yml found, copying the example over"
 		cp "${EROOT%/}"/etc/alertmanager/alertmanager.yml{.example,} || die
 	else
