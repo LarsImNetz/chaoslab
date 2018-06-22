@@ -17,7 +17,7 @@ EGO_VENDOR=(
 	"gopkg.in/yaml.v2 5420a8b github.com/go-yaml/yaml"
 )
 
-inherit golang-vcs-snapshot
+inherit bash-completion-r1 golang-vcs-snapshot
 
 DESCRIPTION="A CLI to HashiCorp's Vault inspired by pass"
 HOMEPAGE="https://github.com/adfinis-sygroup/vault-client"
@@ -28,7 +28,7 @@ RESTRICT="mirror"
 LICENSE="GPL-3+"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="pie"
+IUSE="bash-completion pie zsh-completion"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/vc"
@@ -46,10 +46,19 @@ src_compile() {
 		-ldflags "-s -w"
 		-o ./vc
 	)
-	go build "${mygoargs[@]}" src/*.go || die
+	go build "${mygoargs[@]}" ./src || die
 }
 
 src_install() {
 	dobin vc
 	einstalldocs
+
+	if use bash-completion; then
+		newbashcomp sample/vc-completion.bash vc
+	fi
+
+	if use zsh-completion; then
+		insinto /usr/share/zsh/site-functions
+		newins sample/vc-completion.zsh _vc
+	fi
 }
