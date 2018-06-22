@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">DrakeW/corgi</remote-id>
+		<bugs-to>https://github.com/DrakeW/corgi/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Corgi is a command-line tool that helps with your
+		repetitive command usages by organizing them into
+		reusable snippet.
+	</longdescription>
+</pkgmetadata>
