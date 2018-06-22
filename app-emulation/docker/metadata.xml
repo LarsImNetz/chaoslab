@@ -17,11 +17,11 @@
 		clouds and more.
 	</longdescription>
 	<use>
+		<flag name="apparmor">Enable AppArmor support</flag>
 		<flag name="aufs">
 			Enables dependencies for the "aufs" graph driver, including
 			necessary kernel flags
 		</flag>
-		<flag name="apparmor">Enable AppArmor support</flag>
 		<flag name="btrfs">
 			Enables dependencies for the "btrfs" graph driver, including
 			necessary kernel flags
@@ -34,6 +34,7 @@
 			Enables dependencies for the "devicemapper" graph driver, including
 			necessary kernel flags
 		</flag>
+		<flag name="fish-completion">Enable fish completion support</flag>
 		<flag name="overlay">
 			Enables dependencies for the "overlay" graph driver, including
 			necessary kernel flags

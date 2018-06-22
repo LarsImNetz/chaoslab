@@ -18,8 +18,8 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~arm"
-IUSE="apparmor aufs bash-completion btrfs +container-init
-	+device-mapper +overlay pkcs11 seccomp systemd zsh-completion"
+IUSE="apparmor aufs bash-completion btrfs +container-init +device-mapper
+	fish-completion +overlay pkcs11 seccomp systemd zsh-completion"
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#build-dependencies
 CDEPEND=">=dev-db/sqlite-3.7.9:3
@@ -284,6 +284,11 @@ src_install() {
 	doman man/man1/*
 
 	use bash-completion && dobashcomp contrib/completion/bash/docker
+
+	if use fish-completion; then
+		insinto /usr/share/fish/vendor_completions.d
+		doins contrib/completion/fish/docker.fish
+	fi
 
 	if use zsh-completion; then
 		insinto /usr/share/zsh/site-functions
