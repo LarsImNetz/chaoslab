@@ -6,17 +6,16 @@ ChaosLab: Overlay for Gentoo Linux
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
 
-The purpose and scope of this overlay is to maintain ebuilds for packages related to secure
-communication, cryptocurrency, server-side applications, and other things that I'm interested
-in. It also include full support for `libressl` USE flag and **OpenRC**. Though this doesn't
-mean that there no support for **systemd**, it has, the problem is that I don't have any machines
-to test its unit files, hence the support have been less-than-stellar. If you have spare time
-and would like to improve it, please contribute.
+The scope of this overlay is to maintain ebuilds for packages related to secure communication,
+cryptography, cryptocurrency, server-side applications, and other things that I'm interested in.
+It also include full support for `libressl` USE flag and **OpenRC**, however, this doesn't mean
+that there are no support for **systemd**, it has, the problem is that I don't have any machines
+to test its unit files, hence the support have been less-than-stellar.
 
-Check [LISTING.md](LISTING.md) to see a (user-friendly) list of available packages. **If you find
-any bugs, please report them!** You can use the [GitLab issue tracker](https://gitlab.com/chaoslab/chaoslab-overlay/issues)
-to report bugs, ask questions or suggest new features. If you prefer private communication,
-feel free to contact by [e-mail](overlay.xml#L9) ([PGP Public Key](#signature)).
+**If you find any bugs, please report them!** You can use the
+[GitLab issue tracker](https://gitlab.com/chaoslab/chaoslab-overlay/issues) or [e-mail](overlay.xml#L9)
+([PGP Public Key](#signature)) to report bugs, ask questions or suggest new features. Also, you may visit
+[LISTING.md](LISTING.md) to see a comprehensive list of available packages and its descriptions.
 
 **DISCLAIMER:** As I don't have the resources, nor the time to make stable ebuilds
 in the same way Gentoo developers do, all ebuilds are permanently kept in the _testing
@@ -73,10 +72,17 @@ All commits and manifests on the first parent (at least) are signed by me.
 * Signing key: `0x5010AD684AB2A4EE` @ _your favorite public key server_
 * Fingerprint: `46D2 70C0 8BAA 08C2 3250  16B4 4B7D 696C 954F 8EDD`
 
+You can easily do full-tree verification ([GLEP-74](https://www.gentoo.org/glep/glep-0074.html))
+with [app-portage/gemato](https://packages.gentoo.org/packages/app-portage/gemato):
+
+```shell
+find */* -maxdepth 2 -type d ! -path 'profiles*' -exec gemato verify -k -s {} +
+```
+
 ## Want to buy me a cup of coffee?
 * Bitcoin _Cash_: `qpgh64feure4a42073wxz3v867t45ht3csxlsx693d`
 * Dash: `Xg8AVx7YLSpTagR5DSzHk9Na1oDMUwb2hk`
 * Ether: `0x002e7A11013BF05D418FD3FbdA4f3381E82e5A23`
-* Zcash: `zcX1qbN2YJKARPmFcrU3HgpQfYbWe9yy4YsogDA4gpwJ6NGk2bXZ6nyNDo3HLBkAKizRPkASSEduGeVtzj3VfixFey9y1Yx`
 * Monero: `88FJacypy5kiY1FuHoowEeEpAThvM9pd5CF4U6GZvAJ3Jgfh4oZ3GdUBwkkaonjAJAFnzgFVkFXZVd38w4EdYxsWGYuzSri`
+* Zcash: `zcX1qbN2YJKARPmFcrU3HgpQfYbWe9yy4YsogDA4gpwJ6NGk2bXZ6nyNDo3HLBkAKizRPkASSEduGeVtzj3VfixFey9y1Yx`
 
