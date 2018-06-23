@@ -6,7 +6,7 @@ EAPI=6
 GIT_COMMIT="7853e53" # Change this when you update the ebuild
 EGO_PN="github.com/ipfs/${PN}"
 
-inherit golang-vcs-snapshot systemd user
+inherit bash-completion-r1 golang-vcs-snapshot systemd tmpfiles user
 
 DESCRIPTION="IPFS implementation written in Go"
 HOMEPAGE="https://ipfs.io"
@@ -16,13 +16,13 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE="fuse test"
+IUSE="bash-completion fuse test"
 
 RDEPEND="fuse? ( sys-fs/fuse:0 )"
 DEPEND="|| ( net-misc/curl net-misc/wget )
 	test? ( net-analyzer/netcat[crypt] )"
 
-DOCS=( {CHANGELOG,README}.md )
+DOCS=( CHANGELOG.md README.md )
 QA_PRESTRIPPED="usr/bin/ipfs"
 
 G="${WORKDIR}/${P}"
@@ -34,7 +34,7 @@ pkg_setup() {
 		ewarn ""
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn ""
-		die "[network-sandbox] is enabled in FEATURES"
+		die "'network-sandbox' is enabled in FEATURES"
 	fi
 }
 
@@ -61,4 +61,26 @@ src_test() {
 src_install() {
 	dobin cmd/ipfs/ipfs
 	einstalldocs
+
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
+	newtmpfiles "${FILESDIR}/${PN}.tmpfilesd" "${PN}.conf"
+	systemd_dounit "${FILESDIR}/${PN}.service"
+
+	use bash-completion && \
+		newbashcomp misc/completion/ipfs-completion.bash ipfs
+}
+
+pkg_preinst() {
+	enewgroup go-ipfs
+	enewuser go-ipfs -1 -1 /var/lib/go-ipfs go-ipfs
+}
+
+pkg_postinst() {
+	tmpfiles_process "${PN}.conf"
+	einfo ""
+	elog "To be able to use the ipfs service you will need to create the ipfs repository"
+	elog "(e.g. su -s /bin/sh -c \"ipfs init -e\" go-ipfs)"
+	elog "or change IPFS_PATH of ${EROOT%/}/etc/conf.d/go-ipfs with another, with proper permissions."
+	einfo ""
 }
