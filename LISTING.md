@@ -1,6 +1,11 @@
 ## Repository tree
 This is a list of packages available and their associated description:
 
+* `*` Packages that have similar ebuild in the main tree, but for personal reasons, we maintain our own versions.
+* `**` [Masked packages](profiles/package.mask), probably too unstable and/or experimental.
+* `***` Temporary packages, you shouldn't rely on it. We probably have it because
+it's a dependency for other packages, and the main tree still doesn't have said package.
+
 **Package** | **Description**
 --- | ---
 app-admin/**[consul](app-admin/consul)** `*` | A tool for service discovery, monitoring and configuration
@@ -196,9 +201,3 @@ www-servers/**[hiawatha](www-servers/hiawatha)** `*` | Advanced and secure webse
 www-servers/**[rest-server](www-servers/rest-server)** | A high performance HTTP server that implements restic's REST backend API
 x11-misc/**[noti](x11-misc/noti)** | Trigger notifications when a process completes
 
-* `*` Packages that have similar ebuild in the main tree, but for personal reasons,
-we maintain our own version. This doesn't mean that we have a better or worse version,
-just different. Judge for yourself.
-* `**` [Masked package](profiles/package.mask), probably too unstable and/or experimental.
-* `***` Temporary package, you shouldn't rely on it. We probably have it because
-it's a dependency for other packages, and the main tree still doesn't have said package.
