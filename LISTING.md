@@ -4,7 +4,6 @@ This is a list of packages available and their associated description:
 **Package** | **Description**
 --- | ---
 app-admin/**[consul](app-admin/consul)** `*` | A tool for service discovery, monitoring and configuration
-app-admin/**[corgi](app-admin/corgi)** | A CLI workflow manager that helps with your repetitive command usages
 app-admin/**[doctl](app-admin/doctl)** | A command line tool for DigitalOcean services
 app-admin/**[gollum](app-admin/gollum)** | An n:m message multiplexer written in Go
 app-admin/**[pick](app-admin/pick)** | A minimal password manager written in Go
@@ -68,6 +67,7 @@ app-metrics/**[unbound_exporter](app-metrics/unbound_exporter)** | A Prometheus 
 app-metrics/**[uwsgi_exporter](app-metrics/uwsgi_exporter)** `*` | uWSGI metrics exporter for prometheus.io
 app-metrics/**[varnish_exporter](app-metrics/varnish_exporter)** | Varnish exporter for Prometheus
 app-misc/**[bat](app-misc/bat)** | A 'cat' clone with syntax highlighting and Git integration
+app-misc/**[corgi](app-misc/corgi)** | A CLI workflow manager that helps with your repetitive command usages
 app-misc/**[genact](app-misc/genact)** | A nonsense activity generator
 app-misc/**[skim](app-misc/skim)** `*` | Fuzzy finder in Rust
 app-misc/**[vanity-monero](app-misc/vanity-monero)** | Generate vanity address for CryptoNote currency
