@@ -1,8 +1,7 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-RESTRICT="mirror"
+EAPI=7
 
 inherit autotools
 
@@ -10,6 +9,7 @@ MY_PV="release-${PV}"
 DESCRIPTION="The WebSocket library written in C"
 HOMEPAGE="https://tatsuhiro-t.github.io/wslay/"
 SRC_URI="https://github.com/tatsuhiro-t/${PN}/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
+RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
