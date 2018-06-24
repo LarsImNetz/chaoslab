@@ -74,6 +74,7 @@ app-metrics/**[varnish_exporter](app-metrics/varnish_exporter)** | Varnish expor
 app-misc/**[bat](app-misc/bat)** | A 'cat' clone with syntax highlighting and Git integration
 app-misc/**[corgi](app-misc/corgi)** | A CLI workflow manager that helps with your repetitive command usages
 app-misc/**[genact](app-misc/genact)** | A nonsense activity generator
+app-misc/**[pet](app-misc/pet)** `*` | Simple command-line snippet manager, written in Go
 app-misc/**[skim](app-misc/skim)** `*` | Fuzzy finder in Rust
 app-misc/**[vanity-monero](app-misc/vanity-monero)** | Generate vanity address for CryptoNote currency
 app-misc/**[watchexec](app-misc/watchexec)** | Executes commands in response to file modifications
@@ -118,6 +119,7 @@ dev-util/**[electron-bin](dev-util/electron-bin)** `*` | Cross platform applicat
 dev-util/**[gitlab-runner](dev-util/gitlab-runner)** | The official GitLab Runner, written in Go
 dev-vcs/**[gitkraken-bin](dev-vcs/gitkraken-bin)** | The intuitive, fast, and beautiful cross-platform Git client
 dev-vcs/**[hub](dev-vcs/hub)** | A command-line wrapper for git that makes you better at GitHub
+dev-vcs/**[lab](dev-vcs/lab)** | Lab wraps Git or Hub to easily interact with repositories on GitLab
 gnome-extra/**[gnome-pomodoro](gnome-extra/gnome-pomodoro)** | A Pomodoro timer for Gnome
 gnome-extra/**[nautilus-git](gnome-extra/nautilus-git)** | Nautilus extension to add important information about the current git directory
 mail-filter/**[rspamd](mail-filter/rspamd)** `*` | Rapid spam filtering system
@@ -180,6 +182,7 @@ sys-auth/**[yubikey-touch-detector](sys-auth/yubikey-touch-detector)** | A tool 
 sys-fs/**[gocryptfs](sys-fs/gocryptfs)** | Encrypted overlay filesystem written in Go
 sys-fs/**[tmsu](sys-fs/tmsu)** `*` | Files tagger and virtual tag-based filesystem
 sys-process/**[gkill](sys-process/gkill)** | An interactive process killer
+sys-process/**[gotop](sys-process/gotop)** | A terminal based graphical activity monitor inspired by gtop and vtop
 sys-process/**[jobber](sys-process/jobber)** | A replacement for cron, with sophisticated status-reporting and error-handling
 www-apps/**[cryptpad](www-apps/cryptpad)** | The zero knowledge realtime collaborative editor
 www-apps/**[filebrowser](www-apps/filebrowser)** | A stylish web file manager
