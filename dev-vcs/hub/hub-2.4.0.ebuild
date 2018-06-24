@@ -3,7 +3,7 @@
 
 EAPI=6
 
-EGO_PN="github.com/github/hub"
+EGO_PN="github.com/github/${PN}"
 
 inherit bash-completion-r1 golang-vcs-snapshot
 
@@ -15,7 +15,7 @@ RESTRICT="mirror test"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="fish-completion man zsh-completion"
+IUSE="bash-completion fish-completion man zsh-completion"
 
 DEPEND="man? ( app-text/ronn dev-ruby/bundler )"
 RDEPEND=">=dev-vcs/git-1.7.3
@@ -35,7 +35,7 @@ src_setup() {
 			ewarn ""
 			ewarn "${CATEGORY}/${PN}[man] requires 'network-sandbox' to be disabled in FEATURES"
 			ewarn ""
-			die "[network-sandbox] is enabled in FEATURES"
+			die "'network-sandbox' is enabled in FEATURES"
 		fi
 	fi
 }
@@ -46,7 +46,7 @@ src_compile() {
 		-v -work -x
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w"
+		-ldflags "-s -w -X ${EGO_PN}/version.Version=${PV}"
 	)
 	go build "${mygoargs[@]}" || die
 
@@ -57,7 +57,8 @@ src_install() {
 	dobin hub
 	einstalldocs
 
-	newbashcomp etc/hub.bash_completion.sh hub
+	use bash-completion && \
+		newbashcomp etc/hub.bash_completion.sh hub
 
 	use man && doman share/man/man1/*.1
 
