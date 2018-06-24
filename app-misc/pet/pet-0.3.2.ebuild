@@ -44,12 +44,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="pie zsh-completion"
 
-RDEPEND="
-	|| (
-		app-shells/fzf
-		app-shells/peco
-	)
-"
+RDEPEND="|| ( app-shells/fzf app-shells/peco )"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/pet"
