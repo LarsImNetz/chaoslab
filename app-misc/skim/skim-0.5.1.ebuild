@@ -4,7 +4,7 @@
 EAPI=6
 
 # Generated with:
-# curl -s 'https://raw.githubusercontent.com/lotabout/skim/v0.4.0/Cargo.lock' | sed 's/^"checksum \([[:graph:]]\+\) \([[:graph:]]\+\) (.*$/\1-\2/'
+# curl -s 'https://raw.githubusercontent.com/lotabout/skim/v0.5.1/Cargo.lock' | sed 's/^"checksum \([[:graph:]]\+\) \([[:graph:]]\+\) (.*$/\1-\2/'
 CRATES="
 aho-corasick-0.6.4
 ansi_term-0.10.2
