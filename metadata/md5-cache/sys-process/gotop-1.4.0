@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install unpack
+DEPEND=>=dev-lang/go-1.9
+DESCRIPTION=A terminal based graphical activity monitor inspired by gtop and vtop
+EAPI=6
+HOMEPAGE=https://github.com/cjbassi/gotop
+IUSE=pie
+KEYWORDS=~amd64 ~arm ~arm64 ~x86
+LICENSE=AGPL-3
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/cjbassi/gotop/archive/1.4.0.tar.gz -> gotop-1.4.0.tar.gz
+_eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536
+_md5_=26575d18c7302ad72793149437600a24
