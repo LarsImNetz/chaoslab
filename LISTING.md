@@ -11,6 +11,7 @@ it's a dependency for other packages, and the main tree still doesn't have said 
 app-admin/**[consul](app-admin/consul)** `*` | A tool for service discovery, monitoring and configuration
 app-admin/**[doctl](app-admin/doctl)** | A command line tool for DigitalOcean services
 app-admin/**[gollum](app-admin/gollum)** | An n:m message multiplexer written in Go
+app-admin/**[gopass](app-admin/gopass)** | The slightly more awesome standard unix password manager for teams
 app-admin/**[pick](app-admin/pick)** | A minimal password manager written in Go
 app-admin/**[scaleway-cli](app-admin/scaleway-cli)** | Interact with Scaleway API from the command line
 app-admin/**[terraform](app-admin/terraform)** `*` | A tool for building, changing, and combining infrastructure safely/efficiently
