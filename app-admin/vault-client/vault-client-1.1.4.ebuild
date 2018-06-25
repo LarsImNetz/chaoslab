@@ -30,6 +30,8 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="bash-completion pie zsh-completion"
 
+RDEPEND="zsh-completion? ( app-shells/zsh )"
+
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/vc"
 

@@ -22,12 +22,15 @@ IUSE="apparmor aufs bash-completion btrfs +container-init +device-mapper
 	fish-completion +overlay pkcs11 seccomp systemd zsh-completion"
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#build-dependencies
-CDEPEND=">=dev-db/sqlite-3.7.9:3
+CDEPEND="
+	>=dev-db/sqlite-3.7.9:3
 	device-mapper? ( >=sys-fs/lvm2-2.02.89[thin] )
 	apparmor? ( sys-libs/libapparmor )
-	seccomp? ( >=sys-libs/libseccomp-2.2.1 )"
+	seccomp? ( >=sys-libs/libseccomp-2.2.1 )
+"
 DEPEND="${CDEPEND}
-	btrfs? ( >=sys-fs/btrfs-progs-3.16.1 )"
+	btrfs? ( >=sys-fs/btrfs-progs-3.16.1 )
+"
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#optional-dependencies
 RDEPEND="${CDEPEND}
@@ -39,7 +42,10 @@ RDEPEND="${CDEPEND}
 	>=dev-vcs/git-1.7
 	>=net-firewall/iptables-1.4
 	sys-process/procps
-	container-init? ( >=sys-process/tini-0.16.1[static] )"
+	container-init? ( >=sys-process/tini-0.16.1[static] )
+	fish-completion? ( app-shells/fish )
+	zsh-completion? ( app-shells/zsh )
+"
 
 PATCHES=( "${FILESDIR}"/bsc1073877-docker-apparmor-add-signal.patch )
 
