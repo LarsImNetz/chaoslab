@@ -3,7 +3,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${GOLLUM_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/gollum/error.log}"
 
 command="/usr/bin/gollum"
 command_args="-c ${GOLLUM_CONFIG} ${GOLLUM_OPTS}"
@@ -15,8 +15,4 @@ start_stop_daemon_args="${SSD_OPTS}
 
 depend() {
 	need net
-}
-
-start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" "${GOLLUM_LOGDIR}"
 }
