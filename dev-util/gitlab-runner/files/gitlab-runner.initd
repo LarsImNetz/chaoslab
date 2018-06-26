@@ -4,7 +4,7 @@
 
 extra_started_commands="reload"
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${RUNNER_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/gitlab-runner/error.log}"
 
 name="${name:-GitLab Runner}"
 command="/usr/bin/gitlab-runner"

@@ -7,7 +7,7 @@ extra_commands="configtest"
 extra_started_commands="reload"
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${CONSUL_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/consul/error.log}"
 
 name="${RC_SVCNAME}"
 command="/usr/bin/consul"
@@ -26,9 +26,6 @@ depend() {
 start_pre() {
 	# upstream strongly recommends > 1
 	export GOMAXPROCS=${GOMAXPROCS:-2}
-
-	checkpath -d -m 0750 -o "${command_user}" \
-		"${CONSUL_DATADIR}" "${CONSUL_LOGDIR}"
 
 	if [ "${RC_CMD}" != "restart" ]; then
 		configtest || return 1
