@@ -4,7 +4,7 @@
 EAPI=6
 
 EGO_PN="github.com/${PN}/${PN}"
-GIT_COMMIT="a5fe24f" # Change this when you update the ebuild
+GIT_COMMIT="69ab6cb" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
@@ -37,7 +37,7 @@ pkg_setup() {
 		ewarn ""
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn ""
-		die "[network-sandbox] is enabled in FEATURES"
+		die "'network-sandbox' is enabled in FEATURES"
 	fi
 
 	enewgroup grafana
@@ -107,24 +107,24 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${ROOT%/}/var/lib/grafana") != "750" ]]; then
-		einfo "Fixing ${ROOT%/}/var/lib/grafana permissions"
-		chown grafana:grafana "${ROOT%/}/var/lib/grafana" || die
-		chmod 0750 "${ROOT%/}/var/lib/grafana" || die
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/grafana") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/grafana permissions"
+		chown grafana:grafana "${EROOT%/}/var/lib/grafana" || die
+		chmod 0750 "${EROOT%/}/var/lib/grafana" || die
 	fi
 
-	if [ ! -f "${EROOT%/}"/etc/grafana/grafana.ini ]; then
+	if [[ ! -f "${EROOT%/}"/etc/grafana/grafana.ini ]]; then
 		elog "No grafana.ini found, copying the example over"
 		cp "${EROOT%/}"/etc/grafana/grafana.ini{.example,} || die
 	else
 		elog "grafana.ini found, please check example file for possible changes"
 	fi
-	einfo
+	einfo ""
 	elog "${PN} has built-in log rotation. Please see [log.file] section of"
 	elog "${EROOT%/}/etc/grafana/grafana.ini for related settings."
-	einfo
+	einfo ""
 	elog "You may add your own custom configuration for app-admin/logrotate if you"
 	elog "wish to use external rotation of logs. In this case, you also need to make"
 	elog "sure the built-in rotation is turned off."
-	einfo
+	einfo ""
 }

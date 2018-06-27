@@ -118,10 +118,10 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${ROOT%/}/var/lib/influxdb") != "750" ]]; then
-		einfo "Fixing ${ROOT%/}/var/lib/influxdb permissions"
-		chown influxdb:influxdb "${ROOT%/}/var/lib/influxdb" || die
-		chmod 0750 "${ROOT%/}/var/lib/influxdb" || die
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/influxdb") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/influxdb permissions"
+		chown influxdb:influxdb "${EROOT%/}/var/lib/influxdb" || die
+		chmod 0750 "${EROOT%/}/var/lib/influxdb" || die
 	fi
 
 	if [ ! -e "${EROOT%/}"/etc/influxdb/influxdb.conf ]; then

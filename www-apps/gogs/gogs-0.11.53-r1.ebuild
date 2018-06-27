@@ -100,10 +100,10 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${ROOT%/}/var/lib/gogs") != "750" ]]; then
-		einfo "Fixing ${ROOT%/}/var/lib/gogs permissions"
-		chown -R gogs:gogs "${ROOT%/}/var/lib/gogs" || die
-		chmod 0750 "${ROOT%/}/var/lib/gogs" || die
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/gogs") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/gogs permissions"
+		chown -R gogs:gogs "${EROOT%/}/var/lib/gogs" || die
+		chmod 0750 "${EROOT%/}/var/lib/gogs" || die
 	fi
 
 	if [ ! -e "${EROOT%/}"/var/lib/gogs/conf/app.ini ]; then

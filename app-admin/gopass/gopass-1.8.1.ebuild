@@ -16,7 +16,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="bash-completion fish-completion zsh-completion"
+IUSE="bash-completion fish-completion +pie zsh-completion"
 
 RDEPEND="
 	app-crypt/gpgme:1
@@ -40,7 +40,7 @@ src_compile() {
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=pie"
+		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "${myldflags[*]}"

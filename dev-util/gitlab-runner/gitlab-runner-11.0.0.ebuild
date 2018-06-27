@@ -211,10 +211,10 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${ROOT%/}/var/lib/gitlab-runner") != "700" ]]; then
-		einfo "Fixing ${ROOT%/}/var/lib/gitlab-runner permissions"
-		chown gitlab-runner:gitlab-runner "${ROOT%/}/var/lib/gitlab-runner" || die
-		chmod 0700 "${ROOT%/}/var/lib/gitlab-runner" || die
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/gitlab-runner") != "700" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/gitlab-runner permissions"
+		chown gitlab-runner:gitlab-runner "${EROOT%/}/var/lib/gitlab-runner" || die
+		chmod 0700 "${EROOT%/}/var/lib/gitlab-runner" || die
 	fi
 
 	if use build-images; then
