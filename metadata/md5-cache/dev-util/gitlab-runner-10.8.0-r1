@@ -10,4 +10,4 @@ RESTRICT=mirror test
 SLOT=0
 SRC_URI=https://gitlab.com/gitlab-org/gitlab-runner/repository/v10.8.0/archive.tar.gz -> gitlab-runner-10.8.0.tar.gz https://github.com/mitchellh/gox/archive/e05df8d.tar.gz -> github.com-mitchellh-gox-e05df8d.tar.gz https://github.com/kevinburke/go-bindata/archive/2197b05.tar.gz -> github.com-kevinburke-go-bindata-2197b05.tar.gz !build-images? ( https://gitlab-runner-downloads.s3.amazonaws.com/v10.8.0/docker/prebuilt-x86_64.tar.xz -> gitlab-runner-10.8.0-prebuilt-x86_64.tar.xz https://gitlab-runner-downloads.s3.amazonaws.com/v10.8.0/docker/prebuilt-arm.tar.xz -> gitlab-runner-10.8.0-prebuilt-arm.tar.xz )
 _eclasses_=estack	43ddf5aaffa7a8d0482df54d25a66a1f	golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	linux-info	aedb720bff5a5dec9b87edd351382bfc	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	04e50685fbf3d89e5c67ac6a385dd595	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607	user	8bc2845510e2109af75e3eeac607ec81	versionator	26ca8a8bd95d6a74122c08ba98a4ee72
-_md5_=2cbd0b0aeac47ac6d84ace1bd06055c3
+_md5_=b838885b9c09a1f7b80ca2e71db89461
