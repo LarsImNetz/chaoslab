@@ -5,10 +5,9 @@
 GITEA_USER="${GITEA_USER:-git}"
 GITEA_HOME="${GITEA_HOME:-/var/lib/gitea}"
 GITEA_CONFIG="${GITEA_CONFIG:-${GITEA_HOME}/conf/app.ini}"
-GITEA_LOGDIR="${GITEA_LOGDIR:-/var/log/${RC_SVCNAME}}"
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${GITEA_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/gitea/error.log}"
 
 name="${name:-Gitea}"
 command="/usr/bin/gitea"
@@ -18,19 +17,16 @@ command_background=yes
 directory="${GITEA_HOME}"
 pidfile="/run/${RC_SVCNAME}.pid"
 required_files="${GITEA_CONFIG}"
-retry="${retry:-TERM/60/KILL/5}"
+retry="${retry:-TERM/30/KILL/5}"
 start_stop_daemon_args="${SSD_OPTS}
 	-e \"GITEA_WORK_DIR=${GITEA_HOME}\"
 	-e \"USER=${GITEA_USER}\"
 	-d ${directory} -1 ${output_log} -2 ${error_log}"
 
 depend() {
-	need localmount net
+	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" \
-		"${GITEA_HOME}" "${GITEA_LOGDIR}"
-	checkpath -f -m 0600 -o "${command_user}" \
-		"${GITEA_CONFIG}"
+	checkpath -f -m 0600 -o "${command_user}" "${GITEA_CONFIG}"
 }
