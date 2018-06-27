@@ -64,9 +64,9 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${ROOT%/}/var/lib/consul") != "750" ]]; then
-		einfo "Fixing ${ROOT%/}/var/lib/consul permissions"
-		chown consul:consul "${ROOT%/}/var/lib/consul" || die
-		chmod 0750 "${ROOT%/}/var/lib/consul" || die
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/consul") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/consul permissions"
+		chown consul:consul "${EROOT%/}/var/lib/consul" || die
+		chmod 0750 "${EROOT%/}/var/lib/consul" || die
 	fi
 }
