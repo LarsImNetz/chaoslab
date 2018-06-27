@@ -16,8 +16,3 @@ start_stop_daemon_args="${SSD_OPTS} -d ${directory}"
 depend() {
 	need net
 }
-
-start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" \
-		"${GRAFANA_DATADIR}" "${GRAFANA_LOGDIR}"
-}

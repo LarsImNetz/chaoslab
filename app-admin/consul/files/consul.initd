@@ -24,6 +24,7 @@ depend() {
 }
 
 start_pre() {
+	# Make sure to use all our CPUs, because Consul can block a scheduler thread
 	# upstream strongly recommends > 1
 	export GOMAXPROCS=${GOMAXPROCS:-2}
 

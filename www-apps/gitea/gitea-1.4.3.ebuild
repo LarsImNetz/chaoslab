@@ -93,7 +93,6 @@ src_install() {
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
-	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 	insinto /var/lib/gitea/custom
 	doins -r options
@@ -108,12 +107,17 @@ src_install() {
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}/${PN}.logrotate" "${PN}"
 
-	diropts -m 0750
-	keepdir /var/lib/gitea/data /var/log/gitea
-	fowners -R git:git /var/{lib,log}/gitea
+	diropts -o git -g git -m 0750
+	keepdir /var/log/gitea
 }
 
 pkg_postinst() {
+	if [[ $(stat -c %a "${ROOT%/}/var/lib/gitea") != "750" ]]; then
+		einfo "Fixing ${ROOT%/}/var/lib/gitea permissions"
+		chown -R git:git "${ROOT%/}/var/lib/gitea" || die
+		chmod 0750 "${ROOT%/}/var/lib/gitea" || die
+	fi
+
 	if [ ! -f "${EROOT%/}"/var/lib/gitea/conf/app.ini ]; then
 		elog "No app.ini found, copying the example over"
 		cp "${EROOT%/}"/var/lib/gitea/conf/app.ini{.example,} || die

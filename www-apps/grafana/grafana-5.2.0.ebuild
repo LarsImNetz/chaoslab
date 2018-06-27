@@ -4,13 +4,13 @@
 EAPI=6
 
 EGO_PN="github.com/${PN}/${PN}"
-GIT_COMMIT="f76cafa" # Change this when you update the ebuild
+GIT_COMMIT="ad4d717" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
 DESCRIPTION="Grafana is an open source metric analytics & visualization suite"
 HOMEPAGE="https://grafana.com"
-SRC_URI="https://${EGO_PN}/archive/v${PV/_/-}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
@@ -22,7 +22,7 @@ RDEPEND="!www-apps/grafana-bin"
 DEPEND=">=net-libs/nodejs-6
 	sys-apps/yarn"
 
-DOCS=( {README,CHANGELOG}.md )
+DOCS=( CHANGELOG.md README.md )
 
 QA_PRESTRIPPED="usr/bin/grafana-cli
 	usr/bin/grafana-server
@@ -37,7 +37,7 @@ pkg_setup() {
 		ewarn ""
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn ""
-		die "[network-sandbox] is enabled in FEATURES"
+		die "'network-sandbox' is enabled in FEATURES"
 	fi
 
 	enewgroup grafana
@@ -55,7 +55,7 @@ src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}/bin"
 	local myldflags=( -s -w
-		-X "main.version=${PV/_/-}"
+		-X "main.version=${PV}"
 		-X "main.commit=${GIT_COMMIT}"
 		-X "main.buildstamp=$(date -u '+%s')"
 	)
@@ -85,7 +85,7 @@ src_install() {
 
 	exeinto /usr/libexec/grafana
 	doexe tools/phantomjs/phantomjs
-	scanelf -Xe "${ED%/}"/usr/libexec/grafana/phantomjs || die
+	scanelf -Xe "${ED%/}/usr/libexec/grafana/phantomjs" || die
 
 	insinto /etc/grafana
 	newins conf/sample.ini grafana.ini.example
@@ -107,18 +107,24 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [ ! -f "${EROOT%/}"/etc/grafana/grafana.ini ]; then
+	if [[ $(stat -c %a "${ROOT%/}/var/lib/grafana") != "750" ]]; then
+		einfo "Fixing ${ROOT%/}/var/lib/grafana permissions"
+		chown grafana:grafana "${ROOT%/}/var/lib/grafana" || die
+		chmod 0750 "${ROOT%/}/var/lib/grafana" || die
+	fi
+
+	if [[ ! -f "${EROOT%/}"/etc/grafana/grafana.ini ]]; then
 		elog "No grafana.ini found, copying the example over"
 		cp "${EROOT%/}"/etc/grafana/grafana.ini{.example,} || die
 	else
 		elog "grafana.ini found, please check example file for possible changes"
 	fi
-	einfo
+	einfo ""
 	elog "${PN} has built-in log rotation. Please see [log.file] section of"
 	elog "${EROOT%/}/etc/grafana/grafana.ini for related settings."
-	einfo
+	einfo ""
 	elog "You may add your own custom configuration for app-admin/logrotate if you"
 	elog "wish to use external rotation of logs. In this case, you also need to make"
 	elog "sure the built-in rotation is turned off."
-	einfo
+	einfo ""
 }

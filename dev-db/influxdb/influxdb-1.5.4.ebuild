@@ -120,21 +120,25 @@ src_install() {
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
-
 	systemd_install_serviced "${FILESDIR}/${PN}.service.conf"
 	systemd_dounit "scripts/${PN}.service"
-	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 	insinto /etc/influxdb
 	newins etc/config.sample.toml influxdb.conf.example
 
 	use man && doman man/*.1
 
-	diropts -m 0750 -o influxdb -g influxdb
+	diropts -o influxdb -g influxdb -m 0750
 	keepdir /var/log/influxdb
 }
 
 pkg_postinst() {
+	if [[ $(stat -c %a "${ROOT%/}/var/lib/influxdb") != "750" ]]; then
+		einfo "Fixing ${ROOT%/}/var/lib/influxdb permissions"
+		chown influxdb:influxdb "${ROOT%/}/var/lib/influxdb" || die
+		chmod 0750 "${ROOT%/}/var/lib/influxdb" || die
+	fi
+
 	if [[ ! -f "${EROOT%/}"/etc/influxdb/influxdb.conf ]]; then
 		elog "No influxdb.conf found, copying the example over"
 		cp "${EROOT%/}"/etc/influxdb/influxdb.conf{.example,} || die

@@ -301,6 +301,9 @@ src_install() {
 		doins contrib/completion/zsh/_docker
 	fi
 	popd || die
+
+	diropts -g docker -m 0750
+	keepdir /var/log/docker
 }
 
 pkg_postinst() {

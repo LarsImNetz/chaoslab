@@ -5,10 +5,9 @@
 GOGS_USER="${GOGS_USER:-gogs}"
 GOGS_HOME="${GOGS_HOME:-/var/lib/gogs}"
 GOGS_CONFIG="${GOGS_CONFIG:-${GOGS_HOME}/conf/app.ini}"
-GOGS_LOGDIR="${GOGS_LOGDIR:-/var/log/${RC_SVCNAME}}"
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${GOGS_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/gogs/error.log}"
 
 name="${name:-Gogs}"
 command="/usr/bin/gogs"
@@ -29,8 +28,5 @@ depend() {
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" \
-		"${GOGS_HOME}" "${GOGS_LOGDIR}"
-	checkpath -f -m 0600 -o "${command_user}" \
-		"${GOGS_CONFIG}"
+	checkpath -f -m 0600 -o "${command_user}" "${GOGS_CONFIG}"
 }
