@@ -95,12 +95,17 @@ src_install() {
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}/${PN}.logrotate-r1" "${PN}"
 
-	diropts -m 0750
-	keepdir /var/lib/gogs/data /var/log/gogs
-	fowners -R gogs:gogs /var/{lib,log}/gogs
+	diropts -o gogs -g gogs -m 0750
+	keepdir /var/log/gogs
 }
 
 pkg_postinst() {
+	if [[ $(stat -c %a "${ROOT%/}/var/lib/gogs") != "750" ]]; then
+		einfo "Fixing ${ROOT%/}/var/lib/gogs permissions"
+		chown -R gogs:gogs "${ROOT%/}/var/lib/gogs" || die
+		chmod 0750 "${ROOT%/}/var/lib/gogs" || die
+	fi
+
 	if [ ! -e "${EROOT%/}"/var/lib/gogs/conf/app.ini ]; then
 		elog "No app.ini found, copying the example over"
 		cp "${EROOT%/}"/var/lib/gogs/conf/app.ini{.example,} || die
