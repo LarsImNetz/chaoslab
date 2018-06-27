@@ -2,11 +2,8 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-CRYPTPAD_DATADIR="${CRYPTPAD_DATADIR:-/var/lib/cryptpad}"
-CRYPTPAD_LOGDIR="${CRYPTPAD_LOGDIR:-/var/log/cryptpad}"
-
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${CRYPTPAD_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/cryptpad/error.log}"
 
 directory="${directory:-/usr/share/cryptpad}"
 command="/usr/bin/node"
@@ -14,15 +11,10 @@ command_args="${directory}/server.js"
 command_user="${command_user:-cryptpad:cryptpad}"
 command_background=yes
 pidfile="/run/${RC_SVCNAME}.pid"
-retry="${retry:-TERM/60/KILL/5}"
+retry="${retry:-TERM/30/KILL/5}"
 start_stop_daemon_args="${SSD_OPTS:--w 1000}
 	-d ${directory} -1 ${output_log} -2 ${error_log}"
 
 depend() {
 	after net
-}
-
-start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" \
-		"${CRYPTPAD_LOGDIR}" "${CRYPTPAD_DATADIR}"
 }
