@@ -19,7 +19,7 @@ Group=git
 WorkingDirectory=/var/lib/gitea
 ExecStart=/usr/bin/gitea web --config /var/lib/gitea/conf/app.ini
 Restart=always
-Environment=USER=git GITEA_CUSTOM=/var/lib/gitea
+Environment=USER=git GITEA_WORK_DIR=/var/lib/gitea
 
 [Install]
 WantedBy=multi-user.target
