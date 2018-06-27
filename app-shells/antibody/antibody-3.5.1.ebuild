@@ -50,7 +50,7 @@ pkg_setup() {
 			ewarn ""
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 			ewarn ""
-			die "[network-sandbox] is enabled in FEATURES"
+			die "'network-sandbox' is enabled in FEATURES"
 		fi
 	fi
 }
