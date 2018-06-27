@@ -3,7 +3,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${INFLUXDB_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/influxdb/error.log}"
 
 name="${name:-InfluxDB daemon}"
 command="/usr/bin/influxd"
@@ -22,6 +22,4 @@ depend() {
 
 start_pre() {
 	checkpath -f -m 0600 -o "${command_user}" "${INFLUXDB_CONFIG}"
-	checkpath -d -m 0750 -o "${command_user}" \
-		"${INFLUXDB_LOGDIR}" "${INFLUXDB_DATADIR}"
 }
