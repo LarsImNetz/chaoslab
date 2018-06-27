@@ -107,10 +107,10 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${ROOT%/}/var/lib/grafana") != "750" ]]; then
-		einfo "Fixing ${ROOT%/}/var/lib/grafana permissions"
-		chown grafana:grafana "${ROOT%/}/var/lib/grafana" || die
-		chmod 0750 "${ROOT%/}/var/lib/grafana" || die
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/grafana") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/grafana permissions"
+		chown grafana:grafana "${EROOT%/}/var/lib/grafana" || die
+		chmod 0750 "${EROOT%/}/var/lib/grafana" || die
 	fi
 
 	if [[ ! -f "${EROOT%/}"/etc/grafana/grafana.ini ]]; then
