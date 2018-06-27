@@ -1,5 +1,9 @@
 # config file for /etc/init.d/consul
 
+# Make sure to use all our CPUs, because Consul can block a scheduler thread
+# upstream strongly recommends > 1
+GOMAXPROCS="2"
+
 CONSUL_CONFDIR="/etc/consul.d"
 CONSUL_OPTS=""
 
