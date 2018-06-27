@@ -9,3 +9,7 @@
 
 # any other random options you want to pass to docker
 DOCKER_OPTS=""
+
+# Having non-zero -u limits causes performance problems due to accounting overhead
+# in the kernel. We recommend using cgroups to do container-local accounting.
+rc_ulimit="-n 1048576 -u unlimited"
