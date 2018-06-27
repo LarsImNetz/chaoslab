@@ -2,11 +2,10 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-PGWEB_LOGDIR="${PGWEB_LOGDIR:-/var/log/pgweb}"
 PGWEB_OPTS="${PGWEB_OPTS:---bind=127.0.0.1 --listen=8081}"
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${PGWEB_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/pgweb/error.log}"
 
 command="/usr/bin/pgweb"
 command_args="${PGWEB_OPTS}"
@@ -18,8 +17,4 @@ start_stop_daemon_args="${SSD_OPTS}
 
 depend() {
 	need net
-}
-
-start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" "${PGWEB_LOGDIR}"
 }
