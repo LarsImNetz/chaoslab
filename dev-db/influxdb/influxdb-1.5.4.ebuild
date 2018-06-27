@@ -123,14 +123,13 @@ src_install() {
 
 	systemd_install_serviced "${FILESDIR}/${PN}.service.conf"
 	systemd_dounit "scripts/${PN}.service"
-	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 	insinto /etc/influxdb
 	newins etc/config.sample.toml influxdb.conf.example
 
 	use man && doman man/*.1
 
-	diropts -m 0750 -o influxdb -g influxdb
+	diropts -o influxdb -g influxdb -m 0750
 	keepdir /var/log/influxdb
 }
 

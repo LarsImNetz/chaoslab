@@ -108,7 +108,6 @@ src_install() {
 
 	systemd_install_serviced "${FILESDIR}/${PN}.service.conf"
 	systemd_dounit "scripts/${PN}.service"
-	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 	insinto /etc/influxdb
 	newins etc/config.sample.toml influxdb.conf.example
