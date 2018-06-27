@@ -112,10 +112,10 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${ROOT%/}/var/lib/gitea") != "750" ]]; then
-		einfo "Fixing ${ROOT%/}/var/lib/gitea permissions"
-		chown -R git:git "${ROOT%/}/var/lib/gitea" || die
-		chmod 0750 "${ROOT%/}/var/lib/gitea" || die
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/gitea") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/gitea permissions"
+		chown -R git:git "${EROOT%/}/var/lib/gitea" || die
+		chmod 0750 "${EROOT%/}/var/lib/gitea" || die
 	fi
 
 	if [ ! -f "${EROOT%/}"/var/lib/gitea/conf/app.ini ]; then
