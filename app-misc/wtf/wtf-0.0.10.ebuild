@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="a533b44" # Change this when you update the ebuild
+GIT_COMMIT="c4210f7" # Change this when you update the ebuild
 EGO_PN="github.com/senorprogrammer/${PN}"
 
 inherit golang-vcs-snapshot
@@ -44,7 +44,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	einfo
+	einfo ""
 	elog "See https://wtfutil.com/posts/configuration/ for configuration guide."
-	einfo
+	einfo ""
 }
