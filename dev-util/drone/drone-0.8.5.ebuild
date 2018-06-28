@@ -49,10 +49,10 @@ src_compile() {
 		-ldflags "${myldflags[*]}"
 	)
 	# set !cgo and omit pie for a static shim                                     
-	local mygoargs2=(                                                             
-		-v -work -x                                                           
-		-asmflags "-trimpath=${S}"                                                
-		-gcflags "-trimpath=${S}"                                                 
+	local mygoargs2=(
+		-v -work -x
+		-asmflags "-trimpath=${S}"
+		-gcflags "-trimpath=${S}"
 		-ldflags "${myldflags[*]} -extldflags '-static'"
 	)
 	go build "${mygoargs[@]}" ./cmd/drone-agent || die
