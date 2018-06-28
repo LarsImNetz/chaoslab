@@ -6,7 +6,7 @@ EAPI=6
 GIT_COMMIT="7853e53" # Change this when you update the ebuild
 EGO_PN="github.com/ipfs/${PN}"
 
-inherit bash-completion-r1 golang-vcs-snapshot systemd tmpfiles user
+inherit bash-completion-r1 golang-vcs-snapshot systemd user
 
 DESCRIPTION="IPFS implementation written in Go"
 HOMEPAGE="https://ipfs.io"
@@ -64,7 +64,6 @@ src_install() {
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
-	newtmpfiles "${FILESDIR}/${PN}.tmpfilesd" "${PN}.conf"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	use bash-completion && \
@@ -77,7 +76,12 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	tmpfiles_process "${PN}.conf"
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/go-ipfs") != "700" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/go-ipfs permissions"
+		chown go-ipfs:go-ipfs "${EROOT%/}/var/lib/go-ipfs" || die
+		chmod 0700 "${EROOT%/}/var/lib/go-ipfs" || die
+	fi
+
 	einfo ""
 	elog "To be able to use the ipfs service you will need to create the ipfs repository"
 	elog "(e.g. su -s /bin/sh -c \"ipfs init -e\" go-ipfs)"
