@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">drone/drone</remote-id>
+		<bugs-to>https://github.com/drone/drone/issues</bugs-to>
+		<doc>http://docs.drone.io/</doc>
+	</upstream>
+	<longdescription lang="en">
+		Drone is a Continuous Delivery system built on container
+		technology. Drone uses a simple YAML configuration file,
+		a superset of docker-compose, to define and execute
+		Pipelines inside Docker containers.
+	</longdescription>
+</pkgmetadata>

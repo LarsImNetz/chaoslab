@@ -1,0 +1,14 @@
+#!/sbin/openrc-run
+# Copyright 2015-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-/var/log/drone/error.log}"
+
+name="${name:-Drone CI Agent}"
+command="/usr/bin/drone-agent"
+command_user="${command_use:-drone:drone}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+retry="${retry:-TERM/30/KILL/5}"
+start_stop_daemon_args="-1 ${output_log} -2 ${error_log}"
