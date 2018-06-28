@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">drone/drone-cli</remote-id>
+		<bugs-to>https://github.com/drone/drone-cli/issues</bugs-to>
+		<doc>http://docs.drone.io/cli-installation/</doc>
+	</upstream>
+</pkgmetadata>

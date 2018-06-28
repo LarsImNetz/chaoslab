@@ -3,14 +3,15 @@
 
 EAPI=6
 
-GIT_COMMIT="7853e53" # Change this when you update the ebuild
+MY_PV="${PV/_/-}"
+GIT_COMMIT="b183da3" # Change this when you update the ebuild
 EGO_PN="github.com/ipfs/${PN}"
 
 inherit bash-completion-r1 golang-vcs-snapshot systemd user
 
 DESCRIPTION="IPFS implementation written in Go"
 HOMEPAGE="https://ipfs.io"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://${EGO_PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="MIT"

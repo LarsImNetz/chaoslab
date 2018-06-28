@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="4172a83" # Change this when you update the ebuild
+GIT_COMMIT="02aa320" # Change this when you update the ebuild
 EGO_PN="github.com/gohugoio/hugo"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
@@ -85,7 +85,7 @@ src_compile() {
 	export GOPATH="${G}"
 	local myldflags=( -s -w
 		-X "${EGO_PN}/hugolib.CommitHash=${GIT_COMMIT}"
-		-X "${EGO_PN}/hugolib.BuildDate=$(date +%FT%T%z)"
+		-X "${EGO_PN}/hugolib.BuildDate=$(date -u '+%FT%T%z')"
 	)
 	local mygoargs=(
 		-v -work -x
@@ -106,6 +106,5 @@ src_compile() {
 src_install() {
 	dobin hugo
 	doman "${T}"/man/*
-
 	use bash-completion && dobashcomp "${T}"/hugo
 }
