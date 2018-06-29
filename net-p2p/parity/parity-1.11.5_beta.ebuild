@@ -315,3 +315,13 @@ src_install() {
 		systemd_dounit "scripts/${PN}.service"
 	fi
 }
+
+pkg_postinst() {
+	if use daemon; then
+		if [[ $(stat -c %a "${EROOT%/}/var/lib/parity") != "750" ]]; then
+			einfo "Fixing ${EROOT%/}/var/lib/parity permissions"
+			chown -R parity:parity "${EROOT%/}/var/lib/parity" || die
+			chmod 0750 "${EROOT%/}/var/lib/parity" || die
+		fi
+	fi
+}
