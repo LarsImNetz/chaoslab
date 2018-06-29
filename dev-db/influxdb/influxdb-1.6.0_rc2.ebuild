@@ -4,13 +4,15 @@
 EAPI=6
 
 MY_PV="${PV/_/}"
-GIT_COMMIT="d1a4736" # Change this when you update the ebuild
+GIT_COMMIT="62ab18a" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Godeps
 # Deps that are not needed:
 # github.com/davecgh/go-spew 346938d
 # github.com/google/go-cmp 3af367b
+# github.com/mschoch/smat 90eadee
 # github.com/paulbellamy/ratecounter 524851a
+# github.com/willf/bitset d860f34
 EGO_VENDOR=(
 	"collectd.org 2ce1445 github.com/collectd/go-collectd"
 	"github.com/BurntSushi/toml a368813"
@@ -28,12 +30,15 @@ EGO_VENDOR=(
 	"github.com/influxdata/influxql 145e067"
 	"github.com/influxdata/usage-client 6d38953"
 	"github.com/influxdata/yamux 1f58ded"
-	"github.com/influxdata/yarpc 036268c"
+	"github.com/influxdata/yarpc 3f4e3d2"
 	"github.com/jsternberg/zap-logfmt 5ea5386"
 	"github.com/jwilder/encoding 2789473"
+	"github.com/klauspost/compress 6c8db69"
+	"github.com/klauspost/cpuid ae7887d"
+	"github.com/klauspost/crc32 cb6bfca"
+	"github.com/klauspost/pgzip 0bf5dca"
 	"github.com/mattn/go-isatty 6ca4dbf"
 	"github.com/matttproud/golang_protobuf_extensions 3247c84"
-	"github.com/mschoch/smat 90eadee"
 	"github.com/opentracing/opentracing-go 328fceb"
 	"github.com/peterh/liner 6106ee4"
 	"github.com/philhofer/fwd bb6d471"
@@ -43,7 +48,6 @@ EGO_VENDOR=(
 	"github.com/prometheus/procfs 54d17b5"
 	"github.com/retailnext/hllpp 101a6d2"
 	"github.com/tinylib/msgp b2b6a67"
-	"github.com/willf/bitset d860f34"
 	"github.com/xlab/treeprint f3a15cf"
 	"go.uber.org/atomic 8474b86 github.com/uber-go/atomic"
 	"go.uber.org/multierr 3c49374 github.com/uber-go/multierr"
@@ -141,7 +145,7 @@ pkg_postinst() {
 		chmod 0750 "${EROOT%/}/var/lib/influxdb" || die
 	fi
 
-	if [ ! -e "${EROOT%/}"/etc/influxdb/influxdb.conf ]; then
+	if [[ ! -f "${EROOT%/}"/etc/influxdb/influxdb.conf ]]; then
 		elog "No influxdb.conf found, copying the example over"
 		cp "${EROOT%/}"/etc/influxdb/influxdb.conf{.example,} || die
 	else
