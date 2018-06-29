@@ -116,6 +116,7 @@ dev-python/**[python-ldap](dev-python/python-ldap)** `***` | LDAP client API for
 dev-python/**[requests-file](dev-python/requests-file)** | File transport adapter for Requests
 dev-python/**[rfc6266](dev-python/rfc6266)** | Content-Disposition header support for Python
 dev-python/**[tldextract](dev-python/tldextract)** | Accurately separates the gTLD or ccTLD from the registered domain and subdomains
+dev-util/**[cargo](dev-util/cargo)** `*` `***` | The Rust's package manager
 dev-util/**[drone](dev-util/drone)** `*` | Drone is a Continuous Delivery platform built on Docker
 dev-util/**[drone-cli](dev-util/drone-cli)** `*` | Command line client for the Drone continuous integration server
 dev-util/**[electron-bin](dev-util/electron-bin)** `*` | Cross platform application development framework based on web technologies
