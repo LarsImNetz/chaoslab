@@ -153,7 +153,6 @@ pulldown-cmark-0.0.3
 pwasm-utils-0.1.5
 quasi-0.32.0
 quasi_codegen-0.32.0
-quasi_macros-0.32.0
 quote-0.5.1
 rand-0.3.20
 rand-0.4.2
