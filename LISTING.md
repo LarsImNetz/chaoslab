@@ -152,6 +152,7 @@ net-misc/**[electron-cash](net-misc/electron-cash)** `*` | Lightweight Bitcoin C
 net-misc/**[gotty-client](net-misc/gotty-client)** | A terminal client for GoTTY
 net-misc/**[pget](net-misc/pget)** | A parallel file download client in Go
 net-misc/**[piknik](net-misc/piknik)** | Copy/paste anything over the network
+net-misc/**[ssf](net-misc/ssf)** | A network toolkit for TCP/UDP port forwarding, SOCKS proxy and remote shell
 net-misc/**[ssh-chat](net-misc/ssh-chat)** | A chat over SSH server written in Go
 net-misc/**[tinyssh](net-misc/tinyssh)** | A small SSH server with state-of-the-art cryptography
 net-news/**[feedreader](net-news/feedreader)** | A modern desktop application designed to complement web-based RSS accounts
