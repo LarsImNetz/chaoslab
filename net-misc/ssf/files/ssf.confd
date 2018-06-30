@@ -1,0 +1,5 @@
+# config file for /etc/init.d/ssfd
+# run /usr/bin/ssfd -h to see available options
+
+SSFD_CONFIG="/etc/ssf/config.json"
+SSFD_OPTS="-q -p 8011 -l 127.0.0.1"
