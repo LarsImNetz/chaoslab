@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">securesocketfunneling/ssf</remote-id>
+		<bugs-to>https://github.com/securesocketfunneling/ssf/issues</bugs-to>
+		<doc>https://securesocketfunneling.github.io/ssf/#how-to-configure</doc>
+	</upstream>
+	<longdescription lang="en">
+		Secure Socket Funneling (SSF) is a network tool and
+		toolkit. It provides simple and efficient ways to
+		forward data frommultiple sockets (TCP or UDP)
+		through a single secure TLS link to a remote computer.
+	</longdescription>
+</pkgmetadata>
