@@ -1,0 +1,39 @@
+--- a/src/network/ssf/layer/cryptography/tls/OpenSSL/helpers.cpp
++++ b/src/network/ssf/layer/cryptography/tls/OpenSSL/helpers.cpp
+@@ -78,9 +78,11 @@
+   SSL_CTX_set_options(ctx.native_handle(),
+                       SSL_OP_NO_TLSv1_1 | SSL_OP_NO_TICKET);
+ 
++#ifndef OPENSSL_NO_COMP
+   // [not used] Set compression methods
+   SSL_COMP_add_compression_method(0, COMP_rle());
+   SSL_COMP_add_compression_method(1, COMP_zlib());
++#endif
+ 
+   bool success = true;
+ 
+--- a/src/common/crypto/sha1.cpp
++++ b/src/common/crypto/sha1.cpp
+@@ -3,9 +3,9 @@
+ namespace ssf {
+ namespace crypto {
+ 
+-Sha1::Sha1() : context_() { SHA_Init(&context_); }
++Sha1::Sha1() : context_() { SHA1_Init(&context_); }
+ 
+-void Sha1::Finalize(Digest* digest) { SHA_Final(digest->data(), &context_); }
++void Sha1::Finalize(Digest* digest) { SHA1_Final(digest->data(), &context_); }
+ 
+ }  // crypto
+ }  // ssf
+--- a/src/common/crypto/sha1.h
++++ b/src/common/crypto/sha1.h
+@@ -23,7 +23,7 @@
+ 
+   template <class Buffer>
+   void Update(const Buffer& buffer, std::size_t length) {
+-    SHA_Update(&context_, buffer.data(), length);
++    SHA1_Update(&context_, buffer.data(), length);
+   }
+ 
+   void Finalize(Digest* digest);

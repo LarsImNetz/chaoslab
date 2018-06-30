@@ -1,0 +1,19 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+command="/usr/bin/ssfd"
+command_args="-c ${SSFD_CONFIG} ${SSFD_OPTS}"
+command_user="${command_user:-root:root}"
+command_background=yes
+pidfile="/run/${RC_SVCNAME}.pid"
+required_files="${SSFD_CONFIG}"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+	use net
+}
+
+start_pre() {
+	checkpath -f -m 0600 -o "${command_user}" "${SSFD_CONFIG}"
+}
