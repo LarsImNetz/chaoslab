@@ -4,7 +4,7 @@
 EAPI=6
 
 EGO_PN="github.com/scaleway/${PN}"
-GIT_COMMIT="2ba2733" # Change this when you update the ebuild
+GIT_COMMIT="0087e98" # Change this when you update the ebuild
 
 inherit bash-completion-r1 golang-vcs-snapshot
 
@@ -16,7 +16,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="zsh-completion"
+IUSE="bash-completion zsh-completion"
 
 RDEPEND="zsh-completion? ( app-shells/zsh )"
 
@@ -46,7 +46,8 @@ src_install() {
 	dobin scw
 	einstalldocs
 
-	newbashcomp contrib/completion/bash/scw.bash scw
+	use bash-completion && \
+		newbashcomp contrib/completion/bash/scw.bash scw
 
 	if use zsh-completion; then
 		insinto /usr/share/zsh/site-functions

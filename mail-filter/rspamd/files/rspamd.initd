@@ -5,17 +5,14 @@
 RSPAMD_USER="${RSPAMD_USER:-rspamd}"
 RSPAMD_GROUP="${RSPAMD_GROUP:-rspamd}"
 RSPAMD_CONFIG="${RSPAMD_CONFIG:-/etc/rspamd/rspamd.conf}"
-RSPAMD_DATADIR="${RSPAMD_DATADIR:-/var/lib/rspamd}"
-RSPAMD_LOGDIR="${RSPAMD_LOGDIR:-/var/log/rspamd}"
-RSPAMD_RUNDIR="${RSPAMD_RUNDIR:-/run/${RC_SVCNAME}}"
+RSPAMD_RUNDIR="${RSPAMD_RUNDIR:-/run/rspamd}"
 
 extra_commands="checkconfig"
 extra_started_commands="reload"
 
 pidfile="/run/${RC_SVCNAME}.pid"
 command="/usr/bin/rspamd"
-command_args="-p ${pidfile} -u ${RSPAMD_USER}
-	-g ${RSPAMD_GROUP} ${RSPAMD_OPTS}"
+command_args="-p ${pidfile} -u ${RSPAMD_USER} -g ${RSPAMD_GROUP} ${RSPAMD_OPTS}"
 required_files="${RSPAMD_CONFIG}"
 retry="${retry:-TERM/30/KILL/5}"
 start_stop_daemon_args="${SSD_OPTS}"
@@ -25,10 +22,7 @@ depend() {
 }
 
 start_pre() {
-	checkpath -d -m 0700 -o "${RSPAMD_USER}:${RSPAMD_GROUP}" \
-		"${RSPAMD_DATADIR}" "${RSPAMD_LOGDIR}"
-	checkpath -d -m 2750 -o "${RSPAMD_USER}:${RSPAMD_GROUP}" \
-		"${RSPAMD_RUNDIR}"
+	checkpath -d -m 2750 -o "${RSPAMD_USER}:${RSPAMD_GROUP}" "${RSPAMD_RUNDIR}"
 
 	rm -f "${RSPAMD_RUNDIR}"/*.sock
 	if [ "${RC_CMD}" != "restart" ]; then

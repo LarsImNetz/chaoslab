@@ -74,6 +74,14 @@ src_install() {
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}"/rspamd.logrotate-r1 rspamd
 
-	diropts -o rspamd -g rspamd
-	keepdir /var/{lib,log}/rspamd
+	diropts -o rspamd -g rspamd -m 0700
+	keepdir /var/log/rspamd
+}
+
+pkg_postinst() {
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/rspamd") != "700" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/rspamd permissions"
+		chown -R rspamd:rspamd "${EROOT%/}/var/lib/rspamd" || die
+		chmod 0700 "${EROOT%/}/var/lib/rspamd" || die
+	fi
 }
