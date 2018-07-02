@@ -3,12 +3,12 @@ DEPEND=>=dev-lang/go-1.9
 DESCRIPTION=Interact with Scaleway API from the command line
 EAPI=6
 HOMEPAGE=https://www.scaleway.com
-IUSE=zsh-completion
+IUSE=bash-completion zsh-completion
 KEYWORDS=~amd64 ~x86
 LICENSE=MIT
 RDEPEND=zsh-completion? ( app-shells/zsh )
 RESTRICT=mirror
 SLOT=0
-SRC_URI=https://github.com/scaleway/scaleway-cli/archive/v1.16.tar.gz -> scaleway-cli-1.16.tar.gz
+SRC_URI=https://github.com/scaleway/scaleway-cli/archive/v1.17.tar.gz -> scaleway-cli-1.17.tar.gz
 _eclasses_=bash-completion-r1	6af26c1ffe65d92d3f525cb715f6250c	golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	multilib	97f470f374f2e94ccab04a2fb21d811e	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607
-_md5_=38d650d8f12c9cfc6d03bda99af12be4
+_md5_=84985d5603d8a8db469f8cba0a1c3ff9
