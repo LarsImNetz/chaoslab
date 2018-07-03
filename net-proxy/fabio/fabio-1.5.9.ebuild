@@ -17,7 +17,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="pie"
 
-DOCS=( {CHANGELOG,README}.md NOTICES.txt )
+DOCS=( CHANGELOG.md README.md NOTICES.txt )
 FILECAPS=( cap_net_bind_service+ep usr/bin/fabio )
 QA_PRESTRIPPED="usr/bin/fabio"
 
@@ -47,11 +47,18 @@ src_install() {
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
-	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd" "${PN}.conf"
 
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}/${PN}.logrotate" "${PN}"
 
 	diropts -o fabio -g fabio -m 0750
 	keepdir /var/log/fabio
+}
+
+pkg_postinst() {
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/fabio") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/fabio permissions"
+		chown fabio:fabio "${EROOT%/}/var/lib/fabio" || die
+		chmod 0750 "${EROOT%/}/var/lib/fabio" || die
+	fi
 }

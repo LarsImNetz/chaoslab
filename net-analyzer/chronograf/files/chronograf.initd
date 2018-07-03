@@ -2,11 +2,8 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-CHRONOGRAF_DATADIR="${CHRONOGRAF_DATADIR:-/var/lib/chronograf}"
-CHRONOGRAF_LOGDIR="${CHRONOGRAF_LOGDIR:-/var/log/chronograf}"
-
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${CHRONOGRAF_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/chronograf/error.log}"
 
 command="/usr/bin/chronograf"
 command_args="${CHRONOGRAF_OPTS}"
@@ -16,15 +13,10 @@ pidfile="/run/${RC_SVCNAME}.pid"
 start_stop_daemon_args="${SSD_OPTS}
 	-e \"HOST=${CHRONOGRAF_HOST:-127.0.0.1}\"
 	-e \"PORT=${CHRONOGRAF_PORT:-8888}\"
-	-e \"BOLT_PATH=${CHRONOGRAF_BOLT:-${CHRONOGRAF_DATADIR}/chronograf-v1.db}\"
+	-e \"BOLT_PATH=${CHRONOGRAF_BOLT:-/var/lib/chronograf/chronograf-v1.db}\"
 	-e \"CANNED_PATH=${CHRONOGRAF_CANNED:-/usr/share/chronograf/canned}\"
 	-1 ${output_log} -2 ${error_log}"
 
 depend() {
 	need net
-}
-
-start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" \
-		"${CHRONOGRAF_DATADIR}" "${CHRONOGRAF_LOGDIR}"
 }

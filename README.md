@@ -1,14 +1,10 @@
 ChaosLab: Overlay for Gentoo Linux
 ----------------------------------
 
-[![packages 200](https://img.shields.io/badge/packages-200-4472c0.svg)]
-(https://gitlab.com/chaoslab/chaoslab-overlay)
-[![ebuilds 277](https://img.shields.io/badge/ebuilds-277-8c71cc.svg)]
-(https://gitlab.com/chaoslab/chaoslab-overlay)
-[![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)]
-(https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
-[![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)]
-(https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
+[![packages 200](https://img.shields.io/badge/packages-200-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![ebuilds 277](https://img.shields.io/badge/ebuilds-277-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
+[![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
 
 The scope of this overlay is to maintain ebuilds for packages related to secure
 communication, cryptography, cryptocurrency, server-side applications, and other
@@ -17,7 +13,7 @@ flag and **OpenRC**. The support for **systemd** has been less-than-stellar
 because I don't have any machines to test its unit files. If you have spare time
 and would like to improve it, please contribute.
 
-You may visit [LISTING.md] (LISTING.md) to see a comprehensive list of available
+You may visit [LISTING.md](LISTING.md) to see a comprehensive list of available
 packages and its descriptions. **If you find any bugs, please report them!** You
 can use the [GitLab issue tracker](https://gitlab.com/chaoslab/chaoslab-overlay/issues)
 or [e-mail](overlay.xml#L9) ([PGP Public Key](#signature)) to report bugs, ask
@@ -51,14 +47,13 @@ sync-uri = https://gitlab.com/chaoslab/chaoslab-overlay.git
 
 > **Note:** I recommend that you manually install the overlay, as obviously you
 will be pulling directly from the original source. If you use the automatic
-installation described below, you will be pulling from [gentoo's mirror]
-(https://github.com/gentoo-mirror) service, in which from time to time have
-[sync issues](https://bugs.gentoo.org/653472).
+installation described below, you will be pulling from
+[gentoo's mirror](https://github.com/gentoo-mirror) service, in which from time
+to time have [sync issues](https://bugs.gentoo.org/653472).
 
 Alternatively, for automatic install, you must have
-[app-eselect/eselect-repository]
-(https://packages.gentoo.org/packages/app-eselect/eselect-repository) or
-[app-portage/layman](https://packages.gentoo.org/packages/app-portage/layman)
+[app-eselect/eselect-repository](https://packages.gentoo.org/packages/app-eselect/eselect-repository)
+or [app-portage/layman](https://packages.gentoo.org/packages/app-portage/layman)
 installed on your system for this to work.
 
 #### Using `eselect-repository`:
@@ -74,8 +69,8 @@ layman -fa chaoslab
 > **Note:** To use the testing branch for particular packages, you must add the
 package category and name (e.g., foo-bar/xyz) in `/etc/portage/package.accept_keywords`.
 It is also possible to create a directory (with the same name) and list the
-package in the files under that directory. Please see the [Gentoo Wiki]
-(https://wiki.gentoo.org/wiki/Ebuild_repository) for an expanded
+package in the files under that directory. Please see the
+[Gentoo Wiki](https://wiki.gentoo.org/wiki/Ebuild_repository) for an expanded
 overview of ebuilds and unofficial repositories for Gentoo.
 
 ## Signature

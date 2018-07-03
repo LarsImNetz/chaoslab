@@ -2,11 +2,8 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-FABIO_DATADIR="${FABIO_DATADIR:-/var/lib/fabio}"
-FABIO_LOGDIR="${FABIO_LOGDIR:-/var/log/fabio}"
-
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${FABIO_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/fabio/error.log}"
 
 name="${name:-Fabio}"
 command="/usr/bin/fabio"
@@ -20,9 +17,4 @@ start_stop_daemon_args="${SSD_OPTS}
 
 depend() {
 	need net
-}
-
-start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" \
-		"${FABIO_DATADIR}" "${FABIO_LOGDIR}"
 }

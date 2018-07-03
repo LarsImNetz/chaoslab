@@ -64,7 +64,6 @@ src_install() {
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
-	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd" "${PN}.conf"
 
 	insinto /etc/prometheus
 	newins documentation/examples/prometheus.yml prometheus.yml.example
@@ -72,7 +71,8 @@ src_install() {
 	insinto /usr/share/prometheus
 	doins -r console_libraries consoles
 
-	dosym ../../usr/share/prometheus/console_libraries /etc/prometheus/console_libraries
+	dosym ../../usr/share/prometheus/console_libraries \
+		/etc/prometheus/console_libraries
 	dosym ../../usr/share/prometheus/consoles /etc/prometheus/consoles
 
 	if use examples; then
@@ -81,21 +81,20 @@ src_install() {
 		docompress -x "/usr/share/doc/${PF}/examples"
 	fi
 
-	diropts -m 0750 -o prometheus -g prometheus
+	diropts -o prometheus -g prometheus -m 0750
 	keepdir /var/log/prometheus
 }
 
 pkg_postinst() {
-	if [ ! -f "${EROOT%/}"/etc/prometheus/prometheus.yml ]; then
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/prometheus") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/prometheus permissions"
+		chown prometheus:prometheus "${EROOT%/}/var/lib/prometheus" || die
+		chmod 0750 "${EROOT%/}/var/lib/prometheus" || die
+	fi
+	if [[ ! -f "${EROOT%/}"/etc/prometheus/prometheus.yml ]]; then
 		elog "No prometheus.yml found, copying the example over"
 		cp "${EROOT%/}"/etc/prometheus/prometheus.yml{.example,} || die
 	else
 		elog "prometheus.yml found, please check example file for possible changes"
-	fi
-	if has_version '<net-analyzer/prometheus-2.0.0_rc0'; then
-		ewarn "Old prometheus 1.x TSDB won't be converted to the new prometheus 2.0 format"
-		ewarn "Be aware that the old data currently cannot be accessed with prometheus 2.0"
-		ewarn "This release requires a clean storage directory and is not compatible with"
-		ewarn "files created by previous releases"
 	fi
 }
