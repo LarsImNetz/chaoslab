@@ -113,16 +113,17 @@ pkg_postinst() {
 		chmod 0750 "${EROOT%/}/var/lib/grafana" || die
 	fi
 
-	if [[ ! -f "${EROOT%/}"/etc/grafana/grafana.ini ]]; then
+	if [[ ! -e "${EROOT%/}/etc/grafana/grafana.ini" ]]; then
 		elog "No grafana.ini found, copying the example over"
 		cp "${EROOT%/}"/etc/grafana/grafana.ini{.example,} || die
 	else
 		elog "grafana.ini found, please check example file for possible changes"
 	fi
+
 	einfo ""
 	elog "${PN} has built-in log rotation. Please see [log.file] section of"
 	elog "${EROOT%/}/etc/grafana/grafana.ini for related settings."
-	einfo ""
+	elog ""
 	elog "You may add your own custom configuration for app-admin/logrotate if you"
 	elog "wish to use external rotation of logs. In this case, you also need to make"
 	elog "sure the built-in rotation is turned off."
