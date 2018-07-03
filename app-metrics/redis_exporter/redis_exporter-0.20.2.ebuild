@@ -4,7 +4,7 @@
 EAPI=6
 
 # Change this when you update the ebuild:
-GIT_COMMIT="3150962765f8eaa9315121d4e8e07808953a3f1b"
+GIT_COMMIT="3e15af27aac37e114b32a07f5e9dc0510f4cbfc4"
 EGO_PN="github.com/oliver006/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -35,7 +35,7 @@ pkg_setup() {
 			ewarn ""
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 			ewarn ""
-			die "[network-sandbox] is enabled in FEATURES"
+			die "'network-sandbox' is enabled in FEATURES"
 		fi
 	fi
 
@@ -76,6 +76,6 @@ src_install() {
 	doins -r contrib/*
 	docompress -x /usr/share/redis_exporter
 
-	diropts -m 0750 -o redis_exporter -g redis_exporter
+	diropts -o redis_exporter -g redis_exporter -m 0750
 	keepdir /var/log/redis_exporter
 }
