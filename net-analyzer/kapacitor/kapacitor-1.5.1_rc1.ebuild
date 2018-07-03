@@ -58,7 +58,6 @@ src_install() {
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "scripts/${PN}.service"
-	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd" "${PN}.conf"
 
 	insinto /etc/kapacitor
 	newins etc/kapacitor/kapacitor.conf kapacitor.conf.example
@@ -76,12 +75,17 @@ src_install() {
 		docompress -x "/usr/share/doc/${PF}/examples"
 	fi
 
-	diropts -m 0750 -o kapacitor -g kapacitor
+	diropts -o kapacitor -g kapacitor -m 0750
 	keepdir /var/log/kapacitor
 }
 
 pkg_postinst() {
-	if [ ! -f "${EROOT%/}"/etc/kapacitor/kapacitor.conf ]; then
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/kapacitor") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/kapacitor permissions"
+		chown kapacitor:kapacitor "${EROOT%/}/var/lib/kapacitor" || die
+		chmod 0750 "${EROOT%/}/var/lib/kapacitor" || die
+	fi
+	if [[ ! -f "${EROOT%/}"/etc/kapacitor/kapacitor.conf ]]; then
 		elog "No kapacitor.conf found, copying the example over"
 		cp "${EROOT%/}"/etc/kapacitor/kapacitor.conf{.example,} || die
 	else
