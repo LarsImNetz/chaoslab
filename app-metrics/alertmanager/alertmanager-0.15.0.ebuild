@@ -73,7 +73,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ ! -f "${EROOT%/}"/etc/alertmanager/alertmanager.yml ]]; then
+	if [[ ! -e "${EROOT%/}/etc/alertmanager/alertmanager.yml" ]]; then
 		elog "No alertmanager.yml found, copying the example over"
 		cp "${EROOT%/}"/etc/alertmanager/alertmanager.yml{.example,} || die
 	else
