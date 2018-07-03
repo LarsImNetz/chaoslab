@@ -3,10 +3,9 @@
 # Distributed under the terms of the GNU General Public License v2
 
 TELEGRAF_CONFIG="${TELEGRAF_CONFIG:-/etc/telegraf/telegraf.conf}"
-TELEGRAF_LOGDIR="${TELEGRAF_LOGDIR:-/var/log/${RC_SVCNAME}}"
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${TELEGRAF_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/telegraf/error.log}"
 extra_started_commands="reload"
 
 command="/usr/bin/telegraf"
@@ -20,10 +19,6 @@ start_stop_daemon_args="${SSD_OPTS}
 
 depend() {
 	need net
-}
-
-start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" "${TELEGRAF_LOGDIR}"
 }
 
 reload() {
