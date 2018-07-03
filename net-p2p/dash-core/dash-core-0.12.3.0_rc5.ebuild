@@ -155,7 +155,6 @@ src_install() {
 		newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 		newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 		systemd_newunit "${FILESDIR}/${PN}.service-r1" "${PN}.service"
-		systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 		insinto /etc/dash
 		newins "${FILESDIR}/${PN}.conf" dash.conf
@@ -196,6 +195,11 @@ update_caches() {
 }
 
 pkg_postinst() {
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/dash") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/dash permissions"
+		chown -R dash:dash "${EROOT%/}/var/lib/dash" || die
+		chmod 0750 "${EROOT%/}/var/lib/dash" || die
+	fi
 	use gui && update_caches
 	ewarn
 	ewarn "This is a release candidate and not meant for production use."
