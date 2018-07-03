@@ -91,7 +91,8 @@ pkg_postinst() {
 		chown prometheus:prometheus "${EROOT%/}/var/lib/prometheus" || die
 		chmod 0750 "${EROOT%/}/var/lib/prometheus" || die
 	fi
-	if [[ ! -f "${EROOT%/}"/etc/prometheus/prometheus.yml ]]; then
+
+	if [[ ! -e "${EROOT%/}/etc/prometheus/prometheus.yml" ]]; then
 		elog "No prometheus.yml found, copying the example over"
 		cp "${EROOT%/}"/etc/prometheus/prometheus.yml{.example,} || die
 	else
