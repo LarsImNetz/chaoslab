@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile install postinst prepare setup test
+DEPEND=>=net-dns/knot-2.6.7 >=dev-libs/libuv-1.7.0 dev-lang/luajit:2 dev-lua/luasocket dev-lua/luasec dnstap? ( >=dev-libs/protobuf-3.0 dev-libs/protobuf-c dev-libs/fstrm ) go? ( >=dev-lang/go-1.5.0 ) virtual/pkgconfig test? ( dev-util/cmocka )
+DESCRIPTION=A caching full DNS resolver implementation written in C and LuaJIT
+EAPI=7
+HOMEPAGE=https://www.knot-resolver.cz
+IUSE=dnstap go +pie test
+KEYWORDS=~amd64 ~x86
+LICENSE=GPL-3
+RDEPEND=>=net-dns/knot-2.6.7 >=dev-libs/libuv-1.7.0 dev-lang/luajit:2 dev-lua/luasocket dev-lua/luasec dnstap? ( >=dev-libs/protobuf-3.0 dev-libs/protobuf-c dev-libs/fstrm ) go? ( >=dev-lang/go-1.5.0 )
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://secure.nic.cz/files/knot-resolver/knot-resolver-2.4.0.tar.xz
+_eclasses_=eutils	5b8ce72259e08104b337fe28c6de5dbc	flag-o-matic	5128c4729303400bd8d4b0b966530955	multilib	97f470f374f2e94ccab04a2fb21d811e	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607	user	8bc2845510e2109af75e3eeac607ec81
+_md5_=1ff5b9db10fead0a29802c51ce325003
