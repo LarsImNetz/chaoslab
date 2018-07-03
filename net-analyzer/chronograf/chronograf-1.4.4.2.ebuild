@@ -36,7 +36,7 @@ pkg_setup() {
 		ewarn ""
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn ""
-		die "[network-sandbox] is enabled in FEATURES"
+		die "'network-sandbox' is enabled in FEATURES"
 	fi
 
 	enewgroup chronograf
@@ -44,10 +44,9 @@ pkg_setup() {
 }
 
 src_prepare() {
-	sed -i \
-		-e "/VERSION ?=/d" \
-		-e "/COMMIT ?=/d" \
-		Makefile || die
+	# The tarball isn't a proper git repository,
+	# so let's silence the "fatal" error message.
+	sed -e "/VERSION ?=/d" -e "/COMMIT ?=/d" -i Makefile || die
 
 	emake .jsdep
 	default
@@ -67,13 +66,12 @@ src_compile() {
 }
 
 src_install() {
-	dobin {chronoctl,chronograf}
+	dobin chronoctl chronograf
 	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
-	newconfd "${FILESDIR}/${PN}.confd-r2" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "etc/scripts/${PN}.service"
-	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 	dodir /usr/share/chronograf/resources
 	insinto /usr/share/chronograf/canned
@@ -83,5 +81,13 @@ src_install() {
 	newins etc/scripts/logrotate chronograf
 
 	diropts -o chronograf -g chronograf -m 0750
-	keepdir /var/{lib,log}/chronograf
+	keepdir /var/log/chronograf
+}
+
+pkg_postinst() {
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/chronograf") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/chronograf permissions"
+		chown chronograf:chronograf "${EROOT%/}/var/lib/chronograf" || die
+		chmod 0750 "${EROOT%/}/var/lib/chronograf" || die
+	fi
 }
