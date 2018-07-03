@@ -184,7 +184,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ ! -f "${EROOT%/}"/etc/telegraf/telegraf.conf ]]; then
+	if [[ ! -e "${EROOT%/}/etc/telegraf/telegraf.conf" ]]; then
 		elog "No telegraf.conf found, copying the example over"
 		cp "${EROOT%/}"/etc/telegraf/telegraf.conf{.example,} || die
 	else
