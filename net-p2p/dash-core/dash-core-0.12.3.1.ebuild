@@ -177,7 +177,8 @@ src_install() {
 		done
 		# shellcheck disable=SC1117
 		make_desktop_entry "dash-qt %u" "Dash Core" "dash" \
-			"Qt;Network;P2P;Office;Finance;" "MimeType=x-scheme-handler/dash;\nTerminal=false"
+			"Qt;Network;P2P;Office;Finance;" \
+			"MimeType=x-scheme-handler/dash;\nTerminal=false"
 
 		doman doc/man/dash-qt.1
 	fi
@@ -201,10 +202,6 @@ pkg_postinst() {
 		chmod 0750 "${EROOT%/}/var/lib/dash" || die
 	fi
 	use gui && update_caches
-	ewarn
-	ewarn "This is a release candidate and not meant for production use."
-	ewarn "Please test this release candidate on testnet."
-	ewarn
 }
 
 pkg_postrm() {
