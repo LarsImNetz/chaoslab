@@ -4,10 +4,9 @@
 
 KRESD_CONFIG="${KRESD_CONFIG:-/etc/knot-resolver/config}"
 KRESD_CACHEDIR="${KRESD_CACHEDIR:-/var/cache/knot-resolver}"
-KRESD_LOGDIR="${KRESD_LOGDIR:-/var/log/knot-resolver}"
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${KRESD_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/knot-resolver/error.log}"
 
 # Note: Do not change --forks=1
 # You can run multiples instances by creating a
@@ -28,5 +27,5 @@ depend() {
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o kresd:kresd "${KRESD_CACHEDIR}" "${KRESD_LOGDIR}"
+	checkpath -d -m 0750 -o kresd:kresd "${KRESD_CACHEDIR}"
 }

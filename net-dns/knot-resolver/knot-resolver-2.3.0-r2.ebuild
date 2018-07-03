@@ -77,17 +77,17 @@ src_install() {
 		DESTDIR="${D}" install
 
 	newinitd "${FILESDIR}/${PN}.initd" kresd
-	newconfd "${FILESDIR}/${PN}.confd-r1" kresd
-
-	diropts -o kresd -g kresd -m750
-	keepdir /var/log/knot
+	newconfd "${FILESDIR}/${PN}.confd" kresd
 
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}/${PN}.logrotate-r1" "${PN}"
+
+	diropts -o kresd -g kresd -m 0750
+	keepdir /var/log/knot-resolver
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/etc/knot-resolver/config ]; then
+	if [[ ! -f "${EROOT%/}"/etc/knot-resolver/config ]]; then
 		elog "No config found, copying the example over"
 		cp "${EROOT%/}"/etc/knot-resolver/config{.personal,} || die
 	fi

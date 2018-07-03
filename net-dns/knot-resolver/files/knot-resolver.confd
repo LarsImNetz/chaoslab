@@ -5,6 +5,3 @@
 
 # Cache (working) directory.
 #KRESD_CACHEDIR="/var/cache/knot-resolver"
-
-# Path to the logging file.
-#KRESD_LOG="/var/log/knot-resolver.log"
