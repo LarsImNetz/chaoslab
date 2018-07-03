@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="dnstap go +pie test"
 
-RDEPEND=">=net-dns/knot-2.6.4
+RDEPEND=">=net-dns/knot-2.6.7
 	>=dev-libs/libuv-1.7.0
 	dev-lang/luajit:2
 	dev-lua/luasocket
