@@ -13,7 +13,7 @@ flag and **OpenRC**. The support for **systemd** has been less-than-stellar
 because I don't have any machines to test its unit files. If you have spare time
 and would like to improve it, please contribute.
 
-You may visit [LISTING.md] (LISTING.md) to see a comprehensive list of available
+You may visit [LISTING.md](LISTING.md) to see a comprehensive list of available
 packages and its descriptions. **If you find any bugs, please report them!** You
 can use the [GitLab issue tracker](https://gitlab.com/chaoslab/chaoslab-overlay/issues)
 or [e-mail](overlay.xml#L9) ([PGP Public Key](#signature)) to report bugs, ask
