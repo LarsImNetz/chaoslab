@@ -85,7 +85,8 @@ pkg_postinst() {
 		chown kapacitor:kapacitor "${EROOT%/}/var/lib/kapacitor" || die
 		chmod 0750 "${EROOT%/}/var/lib/kapacitor" || die
 	fi
-	if [[ ! -f "${EROOT%/}"/etc/kapacitor/kapacitor.conf ]]; then
+
+	if [[ ! -e "${EROOT%/}/etc/kapacitor/kapacitor.conf" ]]; then
 		elog "No kapacitor.conf found, copying the example over"
 		cp "${EROOT%/}"/etc/kapacitor/kapacitor.conf{.example,} || die
 	else
