@@ -214,7 +214,6 @@ src_install() {
 	newinitd "${FILESDIR}"/zcash.initd zcash
 	newconfd "${FILESDIR}"/zcash.confd zcash
 	systemd_newunit "${FILESDIR}"/zcash.service-r1 zcash.service
-	systemd_newtmpfilesd "${FILESDIR}"/zcash.tmpfilesd-r2 zcash.conf
 
 	insinto /etc/zcash
 	doins "${FILESDIR}"/zcash.conf
@@ -245,17 +244,22 @@ pkg_postinst() {
 	ewarn "Please, see important security warnings in"
 	ewarn "${EROOT%/}/usr/share/doc/${P}/security-warnings.md.bz2"
 	ewarn
-	if [ -z "${REPLACING_VERSIONS}" ]; then
+	if [[ -z "${REPLACING_VERSIONS}" ]]; then
 		einfo
 		elog "You should manually fetch the parameters for all users:"
 		elog "$ zcash-fetch-params"
-		elog
+		elog ""
 		elog "This script will fetch the Zcash zkSNARK parameters and verify"
 		elog "their integrity with sha256sum."
-		elog
+		elog ""
 		elog "The parameters are currently just under 911MB in size, so plan accordingly"
 		elog "for your bandwidth constraints. If the files are already present and"
 		elog "have the correct sha256sum, no networking is used."
 		einfo
+	fi
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/zcashd") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/zcashd permissions"
+		chown -R zcash:zcash "${EROOT%/}/var/lib/zcashd" || die
+		chmod 0750 "${EROOT%/}/var/lib/zcashd" || die
 	fi
 }

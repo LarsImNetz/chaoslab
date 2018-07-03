@@ -37,6 +37,7 @@ following contents:
 [chaoslab]
 priority = 50
 location = /path/to/local/chaoslab-overlay
+auto-sync = yes
 sync-type = git
 sync-uri = https://gitlab.com/chaoslab/chaoslab-overlay.git
 ```
@@ -51,12 +52,12 @@ Alternatively, for automatic install, you must have
 or [`app-portage/layman`](https://packages.gentoo.org/packages/app-portage/layman)
 installed on your system for this to work.
 
-#### With `eselect-repository`:
+#### Using `eselect-repository`:
 ```
 eselect repository enable chaoslab
 ```
 
-#### With `layman`:
+#### Using `layman`:
 ```
 layman -fa chaoslab
 ```
