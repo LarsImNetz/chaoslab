@@ -139,7 +139,7 @@ pkg_postinst() {
 		chmod 0750 "${EROOT%/}/var/lib/influxdb" || die
 	fi
 
-	if [[ ! -f "${EROOT%/}"/etc/influxdb/influxdb.conf ]]; then
+	if [[ ! -e "${EROOT%/}/etc/influxdb/influxdb.conf" ]]; then
 		elog "No influxdb.conf found, copying the example over"
 		cp "${EROOT%/}"/etc/influxdb/influxdb.conf{.example,} || die
 	else
