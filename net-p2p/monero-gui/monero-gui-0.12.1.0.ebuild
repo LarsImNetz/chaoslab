@@ -202,7 +202,12 @@ update_caches() {
 pkg_postinst() {
 	use gui && update_caches
 	if use daemon; then
-		if [ ! -e "${EROOT%/}"/etc/monero/monerod.conf ]; then
+		if [[ $(stat -c %a "${EROOT%/}/var/lib/monero") != "750" ]]; then
+			einfo "Fixing ${EROOT%/}/var/lib/monero permissions"
+			chown -R monero:monero "${EROOT%/}/var/lib/monero" || die
+			chmod 0750 "${EROOT%/}/var/lib/monero" || die
+		fi
+		if [[ ! -f "${EROOT%/}"/etc/monero/monerod.conf ]]; then
 			elog "No monerod.conf found, copying the example over"
 			cp "${EROOT%/}"/etc/monero/monerod.conf{.example,} || die
 		fi
