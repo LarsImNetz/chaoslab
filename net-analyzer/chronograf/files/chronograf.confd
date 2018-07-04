@@ -9,5 +9,5 @@ CHRONOGRAF_CANNED="/usr/share/chronograf/canned"
 CHRONOGRAF_OPTS="--reporting-disabled"
 
 # Logging
-#output_log="/var/log/chronograf/chronograf.log"
-#error_log="/var/log/chronograf/error.log"
+#output_log="/var/log/telegraf/telegraf.log"
+#error_log="/var/log/telegraf/error.log"

@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="f4d22dd" # Change this when you update the ebuild
+GIT_COMMIT="4be18c1" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Godeps
 # Deps that are not needed:
@@ -136,7 +136,7 @@ pkg_setup() {
 			ewarn ""
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 			ewarn ""
-			die "[network-sandbox] is enabled in FEATURES"
+			die "'network-sandbox' is enabled in FEATURES"
 		fi
 	fi
 
@@ -169,9 +169,8 @@ src_install() {
 	dobin telegraf
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
-	newconfd "${FILESDIR}/${PN}.confd-r1" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "scripts/${PN}.service"
-	systemd_newtmpfilesd "${FILESDIR}/${PN}.tmpfilesd-r1" "${PN}.conf"
 
 	dodir /etc/telegraf/telegraf.d
 	insinto /etc/telegraf
@@ -185,7 +184,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [ ! -f "${EROOT%/}"/etc/telegraf/telegraf.conf ]; then
+	if [[ ! -e "${EROOT%/}/etc/telegraf/telegraf.conf" ]]; then
 		elog "No telegraf.conf found, copying the example over"
 		cp "${EROOT%/}"/etc/telegraf/telegraf.conf{.example,} || die
 	else

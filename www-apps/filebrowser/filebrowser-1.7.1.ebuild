@@ -120,7 +120,7 @@ src_test() {
 
 pkg_postinst() {
 	if use daemon; then
-		if [ ! -e "${EROOT%/}"/etc/filebrowser/filebrowser.yaml ]; then
+		if [[ ! -e "${EROOT%/}/etc/filebrowser/filebrowser.yaml" ]]; then
 			elog "No filebrowser.yaml found, copying the example over"
 			cp "${EROOT%/}"/etc/filebrowser/filebrowser.yaml{.example,} || die
 		else

@@ -134,7 +134,8 @@ pkg_postinst() {
 			chown -R monero:monero "${EROOT%/}/var/lib/monero" || die
 			chmod 0750 "${EROOT%/}/var/lib/monero" || die
 		fi
-		if [[ ! -f "${EROOT%/}"/etc/monero/monerod.conf ]]; then
+
+		if [[ ! -e "${EROOT%/}/etc/monero/monerod.conf" ]]; then
 			elog "No monerod.conf found, copying the example over"
 			cp "${EROOT%/}"/etc/monero/monerod.conf{.example,} || die
 		fi

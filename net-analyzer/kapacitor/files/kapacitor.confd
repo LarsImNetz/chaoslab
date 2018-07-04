@@ -1,3 +1,4 @@
 # config file for /etc/init.d/kapacitor
 
-KAPACITOR_OPTS=
+KAPACITOR_CONFIG="${KAPACITOR_CONFIG:-/etc/kapacitor/kapacitor.conf}"
+KAPACITOR_OPTS=""

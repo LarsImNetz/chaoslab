@@ -1,2 +1,0 @@
-d /var/lib/kapacitor 0750 kapacitor kapacitor -
-d /var/log/kapacitor 0700 kapacitor kapacitor -

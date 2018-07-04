@@ -135,7 +135,6 @@ net-analyzer/**[chronograf](net-analyzer/chronograf)** `*` | Open source monitor
 net-analyzer/**[goaccess](net-analyzer/goaccess)** `*` | A real-time web log analyzer and interactive viewer that runs in a terminal
 net-analyzer/**[kapacitor](net-analyzer/kapacitor)** `*` | A framework for processing, monitoring, and alerting on time series data
 net-analyzer/**[telegraf](net-analyzer/telegraf)** `*` | An agent for collecting, processing, aggregating, and writing metrics
-net-analyzer/**[wuzz](net-analyzer/wuzz)** | Interactive cli tool for HTTP inspection
 net-dns/**[acme-dns](net-dns/acme-dns)** | A simplified DNS server with a RESTful HTTP API to provide ACME DNS challenges
 net-dns/**[dnscrypt-proxy](net-dns/dnscrypt-proxy)** `*` | A tool for securing communications between a client and a DNS resolver
 net-dns/**[dnscrypt-wrapper](net-dns/dnscrypt-wrapper)** | A server-side DNSCrypt proxy
@@ -201,6 +200,7 @@ www-apps/**[mattermost-server](www-apps/mattermost-server)** | Open source Slack
 www-apps/**[modoboa](www-apps/modoboa)** | A mail hosting and management platform with a modern and simplified Web UI
 www-apps/**[modoboa-dmarc](www-apps/modoboa-dmarc)** | A set of tools to use DMARC through Modoboa
 www-client/**[inox](www-client/inox)** | Chromium spin-off to enhance privacy by disabling data transmission to Google
+www-misc/**[wuzz](www-misc/wuzz)** | Interactive cli tool for HTTP inspection
 www-plugins/**[browserpass](www-plugins/browserpass)** `*` | WebExtension host binary for app-admin/pass, a UNIX password manager
 www-servers/**[algernon](www-servers/algernon)** | Pure Go web server with Lua, Markdown, QUIC and Pongo2 support
 www-servers/**[caddy](www-servers/caddy)** `*` | Fast, cross-platform HTTP/2 web server with automatic HTTPS
