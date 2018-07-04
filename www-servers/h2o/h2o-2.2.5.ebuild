@@ -3,20 +3,20 @@
 
 EAPI=6
 
+CMAKE_MAKEFILE_GENERATOR="emake"
 USE_RUBY="ruby23 ruby24 ruby25"
 
-inherit cmake-utils ruby-single systemd user
+inherit cmake-utils flag-o-matic ruby-single systemd user
 
 DESCRIPTION="An optimized HTTP server with support for HTTP/1.x and HTTP/2"
-HOMEPAGE="https://h2o.examp1e.net"
+HOMEPAGE="https://h2o.examp1e.net/"
 SRC_URI="https://github.com/h2o/h2o/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="libh2o libressl libuv +mruby websocket"
-REQUIRED_USE="libuv? ( libh2o )
-	websocket? ( libh2o )"
+IUSE="debug libh2o libressl libuv +mruby websocket"
+REQUIRED_USE="libuv? ( libh2o ) websocket? ( libh2o )"
 
 RDEPEND="
 	libh2o? (
@@ -24,29 +24,55 @@ RDEPEND="
 		websocket? ( net-libs/wslay )
 	)
 	!libressl? ( dev-libs/openssl:0= )
-	libressl? ( dev-libs/libressl:0= )"
+	libressl? ( dev-libs/libressl:0= )
+"
 DEPEND="${RDEPEND}
 	mruby? (
-		sys-devel/bison
 		${RUBY_DEPS}
-	)"
+		dev-libs/oniguruma
+		sys-devel/bison
+		virtual/pkgconfig
+	)
+"
 RDEPEND+=" app-misc/ca-certificates"
 
 PATCHES=(
 	"${FILESDIR}/${PN}-2.2.3-system_ca.patch"
 	"${FILESDIR}/${P}-libressl.patch"
+	"${FILESDIR}/${PN}-2.2-mruby.patch"
 )
 
 src_prepare() {
+	cmake-utils_src_prepare
+
 	# shellcheck disable=SC2016
 	# Leave optimization level to user CFLAGS
 	sed -i 's/-O2 -g ${CC_WARNING_FLAGS} //g' ./CMakeLists.txt \
 		|| die "sed fix failed!"
 
-	cmake-utils_src_prepare
+	local ruby="ruby"
+	if use mruby; then
+		for ruby in ${RUBY_TARGETS_PREFERENCE}; do
+			if has_version "dev-lang/ruby:${ruby:4:1}.${ruby:5}"; then
+				break
+			fi
+			ruby=
+		done
+		[[ -z ${ruby} ]] && die "no suitable ruby version found"
+	fi
+
+	sed -i "s: ruby: ${ruby}:" ./CMakeLists.txt || die
+
+	sed -i "s:pkg-config:$(tc-getPKG_CONFIG):g" \
+		./deps/mruby/lib/mruby/gem.rb || die
+
+	tc-export CC
+	LD="$(tc-getCC)"
+	export LD
 }
 
 src_configure() {
+	use debug || append-cflags -DNDEBUG
 	# shellcheck disable=SC2191
 	local mycmakeargs=(
 		-DCMAKE_INSTALL_SYSCONFDIR="${EPREFIX}"/etc/h2o
@@ -68,7 +94,7 @@ src_install() {
 	doins "${FILESDIR}"/h2o.conf
 
 	insinto /etc/logrotate.d
-	newins "${FILESDIR}"/h2o.logrotate-r3 h2o
+	newins "${FILESDIR}"/h2o.logrotate h2o
 
 	diropts -m 0700
 	keepdir /var/log/h2o

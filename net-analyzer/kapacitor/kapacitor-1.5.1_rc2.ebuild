@@ -4,7 +4,7 @@
 EAPI=6
 
 MY_PV="${PV/_/-}"
-GIT_COMMIT="bb98383" # Change this when you update the ebuild
+GIT_COMMIT="dde6b6a" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/kapacitor"
 
 inherit bash-completion-r1 golang-vcs-snapshot systemd user
