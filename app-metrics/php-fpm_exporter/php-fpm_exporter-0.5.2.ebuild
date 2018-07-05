@@ -4,7 +4,7 @@
 EAPI=6
 
 # Change this when you update the ebuild:
-GIT_COMMIT="8a0c89d182908a578fd0e718c0e3ac8f8ee3fad0"
+GIT_COMMIT="4dd180146368fd4a233bf24701b483e7e1f64b6c"
 EGO_PN="github.com/hipages/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
@@ -72,7 +72,7 @@ src_compile() {
 	local myldflags=( -s -w
 		-X "main.version=${PV}"
 		-X "main.commit=${GIT_COMMIT}"
-		-X "'main.date=$(date -u '+%Y-%m-%dT%TZ')'"
+		-X "main.date=$(date -u '+%Y-%m-%dT%TZ')"
 	)
 	local mygoargs=(
 		-v -work -x
@@ -96,6 +96,6 @@ src_install() {
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
-	diropts -m 0750 -o php-fpm_exporter -g php-fpm_exporter
+	diropts -o php-fpm_exporter -g php-fpm_exporter -m 0750
 	keepdir /var/log/php-fpm_exporter
 }

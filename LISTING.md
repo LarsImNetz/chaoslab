@@ -84,6 +84,7 @@ app-misc/**[wtf](app-misc/wtf)** | A personal information dashboard for your ter
 app-shells/**[antibody](app-shells/antibody)** | The fastest shell plugin manager
 app-shells/**[fzf](app-shells/fzf)** `*` | A general-purpose command-line fuzzy finder
 app-shells/**[peco](app-shells/peco)** `*` | Simplistic interactive filtering tool
+app-vim/**[vim-go](app-vim/vim-go)** `*` | vim plugin: Go development plugin for Vim
 dev-db/**[influxdb](dev-db/influxdb)** `*` | Scalable datastore for metrics, events, and real-time analytics
 dev-db/**[pgweb](dev-db/pgweb)** | Web-based PostgreSQL database browser written in Go
 dev-db/**[sequeler](dev-db/sequeler)** | A native Linux SQL client built in Vala and GTK+
