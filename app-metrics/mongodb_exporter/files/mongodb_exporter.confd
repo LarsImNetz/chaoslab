@@ -4,11 +4,10 @@
 # Note: If you define any passwords here, keep this file only readable by
 # the user that owns the process, which probably is "mongodb_exporter".
 
-MONGODB_EXPORTER_LOGDIR="/var/log/${RC_SVCNAME}"
 MONGODB_EXPORTER_URL="mongodb://localhost:27017"
 MONGODB_EXPORTER_AUTH="user:password"
 MONGODB_EXPORTER_OPTS=""
 
 # Logging
-#output_log="${MONGODB_EXPORTER_LOGDIR}/mongodb_exporter.log"
-#error_log="${MONGODB_EXPORTER_LOGDIR}/error.log"
+#output_log="/var/log/mongodb_exporter/mongodb_exporter.log"
+#error_log="/var/log/mongodb_exporter/error.log"
