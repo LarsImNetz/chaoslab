@@ -1,9 +1,8 @@
 # config file for /etc/init.d/elasticsearch_exporter
 # run /usr/bin/elasticsearch_exporter -h to see available options
 
-ELASTICSEARCH_EXPORTER_LOGDIR="/var/log/${RC_SVCNAME}"
 ELASTICSEARCH_EXPORTER_OPTS=""
 
 # Logging
-#output_log="${ELASTICSEARCH_EXPORTER_LOGDIR}/snmp_exporter.log"
-#error_log="${ELASTICSEARCH_EXPORTER_LOGDIR}/error.log"
+#output_log="/var/log/elasticsearch_exporter/snmp_exporter.log"
+#error_log="/var/log/elasticsearch_exporter/error.log"
