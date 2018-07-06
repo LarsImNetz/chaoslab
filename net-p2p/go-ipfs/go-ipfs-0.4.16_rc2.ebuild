@@ -4,7 +4,7 @@
 EAPI=6
 
 MY_PV="${PV/_/-}"
-GIT_COMMIT="b183da3" # Change this when you update the ebuild
+GIT_COMMIT="e7938a1" # Change this when you update the ebuild
 EGO_PN="github.com/ipfs/${PN}"
 
 inherit bash-completion-r1 golang-vcs-snapshot systemd user
@@ -35,7 +35,7 @@ pkg_setup() {
 		ewarn ""
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn ""
-		die "'network-sandbox' is enabled in FEATURES"
+		die "[network-sandbox] is enabled in FEATURES"
 	fi
 }
 
@@ -86,6 +86,6 @@ pkg_postinst() {
 	einfo ""
 	elog "To be able to use the ipfs service you will need to create the ipfs repository"
 	elog "(e.g. su -s /bin/sh -c \"ipfs init -e\" go-ipfs)"
-	elog "or change IPFS_PATH of ${EROOT%/}/etc/conf.d/go-ipfs with another, with proper permissions."
+	elog "or change IPFS_PATH of ${EROOT%/}/etc/conf.d/go-ipfs with another permissions."
 	einfo ""
 }

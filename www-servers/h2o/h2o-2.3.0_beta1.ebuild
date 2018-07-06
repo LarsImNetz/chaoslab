@@ -88,7 +88,7 @@ src_install() {
 	systemd_dounit "${FILESDIR}"/h2o.service
 
 	insinto /etc/h2o
-	doins "${FILESDIR}"/h2o.conf
+	newins "${FILESDIR}"/h2o.conf h2o.conf.example
 
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}"/h2o.logrotate h2o
@@ -100,4 +100,11 @@ src_install() {
 pkg_preinst() {
 	enewgroup h2o
 	enewuser h2o -1 -1 -1 h2o
+}
+
+pkg_postinst() {
+	if [[ ! -e "${EROOT%/}/etc/h2o/h2o.conf" ]]; then
+		elog "No h2o.conf found, copying the example over"
+		cp "${EROOT%/}"/etc/h2o/h2o.conf{.example,} || die
+	fi
 }
