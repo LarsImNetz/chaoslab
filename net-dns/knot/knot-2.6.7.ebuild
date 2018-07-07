@@ -29,7 +29,8 @@ for X in "${KNOT_MODULES[@]}"; do
 done
 unset X
 
-RDEPEND=">=net-libs/gnutls-3.5:=
+RDEPEND="
+	>=net-libs/gnutls-3.5:=
 	>=dev-db/lmdb-0.9.18
 	>=dev-libs/userspace-rcu-0.9.1
 	dev-libs/libedit
@@ -40,12 +41,14 @@ RDEPEND=">=net-libs/gnutls-3.5:=
 		dev-libs/protobuf-c
 	)
 	idn? (
-		!libidn2? ( net-dns/libidn )
+		!libidn2? ( net-dns/libidn:0 )
 		libidn2? ( >=net-dns/libidn2-2 )
-	)"
+	)
+"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
-	doc? ( dev-python/sphinx )"
+	doc? ( dev-python/sphinx )
+"
 
 pkg_setup() {
 	if use daemon; then
