@@ -27,13 +27,13 @@ RDEPEND="app-admin/pass
 	)"
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/browserpass"
+QA_PRESTRIPPED="usr/libexec/browserpass"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_prepare() {
-	sed -i "s:%%replace%%:${EPREFIX}/usr/bin/browserpass:" \
+	sed -i "s:%%replace%%:${EPREFIX}/usr/libexec/browserpass:" \
 		firefox/host.json chrome/host.json || die
 
 	default
@@ -52,7 +52,8 @@ src_compile() {
 }
 
 src_install() {
-	dobin browserpass
+	exeinto /usr/libexec
+	doexe browserpass
 	einstalldocs
 
 	if has_version www-client/firefox || \
