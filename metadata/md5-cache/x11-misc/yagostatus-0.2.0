@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install unpack
+DEPEND=>=dev-lang/go-1.9
+DESCRIPTION=Yet Another i3status replacement written in Go
+EAPI=6
+HOMEPAGE=https://github.com/burik666/yagostatus
+IUSE=pie
+KEYWORDS=~amd64
+LICENSE=GPL-3
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/burik666/yagostatus/archive/0.2.0.tar.gz -> yagostatus-0.2.0.tar.gz https://github.com/golang/net/archive/32a936f.tar.gz -> github.com-golang-net-32a936f.tar.gz https://github.com/go-yaml/yaml/archive/5420a8b.tar.gz -> github.com-go-yaml-yaml-5420a8b.tar.gz
+_eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536
+_md5_=7105f3210a3982f75001c38bcfd50352
