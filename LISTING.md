@@ -209,4 +209,5 @@ www-servers/**[h2o](www-servers/h2o)** `*` | An optimized HTTP server with suppo
 www-servers/**[hiawatha](www-servers/hiawatha)** `*` | Advanced and secure webserver
 www-servers/**[rest-server](www-servers/rest-server)** | A high performance HTTP server that implements restic's REST backend API
 x11-misc/**[noti](x11-misc/noti)** | Trigger notifications when a process completes
+x11-misc/**[yagostatus](x11-misc/yagostatus)** | Yet Another i3status replacement written in Go
 
