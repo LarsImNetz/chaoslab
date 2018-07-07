@@ -7,7 +7,7 @@ error_log="${error_log:-/var/log/php-fpm_exporter/error.log}"
 
 name="${name:-PHP-FPM Exporter}"
 command="/usr/bin/php-fpm_exporter"
-command_args="server ${PHP-FPM_EXPORTER_OPTS}"
+command_args="server ${PHP_FPM_EXPORTER_OPTS}"
 command_user="${command_user:-php-fpm_exporter:php-fpm_exporter}"
 command_background=yes
 pidfile="/run/${RC_SVCNAME}.pid"
