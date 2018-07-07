@@ -18,7 +18,7 @@ RDEPEND="dev-libs/libgcrypt:0=
 	dev-libs/glib
 	dev-libs/jansson
 	dev-libs/libzip
-	dev-libs/libcotp
+	<=dev-libs/libcotp-1.0.14
 	media-gfx/zbar
 	>=media-libs/libpng-1.6.0
 	>=x11-libs/gtk+-3.22:3"
@@ -26,13 +26,6 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
 S="${WORKDIR}/OTPClient-${PV}"
-
-src_prepare() {
-	# Leave optimization level to user CFLAGS
-	sed -i '14,21d' CMakeLists.txt || die
-
-	cmake-utils_src_prepare
-}
 
 pkg_postinst() {
 	xdg_desktop_database_update
