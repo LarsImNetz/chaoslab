@@ -134,6 +134,6 @@ src_prepare() {
 }
 
 src_install() {
-	cargo_src_install
+	dobin target/release/bat
 	einstalldocs
 }
