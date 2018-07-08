@@ -124,17 +124,16 @@ RDEPEND="!libressl? ( dev-libs/openssl:0= )
 DEPEND="${RDEPEND}
 	>=virtual/rust-1.25.0"
 
-PATCHES=( "${FILESDIR}/${P}-libressl27.patch" )
 DOCS=( README.md )
 
 src_prepare() {
 	default
 	pushd "${WORKDIR}" || die
-	epatch "${FILESDIR}/${P}-libressl27.patch"
+	epatch "${FILESDIR}/${PN}-0.3.0-libressl27.patch"
 	popd || die
 }
 
 src_install() {
-	cargo_src_install
+	dobin target/release/bat
 	einstalldocs
 }

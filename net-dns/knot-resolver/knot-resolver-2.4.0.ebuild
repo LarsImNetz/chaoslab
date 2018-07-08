@@ -20,6 +20,7 @@ RDEPEND=">=net-dns/knot-2.6.7
 	dev-lang/luajit:2
 	dev-lua/luasocket
 	dev-lua/luasec
+	net-libs/libnsl
 	dnstap? (
 		>=dev-libs/protobuf-3.0
 		dev-libs/protobuf-c
