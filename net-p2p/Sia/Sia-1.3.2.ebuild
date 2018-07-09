@@ -63,8 +63,8 @@ src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
 	local myldflags=( -s -w
-		-X "${EGO_PN}/Sia/build.GitRevision=${GIT_COMMIT}"
-		-X "'${EGO_PN}/build.BuildTime=$(date)'"
+		-X "${EGO_PN}/build.GitRevision=${GIT_COMMIT}"
+		-X "'${EGO_PN}/build.BuildTime=$(date -u)'"
 	)
 	local mygoargs=(
 		-v -work -x
