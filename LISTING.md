@@ -87,15 +87,12 @@ app-shells/**[peco](app-shells/peco)** `*` | Simplistic interactive filtering to
 app-vim/**[vim-go](app-vim/vim-go)** `*` | vim plugin: Go development plugin for Vim
 dev-db/**[influxdb](dev-db/influxdb)** `*` | Scalable datastore for metrics, events, and real-time analytics
 dev-db/**[pgweb](dev-db/pgweb)** | Web-based PostgreSQL database browser written in Go
-dev-db/**[sequeler](dev-db/sequeler)** | A native Linux SQL client built in Vala and GTK+
 dev-db/**[tidb](dev-db/tidb)** | A distributed NewSQL database compatible with MySQL protocol
 dev-go/**[depth](dev-go/depth)** | Retrieve and visualize Go source code dependency trees
-dev-lang/**[vala](dev-lang/vala)** `***` | Compiler for the GObject type system
 dev-libs/**[libbaseencode](dev-libs/libbaseencode)** | Library written in C for encoding and decoding data using base32 or base64
 dev-libs/**[libcotp](dev-libs/libcotp)** | C library that generates TOTP and HOTP
 dev-libs/**[libmesode](dev-libs/libmesode)** | Fork of libstrophe for use with Profanity XMPP Client
 dev-libs/**[libstrophe](dev-libs/libstrophe)** | A simple, lightweight C library for writing XMPP clients
-dev-libs/**[vala-common](dev-libs/vala-common)** `***` | Build infrastructure for packages that use Vala
 dev-python/**[coreapi](dev-python/coreapi)** | Python client library for Core API
 dev-python/**[coreapi-cli](dev-python/coreapi-cli)** | An interactive command line client for Core API
 dev-python/**[coreschema](dev-python/coreschema)** | Core Schema
@@ -125,12 +122,8 @@ dev-util/**[gitlab-runner](dev-util/gitlab-runner)** | The official GitLab Runne
 dev-vcs/**[gitkraken-bin](dev-vcs/gitkraken-bin)** | The intuitive, fast, and beautiful cross-platform Git client
 dev-vcs/**[hub](dev-vcs/hub)** | A command-line wrapper for git that makes you better at GitHub
 dev-vcs/**[lab](dev-vcs/lab)** | Lab wraps Git or Hub to easily interact with repositories on GitLab
-gnome-extra/**[gnome-pomodoro](gnome-extra/gnome-pomodoro)** | A Pomodoro timer for Gnome
-gnome-extra/**[nautilus-git](gnome-extra/nautilus-git)** | Nautilus extension to add important information about the current git directory
 mail-filter/**[rspamd](mail-filter/rspamd)** `*` | Rapid spam filtering system
 media-gfx/**[gifski](media-gfx/gifski)** | GIF encoder based on libimagequant
-media-video/**[curlew](media-video/curlew)** | Easy to use and Free Multimedia Converter for Linux
-media-video/**[gnome-mpv](media-video/gnome-mpv)** `*` | A simple GTK+ frontend for mpv
 media-video/**[peek](media-video/peek)** `*` | Simple animated GIF screen recorder with an easy to use interface
 net-analyzer/**[chronograf](net-analyzer/chronograf)** `*` | Open source monitoring and visualization UI for the TICK stack
 net-analyzer/**[goaccess](net-analyzer/goaccess)** `*` | A real-time web log analyzer and interactive viewer that runs in a terminal
@@ -155,7 +148,6 @@ net-misc/**[piknik](net-misc/piknik)** | Copy/paste anything over the network
 net-misc/**[ssf](net-misc/ssf)** | A network toolkit for TCP/UDP port forwarding, SOCKS proxy and remote shell
 net-misc/**[ssh-chat](net-misc/ssh-chat)** | A chat over SSH server written in Go
 net-misc/**[tinyssh](net-misc/tinyssh)** | A small SSH server with state-of-the-art cryptography
-net-news/**[feedreader](net-news/feedreader)** | A modern desktop application designed to complement web-based RSS accounts
 net-p2p/**[Sia-UI](net-p2p/Sia-UI)** | The graphical front-end for Sia
 net-p2p/**[Sia](net-p2p/Sia)** | Blockchain-based marketplace for file storage
 net-p2p/**[bitcoin-abc](net-p2p/bitcoin-abc)** | A full node Bitcoin Cash implementation with GUI, daemon and utils
