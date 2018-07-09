@@ -15,11 +15,12 @@ LICENSE="gitkraken-EULA"
 SLOT="0"
 KEYWORDS="-* ~amd64"
 
-RDEPEND="dev-util/electron-bin:${ELECTRON_SLOT}
+RDEPEND="
+	dev-util/electron-bin:${ELECTRON_SLOT}
+	gnome-base/libgnome-keyring
 	net-misc/curl
 	net-libs/gnutls
-	gnome-base/libgnome-keyring
-	media-gfx/graphite2"
+"
 
 S="${WORKDIR}/gitkraken"
 

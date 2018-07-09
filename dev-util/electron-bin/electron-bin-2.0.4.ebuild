@@ -16,23 +16,27 @@ LICENSE="MIT"
 SLOT="2.0"
 KEYWORDS="-* ~amd64 ~x86 ~arm ~arm64"
 
-RDEPEND="dev-libs/nss
+RDEPEND="
+	dev-libs/atk
 	dev-libs/expat
-	dev-libs/libappindicator
+	dev-libs/glib:2
 	dev-libs/nss
-	gnome-base/gconf
+	gnome-base/gconf:2
+	media-gfx/graphite2
 	media-libs/alsa-lib
+	media-libs/fontconfig:1.0
+	media-libs/libepoxy
 	media-libs/libpng
 	net-print/cups
-	sys-libs/zlib
+	sys-apps/dbus
 	virtual/opengl
-	virtual/ttf-fonts
 	x11-libs/cairo
+	x11-libs/gdk-pixbuf:2
 	x11-libs/gtk+:3
-	x11-libs/libnotify
 	x11-libs/libxcb
 	x11-libs/libXtst
-	x11-libs/pango"
+	x11-libs/pango
+"
 DEPEND="app-arch/unzip"
 
 S="${WORKDIR}"
