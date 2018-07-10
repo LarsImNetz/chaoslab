@@ -15,14 +15,10 @@ SRC_URI="https://github.com/h2o/h2o/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="debug libh2o libressl libuv +mruby websocket"
-REQUIRED_USE="libuv? ( libh2o ) websocket? ( libh2o )"
+IUSE="debug libressl +mruby"
+
 
 RDEPEND="
-	libh2o? (
-		libuv? ( >=dev-libs/libuv-1.0.0 )
-		websocket? ( net-libs/wslay )
-	)
 	!libressl? ( dev-libs/openssl:0= )
 	libressl? ( dev-libs/libressl:0= )
 "
@@ -76,10 +72,9 @@ src_configure() {
 	# shellcheck disable=SC2191
 	local mycmakeargs=(
 		-DCMAKE_INSTALL_SYSCONFDIR="${EPREFIX}"/etc/h2o
-		-DDISABLE_LIBUV="$(usex !libuv)"
-		-DWITHOUT_LIBS="$(usex !libh2o)"
 		-DWITH_BUNDLED_SSL=OFF
 		-DWITH_MRUBY="$(usex mruby)"
+		-DWITHOUT_LIBS=ON
 	)
 	cmake-utils_src_configure
 }
