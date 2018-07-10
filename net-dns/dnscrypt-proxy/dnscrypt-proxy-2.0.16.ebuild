@@ -26,7 +26,7 @@ S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
 	enewgroup dnscrypt-proxy
-	enewuser dnscrypt-proxy -1 -1 /var/empty dnscrypt-proxy
+	enewuser dnscrypt-proxy -1 -1 -1 dnscrypt-proxy
 }
 
 src_prepare() {
@@ -66,9 +66,9 @@ src_install() {
 	dobin bin/dnscrypt-proxy
 	einstalldocs
 
-	newinitd "${FILESDIR}/${PN}-2.initd" "${PN}"
-	systemd_newunit "${FILESDIR}/${PN}-2.service" "${PN}.service"
-	systemd_newunit "${FILESDIR}/${PN}-2.socket" "${PN}.socket"
+	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	systemd_newunit "${FILESDIR}/${PN}.service" "${PN}.service"
+	systemd_newunit "${FILESDIR}/${PN}.socket" "${PN}.socket"
 
 	insinto /etc/dnscrypt-proxy
 	doins dnscrypt-proxy/example-dnscrypt-proxy.toml
