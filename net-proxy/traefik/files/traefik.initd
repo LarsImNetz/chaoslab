@@ -3,10 +3,9 @@
 # Distributed under the terms of the GNU General Public License v2
 
 TRAEFIK_CONFIG="${TRAEFIK_CONFIG:-/etc/traefik/traefik.toml}"
-TRAEFIK_LOGDIR="${TRAEFIK_LOGDIR:-/var/log/traefik}"
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${TRAEFIK_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/traefik/error.log}"
 
 name="${name:-Traefik}"
 command="/usr/bin/traefik"
@@ -21,8 +20,4 @@ start_stop_daemon_args="${SSD_OPTS}
 
 depend() {
 	need net
-}
-
-start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" "${TRAEFIK_LOGDIR}"
 }
