@@ -10,6 +10,7 @@ inherit fcaps golang-vcs-snapshot systemd user
 DESCRIPTION="A flexible DNS proxy, with support for modern encrypted DNS protocols"
 HOMEPAGE="https://dnscrypt.info"
 SRC_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+RESTRICT="mirror"
 
 LICENSE="ISC"
 SLOT="0"
@@ -81,7 +82,7 @@ src_install() {
 pkg_postinst() {
 	fcaps_pkg_postinst
 
-	if [ ! -e "${EROOT%/}"/etc/dnscrypt-proxy/dnscrypt-proxy.toml ]; then
+	if [[ ! -e "${EROOT%/}/etc/dnscrypt-proxy/dnscrypt-proxy.toml" ]]; then
 		elog "No ${PN}.toml found, copying the example over"
 		cp "${EROOT%/}"/etc/dnscrypt-proxy/{example-,}dnscrypt-proxy.toml || die
 	else
@@ -106,7 +107,7 @@ pkg_postinst() {
 			elog "please clean up old config/log files"
 			elog
 		fi
-		if [ "${v}" -lt 2.0.12 ] ; then
+		if [[ "${v}" -lt 2.0.12 ]] ; then
 			elog "As of version 2.0.12 of ${PN} runs as an 'dnscrypt-proxy' user/group"
 			elog "you can remove obsolete 'dnscrypt' accounts from the system"
 			elog
@@ -122,7 +123,7 @@ pkg_postinst() {
 		elog
 	fi
 
-	if [ -z "${REPLACING_VERSIONS}" ]; then
+	if [[ -z "${REPLACING_VERSIONS}" ]]; then
 		elog "After starting the service you will need to update your"
 		elog "/etc/resolv.conf and replace your current set of resolvers"
 		elog "with:"
