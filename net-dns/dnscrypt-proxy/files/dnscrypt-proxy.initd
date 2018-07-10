@@ -10,7 +10,7 @@ pidfile="/run/${RC_SVCNAME}.pid"
 start_stop_daemon_args="${SSD_OPTS}"
 
 depend() {
-	use net logger
+	use logger net
 	provide dns
 }
 

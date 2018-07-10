@@ -4,7 +4,7 @@
 EAPI=6
 
 MY_PV="${PV/_/-}"
-CODENAME="tetedemoine"
+CODENAME="maroilles"
 EGO_PN="github.com/containous/${PN}"
 EGO_VENDOR=( "github.com/containous/go-bindata e237f24" )
 
@@ -80,7 +80,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/etc/traefik/traefik.toml ]; then
+	if [[ ! -e "${EROOT%/}/etc/traefik/traefik.toml" ]]; then
 		elog "No traefik.toml found, copying the example over"
 		cp "${EROOT%/}"/etc/traefik/traefik.toml{.example,} || die
 	else
