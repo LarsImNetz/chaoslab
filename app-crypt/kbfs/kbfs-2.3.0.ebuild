@@ -17,15 +17,19 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="git pie"
 
-RDEPEND="app-crypt/gnupg
-	sys-fs/fuse"
-
-QA_PRESTRIPPED="usr/bin/kbfsfuse
-	usr/bin/kbfstool
-	usr/bin/git-remote-keybase"
+RDEPEND="
+	app-crypt/gnupg
+	sys-fs/fuse
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
+
+QA_PRESTRIPPED="
+	usr/bin/kbfsfuse
+	usr/bin/kbfstool
+	usr/bin/git-remote-keybase
+"
 
 src_compile() {
 	export GOPATH="${G}"
@@ -38,12 +42,10 @@ src_compile() {
 		-ldflags "-s -w"
 		-tags production
 	)
-	go install "${mygoargs[@]}" \
-		./{kbfsfuse,kbfstool} || die
+	go install "${mygoargs[@]}" ./{kbfsfuse,kbfstool} || die
 
 	if use git; then
-		go build "${mygoargs[@]}" \
-			./kbfsgit/git-remote-keybase || die
+		go build "${mygoargs[@]}" ./kbfsgit/git-remote-keybase || die
 	fi
 }
 

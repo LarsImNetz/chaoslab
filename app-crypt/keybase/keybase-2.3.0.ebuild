@@ -17,13 +17,15 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="pie"
 
-DEPEND="app-crypt/kbfs"
-RDEPEND="app-crypt/gnupg"
-
-QA_PRESTRIPPED="usr/bin/keybase"
+RDEPEND="
+	app-crypt/kbfs
+	app-crypt/gnupg
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
+
+QA_PRESTRIPPED="usr/bin/keybase"
 
 src_compile() {
 	export GOPATH="${G}:${S}/go/vendor"
@@ -35,8 +37,7 @@ src_compile() {
 		-ldflags "-s -w"
 		-tags production
 	)
-	go build "${mygoargs[@]}" \
-		./go/keybase || die
+	go build "${mygoargs[@]}" ./go/keybase || die
 }
 
 src_install() {
@@ -46,7 +47,9 @@ src_install() {
 }
 
 pkg_postinst() {
+	einfo
 	elog "Run the service: keybase service"
 	elog "Run the client:  keybase login"
 	elog "Restart keybase: run_keybase"
+	einfo
 }
