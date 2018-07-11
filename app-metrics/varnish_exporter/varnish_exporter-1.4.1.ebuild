@@ -3,17 +3,17 @@
 
 EAPI=6
 
-GIT_COMMIT="dea6207" # Change this when you update the ebuild
+GIT_COMMIT="7c2b385" # Change this when you update the ebuild
 EGO_PN="github.com/jonnenauha/prometheus_${PN}"
-# Snapshot taken on 2018.06.10
+# Snapshot taken on 2018.07.11
 EGO_VENDOR=(
 	"github.com/beorn7/perks 3a771d9"
-	"github.com/golang/protobuf 05f48f4"
+	"github.com/golang/protobuf 0cb4f73"
 	"github.com/matttproud/golang_protobuf_extensions c12348c"
-	"github.com/prometheus/client_golang faf4ec3"
+	"github.com/prometheus/client_golang ee1c9d7"
 	"github.com/prometheus/client_model 99fa1f4"
 	"github.com/prometheus/common 7600349"
-	"github.com/prometheus/procfs 9466342"
+	"github.com/prometheus/procfs ae68e2d"
 )
 
 inherit golang-vcs-snapshot systemd user
@@ -48,7 +48,7 @@ src_compile() {
 		-X "'main.VersionDate=$(date -u '+%d.%m.%Y %H:%M:%S')'"
 	)
 	local mygoargs=(
-		-v
+		-v -work -x
 		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
@@ -69,6 +69,6 @@ src_install() {
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
-	diropts -m 0750 -o varnish_exporter -g varnish_exporter
+	diropts -o varnish_exporter -g varnish_exporter -m 0750
 	keepdir /var/log/varnish_exporter
 }

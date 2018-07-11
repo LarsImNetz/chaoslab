@@ -34,23 +34,26 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="pie test"
 
-RDEPEND="app-shells/zsh[unicode]
-	dev-vcs/git"
+RDEPEND="
+	app-shells/zsh[unicode]
+	dev-vcs/git
+"
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/antibody"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
+
+QA_PRESTRIPPED="usr/bin/antibody"
 
 pkg_setup() {
 	if use test; then
 		# shellcheck disable=SC2086
 		if has network-sandbox $FEATURES; then
-			ewarn ""
+			ewarn
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn ""
-			die "'network-sandbox' is enabled in FEATURES"
+			ewarn
+			die "[network-sandbox] is enabled in FEATURES"
 		fi
 	fi
 }
