@@ -75,12 +75,12 @@ src_install() {
 		docompress -x "/usr/share/doc/${PF}/examples"
 	fi
 
-	diropts -m 0750 -o traefik -g traefik
+	diropts -o traefik -g traefik -m 0750
 	keepdir /var/log/traefik
 }
 
 pkg_postinst() {
-	if [ ! -f "${EROOT%/}"/etc/traefik/traefik.toml ]; then
+	if [[ ! -e "${EROOT%/}/etc/traefik/traefik.toml" ]]; then
 		elog "No traefik.toml found, copying the example over"
 		cp "${EROOT%/}"/etc/traefik/traefik.toml{.example,} || die
 	else
