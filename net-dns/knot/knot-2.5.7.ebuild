@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit systemd user
+inherit systemd tmpfiles user
 
 KNOT_MODULES=(
 	+module-dnsproxy module-dnstap +module-noudp
@@ -19,13 +19,15 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="caps +daemon doc +fastparser idn libidn2 static-libs systemd +utils"
-REQUIRED_USE="caps? ( daemon )
+REQUIRED_USE="
+	caps? ( daemon )
 	idn? ( daemon )
-	systemd? ( daemon )"
+	systemd? ( daemon )
+"
 
 for X in "${KNOT_MODULES[@]}"; do
-	IUSE="${IUSE} ${X}"
-	REQUIRED_USE="${REQUIRED_USE} ${X#+}? ( daemon )"
+	IUSE+=" ${X}"
+	REQUIRED_USE+=" ${X#+}? ( daemon )"
 done
 unset X
 
@@ -96,12 +98,23 @@ src_install() {
 	default
 
 	if use daemon; then
-		newinitd "${FILESDIR}"/knot.initd knot
-		systemd_dounit "${FILESDIR}"/knot.service
-		systemd_newtmpfilesd "${FILESDIR}"/knot.tmpfilesd-r1 knot.conf
+		newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+		systemd_dounit "${FILESDIR}/${PN}.service"
+		newtmpfiles "${FILESDIR}/${PN}.tmpfilesd" "${PN}.conf"
 
 		rmdir "${D%/}"/var/run/knot "${D%/}"/var/run || die
-		diropts -o knot -g knot -m750
-		keepdir /var/lib/knot
+	fi
+}
+
+pkg_postinst() {
+	if use daemon; then
+		# Trigger cache dir creation to allow immediate use of knot
+		tmpfiles_process "${PN}.conf"
+
+		if [[ $(stat -c %a "${EROOT%/}/var/lib/knot") != "750" ]]; then
+			einfo "Fixing ${EROOT%/}/var/lib/knot permissions"
+			chown knot:knot "${EROOT%/}/var/lib/knot" || die
+			chmod 0750 "${EROOT%/}/var/lib/knot" || die
+		fi
 	fi
 }
