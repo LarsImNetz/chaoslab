@@ -54,7 +54,11 @@ src_prepare() {
 		[[ -z ${ruby} ]] && die "no suitable ruby version found"
 	fi
 
-	sed -i "s: ruby: ${ruby}:" ./CMakeLists.txt || die
+	sed -i \
+		-e "/INSTALL/s:\\(/doc/h2o\\) :\\1/html :" \
+		-e "/INSTALL/s:\\(/doc\\)/h2o:\\1/${PF}:" \
+		-e "s: ruby: ${ruby}:" \
+		./CMakeLists.txt || die
 
 	sed -i "s:pkg-config:$(tc-getPKG_CONFIG):g" \
 		./deps/mruby/lib/mruby/gem.rb || die
@@ -83,6 +87,9 @@ src_install() {
 
 	insinto /etc/h2o
 	newins "${FILESDIR}"/h2o.conf h2o.conf.example
+
+	# Update docs path
+	sed -i "s:@H2O_DOC@:${PF}:" "${ED%/}"/etc/h2o/h2o.conf.example || die
 
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}"/h2o.logrotate h2o
