@@ -3,14 +3,14 @@
 
 EAPI=6
 
-GIT_COMMIT="c4210f7" # Change this when you update the ebuild
+GIT_COMMIT="236005a" # Change this when you update the ebuild
 EGO_PN="github.com/senorprogrammer/${PN}"
 
 inherit golang-vcs-snapshot
 
 DESCRIPTION="A personal information dashboard for your terminal"
 HOMEPAGE="https://wtfutil.com"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="MIT"
@@ -18,10 +18,11 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/wtf"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
+
+QA_PRESTRIPPED="usr/bin/wtf"
 
 src_compile() {
 	export GOPATH="${G}"
@@ -44,7 +45,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	einfo ""
+	einfo
 	elog "See https://wtfutil.com/posts/configuration/ for configuration guide."
-	einfo ""
+	einfo
 }
