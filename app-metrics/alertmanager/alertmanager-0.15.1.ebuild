@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="462c969" # Change this when you update the ebuild
+GIT_COMMIT="8397de1" # Change this when you update the ebuild
 EGO_PN="github.com/prometheus/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -20,8 +20,10 @@ IUSE="pie"
 
 DOCS=( NOTICE CHANGELOG.md README.md )
 
-QA_PRESTRIPPED="usr/bin/alertmanager
-	usr/bin/amtool"
+QA_PRESTRIPPED="
+	usr/bin/alertmanager
+	usr/bin/amtool
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
