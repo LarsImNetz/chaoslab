@@ -69,10 +69,16 @@ src_install() {
 	newins doc/examples/simple.yml alertmanager.yml.example
 
 	diropts -o alertmanager -g alertmanager -m 0750
-	keepdir /var/{lib,log}/alertmanager
+	keepdir /var/log/alertmanager
 }
 
 pkg_postinst() {
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/alertmanager") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/alertmanager permissions"
+		chown alertmanager:alertmanager "${EROOT%/}/var/lib/alertmanager" || die
+		chmod 0750 "${EROOT%/}/var/lib/alertmanager" || die
+	fi
+
 	if [[ ! -e "${EROOT%/}/etc/alertmanager/alertmanager.yml" ]]; then
 		elog "No alertmanager.yml found, copying the example over"
 		cp "${EROOT%/}"/etc/alertmanager/alertmanager.yml{.example,} || die

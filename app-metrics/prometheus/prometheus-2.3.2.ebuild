@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="188ca45" # Change this when you update the ebuild
+GIT_COMMIT="71af5e2" # Change this when you update the ebuild
 EGO_PN="github.com/${PN}/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -20,11 +20,13 @@ IUSE="examples pie"
 
 DOCS=( {README,CHANGELOG,CONTRIBUTING}.md )
 
-QA_PRESTRIPPED="usr/bin/prometheus
-	usr/bin/promtool"
-
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
+
+QA_PRESTRIPPED="
+	usr/bin/prometheus
+	usr/bin/promtool
+"
 
 pkg_setup() {
 	enewgroup prometheus
