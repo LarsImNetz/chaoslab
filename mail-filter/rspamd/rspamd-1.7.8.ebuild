@@ -16,7 +16,8 @@ KEYWORDS="~amd64 ~x86"
 IUSE="cpu_flags_x86_ssse3 fann gd jemalloc +jit libressl pcre2 +torch"
 REQUIRED_USE="torch? ( jit )"
 
-DEPEND="dev-db/sqlite:3
+DEPEND="
+	dev-db/sqlite:3
 	dev-libs/glib:2
 	dev-libs/icu
 	dev-libs/libevent
@@ -31,7 +32,8 @@ DEPEND="dev-db/sqlite:3
 	!libressl? ( dev-libs/openssl:0=[-bindist] )
 	libressl? ( dev-libs/libressl:0= )
 	!pcre2? ( dev-libs/libpcre[jit=] )
-	pcre2? ( dev-libs/libpcre2[jit=] )"
+	pcre2? ( dev-libs/libpcre2[jit=] )
+"
 RDEPEND="${DEPEND}"
 
 QA_MULTILIB_PATHS="usr/lib/rspamd/.*"
