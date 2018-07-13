@@ -4,7 +4,7 @@
 EAPI=6
 
 # Change this when you update the ebuild:
-GIT_COMMIT="e1fcaf58d8313d186bce0b923b38e2fd0002bd6d"
+GIT_COMMIT="6f0659435229e0adcbddf1cbbdf9c0adf95f9081"
 EGO_PN="github.com/tsenart/${PN}"
 # Keep EGO_VENDOR in sync with Gopkg.lock
 EGO_VENDOR=(
@@ -28,11 +28,10 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 DOCS=( CHANGELOG README.md )
+QA_PRESTRIPPED="usr/bin/vegeta"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
-
-QA_PRESTRIPPED="usr/bin/vegeta"
 
 src_compile() {
 	export GOPATH="${G}"

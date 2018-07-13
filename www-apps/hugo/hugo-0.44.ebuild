@@ -3,24 +3,32 @@
 
 EAPI=6
 
-GIT_COMMIT="02aa320" # Change this when you update the ebuild
+GIT_COMMIT="9f9695c" # Change this when you update the ebuild
 EGO_PN="github.com/gohugoio/hugo"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
+# github.com/alecthomas/assert 405dbfe
+# github.com/alecthomas/colour 60882d9
+# github.com/alecthomas/repr f49988b
 # github.com/davecgh/go-spew 346938d
 # github.com/fortytw2/leaktest a5ef704
 # github.com/inconshreveable/mousetrap 76626ae
 # github.com/magefile/mage 2f97430
+# github.com/mattn/go-isatty 0360b2a
 # github.com/pmezard/go-difflib 792786c
 # github.com/sanity-io/litter ae543b7
+# github.com/sergi/go-diff 1744e29
 # github.com/stretchr/testify 12b6f73
+# github.com/wellington/go-libsass 615eaa4
 EGO_VENDOR=(
+	"github.com/BurntSushi/locker a6e239e"
 	"github.com/BurntSushi/toml a368813"
 	"github.com/PuerkitoBio/purell 0bcb03f"
 	"github.com/PuerkitoBio/urlesc de5bf2a"
 	"github.com/alecthomas/chroma 1b755a9"
 	"github.com/bep/debounce 844797fa"
 	"github.com/bep/gitmap 012701e"
+	"github.com/bep/go-tocss 2abb118"
 	"github.com/chaseadamsio/goorgeous dcf1ef8"
 	"github.com/cpuguy83/go-md2man a65d4d2"
 	"github.com/danwakefield/fnmatch cbb64ac"
@@ -39,6 +47,7 @@ EGO_VENDOR=(
 	"github.com/markbates/inflect a12c3ae"
 	"github.com/mattn/go-runewidth 9e777a8"
 	"github.com/miekg/mmark fd2f6c1"
+	"github.com/mitchellh/hashstructure 2bca23e"
 	"github.com/mitchellh/mapstructure 00c29f5"
 	"github.com/muesli/smartcrop f6ebaa7"
 	"github.com/nicksnyder/go-i18n 0dc1626"
@@ -54,6 +63,8 @@ EGO_VENDOR=(
 	"github.com/spf13/nitro 24d7ef3"
 	"github.com/spf13/pflag e57e3ee"
 	"github.com/spf13/viper b5e8006"
+	"github.com/tdewolff/minify 8d72a41"
+	"github.com/tdewolff/parse d739d6f"
 	"github.com/yosssi/ace ea038f4"
 	"golang.org/x/image f315e44 github.com/golang/image"
 	"golang.org/x/net 61147c4 github.com/golang/net"
