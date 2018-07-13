@@ -4,7 +4,7 @@
 EAPI=6
 
 MY_PV="${PV/_/-}"
-GIT_COMMIT="7207b1c" # Change this when you update the ebuild
+GIT_COMMIT="92ac43a" # Change this when you update the ebuild
 EGO_PN="github.com/ipfs/${PN}"
 
 inherit bash-completion-r1 golang-vcs-snapshot systemd user
