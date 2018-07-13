@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="cbb7214" # Change this when you update the ebuild
+GIT_COMMIT="9f9695c" # Change this when you update the ebuild
 EGO_PN="github.com/gohugoio/hugo"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
@@ -34,7 +34,6 @@ EGO_VENDOR=(
 	"github.com/danwakefield/fnmatch cbb64ac"
 	"github.com/disintegration/imaging dd50a3e"
 	"github.com/dlclark/regexp2 487489b"
-	"github.com/dsnet/golib 1ea1667"
 	"github.com/eknkc/amber cdade1c"
 	"github.com/fsnotify/fsnotify c282820"
 	"github.com/gobwas/glob 5ccd90e"
