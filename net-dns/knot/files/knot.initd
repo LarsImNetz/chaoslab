@@ -7,7 +7,7 @@ extra_started_commands="reload"
 description_configtest="Run Knot' internal config check"
 description_reload="Reload configuration and changed zones"
 
-name="Knot DNS"
+name="${name:-Knot DNS}"
 knotc="/usr/sbin/knotc"
 command="/usr/sbin/knotd"
 command_background=yes
@@ -19,8 +19,6 @@ depend() {
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o knot:knot /run/knot /var/lib/knot
-
 	if [ "${RC_CMD}" != "restart" ]; then
 		configtest || return 1
 	fi
