@@ -5,7 +5,7 @@ EAPI=6
 
 inherit systemd user
 
-GIT_COMMIT="b28fb65" # Change this when you update the ebuild
+GIT_COMMIT="6b04b98" # Change this when you update the ebuild
 EGO_PN="github.com/mattermost/${PN}"
 MMWAPP_PN="mattermost-webapp"
 MMWAPP_P="${MMWAPP_PN}-${PV}"
@@ -21,8 +21,10 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="pie"
 
-DEPEND=">=net-libs/nodejs-6.0.0
-	sys-apps/yarn"
+DEPEND="
+	>=net-libs/nodejs-6.0.0
+	sys-apps/yarn
+"
 
 QA_PRESTRIPPED="usr/libexec/mattermost/bin/platform"
 
