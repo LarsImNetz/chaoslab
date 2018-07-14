@@ -6,15 +6,17 @@ EAPI=7
 SRC_URI_BASE="https://github.com/electron/electron/releases/download"
 DESCRIPTION="Cross platform application development framework based on web technologies"
 HOMEPAGE="https://electron.atom.io"
-SRC_URI="amd64? ( ${SRC_URI_BASE}/v${PV}/${PN/-bin}-v${PV}-linux-x64.zip -> ${P}-x64.zip )
+SRC_URI="
+	amd64? ( ${SRC_URI_BASE}/v${PV}/${PN/-bin}-v${PV}-linux-x64.zip -> ${P}-x64.zip )
 	x86? ( ${SRC_URI_BASE}/v${PV}/${PN/-bin}-v${PV}-linux-ia32.zip -> ${P}-ia32.zip )
 	arm? ( ${SRC_URI_BASE}/v${PV}/${PN/-bin}-v${PV}-linux-arm.zip -> ${P}-arm.zip )
-	arm64? ( ${SRC_URI_BASE}/v${PV}/${PN/-bin}-v${PV}-linux-arm64.zip -> ${P}-arm64.zip )"
+	arm64? ( ${SRC_URI_BASE}/v${PV}/${PN/-bin}-v${PV}-linux-arm64.zip -> ${P}-arm64.zip )
+"
 RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="2.0"
-KEYWORDS="-* ~amd64 ~x86 ~arm ~arm64"
+KEYWORDS="-* ~amd64 ~arm ~arm64 ~x86"
 
 RDEPEND="
 	dev-libs/atk
@@ -39,12 +41,14 @@ RDEPEND="
 "
 DEPEND="app-arch/unzip"
 
+QA_PRESTRIPPED="
+	/opt/${MY_PN}/libffmpeg.so
+	/opt/${MY_PN}/libnode.so
+	/opt/${MY_PN}/electron
+"
+
 S="${WORKDIR}"
 MY_PN="${PN}-${SLOT}"
-
-QA_PRESTRIPPED="/opt/${MY_PN}/libffmpeg.so
-	/opt/${MY_PN}/libnode.so
-	/opt/${MY_PN}/electron"
 
 src_install() {
 	exeinto "/opt/${MY_PN}"
