@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install postinst preinst prepare setup unpack
+DEPEND=app-arch/xz-utils build-images? ( app-emulation/docker app-emulation/qemu ) >=dev-lang/go-1.9 virtual/pkgconfig
+DESCRIPTION=The official GitLab Runner, written in Go
+EAPI=6
+HOMEPAGE=https://gitlab.com/gitlab-org/gitlab-runner
+IUSE=+build-images pie kernel_linux
+KEYWORDS=~amd64
+LICENSE=MIT
+RESTRICT=mirror test
+SLOT=0
+SRC_URI=https://gitlab.com/gitlab-org/gitlab-runner/repository/v10.8.2/archive.tar.gz -> gitlab-runner-10.8.2.tar.gz https://github.com/mitchellh/gox/archive/e05df8d.tar.gz -> github.com-mitchellh-gox-e05df8d.tar.gz https://github.com/kevinburke/go-bindata/archive/2197b05.tar.gz -> github.com-kevinburke-go-bindata-2197b05.tar.gz !build-images? ( https://gitlab-runner-downloads.s3.amazonaws.com/v10.8.2/docker/prebuilt-x86_64.tar.xz -> gitlab-runner-10.8.2-prebuilt-x86_64.tar.xz https://gitlab-runner-downloads.s3.amazonaws.com/v10.8.2/docker/prebuilt-arm.tar.xz -> gitlab-runner-10.8.2-prebuilt-arm.tar.xz )
+_eclasses_=eapi7-ver	d97a56a62c7df8614afddcb25f5ff00f	golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536	linux-info	bb73a1f0c3db9ff796439bf44bed8467	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	04e50685fbf3d89e5c67ac6a385dd595	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607	user	8bc2845510e2109af75e3eeac607ec81
+_md5_=48b43959ef6a2932f7e9d841dba5ec4c
