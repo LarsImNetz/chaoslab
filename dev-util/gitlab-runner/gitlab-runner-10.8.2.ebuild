@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="079aad9e" # Change this when you update the ebuild
+GIT_COMMIT="25b80a3a" # Change this when you update the ebuild
 EGO_PN="gitlab.com/gitlab-org/${PN}"
 EGO_VENDOR=(
 	"github.com/mitchellh/gox e05df8d"
@@ -143,7 +143,8 @@ src_compile() {
 			-f dockerfiles/build/Dockerfile.x86_64 dockerfiles/build || die
 		docker create --name=gitlab-runner-prebuilt-x86_64-${GIT_COMMIT} \
 			gitlab/gitlab-runner-helper:x86_64-${GIT_COMMIT} /bin/sh || die
-		docker export -o out/docker/prebuilt-x86_64.tar gitlab-runner-prebuilt-x86_64-${GIT_COMMIT} || die
+		docker export -o out/docker/prebuilt-x86_64.tar \
+			gitlab-runner-prebuilt-x86_64-${GIT_COMMIT} || die
 		docker rm -f gitlab-runner-prebuilt-x86_64-${GIT_COMMIT} || die
 		xz -f -9 out/docker/prebuilt-x86_64.tar || die
 		eend $?
@@ -160,7 +161,8 @@ src_compile() {
 			-f dockerfiles/build/Dockerfile.arm dockerfiles/build || die
 		docker create --name=gitlab-runner-prebuilt-arm-${GIT_COMMIT} \
 			gitlab/gitlab-runner-helper:arm-${GIT_COMMIT} /bin/sh || die
-		docker export -o out/docker/prebuilt-arm.tar gitlab-runner-prebuilt-arm-${GIT_COMMIT} || die
+		docker export -o out/docker/prebuilt-arm.tar \
+			gitlab-runner-prebuilt-arm-${GIT_COMMIT} || die
 		docker rm -f gitlab-runner-prebuilt-arm-${GIT_COMMIT} || die
 		xz -f -9 out/docker/prebuilt-arm.tar || die
 		eend $?
