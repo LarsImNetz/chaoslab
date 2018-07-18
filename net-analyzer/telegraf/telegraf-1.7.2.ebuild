@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="4be18c1" # Change this when you update the ebuild
+GIT_COMMIT="c6feb05" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Godeps
 # Deps that are not needed:
@@ -136,7 +136,7 @@ pkg_setup() {
 			ewarn ""
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 			ewarn ""
-			die "'network-sandbox' is enabled in FEATURES"
+			die "[network-sandbox] is enabled in FEATURES"
 		fi
 	fi
 
