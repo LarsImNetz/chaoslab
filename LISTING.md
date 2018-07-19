@@ -96,7 +96,6 @@ dev-libs/**[libstrophe](dev-libs/libstrophe)** | A simple, lightweight C library
 dev-python/**[coreapi](dev-python/coreapi)** | Python client library for Core API
 dev-python/**[coreapi-cli](dev-python/coreapi-cli)** | An interactive command line client for Core API
 dev-python/**[coreschema](dev-python/coreschema)** | Core Schema
-dev-python/**[django](dev-python/django)** `***` | High-level Python web framework
 dev-python/**[django-auth-ldap](dev-python/django-auth-ldap)** `***` | Django LDAP authentication backend
 dev-python/**[django-braces](dev-python/django-braces)** | Reusable, generic mixins for Django
 dev-python/**[django-ckeditor](dev-python/django-ckeditor)** | Django admin CKEditor integration
