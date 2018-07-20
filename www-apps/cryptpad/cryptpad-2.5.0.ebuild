@@ -74,9 +74,9 @@ src_install() {
 
 	insinto /etc/cryptpad
 	newins config.example.js config.js
-	dosym ../../../etc/cryptpad/config.js \
-		/usr/share/cryptpad/config.js
-	# Remove redundant file
+	dosym ../../../etc/cryptpad/config.js /usr/share/cryptpad/config.js
+
+	# Now remove the redundant file
 	rm config.example.js || die
 
 	insinto /usr/share/cryptpad
