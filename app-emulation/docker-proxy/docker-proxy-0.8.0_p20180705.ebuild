@@ -14,6 +14,7 @@ inherit golang-vcs-snapshot
 DESCRIPTION="Docker container networking"
 HOMEPAGE="https://github.com/docker/libnetwork"
 SRC_URI="https://${EGO_PN}/archive/${GIT_COMMIT}.tar.gz -> ${P}.tar.gz"
+RESTRICT="mirror test"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -22,8 +23,6 @@ IUSE=""
 
 DOCS=( {CHANGELOG,README,ROADMAP}.md )
 QA_PRESTRIPPED="usr/bin/docker-proxy"
-
-RESTRICT="test" # needs dockerd
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"

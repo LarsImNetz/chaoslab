@@ -3,42 +3,46 @@
 
 EAPI=6
 
+# For docker-18.06.0
+# https://github.com/docker/docker-ce/blob/v18.06.0-ce/components/engine/hack/dockerfile/install/runc.installer
+
 EGO_PN="github.com/opencontainers/${PN}"
-EGO_VENDOR=( "github.com/cpuguy83/go-md2man 20f5889" )
-GIT_COMMIT="4fc53a8" # Change this when you update the ebuild
+GIT_COMMIT="69663f0bd4b60df09991c08812a60108003fa340"
 
 inherit bash-completion-r1 golang-vcs-snapshot
 
 DESCRIPTION="CLI tool for spawning and running containers"
 HOMEPAGE="http://runc.io"
-SRC_URI="https://${EGO_PN}/archive/v${PV/_/-}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+SRC_URI="https://${EGO_PN}/archive/${GIT_COMMIT}.tar.gz -> ${P}.tar.gz"
+RESTRICT="mirror test" # needs dockerd
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="~amd64 ~arm"
-IUSE="+ambient apparmor bash-completion +seccomp"
+KEYWORDS="~amd64 ~arm ~arm64"
+IUSE="+ambient apparmor bash-completion hardened +seccomp"
 
-RDEPEND="!app-emulation/docker-runc
+DEPEND="dev-go/go-md2man"
+RDEPEND="
+	!app-emulation/docker-runc
 	apparmor? ( sys-libs/libapparmor )
-	seccomp? ( sys-libs/libseccomp )"
+	seccomp? ( sys-libs/libseccomp )
+"
 
-DOCS=( {PRINCIPLES,README}.md )
+DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/runc"
-
-RESTRICT="test" # needs dockerd
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_compile() {
-	export GOPATH="${G}" CGO_CFLAGS CGO_LDFLAGS
+	export GOPATH="${G}"
+	local CGO_CFLAGS CGO_LDFLAGS
 	CGO_CFLAGS="-I${ROOT}/usr/include"
-	CGO_LDFLAGS="-L${ROOT}/usr/$(get_libdir)"
+	CGO_LDFLAGS="$(usex hardened '-fno-PIC ' '') -L${ROOT}/usr/$(get_libdir)"
 
 	local myldflags=( -s -w
 		-X "main.gitCommit=${GIT_COMMIT}"
-		-X "main.version=${PV/_/-}"
+		-X "main.version=${PV}"
 	)
 
 	# build up optional flags
@@ -58,9 +62,7 @@ src_compile() {
 	go build "${mygoargs[@]}" || die
 
 	# build man pages
-	local PATH="${G}/bin:$PATH"
-	go install ./vendor/github.com/cpuguy83/go-md2man || die
-	./man/md2man-all.sh || die
+	man/md2man-all.sh -q || die
 }
 
 src_install() {

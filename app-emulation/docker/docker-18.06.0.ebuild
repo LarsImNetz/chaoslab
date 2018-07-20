@@ -4,16 +4,14 @@
 EAPI=6
 
 EGO_PN="github.com/${PN}/${PN}-ce"
-EGO_VENDOR=( "github.com/cpuguy83/go-md2man 20f5889" )
-GIT_COMMIT="f150324" # Change this when you update the ebuild
+GIT_COMMIT="0ffa825" # Change this when you update the ebuild
 
 inherit bash-completion-r1 golang-vcs-snapshot linux-info systemd udev user
 
 DESCRIPTION="The core functions you need to create Docker images and run Docker containers"
 HOMEPAGE="https://dockerproject.org"
-SRC_URI="https://${EGO_PN}/archive/v${PV}-ce.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
-RESTRICT="mirror"
+SRC_URI="https://${EGO_PN}/archive/v${PV}-ce.tar.gz -> ${P}.tar.gz"
+RESTRICT="installsources mirror"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -29,30 +27,31 @@ CDEPEND="
 	seccomp? ( >=sys-libs/libseccomp-2.2.1 )
 "
 DEPEND="${CDEPEND}
+	dev-go/go-md2man
 	btrfs? ( >=sys-fs/btrfs-progs-3.16.1 )
 "
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#optional-dependencies
 RDEPEND="${CDEPEND}
 	>=app-arch/xz-utils-4.9
-	~app-emulation/containerd-1.0.3
-	~app-emulation/docker-proxy-0.8.0_p20180411
-	~app-emulation/runc-1.0.0_rc5[apparmor?,seccomp?]
+	~app-emulation/containerd-1.1.1
+	~app-emulation/docker-proxy-0.8.0_p20180705
+	~app-emulation/runc-1.0.0_p20180309[apparmor?,seccomp?]
 	dev-libs/libltdl
 	>=dev-vcs/git-1.7
 	>=net-firewall/iptables-1.4
 	sys-process/procps
-	container-init? ( >=sys-process/tini-0.16.1[static] )
+	container-init? ( >=sys-process/tini-0.18.0[static] )
 	fish-completion? ( app-shells/fish )
 	zsh-completion? ( app-shells/zsh )
 "
 
 PATCHES=( "${FILESDIR}"/bsc1073877-docker-apparmor-add-signal.patch )
 
-QA_PRESTRIPPED="usr/bin/dockerd
-	usr/bin/docker"
-
-RESTRICT="installsources"
+QA_PRESTRIPPED="
+	usr/bin/dockerd
+	usr/bin/docker
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -167,20 +166,21 @@ pkg_setup() {
 }
 
 src_prepare() {
-	export BUILD_TIME CGO_CFLAGS CGO_LDFLAGS
-	BUILD_TIME=$(date -u -d "@$(date +%s)" --rfc-3339 ns 2> /dev/null | sed -e 's/ /T/')
+	export BUILD_TIME
+	BUILD_TIME="$(date -u -d "@$(date +%s)" --iso-8601=ns | sed -e 's/,/./')"
 	sed -i \
 		-e "/GitCommit/s|=.*|= \"${GIT_COMMIT}\"|" \
 		-e "/Version/s|=.*|= \"$(cat VERSION)\"|" \
 		-e "/BuildTime/s|=.*|= \"${BUILD_TIME}\"|" \
 		-e "/IAmStatic/s|=.*|= \"false\"|" \
-		./components/engine/hack/make/.go-autogen || die
+		components/engine/hack/make/.go-autogen || die
 
 	default
 }
 
 src_compile() {
 	export GOPATH="${G}"
+	local CGO_CFLAGS CGO_LDFLAGS
 
 	# setup CFLAGS and LDFLAGS for separate build target
 	# see https://github.com/tianon/docker-overlay/pull/10
@@ -205,11 +205,8 @@ src_compile() {
 		fi
 	done
 
-	use systemd && \
-		DOCKER_BUILDTAGS+=" journald journald_compat"
-
-	use btrfs || \
-		DOCKER_BUILDTAGS+=" btrfs_noversion"
+	use systemd && DOCKER_BUILDTAGS+=" journald journald_compat"
+	use btrfs || DOCKER_BUILDTAGS+=" btrfs_noversion"
 
 	# build daemon
 	pushd ../docker || die
@@ -246,14 +243,12 @@ src_compile() {
 	# build man pages
 	# see "components/cli/scripts/docs/generate-man.sh"
 	local PATH="${G}/bin:$PATH"
-	pushd "${S}"/vendor/github.com/cpuguy83/go-md2man || die
-	go install || die
-	popd || die
-
 	mkdir -p ./man/man1 || die
-	go build -o gen-manpages github.com/docker/cli/man || die
-	./gen-manpages --root . --target ./man/man1 || die
-	./man/md2man-all.sh -q || die
+	# Generate man pages from cobra commands
+	go build -o "${G}/bin/gen-manpages" github.com/docker/cli/man || die
+	gen-manpages --root . --target ./man/man1 > /dev/null || die
+	# Generate legacy pages from markdown
+	man/md2man-all.sh -q || die
 	popd || die
 }
 
@@ -287,7 +282,7 @@ src_install() {
 	pushd components/cli || die
 	dobin docker
 
-	doman man/man1/*
+	doman man/man*/*
 
 	use bash-completion && dobashcomp contrib/completion/bash/docker
 
@@ -309,14 +304,14 @@ src_install() {
 pkg_postinst() {
 	udev_reload
 
-	elog
+	einfo
 	elog "To use Docker, the Docker daemon must be running as root. To automatically"
 	elog "start the Docker daemon at boot, add Docker to the default runlevel:"
 	elog "  rc-update add docker default"
 	elog "Similarly for systemd:"
 	elog "  systemctl enable docker.service"
-	elog
+	elog ""
 	elog "To use Docker as a non-root user, add yourself to the 'docker' group:"
 	elog "  usermod -aG docker youruser"
-	elog
+	einfo
 }
