@@ -89,6 +89,7 @@ dev-db/**[influxdb](dev-db/influxdb)** `*` | Scalable datastore for metrics, eve
 dev-db/**[pgweb](dev-db/pgweb)** | Web-based PostgreSQL database browser written in Go
 dev-db/**[tidb](dev-db/tidb)** | A distributed NewSQL database compatible with MySQL protocol
 dev-go/**[depth](dev-go/depth)** | Retrieve and visualize Go source code dependency trees
+dev-go/**[go-md2man](dev-go/go-md2man)** `*` | A utility to convert markdown to man pages
 dev-libs/**[libbaseencode](dev-libs/libbaseencode)** | Library written in C for encoding and decoding data using base32 or base64
 dev-libs/**[libcotp](dev-libs/libcotp)** | C library that generates TOTP and HOTP
 dev-libs/**[libmesode](dev-libs/libmesode)** | Fork of libstrophe for use with Profanity XMPP Client
