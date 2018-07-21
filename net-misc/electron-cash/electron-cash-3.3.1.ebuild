@@ -56,7 +56,7 @@ DOCS=( AUTHORS README.rst RELEASE-NOTES )
 S="${WORKDIR}/${PN/on-cash/um}-${PV}"
 
 src_prepare() {
-	eapply "${FILESDIR}/${P}-no_user_root.patch"
+	eapply "${FILESDIR}/${PN}-3.3-no_user_root.patch"
 
 	if use !qt5; then
 		sed "s|'electroncash_gui.qt',||" -i setup.py || die
