@@ -268,7 +268,7 @@ inherit cargo systemd user
 DESCRIPTION="Fast, light, and robust Ethereum client"
 HOMEPAGE="https://parity.io"
 # shellcheck disable=SC2086
-SRC_URI="https://github.com/paritytech/${PN}/archive/v${PV/_*}.tar.gz -> ${P}.tar.gz
+SRC_URI="https://github.com/paritytech/${PN}-ethereum/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	$(cargo_crate_uris ${CRATES})"
 RESTRICT="mirror"
 
@@ -278,6 +278,8 @@ KEYWORDS="~amd64"
 IUSE="+daemon"
 
 DOCS=( {CHANGELOG,README,SECURITY}.md )
+
+S="${WORKDIR}/parity-ethereum-${PV}"
 
 pkg_setup() {
 	# shellcheck disable=SC2086
@@ -293,8 +295,6 @@ pkg_setup() {
 		enewuser parity -1 -1 /var/lib/parity parity
 	fi
 }
-
-S="${WORKDIR}/${P/_*}"
 
 # shellcheck disable=SC2046,SC2153
 src_compile() {

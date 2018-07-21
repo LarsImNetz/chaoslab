@@ -271,7 +271,7 @@ inherit cargo systemd user
 DESCRIPTION="Fast, light, and robust Ethereum client"
 HOMEPAGE="https://parity.io"
 # shellcheck disable=SC2086
-SRC_URI="https://github.com/paritytech/${PN}/archive/v${PV/_*}.tar.gz -> ${P}.tar.gz
+SRC_URI="https://github.com/paritytech/${PN}-ethereum/archive/v${PV/_*}.tar.gz -> ${P}.tar.gz
 	$(cargo_crate_uris ${CRATES})"
 RESTRICT="mirror"
 
