@@ -6,9 +6,9 @@
 		<name>Ian Moone</name>
 	</maintainer>
 	<upstream>
-		<remote-id type="github">paritytech/parity</remote-id>
-		<bugs-to>https://github.com/paritytech/parity/issues</bugs-to>
-		<doc>https://github.com/paritytech/parity/wiki</doc>
+		<remote-id type="github">paritytech/parity-ethereum</remote-id>
+		<bugs-to>https://github.com/paritytech/parity-ethereum/issues</bugs-to>
+		<doc>https://wiki.parity.io/</doc>
 	</upstream>
 	<longdescription lang="en">
 		Parity is an Ethereum client, written from the ground-up
