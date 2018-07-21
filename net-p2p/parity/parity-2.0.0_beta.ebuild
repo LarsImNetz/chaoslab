@@ -266,7 +266,7 @@ xml-rs-0.7.0
 xmltree-0.7.0
 "
 
-inherit cargo user
+inherit cargo systemd user
 
 DESCRIPTION="Fast, light, and robust Ethereum client"
 HOMEPAGE="https://parity.io"
@@ -281,6 +281,8 @@ KEYWORDS="~amd64"
 IUSE="+daemon"
 
 DOCS=( {CHANGELOG,README,SECURITY}.md )
+
+S="${WORKDIR}/parity-ethereum-${PV/_*}"
 
 pkg_setup() {
 	# shellcheck disable=SC2086
@@ -297,8 +299,6 @@ pkg_setup() {
 	fi
 }
 
-S="${WORKDIR}/parity-ethereum-${PV/_*}"
-
 # shellcheck disable=SC2046,SC2153
 src_compile() {
 	export CARGO_HOME="${ECARGO_HOME}"
@@ -313,16 +313,13 @@ src_install() {
 	dobin target/release/{ethkey,ethstore,parity{,-evm}}
 	einstalldocs
 
-	keepdir /var/lib/parity
-	fowners parity:parity /var/lib/parity
-	keepdir /var/log/parity
-	fowners parity:parity /var/log/parity
-
-	dodir /etc/parity
-	insinto /etc/parity
-	newins "${FILESDIR}"/config.toml config.toml
-
 	if use daemon; then
+		keepdir /var/log/parity
+		fowners parity:parity /var/log/parity
+
+		insinto /etc/parity
+		doins "${FILESDIR}"/config.toml
+
 		newinitd "${FILESDIR}/${PN}-2.initd" "${PN}"
 		systemd_dounit "scripts/${PN}.service"
 	fi
