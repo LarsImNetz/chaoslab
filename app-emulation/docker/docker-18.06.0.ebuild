@@ -27,7 +27,7 @@ CDEPEND="
 	seccomp? ( >=sys-libs/libseccomp-2.2.1 )
 "
 DEPEND="${CDEPEND}
-	dev-go/go-md2man
+	>=dev-go/go-md2man-1.0.8
 	btrfs? ( >=sys-fs/btrfs-progs-3.16.1 )
 "
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
