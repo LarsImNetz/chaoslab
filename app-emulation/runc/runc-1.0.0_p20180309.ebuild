@@ -21,7 +21,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64"
 IUSE="+ambient apparmor bash-completion hardened +seccomp"
 
-DEPEND="dev-go/go-md2man"
+DEPEND=">=dev-go/go-md2man-1.0.8"
 RDEPEND="
 	!app-emulation/docker-runc
 	apparmor? ( sys-libs/libapparmor )
