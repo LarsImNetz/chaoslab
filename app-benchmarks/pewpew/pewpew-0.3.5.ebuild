@@ -10,6 +10,7 @@ EGO_PN="github.com/bengadbois/${PN}"
 # github.com/mattn/go-colorable 167de6b
 # github.com/mattn/go-isatty 0360b2a
 EGO_VENDOR=(
+	"github.com/dustin/go-humanize 9f541cc"
 	"github.com/fatih/color 570b54c"
 	"github.com/fsnotify/fsnotify 629574c"
 	"github.com/hashicorp/hcl 68e816d"
@@ -81,7 +82,7 @@ src_install() {
 
 	if use examples; then
 		docinto examples
-		dodoc -r examples/config.{json,toml}
+		dodoc -r examples/*
 		docompress -x "/usr/share/doc/${PF}/examples"
 	fi
 }
