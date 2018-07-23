@@ -113,7 +113,7 @@ src_compile() {
 	if use build-images; then
 		local i img_arch=( x86_64 arm )
 		local osarch osarch_x86_64="amd64" osarch_arm="arm"
-		
+
 		# Build gox locally
 		go install ./vendor/github.com/mitchellh/gox || die
 
