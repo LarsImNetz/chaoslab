@@ -38,6 +38,8 @@ app-emulation/**[containerd](app-emulation/containerd)** `*` | A daemon to contr
 app-emulation/**[docker](app-emulation/docker)** `*` `**` | The core functions you need to create Docker images and run Docker containers
 app-emulation/**[docker-proxy](app-emulation/docker-proxy)** `*` | Docker container networking
 app-emulation/**[runc](app-emulation/runc)** `*` | CLI tool for spawning and running containers
+app-forensics/**[dirhunt](app-forensics/dirhunt)** | A web crawler optimized for search and analyze directories
+app-forensics/**[gitleaks](app-forensics/gitleaks)** | Audit git repos for secrets
 app-metrics/**[alertmanager](app-metrics/alertmanager)** `*` | Handles alerts sent by client applications such as the Prometheus
 app-metrics/**[apache_exporter](app-metrics/apache_exporter)** | Exports apache mod_status statistics via HTTP for Prometheus consumption
 app-metrics/**[blackbox_exporter](app-metrics/blackbox_exporter)** `*` | Prometheus exporter for blackbox probing via HTTP, HTTPS, DNS, TCP and ICMP
@@ -119,6 +121,7 @@ dev-util/**[drone](dev-util/drone)** `*` | Drone is a Continuous Delivery platfo
 dev-util/**[drone-cli](dev-util/drone-cli)** `*` | Command line client for the Drone continuous integration server
 dev-util/**[electron-bin](dev-util/electron-bin)** `*` | Cross platform application development framework based on web technologies
 dev-util/**[gitlab-runner](dev-util/gitlab-runner)** | The official GitLab Runner, written in Go
+dev-vcs/**[fac](dev-vcs/fac)** | Easy-to-use CUI for fixing git conflicts
 dev-vcs/**[gitkraken-bin](dev-vcs/gitkraken-bin)** | The intuitive, fast, and beautiful cross-platform Git client
 dev-vcs/**[hub](dev-vcs/hub)** | A command-line wrapper for git that makes you better at GitHub
 dev-vcs/**[lab](dev-vcs/lab)** | Lab wraps Git or Hub to easily interact with repositories on GitLab
@@ -190,6 +193,7 @@ www-apps/**[mattermost-server](www-apps/mattermost-server)** | Open source Slack
 www-apps/**[modoboa](www-apps/modoboa)** | A mail hosting and management platform with a modern and simplified Web UI
 www-apps/**[modoboa-dmarc](www-apps/modoboa-dmarc)** | A set of tools to use DMARC through Modoboa
 www-client/**[inox](www-client/inox)** | Chromium spin-off to enhance privacy by disabling data transmission to Google
+www-misc/**[httplab](www-misc/httplab)** | An interactive web server that let you inspect HTTP requests and forge responses
 www-misc/**[wuzz](www-misc/wuzz)** | Interactive cli tool for HTTP inspection
 www-plugins/**[browserpass](www-plugins/browserpass)** `*` | WebExtension host binary for app-admin/pass, a UNIX password manager
 www-servers/**[algernon](www-servers/algernon)** | Pure Go web server with Lua, Markdown, QUIC and Pongo2 support
