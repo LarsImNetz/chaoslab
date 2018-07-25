@@ -3,14 +3,15 @@
 
 EAPI=6
 
-GIT_COMMIT="7853e53" # Change this when you update the ebuild
+MY_PV="${PV/_/-}"
+GIT_COMMIT="f420578" # Change this when you update the ebuild
 EGO_PN="github.com/ipfs/${PN}"
 
 inherit bash-completion-r1 golang-vcs-snapshot systemd user
 
 DESCRIPTION="IPFS implementation written in Go"
 HOMEPAGE="https://ipfs.io"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://${EGO_PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="MIT"
@@ -34,7 +35,7 @@ pkg_setup() {
 		ewarn ""
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn ""
-		die "'network-sandbox' is enabled in FEATURES"
+		die "[network-sandbox] is enabled in FEATURES"
 	fi
 }
 
@@ -82,9 +83,9 @@ pkg_postinst() {
 		chmod 0700 "${EROOT%/}/var/lib/go-ipfs" || die
 	fi
 
-	einfo ""
+	einfo
 	elog "To be able to use the ipfs service you will need to create the ipfs repository"
 	elog "(e.g. su -s /bin/sh -c \"ipfs init -e\" go-ipfs)"
-	elog "or change IPFS_PATH of ${EROOT%/}/etc/conf.d/go-ipfs with another, with proper permissions."
-	einfo ""
+	elog "or change IPFS_PATH of ${EROOT%/}/etc/conf.d/go-ipfs with another permissions."
+	einfo
 }

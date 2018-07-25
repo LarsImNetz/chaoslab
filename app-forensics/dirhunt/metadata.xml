@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="pypi">dirhunt</remote-id>
+		<remote-id type="github">Nekmo/dirhunt</remote-id>
+		<bugs-to>https://github.com/Nekmo/dirhunt/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Dirhunt is a web crawler optimized for search and
+		analyze directories. This tool can find interesting
+		things if the server has the "index of" mode enabled.
+		Dirhunt is also useful if the directory listing is
+		not enabled. It detects directories with false 404
+		errors, directories where an empty index file has been
+		created to hide things and much more.
+	</longdescription>
+</pkgmetadata>
