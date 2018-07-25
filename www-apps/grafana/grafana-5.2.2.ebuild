@@ -4,7 +4,7 @@
 EAPI=6
 
 EGO_PN="github.com/${PN}/${PN}"
-GIT_COMMIT="2040f61" # Change this when you update the ebuild
+GIT_COMMIT="aeaf7b2" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
@@ -19,14 +19,18 @@ KEYWORDS="~amd64"
 IUSE="pie"
 
 RDEPEND="!www-apps/grafana-bin"
-DEPEND=">=net-libs/nodejs-6
-	sys-apps/yarn"
+DEPEND="
+	>=net-libs/nodejs-6
+	sys-apps/yarn
+"
 
 DOCS=( CHANGELOG.md README.md )
 
-QA_PRESTRIPPED="usr/bin/grafana-cli
+QA_PRESTRIPPED="
+	usr/bin/grafana-cli
 	usr/bin/grafana-server
-	usr/libexec/grafana/phantomjs"
+	usr/libexec/grafana/phantomjs
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -37,7 +41,7 @@ pkg_setup() {
 		ewarn ""
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn ""
-		die "'network-sandbox' is enabled in FEATURES"
+		die "[network-sandbox] is enabled in FEATURES"
 	fi
 
 	enewgroup grafana
