@@ -46,7 +46,6 @@ src_compile() {
 	go build "${mygoargs[@]}" || die
 }
 
-
 src_test() {
 	# shellcheck disable=SC2046
 	go test -race $(go list ./... | grep -v 'testhelper\|fac$') || die
@@ -55,6 +54,5 @@ src_test() {
 src_install() {
 	dobin fac
 	einstalldocs
-	
 	doman assets/doc/fac.1
 }
