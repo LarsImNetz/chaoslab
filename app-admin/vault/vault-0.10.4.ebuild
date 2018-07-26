@@ -4,7 +4,7 @@
 EAPI=6
 
 EGO_PN="github.com/hashicorp/${PN}"
-GIT_COMMIT="533003e" # Change this when you update the ebuild
+GIT_COMMIT="e21712a" # Change this when you update the ebuild
 
 inherit fcaps golang-vcs-snapshot systemd user
 
@@ -63,6 +63,6 @@ src_install() {
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}/${PN}.logrotate" "${PN}"
 
-	diropts  -m 0750 -o vault -g vault
+	diropts  -o vault -g vault -m 0750
 	keepdir /var/log/vault
 }
