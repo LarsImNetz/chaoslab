@@ -8,13 +8,13 @@ ChaosLab: Overlay for Gentoo Linux
 
 The scope of this overlay is to maintain ebuilds for packages related to secure
 communication, cryptography, cryptocurrency, server-side applications, and other
-things that I'm interested in. It also include full support for `libressl` USE
-flag and **OpenRC**.
+things that I'm interested in. You may visit [LISTING.md](LISTING.md) to see a
+list of available packages and their associated description.
 
-Unfortunately the support for **systemd** has been _less-than-stellar_ because
-I don't have any machines to test its unit files. If you have spare time and
-would like to improve it, please contribute. You may visit [LISTING.md](LISTING.md)
-to see a list of available packages and their associated description.
+The overlay also includes full support for `libressl` USE flag and **OpenRC**,
+but unfortunately the support for **systemd** has been _less-than-stellar_
+because I don't have any machines to test its unit files. If you have spare time
+and would like to improve it, please contribute.
 
 **If you find any bugs, please report them!** You can use the
 [GitLab issue tracker](https://gitlab.com/chaoslab/chaoslab-overlay/issues) or
