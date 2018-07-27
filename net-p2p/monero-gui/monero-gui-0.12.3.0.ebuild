@@ -5,7 +5,6 @@ EAPI=6
 
 inherit cmake-utils gnome2-utils qmake-utils systemd user
 
-MO_GUI_COMMIT="6206e3d"
 MO_PV="a486cae407b109a7a95060daa85e4efed2046c01" # tag v0.12.3.0
 MO_URI="https://github.com/monero-project/monero/archive/${MO_PV}.tar.gz"
 MO_P="monero-${MO_PV}"
@@ -32,45 +31,41 @@ RESTRICT="mirror"
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+daemon doc dot +gui libressl readline scanner simplewallet +system-unbound unwind utils"
-REQUIRED_USE="dot? ( doc ) scanner? ( gui )"
+IUSE="+daemon doc dot libressl readline scanner simplewallet +system-unbound unwind utils"
+REQUIRED_USE="dot? ( doc )"
 
 CDEPEND="
 	app-arch/xz-utils
 	dev-libs/boost:0=[nls,threads(+)]
 	dev-libs/expat
 	dev-libs/libsodium
+	dev-qt/qtdeclarative:5[xml]
+	dev-qt/qtquickcontrols:5
+	dev-qt/qtquickcontrols2:5
+	dev-qt/qtwidgets:5
 	net-libs/cppzmq
 	net-libs/ldns
 	net-libs/miniupnpc
 	sys-apps/pcsc-lite
-	gui? (
-		dev-qt/qtwidgets:5
-		dev-qt/qtdeclarative:5[xml]
-		dev-qt/qtquickcontrols:5
-		dev-qt/qtquickcontrols2:5
-		scanner? (
-			dev-qt/qtmultimedia:5[qml]
-			media-gfx/zbar
-		)
-	)
 	!libressl? ( dev-libs/openssl:0=[-bindist] )
 	libressl? ( dev-libs/libressl:0= )
 	readline? ( sys-libs/readline:0= )
+	scanner? (
+		dev-qt/qtmultimedia:5[qml]
+		media-gfx/zbar
+	)
 	system-unbound? ( net-dns/unbound[threads] )
 	unwind? ( sys-libs/libunwind )
 "
 DEPEND="${CDEPEND}
+	dev-qt/linguist-tools
 	doc? ( app-doc/doxygen[dot?] )
-	gui? ( dev-qt/linguist-tools )
 "
 RDEPEND="${CDEPEND}
 	daemon? ( !net-p2p/monero[daemon] )
 	simplewallet? ( !net-p2p/monero[simplewallet] )
 	utils? ( !net-p2p/monero[utils] )
 "
-
-PATCHES=( "${FILESDIR}/${PN}-0.12.1.0-fix_cmake.patch" )
 
 CMAKE_USE_DIR="${S}/monero"
 BUILD_DIR="${CMAKE_USE_DIR}/build/release"
@@ -96,26 +91,12 @@ src_prepare() {
 		mv "${WORKDIR}/${UNBOUND_P}" monero/external/unbound || die
 	fi
 
-	# shellcheck disable=SC2086
-	# Fix hardcoded translations path
-	sed -i 's:"/translations":"/../share/'${PN}'/translations":' \
-		TranslationManager.cpp || die "sed fix failed"
-
 	cmake-utils_src_prepare
 }
 
 src_configure() {
-	if use gui; then
-		echo "var GUI_VERSION = \"${MO_GUI_COMMIT}\"" > version.js || die
-		echo "var GUI_MONERO_VERSION = \"${MO_PV:0:7}\"" >> version.js || die
-
-		pushd "${S}"/build || die
-		eqmake5 ../monero-wallet-gui.pro \
-			"CONFIG+=release \
-			$(usex !scanner '' WITH_SCANNER) \
-			$(usex unwind '' libunwind_off)"
-		popd || die
-	fi
+	echo "var GUI_VERSION = \"v${PV}\"" > version.js || die
+	echo "var GUI_MONERO_VERSION = \"v${PV}\"" >> version.js || die
 
 	# shellcheck disable=SC2191,SC2207
 	local mycmakeargs=(
@@ -147,7 +128,17 @@ src_compile() {
 	fi
 
 	use utils && emake -C "${BUILD_DIR}"/src/blockchain_utilities
-	use gui && emake -C src/zxcvbn-c && emake -C build
+
+	# build zxcvbn (pass strength meter)
+	emake -C src/zxcvbn-c
+
+	pushd "${S}"/build || die
+	eqmake5 ../monero-wallet-gui.pro \
+		"CONFIG+=release \
+		$(usex !scanner '' WITH_SCANNER) \
+		$(usex unwind '' libunwind_off)"
+	emake
+	popd || die
 
 	if use doc; then
 		pushd "${CMAKE_USE_DIR}" || die
@@ -157,25 +148,18 @@ src_compile() {
 }
 
 src_install() {
-	if use gui; then
-		dobin build/release/bin/monero-wallet-gui
+	dobin build/release/bin/monero-wallet-gui
 
-		# Install icons and desktop entry
-		local X
-		for X in 16 24 32 48 64 96 128 256; do
-			newicon -s ${X} "images/appicons/${X}x${X}.png" monero.png
-		done
-		# shellcheck disable=SC1117
-		make_desktop_entry "monero-wallet-gui %u" \
-			"Monero Wallet" monero \
-			"Qt;Network;P2P;Office;Finance;" \
-			"MimeType=x-scheme-handler/monero;\nTerminal=false"
-
-		insinto "/usr/share/${PN}/translations"
-		for lang in build/translations/*.qm; do
-			doins "${lang}"
-		done
-	fi
+	# Install icons and desktop entry
+	local X
+	for X in 16 24 32 48 64 96 128 256; do
+		newicon -s ${X} "images/appicons/${X}x${X}.png" monero.png
+	done
+	# shellcheck disable=SC1117
+	make_desktop_entry "monero-wallet-gui %u" \
+		"Monero Wallet" monero \
+		"Qt;Network;P2P;Office;Finance;" \
+		"MimeType=x-scheme-handler/monero;\nTerminal=false"
 
 	pushd "${BUILD_DIR}"/bin || die
 	if use daemon; then
@@ -209,7 +193,7 @@ src_install() {
 }
 
 pkg_preinst() {
-	use gui && gnome2_icon_savelist
+	gnome2_icon_savelist
 }
 
 update_caches() {
@@ -218,7 +202,8 @@ update_caches() {
 }
 
 pkg_postinst() {
-	use gui && update_caches
+	update_caches
+
 	if use daemon; then
 		if [[ $(stat -c %a "${EROOT%/}/var/lib/monero") != "750" ]]; then
 			einfo "Fixing ${EROOT%/}/var/lib/monero permissions"
@@ -234,5 +219,5 @@ pkg_postinst() {
 }
 
 pkg_postrm() {
-	use gui && update_caches
+	update_caches
 }
