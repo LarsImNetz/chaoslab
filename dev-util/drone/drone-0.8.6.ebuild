@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="81103a9" # Change this when you update the ebuild
+GIT_COMMIT="c481507" # Change this when you update the ebuild
 EGO_PN="github.com/${PN}/${PN}"
 EGO_VENDOR=(
 	"github.com/drone/drone-ui e7597b5"
@@ -48,7 +48,7 @@ src_compile() {
 		-gcflags "-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
-	# set !cgo and omit pie for a static shim                                     
+	# set !cgo and omit pie for a static shim
 	local mygoargs2=(
 		-v -work -x
 		-asmflags "-trimpath=${S}"
