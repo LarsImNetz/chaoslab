@@ -140,7 +140,12 @@ src_compile() {
 	emake -C "${BUILD_DIR}"/external/db_drivers/liblmdb all install
 
 	use daemon && emake -C "${BUILD_DIR}"/src/daemon
-	use simplewallet && emake -C "${BUILD_DIR}"/src/simplewallet
+
+	if use simplewallet; then
+		emake -C "${BUILD_DIR}"/src/simplewallet
+		emake -C "${BUILD_DIR}"/src/wallet
+	fi
+
 	use utils && emake -C "${BUILD_DIR}"/src/blockchain_utilities
 	use gui && emake -C src/zxcvbn-c && emake -C build
 
@@ -186,7 +191,10 @@ src_install() {
 		keepdir /var/log/monero
 	fi
 
-	use simplewallet && dobin monero-wallet-cli
+	if use simplewallet; then
+		dobin monero-wallet-cli
+		dobin monero-wallet-rpc
+	fi
 
 	if use utils; then
 		dobin monero-blockchain-export
