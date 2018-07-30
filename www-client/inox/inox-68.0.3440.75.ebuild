@@ -55,7 +55,7 @@ COMMON_DEPEND="
 			media-video/ffmpeg[-samba]
 			>=net-fs/samba-4.5.10-r1[-debug(-)]
 		)
-		!~net-fs/samba-4.5.12
+		!=net-fs/samba-4.5.12-r0
 		media-libs/opus:=
 	)
 	sys-apps/dbus:=
@@ -84,7 +84,6 @@ COMMON_DEPEND="
 "
 # For nvidia-drivers blocker, see bug #413637 .
 RDEPEND="${COMMON_DEPEND}
-	!~www-client/chromium-9999
 	!<www-plugins/chrome-binary-plugins-57
 	x11-misc/xdg-utils
 	virtual/opengl
@@ -376,8 +375,8 @@ src_prepare() {
 	build/linux/unbundle/remove_bundled_libraries.py "${keeplibs[@]}" --do-remove || die
 
 	# Allow building against system libraries in official builds
-	sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
-		tools/generate_shim_headers/generate_shim_headers.py
+	#sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
+	#	tools/generate_shim_headers/generate_shim_headers.py || die
 }
 
 bootstrap_gn() {
@@ -486,7 +485,8 @@ src_configure() {
 	myconf_gn+=" use_system_harfbuzz=true"
 
 	# Inox
-	myconf_gn+=" is_official_build=true" # implies is_cfi=true on x86_64
+	#myconf_gn+=" is_official_build=true" # implies is_cfi=true on x86_64
+	myconf_gn+=" is_cfi=true use_gold=true use_lld=true"
 	myconf_gn+=" remove_webcore_debug_symbols=true"
 	myconf_gn+=" enable_hangout_services_extension=false"
 	myconf_gn+=" link_pulseaudio=$(usex pulseaudio true false)"
@@ -497,6 +497,7 @@ src_configure() {
 	myconf_gn+=" enable_reporting=false"
 	myconf_gn+=" safe_browsing_mode=0"
 
+	# Mimic exclude_unwind_tables=true
 	myconf_gn+=" symbol_level=0"
 	append-cflags -fno-unwind-tables -fno-asynchronous-unwind-tables
 	append-cxxflags -fno-unwind-tables -fno-asynchronous-unwind-tables
