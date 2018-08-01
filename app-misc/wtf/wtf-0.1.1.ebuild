@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="dca644d" # Change this when you update the ebuild
+GIT_COMMIT="759551f" # Change this when you update the ebuild
 EGO_PN="github.com/senorprogrammer/${PN}"
 
 inherit golang-vcs-snapshot
@@ -35,8 +35,9 @@ src_compile() {
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-o bin/wtf
 	)
-	go build "${mygoargs[@]}" -o bin/wtf || die
+	go build "${mygoargs[@]}" || die
 }
 
 src_install() {
