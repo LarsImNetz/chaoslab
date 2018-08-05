@@ -15,12 +15,18 @@
 			If IDN support is enabled, use net-dns/libidn2 instead
 			of net-dns/libidn
 		</flag>
+		<flag name="module-cookies">
+			Enable DNS Cookies module and related '+cookie' kdig option
+		</flag>
 		<flag name="module-dnsproxy">
 			Enable the tiny DNS proxy module
 		</flag>
 		<flag name="module-dnstap">
 			Include support for the dnstap binary log format
 			(http://dnstap.info/)
+		</flag>
+		<flag name="module-geoip">
+			Add geoip support for country and city lookup based on IPs
 		</flag>
 		<flag name="module-noudp">
 			Enable the module which can send empty truncated

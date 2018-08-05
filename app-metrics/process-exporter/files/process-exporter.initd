@@ -3,7 +3,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${PROCESS_EXPORTER_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/process-exporter/error.log}"
 
 name="${name:-Process Exporter}"
 command="/usr/bin/process-exporter"
@@ -16,8 +16,4 @@ start_stop_daemon_args="${SSD_OPTS}
 
 depend() {
 	need net
-}
-
-start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" "${PROCESS_EXPORTER_LOGDIR}"
 }
