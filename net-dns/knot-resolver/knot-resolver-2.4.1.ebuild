@@ -15,7 +15,9 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="dnstap go +pie test"
 
-RDEPEND=">=net-dns/knot-2.6.7
+RDEPEND="
+	<net-dns/knot-2.7.0
+	>=net-dns/knot-2.6.7
 	>=dev-libs/libuv-1.7.0
 	dev-lang/luajit:2
 	dev-lua/luasocket
@@ -26,10 +28,12 @@ RDEPEND=">=net-dns/knot-2.6.7
 		dev-libs/protobuf-c
 		dev-libs/fstrm
 	)
-	go? ( >=dev-lang/go-1.5.0 )"
+	go? ( >=dev-lang/go-1.5.0 )
+"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
-	test? ( dev-util/cmocka )"
+	test? ( dev-util/cmocka )
+"
 
 pkg_setup() {
 	enewgroup kresd
