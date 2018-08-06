@@ -2,9 +2,8 @@
 # run /usr/bin/blackbox_exporter -h to see available options
 
 BLACKBOX_EXPORTER_CONFIG="/etc/blackbox_exporter/blackbox.yml"
-BLACKBOX_EXPORTER_LOGDIR="/var/log/${RC_SVCNAME}"
 BLACKBOX_EXPORTER_OPTS=""
 
 # Logging
-#output_log="${BLACKBOX_EXPORTER_LOGDIR}/blackbox_exporter.log"
-#error_log="${BLACKBOX_EXPORTER_LOGDIR}/error.log"
+#output_log="/var/log/blackbox_exporter/blackbox_exporter.log"
+#error_log="/var/log/blackbox_exporter/error.log"
