@@ -42,11 +42,11 @@ pkg_setup() {
 
 		# shellcheck disable=SC2086
 		if has network-sandbox $FEATURES; then
-			ewarn ""
+			ewarn
 			ewarn "${CATEGORY}/${PN} requires internet access during"
 			ewarn "compile phase, you must disable 'network-sandbox'"
 			ewarn "in FEATURES (${EROOT%/}/etc/portage/make.conf)."
-			ewarn ""
+			ewarn
 			die "[network-sandbox] is enabled in FEATURES"
 		fi
 
@@ -54,33 +54,33 @@ pkg_setup() {
 		if getent group docker | grep &>/dev/null "\\bportage\\b"; then
 			# Is docker running?
 			if ! docker info &>/dev/null; then
-				ewarn ""
+				ewarn
 				ewarn "Although portage is a member of the 'docker' group,"
 				ewarn "docker must be running on your system during build time."
-				ewarn ""
+				ewarn
 				die "docker doesn't seems to be properly running"
 			fi
 		else
-			ewarn ""
+			ewarn
 			ewarn "In order for portage be able to build the docker images, you must"
 			ewarn "add portage to the 'docker' group (e.g. usermod -aG docker portage)."
 			ewarn "Also, docker must be running on your system during build time."
-			ewarn ""
+			ewarn
 			die "portage doesn't seems to be a member of the 'docker' group"
 		fi
 
 		# Is 'arm' and 'armeb' registered?
 		if [[ ! -e "/proc/sys/fs/binfmt_misc/arm" ]] && \
 			[[ ! -e "/proc/sys/fs/binfmt_misc/armeb" ]]; then
-			ewarn ""
+			ewarn
 			ewarn "You must enable support for ARM binaries through Qemu."
-			ewarn ""
+			ewarn
 			ewarn "Please execute (as root) the script described here:"
 			ewarn "https://${EGO_PN}/blob/v${PV}/docs/development/README.md#2-install-docker-engine"
-			ewarn ""
+			ewarn
 			ewarn "Note: You probably don't need to modprobe or mount binfmt_misc,"
 			ewarn "so comment out those parts in the aforementioned script."
-			ewarn ""
+			ewarn
 			die "arm and armeb doesn't seems to be registered"
 		fi
 	fi
@@ -178,9 +178,9 @@ pkg_postinst() {
 	fi
 
 	if use build-images; then
-		ewarn ""
+		ewarn
 		ewarn "As a security measure, you should remove portage from"
 		ewarn "the 'docker' group (e.g. gpasswd -d portage docker)."
-		ewarn ""
+		ewarn
 	fi
 }
