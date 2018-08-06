@@ -78,14 +78,14 @@ overview of ebuilds and unofficial repositories for Gentoo.
 ## Signature
 All commits and manifests on the first parent (at least) are signed by me.
 * Signing key: `0x5010AD684AB2A4EE` @ _your favorite public key server_
-* Fingerprint: `46D2 70C0 8BAA 08C2 3250  16B4 4B7D 696C 954F 8EDD`
+* Fingerprint: `46D2 70C0 8BAA 08C2 3250 16B4 4B7D 696C 954F 8EDD`
 
 You can easily do full-tree verification
 ([GLEP-74](https://www.gentoo.org/glep/glep-0074.html)) with
 [app-portage/gemato](https://packages.gentoo.org/packages/app-portage/gemato):
 
 ```shell
-find */* -maxdepth 2 -type d ! -path 'profiles*' -exec gemato verify -k -s {} +
+find */* -maxdepth 2 -type d ! -path 'profiles*' ! -path 'metadata*' -exec gemato verify -k -s {} +
 ```
 
 ## Want to buy me a cup of coffee?

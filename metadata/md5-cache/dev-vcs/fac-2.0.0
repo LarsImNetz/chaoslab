@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install test unpack
+DEPEND=>=dev-lang/go-1.9
+DESCRIPTION=Easy-to-use CUI for fixing git conflicts
+EAPI=6
+HOMEPAGE=https://github.com/mkchoi212/fac
+IUSE=pie
+KEYWORDS=~amd64 ~x86
+LICENSE=MIT
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/mkchoi212/fac/archive/v2.0.0.tar.gz -> fac-2.0.0.tar.gz https://github.com/alecthomas/chroma/archive/3020e2e.tar.gz -> github.com-alecthomas-chroma-3020e2e.tar.gz https://github.com/danwakefield/fnmatch/archive/cbb64ac.tar.gz -> github.com-danwakefield-fnmatch-cbb64ac.tar.gz https://github.com/dlclark/regexp2/archive/487489b.tar.gz -> github.com-dlclark-regexp2-487489b.tar.gz https://github.com/jroimartin/gocui/archive/c055c87.tar.gz -> github.com-jroimartin-gocui-c055c87.tar.gz https://github.com/mattn/go-runewidth/archive/9e777a8.tar.gz -> github.com-mattn-go-runewidth-9e777a8.tar.gz https://github.com/nsf/termbox-go/archive/e2050e4.tar.gz -> github.com-nsf-termbox-go-e2050e4.tar.gz https://github.com/go-yaml/yaml/archive/5420a8b.tar.gz -> github.com-go-yaml-yaml-5420a8b.tar.gz
+_eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536
+_md5_=45849280f3eba064336efb683319a513

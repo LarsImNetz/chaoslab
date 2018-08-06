@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile configure install postinst setup
+DEPEND=>=net-libs/gnutls-3.5:= >=dev-db/lmdb-0.9.18 >=dev-libs/userspace-rcu-0.9.1 dev-libs/libedit caps? ( >=sys-libs/libcap-ng-0.7.8 ) daemon? ( dev-python/lmdb ) module-dnstap? ( dev-libs/fstrm dev-libs/protobuf-c ) idn? ( !libidn2? ( net-dns/libidn:0 ) libidn2? ( >=net-dns/libidn2-2 ) ) virtual/pkgconfig doc? ( dev-python/sphinx ) virtual/pkgconfig
+DESCRIPTION=High-performance authoritative-only DNS server
+EAPI=6
+HOMEPAGE=https://www.knot-dns.cz
+IUSE=caps +daemon doc +fastparser idn libidn2 static-libs systemd +utils +module-dnsproxy module-dnstap +module-noudp +module-onlinesign module-rosedb +module-rrl +module-stats +module-synthrecord +module-whoami
+KEYWORDS=~amd64 ~x86
+LICENSE=GPL-3
+RDEPEND=>=net-libs/gnutls-3.5:= >=dev-db/lmdb-0.9.18 >=dev-libs/userspace-rcu-0.9.1 dev-libs/libedit caps? ( >=sys-libs/libcap-ng-0.7.8 ) daemon? ( dev-python/lmdb ) module-dnstap? ( dev-libs/fstrm dev-libs/protobuf-c ) idn? ( !libidn2? ( net-dns/libidn:0 ) libidn2? ( >=net-dns/libidn2-2 ) ) virtual/tmpfiles
+REQUIRED_USE=caps? ( daemon ) idn? ( daemon ) systemd? ( daemon ) module-dnsproxy? ( daemon ) module-dnstap? ( daemon ) module-noudp? ( daemon ) module-onlinesign? ( daemon ) module-rosedb? ( daemon ) module-rrl? ( daemon ) module-stats? ( daemon ) module-synthrecord? ( daemon ) module-whoami? ( daemon )
+SLOT=0
+SRC_URI=https://secure.nic.cz/files/knot-dns/knot-2.6.8.tar.xz
+_eclasses_=multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	04e50685fbf3d89e5c67ac6a385dd595	tmpfiles	d7dc36a24e327d58f0728badddca6448	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607	user	8bc2845510e2109af75e3eeac607ec81
+_md5_=3f8436d00c9539663358c90678a02e63

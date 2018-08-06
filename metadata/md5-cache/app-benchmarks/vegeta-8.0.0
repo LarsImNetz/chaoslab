@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile install test unpack
+DEPEND=>=dev-lang/go-1.9
+DESCRIPTION=HTTP load testing tool and library. It's over 9000!
+EAPI=6
+HOMEPAGE=https://github.com/tsenart/vegeta
+KEYWORDS=~amd64
+LICENSE=MIT
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/tsenart/vegeta/archive/v8.0.0.tar.gz -> vegeta-8.0.0.tar.gz https://github.com/lucasb-eyer/go-colorful/archive/8abd3be.tar.gz -> github.com-lucasb-eyer-go-colorful-8abd3be.tar.gz https://github.com/streadway/quantile/archive/b0c5887.tar.gz -> github.com-streadway-quantile-b0c5887.tar.gz https://github.com/golang/net/archive/2491c5d.tar.gz -> github.com-golang-net-2491c5d.tar.gz https://github.com/golang/text/archive/f21a4df.tar.gz -> github.com-golang-text-f21a4df.tar.gz
+_eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536
+_md5_=0c96028dbcce5a1058acd1d532b8e259

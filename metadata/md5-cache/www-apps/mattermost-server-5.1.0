@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install prepare setup unpack
+DEPEND=>=net-libs/nodejs-6.0.0 sys-apps/yarn virtual/pkgconfig
+DESCRIPTION=Open source Slack-alternative in Golang and React
+EAPI=6
+HOMEPAGE=https://mattermost.com
+IUSE=pie
+KEYWORDS=~amd64
+LICENSE=AGPL-3
+RESTRICT=mirror test
+SLOT=0
+SRC_URI=https://github.com/mattermost/mattermost-server/archive/v5.1.0.tar.gz -> mattermost-server-5.1.0.tar.gz https://github.com/mattermost/mattermost-webapp/archive/v5.1.0.tar.gz -> mattermost-webapp-5.1.0.tar.gz
+_eclasses_=multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	04e50685fbf3d89e5c67ac6a385dd595	toolchain-funcs	1e35303c63cd707f6c3422b4493d5607	user	8bc2845510e2109af75e3eeac607ec81
+_md5_=7a5c9dd87ad530a7af3a6e92263ddd9f
