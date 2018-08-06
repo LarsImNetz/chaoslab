@@ -3,7 +3,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${GRAPHITE_EXPORTER_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/graphite_exporter/error.log}"
 
 name="${name:-Graphite Exporter}"
 command="/usr/bin/graphite_exporter"
@@ -16,8 +16,4 @@ start_stop_daemon_args="${SSD_OPTS}
 
 depend() {
 	need net
-}
-
-start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" "${GRAPHITE_EXPORTER_LOGDIR}"
 }
