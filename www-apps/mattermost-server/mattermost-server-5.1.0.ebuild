@@ -24,8 +24,8 @@ KEYWORDS="~amd64"
 IUSE="pie"
 
 DEPEND="
+	>=dev-lang/go-1.10.1
 	>=net-libs/nodejs-6.0.0
-	sys-apps/yarn
 "
 
 QA_PRESTRIPPED="
@@ -39,9 +39,9 @@ S="${G}/src/${EGO_PN}"
 pkg_setup() {
 	# shellcheck disable=SC2086
 	if has network-sandbox $FEATURES; then
-		ewarn ""
+		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn ""
+		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
 
