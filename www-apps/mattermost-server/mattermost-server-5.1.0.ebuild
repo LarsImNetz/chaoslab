@@ -28,7 +28,10 @@ DEPEND="
 	sys-apps/yarn
 "
 
-QA_PRESTRIPPED="usr/libexec/mattermost/bin/platform"
+QA_PRESTRIPPED="
+	usr/bin/mattermost
+	usr/libexec/mattermost/bin/platform
+"
 
 G="${WORKDIR}"
 S="${G}/src/${EGO_PN}"
@@ -56,8 +59,7 @@ src_unpack() {
 
 src_prepare() {
 	# shellcheck disable=SC2086
-	# Disable developer settings, fix path,
-	# set to listen localhost and disable
+	# Disable developer settings, fix path, set to listen localhost and disable
 	# diagnostics (call home) by default.
 	sed -i \
 		-e 's|"ListenAddress": ":8065"|"ListenAddress": "127.0.0.1:8065"|g' \
@@ -83,6 +85,7 @@ src_prepare() {
 
 src_compile() {
 	export GOPATH="${G}"
+	export GOBIN="${S}"
 	local myldflags=( -s -w
 		-X "${EGO_PN}/model.BuildNumber=${PV}"
 		-X "'${EGO_PN}/model.BuildDate=$(date -u)'"
@@ -96,15 +99,16 @@ src_compile() {
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
-		-o ./platform
 	)
 
 	emake -C client build
 
-	go build "${mygoargs[@]}" || die
+	go install "${mygoargs[@]}" ./cmd/{mattermost,platform} || die
 }
 
 src_install() {
+	dobin mattermost
+
 	exeinto /usr/libexec/mattermost/bin
 	doexe platform
 
