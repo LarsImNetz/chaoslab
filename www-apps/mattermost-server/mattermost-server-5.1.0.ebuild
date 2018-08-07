@@ -10,7 +10,7 @@ EGO_PN="github.com/mattermost/${PN}"
 MMWAPP_PN="mattermost-webapp"
 MMWAPP_P="${MMWAPP_PN}-${PV}"
 
-DESCRIPTION="Open source Slack-alternative in Golang and React"
+DESCRIPTION="Open source Slack-alternative in Golang and React (Team Edition)"
 HOMEPAGE="https://mattermost.com"
 SRC_URI="
 	https://github.com/mattermost/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
