@@ -3,20 +3,24 @@
 
 EAPI=6
 
+# TODO: Add an init script and systemd unit file
+
+GIT_COMMIT="b13bc08" # Change this when you update the ebuild
 EGO_PN="github.com/pingcap/tidb"
-GIT_COMMIT="43ab800" # Change this when you update the ebuild
+EGO_VENDOR=( "github.com/coreos/gofail bdde102" )
 
 inherit golang-vcs-snapshot
 
 DESCRIPTION="A distributed NewSQL database compatible with MySQL protocol"
 HOMEPAGE="https://pingcap.com/"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
+	${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="pie"
+IUSE="pie test"
 
 DOCS=( {CHANGELOG,README,docs/{QUICKSTART,ROADMAP}}.md )
 QA_PRESTRIPPED="usr/bin/tidb-server"
@@ -25,9 +29,13 @@ G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_prepare() {
-	# The tarball isn't a proper git repository,
-	# so let's silence the "fatal" message.
-	sed -i -e '/LDFLAGS +/d' Makefile || die
+	# The tarball isn't a proper git repository, so let's silence
+	# the "fatal" error message. Also remove references to
+	# "go get github.com/coreos/gofail"
+	sed -i \
+		-e '/LDFLAGS +/d' \
+		-e '/coreos\/gofail/d' \
+		Makefile || die
 
 	default
 }
@@ -49,12 +57,19 @@ src_compile() {
 		-ldflags "${myldflags[*]}"
 		-o ./bin/tidb-server
 	)
+	
 	emake parser
+
 	go build "${mygoargs[@]}" ./tidb-server || die
+
+	if use test; then
+		go install ./vendor/github.com/coreos/gofail || die
+	fi
 }
 
 src_test() {
-	go test -v -p 3 -cover ./... || die
+	local PATH="${S}/bin:$PATH"
+	emake gotest
 }
 
 src_install() {
@@ -63,7 +78,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	einfo ""
+	einfo
 	elog "See https://pingcap.com/docs/ for configuration guide."
-	einfo ""
+	einfo
 }
