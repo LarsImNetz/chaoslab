@@ -57,13 +57,10 @@ src_install() {
 	fperms 600 /etc/mattermost/config.json
 
 	insinto /usr/share/mattermost
-	doins -r {fonts,i18n,templates}
+	doins -r {client,fonts,i18n,templates}
 
 	insinto /usr/share/mattermost/config
 	doins config/timezones.json
-
-	insinto /usr/share/mattermost/client
-	doins -r client/*
 
 	diropts -o mattermost -g mattermost -m 0750
 	keepdir /var/{lib,log}/mattermost

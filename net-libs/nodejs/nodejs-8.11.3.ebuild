@@ -22,6 +22,7 @@ REQUIRED_USE="
 	inspector? ( icu ssl )
 	libressl? ( bundled-ssl )
 	bundled-ssl? ( ssl )
+	npm? ( ssl )
 "
 
 RDEPEND="
