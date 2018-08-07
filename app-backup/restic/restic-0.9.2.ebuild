@@ -15,10 +15,12 @@ RESTRICT="mirror"
 LICENSE="BSD-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="bash-completion doc pie zsh-completion"
+IUSE="doc pie zsh-completion"
 
-RDEPEND="sys-fs/fuse:0
-	zsh-completion? ( app-shells/zsh )"
+RDEPEND="
+	sys-fs/fuse:0
+	zsh-completion? ( app-shells/zsh )
+"
 DEPEND="doc? ( dev-python/sphinx )"
 
 DOCS=( README.rst )
@@ -45,8 +47,7 @@ src_compile() {
 }
 
 src_test() {
-	go test -timeout 30m -v -work -x \
-		./cmd/... ./internal/... || die
+	go test -v ./cmd/... ./internal/... || die
 }
 
 src_install() {
@@ -54,9 +55,7 @@ src_install() {
 	einstalldocs
 
 	doman doc/man/*.1
-
-	use bash-completion && \
-		newbashcomp doc/bash-completion.sh restic
+	newbashcomp doc/bash-completion.sh restic
 
 	if use zsh-completion; then
 		insinto /usr/share/zsh/site-functions
