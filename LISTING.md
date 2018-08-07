@@ -188,7 +188,8 @@ www-apps/**[gotty](www-apps/gotty)** | A simple command line tool that turns you
 www-apps/**[grafana](www-apps/grafana)** `*` | Grafana is an open source metric analytics & visualization suite
 www-apps/**[hiawatha-monitor](www-apps/hiawatha-monitor)** `*` | Monitoring application for www-servers/hiawatha
 www-apps/**[hugo](www-apps/hugo)** `*` | A static HTML and CSS website generator written in Go
-www-apps/**[mattermost-server](www-apps/mattermost-server)** | Open source Slack-alternative in Golang and React
+www-apps/**[mattermost-server](www-apps/mattermost-server)** | Open source Slack-alternative in Golang and React (Team Edition)
+www-apps/**[mattermost-server-ee](www-apps/mattermost-server-ee)** | Open source Slack-alternative in Golang and React (Enterprise Edition)
 www-apps/**[modoboa](www-apps/modoboa)** | A mail hosting and management platform with a modern and simplified Web UI
 www-apps/**[modoboa-dmarc](www-apps/modoboa-dmarc)** | A set of tools to use DMARC through Modoboa
 www-client/**[inox](www-client/inox)** | Chromium spin-off to enhance privacy by disabling data transmission to Google

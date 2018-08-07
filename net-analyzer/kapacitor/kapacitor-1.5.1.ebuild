@@ -4,7 +4,7 @@
 EAPI=6
 
 MY_PV="${PV/_/-}"
-GIT_COMMIT="dde6b6a" # Change this when you update the ebuild
+GIT_COMMIT="89828ff" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/kapacitor"
 
 inherit bash-completion-r1 golang-vcs-snapshot systemd user
@@ -17,10 +17,12 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="bash-completion examples pie"
+IUSE="examples pie"
 
-QA_PRESTRIPPED="usr/bin/kapacitor
-	usr/bin/kapacitord"
+QA_PRESTRIPPED="
+	usr/bin/kapacitor
+	usr/bin/kapacitord
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -65,9 +67,7 @@ src_install() {
 	insinto /etc/logrotate.d
 	doins etc/logrotate.d/kapacitor
 
-	if use bash-completion; then
-		dobashcomp usr/share/bash-completion/completions/kapacitor
-	fi
+	dobashcomp usr/share/bash-completion/completions/kapacitor
 
 	if use examples; then
 		docinto examples

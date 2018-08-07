@@ -10,7 +10,7 @@ EGO_PN="github.com/mattermost/${PN}"
 MMWAPP_PN="mattermost-webapp"
 MMWAPP_P="${MMWAPP_PN}-${PV}"
 
-DESCRIPTION="Open source Slack-alternative in Golang and React"
+DESCRIPTION="Open source Slack-alternative in Golang and React (Team Edition)"
 HOMEPAGE="https://mattermost.com"
 SRC_URI="https://github.com/mattermost/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	https://github.com/mattermost/${MMWAPP_PN}/archive/v${PV}.tar.gz -> ${MMWAPP_P}.tar.gz"
@@ -25,9 +25,10 @@ DEPEND="
 	>=dev-lang/go-1.10.1
 	>=net-libs/nodejs-6.0.0
 "
+RDEPEND="!www-apps/mattermost-server-ee"
 
 QA_PRESTRIPPED="
-	usr/bin/mattermost
+	usr/libexec/mattermost/bin/mattermost
 	usr/libexec/mattermost/bin/platform
 "
 
@@ -105,16 +106,14 @@ src_compile() {
 }
 
 src_install() {
-	dobin mattermost
-
 	exeinto /usr/libexec/mattermost/bin
-	doexe platform
+	doexe mattermost platform
 
 	newinitd "${FILESDIR}/${PN}.initd-r1" "${PN}"
 	systemd_newunit "${FILESDIR}/${PN}.service-r1" "${PN}.service"
 
 	insinto /etc/mattermost
-	doins config/README.md
+	doins config/{README.md,default.json}
 	newins config/default.json config.json
 	fowners mattermost:mattermost /etc/mattermost/config.json
 	fperms 600 /etc/mattermost/config.json
@@ -131,6 +130,7 @@ src_install() {
 	diropts -o mattermost -g mattermost -m 0750
 	keepdir /var/{lib,log}/mattermost
 
+	dosym ../libexec/mattermost/bin/mattermost /usr/bin/mattermost
 	dosym ../../../../etc/mattermost/config.json /usr/libexec/mattermost/config/config.json
 	dosym ../../../share/mattermost/config/timezones.json /usr/libexec/mattermost/config/timezones.json
 	dosym ../../share/mattermost/fonts /usr/libexec/mattermost/fonts
