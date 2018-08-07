@@ -47,8 +47,8 @@ src_install() {
 	doexe bin/{mattermost,platform}
 	einstalldocs
 
-	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
-	systemd_newunit "${FILESDIR}/${PN}.service" "${PN}.service"
+	newinitd "${FILESDIR}/${PN}.initd" "${PN/-ee}"
+	systemd_newunit "${FILESDIR}/${PN}.service" "${PN/-ee}.service"
 
 	insinto /etc/mattermost
 	doins config/{README.md,default.json}
