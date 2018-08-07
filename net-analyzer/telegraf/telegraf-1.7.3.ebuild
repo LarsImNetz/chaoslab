@@ -3,20 +3,15 @@
 
 EAPI=6
 
-GIT_COMMIT="c6feb05" # Change this when you update the ebuild
+GIT_COMMIT="4dc29d0" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Godeps
 # Deps that are not needed:
-# github.com/go-logfmt/logfmt 390ab79
 # github.com/go-ini/ini 9144852
-# github.com/gogo/protobuf 7b6c639
 # github.com/go-ole/go-ole be49f7c
-# github.com/google/go-cmp f94e52c
 # github.com/fsnotify/fsnotify c282820
 # github.com/jmespath/go-jmespath bd40a43
 # github.com/Microsoft/go-winio ce2922f
-# github.com/opentracing-contrib/go-observer a52f234
-# github.com/opentracing/opentracing-go 06f47b4
 # github.com/pmezard/go-difflib 792786c
 # github.com/shirou/w32 3c9377f
 # github.com/StackExchange/wmi f3e2bae
@@ -43,10 +38,13 @@ EGO_VENDOR=(
 	"github.com/eapache/go-xerial-snappy bb955e0"
 	"github.com/eapache/queue 44cc805"
 	"github.com/eclipse/paho.mqtt.golang aff1577"
+	"github.com/go-logfmt/logfmt 390ab79"
 	"github.com/go-sql-driver/mysql 2e00b5c"
 	"github.com/gobwas/glob bea32b9"
+	"github.com/gogo/protobuf 7b6c639"
 	"github.com/golang/protobuf 8ee7999"
 	"github.com/golang/snappy 7db9049"
+	"github.com/google/go-cmp f94e52c"
 	"github.com/gorilla/mux 53c1911"
 	"github.com/go-redis/redis 73b7059"
 	"github.com/go-sql-driver/mysql 2e00b5c"
@@ -71,6 +69,8 @@ EGO_VENDOR=(
 	"github.com/nats-io/nuid 289cccf"
 	"github.com/nsqio/go-nsq eee57a3"
 	"github.com/opencontainers/runc 89ab7f2"
+	"github.com/opentracing-contrib/go-observer a52f234"
+	"github.com/opentracing/opentracing-go 06f47b4"
 	"github.com/openzipkin/zipkin-go-opentracing 1cafbdf"
 	"github.com/pierrec/lz4 5c9560b"
 	"github.com/pierrec/xxHash 5a00444"
@@ -117,7 +117,7 @@ DESCRIPTION="An agent for collecting, processing, aggregating, and writing metri
 HOMEPAGE="https://influxdata.com"
 SRC_URI="https://${EGO_PN}/archive/${MY_PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
-RESTRICT="mirror test"
+RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
@@ -142,6 +142,16 @@ pkg_setup() {
 
 	enewgroup telegraf
 	enewuser telegraf -1 -1 -1 telegraf
+}
+
+src_prepare() {
+	# Remove tests that won't work inside portage environment
+	if use test; then
+		rm plugins/inputs/socket_listener/socket_listener_test.go || die
+		rm plugins/outputs/socket_writer/socket_writer_test.go || die
+	fi
+
+	default
 }
 
 src_compile() {
