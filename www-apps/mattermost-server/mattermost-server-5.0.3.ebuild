@@ -5,7 +5,7 @@ EAPI=6
 
 inherit systemd user
 
-GIT_COMMIT="6b04b98" # Change this when you update the ebuild
+GIT_COMMIT="d153415" # Change this when you update the ebuild
 EGO_PN="github.com/mattermost/${PN}"
 MMWAPP_PN="mattermost-webapp"
 MMWAPP_P="${MMWAPP_PN}-${PV}"

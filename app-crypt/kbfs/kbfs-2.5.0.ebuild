@@ -3,7 +3,7 @@
 
 EAPI=6
 
-EGO_PN="github.com/keybase/kbfs"
+EGO_PN="github.com/keybase/${PN}"
 
 inherit golang-vcs-snapshot
 
@@ -17,15 +17,19 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="git pie"
 
-RDEPEND="app-crypt/gnupg
-	sys-fs/fuse"
-
-QA_PRESTRIPPED="usr/bin/kbfsfuse
-	usr/bin/kbfstool
-	usr/bin/git-remote-keybase"
+RDEPEND="
+	app-crypt/gnupg
+	sys-fs/fuse
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
+
+QA_PRESTRIPPED="
+	usr/bin/kbfsfuse
+	usr/bin/kbfstool
+	usr/bin/git-remote-keybase
+"
 
 src_compile() {
 	export GOPATH="${G}"
