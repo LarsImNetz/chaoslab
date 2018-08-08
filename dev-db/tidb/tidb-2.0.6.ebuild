@@ -57,7 +57,7 @@ src_compile() {
 		-ldflags "${myldflags[*]}"
 		-o ./bin/tidb-server
 	)
-	
+
 	emake parser
 
 	go build "${mygoargs[@]}" ./tidb-server || die
