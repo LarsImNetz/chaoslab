@@ -5,22 +5,21 @@ EAPI=6
 
 EGO_PN="github.com/ncabatoff/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
-# Deps that are not needed:
-# github.com/google/go-cmp
-# github.com/kr/pretty
-# github.com/kr/text
-# gopkg.in/check.v1
 EGO_VENDOR=(
 	"github.com/beorn7/perks 3a771d9"
-	"github.com/fatih/structs a720dfa"
 	"github.com/golang/protobuf b4deda0"
+	"github.com/google/go-cmp 3af367b"
+	"github.com/kr/pretty 73f6ac0"
+	"github.com/kr/text e2ffdb"
 	"github.com/matttproud/golang_protobuf_extensions c12348c"
 	"github.com/ncabatoff/fakescraper 1593842"
-	"github.com/ncabatoff/procfs a06a878"
+	"github.com/ncabatoff/go-seq b08ef85"
+	"github.com/ncabatoff/procfs d7a0c83"
 	"github.com/prometheus/client_golang c5b7fcc"
 	"github.com/prometheus/client_model 5c3871d"
 	"github.com/prometheus/common c7de230"
 	"github.com/prometheus/procfs 05ee40e"
+	"gopkg.in/check.v1 788fd78 github.com/go-check/check"
 	"gopkg.in/yaml.v2 5420a8b github.com/go-yaml/yaml"
 )
 
@@ -30,7 +29,7 @@ DESCRIPTION="A Prometheus exporter that mines /proc to report on selected proces
 HOMEPAGE="https://github.com/ncabatoff/process-exporter"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
-RESTRICT="mirror test"
+RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
