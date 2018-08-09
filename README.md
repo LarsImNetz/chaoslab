@@ -85,7 +85,7 @@ You can easily do full-tree verification
 [app-portage/gemato](https://packages.gentoo.org/packages/app-portage/gemato):
 
 ```shell
-find */* -maxdepth 2 -type d ! -path 'profiles*' ! -path 'metadata*' -exec gemato verify -k -s {} +
+find */* -maxdepth 2 -type d ! -path 'profiles*' -exec gemato verify -k -s {} +
 ```
 
 ## Want to buy me a cup of coffee?
