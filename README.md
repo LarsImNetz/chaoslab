@@ -2,7 +2,7 @@ ChaosLab: Overlay for Gentoo Linux
 ----------------------------------
 
 [![packages 196](https://img.shields.io/badge/packages-196-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
-[![ebuilds 275](https://img.shields.io/badge/ebuilds-275-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![ebuilds 276](https://img.shields.io/badge/ebuilds-276-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
 
@@ -85,7 +85,7 @@ You can easily do full-tree verification
 [app-portage/gemato](https://packages.gentoo.org/packages/app-portage/gemato):
 
 ```shell
-find */* -maxdepth 2 -type d ! -path 'profiles*' ! -path 'metadata*' -exec gemato verify -k -s {} +
+find */* -maxdepth 2 -type d ! -path 'profiles*' -exec gemato verify -k -s {} +
 ```
 
 ## Want to buy me a cup of coffee?
