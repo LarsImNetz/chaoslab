@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install test unpack
+DEPEND=>=dev-lang/go-1.9
+DESCRIPTION=An interactive web server that let you inspect HTTP requests and forge responses
+EAPI=6
+HOMEPAGE=https://github.com/gchaincl/httplab
+IUSE=pie
+KEYWORDS=~amd64 ~x86
+LICENSE=MIT
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/gchaincl/httplab/archive/v0.4.0.tar.gz -> httplab-0.4.0.tar.gz
+_eclasses_=golang-base	d4e3a3f895016e5c9d7afb1a33e7cf3c	golang-vcs-snapshot	913580335becddd3ebecefe852e47536
+_md5_=1ae3736f6b316ff8ed1b1273c3e76fee
