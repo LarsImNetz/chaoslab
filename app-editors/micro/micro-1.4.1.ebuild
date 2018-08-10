@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="af520cf" # Change this when you update the ebuild
+GIT_COMMIT="1856891" # Change this when you update the ebuild
 EGO_PN="github.com/zyedidia/micro"
 # Note: Keep EGO_VENDOR in sync with cmd/micro/vendor
 # Deps that are not needed:
@@ -14,13 +14,14 @@ EGO_VENDOR=(
 	"github.com/flynn/json5 7620272"
 	"github.com/gdamore/encoding b23993c"
 	"github.com/go-errors/errors 8fa88b0"
+	"github.com/jtolds/gls 77f1821"
 	"github.com/lucasb-eyer/go-colorful c900de9"
 	"github.com/mattn/go-isatty fc9e8d8"
 	"github.com/mattn/go-runewidth 97311d9"
 	"github.com/mitchellh/go-homedir b8bc1bf"
 	"github.com/sergi/go-diff feef008"
 	"github.com/yuin/gopher-lua b402f31"
-	"github.com/zyedidia/clipboard adacf41"
+	"github.com/zyedidia/clipboard 4611e80"
 	"github.com/zyedidia/glob dd4023a"
 	"github.com/zyedidia/pty 3036466"
 	"github.com/zyedidia/tcell 208b6e8"
