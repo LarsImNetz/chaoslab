@@ -4,7 +4,7 @@
 EAPI=6
 
 EGO_PN="code.gitea.io/gitea"
-EGO_VENDOR=( "github.com/kevinburke/go-bindata 2197b05" )
+EGO_VENDOR=( "github.com/kevinburke/go-bindata 06af60a" )
 
 inherit golang-vcs-snapshot systemd user
 
@@ -41,8 +41,8 @@ pkg_setup() {
 
 src_prepare() {
 	# The tarball isn't a proper git repository,
-	# so let's silence the "fatal" message.
-	sed -i "/LDFLAGS :=/d" Makefile || die
+	# so let's silence the "fatal" error message.
+	sed -i "/GITEA_VERSION :=/d" Makefile || die
 
 	sed -i \
 		-e "s:^STATIC_ROOT_PATH =:STATIC_ROOT_PATH = ${EPREFIX}/usr/share/gitea:" \
