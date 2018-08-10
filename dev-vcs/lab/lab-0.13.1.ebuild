@@ -4,7 +4,7 @@
 EAPI=6
 
 # Change this when you update the ebuild:
-GIT_COMMIT="64b6bfb10d372f799b7e0dacb241849d8847eda2"
+GIT_COMMIT="85d31740b5f9e965c96e7d0aab9be3116f8d3589"
 EGO_PN="github.com/zaquestion/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
