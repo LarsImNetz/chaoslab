@@ -8,6 +8,7 @@ inherit linux-info
 DESCRIPTION="A firewall for humans..."
 HOMEPAGE="https://firehol.org"
 SRC_URI="https://github.com/${PN}/${PN}/releases/download/v${PV}/${P}.tar.xz"
+RESTRIC="mirror"
 
 LICENSE="GPL-2"
 SLOT="0"
