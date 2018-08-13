@@ -66,6 +66,12 @@ src_install() {
 }
 
 pkg_postinst() {
+	if [[ $(stat -c %a "${EROOT%/}/var/lib/acme-dns") != "750" ]]; then
+		einfo "Fixing ${EROOT%/}/var/lib/acme-dns permissions"
+		chown -R acme-dns:acme-dns "${EROOT%/}/var/lib/acme-dns" || die
+		chmod 0750 "${EROOT%/}/var/lib/acme-dns" || die
+	fi
+
 	if ! use filecaps; then
 		ewarn
 		ewarn "'filecaps' USE flag is disabled"

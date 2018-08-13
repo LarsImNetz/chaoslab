@@ -1,7 +1,5 @@
 # config file for /etc/init.d/acme-dns
 
-ACMEDNS_LOGDIR="/var/log/${RC_SVCNAME}"
-
 # Logging
-#output_log="${ACMEDNS_LOGDIR}/acme-dns.log"
-#error_log="${ACMEDNS_LOGDIR}/error.log"
+#output_log="/var/log/acme-dns/acme-dns.log"
+#error_log="/var/log/acme-dns/error.log"
