@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="8397de1" # Change this when you update the ebuild
+GIT_COMMIT="d19fae3" # Change this when you update the ebuild
 EGO_PN="github.com/prometheus/${PN}"
 
 inherit golang-vcs-snapshot systemd user
