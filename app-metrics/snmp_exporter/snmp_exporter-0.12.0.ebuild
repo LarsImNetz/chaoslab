@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="e459171"
+GIT_COMMIT="26b3c85"
 EGO_PN="github.com/prometheus/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -81,7 +81,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [ ! -e "${EROOT%/}"/etc/snmp_exporter/snmp.yml ]; then
+	if [[ ! -e "${EROOT%/}/etc/snmp_exporter/snmp.yml" ]]; then
 		elog "No snmp.yml found, copying the example over"
 		cp "${EROOT%/}"/etc/snmp_exporter/snmp.yml{.example,} || die
 	else
