@@ -3,6 +3,10 @@
 
 EAPI=6
 
+# Keep this in sync with frontend/
+FRONTEND_COMMIT="99740e3eabf437d3d6f4893870f66c3653d48e3b"
+FRONTEND_P="frontend-${FRONTEND_COMMIT}"
+
 EGO_PN="github.com/${PN}/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
@@ -23,6 +27,8 @@ EGO_PN="github.com/${PN}/${PN}"
 EGO_VENDOR=(
 	"github.com/BurntSushi/toml a368813"
 	"github.com/GeertJohan/go.rice c02ca9a"
+	"github.com/GeertJohan/go.incremental 1172aab"
+	"github.com/akavel/rsrc f6a15ec"
 	"github.com/asdine/storm 68fc73b"
 	"github.com/chaseadamsio/goorgeous dcf1ef8"
 	"github.com/coreos/bbolt 583e893"
@@ -36,8 +42,10 @@ EGO_VENDOR=(
 	"github.com/hacdias/fileutils 76b1c6a"
 	"github.com/hacdias/varutils 82d3b57"
 	"github.com/hashicorp/hcl 23c074d"
+	"github.com/jessevdk/go-flags 1c38ed7"
 	"github.com/kardianos/osext ae77be6"
 	"github.com/magiconair/properties c3beff4"
+	"github.com/maruel/natural dbcb3e2"
 	"github.com/mholt/archiver 26cf5b"
 	"github.com/mholt/caddy d3f338d"
 	"github.com/mitchellh/mapstructure 00c29f5"
@@ -65,8 +73,11 @@ inherit golang-vcs-snapshot systemd user
 
 DESCRIPTION="A stylish web file manager"
 HOMEPAGE="https://filebrowser.github.io"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+SRC_URI="
+	https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
+	https://github.com/${PN}/frontend/archive/${FRONTEND_COMMIT}.tar.gz -> ${FRONTEND_P}.tar.gz
+	${EGO_VENDOR_URI}
+"
 RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
@@ -74,20 +85,43 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="+daemon pie"
 
+DEPEND="sys-apps/yarn"
+
 QA_PRESTRIPPED="usr/bin/filebrowser"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
+	# shellcheck disable=SC2086
+	if has network-sandbox $FEATURES; then
+		ewarn ""
+		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
+		ewarn ""
+		die "[network-sandbox] is enabled in FEATURES"
+	fi
+
 	if use daemon; then
 		enewgroup filebrowser
 		enewuser filebrowser -1 -1 -1 filebrowser
 	fi
 }
 
+src_unpack() {
+	golang-vcs-snapshot_src_unpack
+	unpack "${FRONTEND_P}.tar.gz"
+}
+
+src_prepare() {
+	rmdir frontend || die
+	mv "${WORKDIR}/${FRONTEND_P}" frontend || die
+
+	default
+}
+
 src_compile() {
 	export GOPATH="${G}"
+	local PATH="${G}/bin:$PATH"
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
@@ -95,6 +129,17 @@ src_compile() {
 		-gcflags "-trimpath=${S}"
 		-ldflags "-s -w -X filebrowser.Version=${PV}"
 	)
+
+	pushd frontend || die
+		yarn install || die
+		yarn build || die
+	popd || die
+
+	# Build rice locally
+	go install ./vendor/github.com/GeertJohan/go.rice/rice || die
+	# Embed the assets using rice
+	rice embed-go || die
+
 	go build "${mygoargs[@]}" ./cmd/filebrowser || die
 }
 
