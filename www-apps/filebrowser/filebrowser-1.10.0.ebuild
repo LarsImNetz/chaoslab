@@ -109,12 +109,11 @@ pkg_setup() {
 
 src_unpack() {
 	golang-vcs-snapshot_src_unpack
-	unpack ${FRONTEND_P}.tar.gz
+	unpack "${FRONTEND_P}.tar.gz"
 }
 
 src_prepare() {
 	rmdir frontend || die
-	# Move dependencies
 	mv "${WORKDIR}/${FRONTEND_P}" frontend || die
 
 	default
