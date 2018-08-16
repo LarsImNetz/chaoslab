@@ -4,9 +4,9 @@
 EAPI=6
 
 EGO_PN="github.com/hashicorp/terraform"
-EGO_VENDOR=( "golang.org/x/tools 1c0c7a8 github.com/golang/tools" )
+EGO_VENDOR=( "golang.org/x/tools 9de1900 github.com/golang/tools" )
 # Change this when you update the ebuild:
-GIT_COMMIT="41e50bd32a8825a84535e353c3674af8ce799161"
+GIT_COMMIT="6dfc4d748de9cda23835bc5704307ed45e839622"
 
 inherit golang-vcs-snapshot
 
@@ -23,9 +23,11 @@ IUSE="examples fish-completion pie terraform-bundle"
 
 RDEPEND="fish-completion? ( app-shells/fish )"
 
-DOCS=( {CHANGELOG,README}.md )
-QA_PRESTRIPPED="usr/bin/terraform
-	usr/bin/terraform-bundle"
+DOCS=( CHANGELOG.md README.md )
+QA_PRESTRIPPED="
+	usr/bin/terraform
+	usr/bin/terraform-bundle
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
