@@ -6,21 +6,16 @@ EAPI=6
 inherit autotools bash-completion-r1 gnome2-utils systemd user xdg-utils
 
 MY_PN="BitcoinUnlimited"
+MY_P="bucash${PV}"
 DESCRIPTION="A full node Bitcoin (and Bitcoin Cash) implementation with GUI, daemon and utils"
 HOMEPAGE="https://www.bitcoinunlimited.info"
-SRC_URI="https://github.com/${MY_PN}/${MY_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/${MY_PN}/${MY_PN}/archive/${MY_P}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="MIT"
-SLOT="0"
+SLOT="bucash"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 IUSE="daemon dbus +gui hardened libressl +qrcode reduce-exports upnp utils +wallet zeromq"
-LANGS="ach af af:af_ZA ar be:be_BY bg bg:bg_BG bs ca ca@valencia ca:ca_ES cs cs:cs_CZ
-	cy da de el el:el_GR en en_GB eo es es_AR es_CL es_CO es_DO es_ES es_MX es_UY es_VE
-	et eu:eu_ES fa fa:fa_IR fi fr fr_CA fr:fr_FR gl gu:gu_IN he hi:hi_IN hr hu id:id_ID
-	it ja ka kk:kk_KZ ko:ko_KR ky la lt lv:lv_LV mk:mk_MK mn ms:ms_MY nb nl pam pl pt_BR
-	pt_PT ro ro:ro_RO ru ru:ru_RU sk sl:sl_SI sq sr sv ta th:th_TH tr tr:tr_TR uk ur_PK
-	uz@Cyrl uz:uz@Latn vi vi:vi_VN zh zh:cmn zh_CN zh_HK zh_TW"
 
 CDEPEND="dev-libs/boost:0=[threads(+)]
 	dev-libs/libevent
@@ -59,44 +54,7 @@ RDEPEND="${CDEPEND}
 
 REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
 
-declare -A LANG2USE USE2LANGS
-bitcoin_langs_prep() {
-	local lang l10n
-	for lang in ${LANGS}; do
-		l10n="${lang/:*/}"
-		l10n="${l10n/[@_]/-}"
-		lang="${lang/*:/}"
-		LANG2USE["${lang}"]="${l10n}"
-		USE2LANGS["${l10n}"]+=" ${lang}"
-	done
-}
-bitcoin_langs_prep
-
-bitcoin_lang2use() {
-	local l
-	# shellcheck disable=SC2086
-	for l; do
-		echo l10n_${LANG2USE["${l}"]}
-	done
-}
-
-# shellcheck disable=SC2068
-IUSE+=" $(bitcoin_lang2use ${!LANG2USE[@]})"
-
-bitcoin_lang_requireduse() {
-	local lang l10n
-	# shellcheck disable=SC2068
-	for l10n in ${!USE2LANGS[@]}; do
-		for lang in ${USE2LANGS["${l10n}"]}; do
-			continue 2
-		done
-		echo "l10n_${l10n}?"
-	done
-}
-
-REQUIRED_USE+=" $(bitcoin_lang_requireduse)"
-
-S="${WORKDIR}/${MY_PN}-${PV}"
+S="${WORKDIR}/${MY_PN}-${MY_P}"
 
 pkg_setup() {
 	if use daemon; then
@@ -106,38 +64,6 @@ pkg_setup() {
 }
 
 src_prepare() {
-	if use gui; then
-		local filt yeslang nolang lan ts x
-
-		for lan in $LANGS; do
-			lan="${lan/*:/}"
-			# shellcheck disable=SC2086
-			if [ ! -e src/qt/locale/bitcoin_$lan.ts ]; then
-				continue
-				die "Language '$lan' no longer supported. Ebuild needs update."
-			fi
-		done
-
-		for ts in src/qt/locale/*.ts; do
-			x="${ts/*bitcoin_/}"
-			x="${x/.ts/}"
-			if ! use "$(bitcoin_lang2use "$x")"; then
-				nolang="$nolang $x"
-				rm "$ts" || die
-				filt="$filt\\|$x"
-			else
-				yeslang="$yeslang $x"
-			fi
-		done
-
-		# shellcheck disable=SC1117
-		filt="bitcoin_\\(${filt:2}\\)\\.\(qm\|ts\)"
-		sed "/${filt}/d" -i 'src/qt/bitcoin_locale.qrc' || die
-		# shellcheck disable=SC1117
-		sed "s/locale\/${filt}/bitcoin.qrc/" -i 'src/Makefile.qt.include' || die
-		einfo "Languages -- Enabled:$yeslang -- Disabled:$nolang"
-	fi
-
 	use daemon || sed -i 's/have bitcoind &&//;s/^\(complete -F _bitcoind \)bitcoind \(bitcoin-cli\)$/\1\2/' \
 		contrib/bitcoind.bash-completion || die
 
@@ -184,7 +110,7 @@ src_install() {
 		newins contrib/debian/examples/bitcoin.conf bitcoin.conf.example
 		doins share/rpcuser/rpcuser.py
 
-		dodoc doc/{bips,bu-xthin,tor}.md
+		dodoc doc/{bu-xthin,tor}.md
 		doman contrib/debian/manpages/{bitcoind.1,bitcoin.conf.5}
 		newbashcomp contrib/bitcoind.bash-completion bitcoin
 
@@ -201,10 +127,10 @@ src_install() {
 			newicon -s ${X} "share/pixmaps/bitcoin${X}.png" bitcoin.png
 		done
 		# shellcheck disable=SC1117
-		make_desktop_entry "bitcoin-qt %u" "Bitcoin Unlimited" "bitcoin" \
-			"Qt;Network;P2P;Office;Finance;" "MimeType=x-scheme-handler/bitcoin;\nTerminal=false"
+		make_desktop_entry "bitcoin-qt %u" "Bitcoin Unlimited Cash" "bitcoin" \
+			"Qt;Network;P2P;Office;Finance;" "MimeType=x-scheme-handler/bitcoincash;\nTerminal=false"
 
-		use daemon || dodoc doc/{bips,bu-xthin,tor}.md
+		use daemon || dodoc doc/{bu-xthin,tor}.md
 		doman contrib/debian/manpages/bitcoin-qt.1
 	fi
 
@@ -224,11 +150,14 @@ update_caches() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/bitcoin") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/bitcoin permissions"
-		chown -R bitcoin:bitcoin "${EROOT%/}/var/lib/bitcoin" || die
-		chmod 0750 "${EROOT%/}/var/lib/bitcoin" || die
+	if use daemon; then
+		if [[ $(stat -c %a "${EROOT%/}/var/lib/bitcoin") != "750" ]]; then
+			einfo "Fixing ${EROOT%/}/var/lib/bitcoin permissions"
+			chown -R bitcoin:bitcoin "${EROOT%/}/var/lib/bitcoin" || die
+			chmod 0750 "${EROOT%/}/var/lib/bitcoin" || die
+		fi
 	fi
+
 	use gui && update_caches
 }
 
