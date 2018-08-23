@@ -1,9 +1,8 @@
 # config file for /etc/init.d/statsd_exporter
 # run /usr/bin/statsd_exporter -h to see available options
 
-STATSD_EXPORTER_LOGDIR="/var/log/${RC_SVCNAME}"
 STATSD_EXPORTER_OPTS=""
 
 # Logging
-#output_log="${STATSD_EXPORTER_LOGDIR}/statsd_exporter.log"
-#error_log="${STATSD_EXPORTER_LOGDIR}/error.log"
+#output_log="/var/log/statsd_exporter/statsd_exporter.log"
+#error_log="/var/log/statsd_exporter/error.log"

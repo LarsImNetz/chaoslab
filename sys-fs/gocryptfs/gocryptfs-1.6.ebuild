@@ -3,24 +3,15 @@
 
 EAPI=6
 
-# Note: Keep EGO_VENDOR in sync with Gopkg.lock
-FUSE_COMMIT="a9ddcb8"
+# Note: Keep FUSE_COMMIT in sync with Gopkg.lock
+FUSE_COMMIT="95c6370"
 EGO_PN="github.com/rfjakob/${PN}"
-EGO_VENDOR=(
-	"github.com/hanwen/go-fuse ${FUSE_COMMIT}"
-	"github.com/jacobsa/crypto c73681c"
-	"github.com/rfjakob/eme 2222dbd"
-	"golang.org/x/crypto 374053e github.com/golang/crypto"
-	"golang.org/x/sync 1d60e46 github.com/golang/sync"
-	"golang.org/x/sys 01acb38 github.com/golang/sys"
-)
 
 inherit golang-vcs-snapshot
 
 DESCRIPTION="Encrypted overlay filesystem written in Go"
 HOMEPAGE="https://nuetzlich.net/gocryptfs"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+SRC_URI="https://${EGO_PN}/releases/download/v${PV}/${PN}_v${PV}_src-deps.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="MIT"
@@ -59,5 +50,5 @@ src_compile() {
 
 src_install() {
 	dobin gocryptfs
-	newman "${FILESDIR}/${P}.1" gocryptfs.1
+	newman "${FILESDIR}/${P}" gocryptfs.1
 }
