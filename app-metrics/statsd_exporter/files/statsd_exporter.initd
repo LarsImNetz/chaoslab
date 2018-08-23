@@ -3,7 +3,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${STATSD_EXPORTER_LOGDIR}/error.log}"
+error_log="${error_log:-/var/log/statsd_exporter/error.log}"
 
 name="${name:-StatsD Exporter}"
 command="/usr/bin/statsd_exporter"
@@ -16,8 +16,4 @@ start_stop_daemon_args="${SSD_OPTS}
 
 depend() {
 	need net
-}
-
-start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" "${STATSD_EXPORTER_LOGDIR}"
 }
