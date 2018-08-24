@@ -4,18 +4,18 @@
 EAPI=6
 
 EGO_PN="ekyu.moe/${PN}"
-# Note: Keep EGO_VENDOR in sync with Gopkg.lock
+# Note: Keep EGO_VENDOR in sync with go.mod
 EGO_VENDOR=(
 	"github.com/ebfe/keccak 5cc5706"
 	"github.com/paxos-bankchain/moneroutil 33d7e0c"
-	"golang.org/x/crypto ab81327 github.com/golang/crypto"
+	"golang.org/x/crypto c126467 github.com/golang/crypto"
 )
 
 inherit golang-vcs-snapshot
 
 DESCRIPTION="Generate vanity address for CryptoNote currency"
 HOMEPAGE="https://github.com/Equim-chan/vanity-monero"
-SRC_URI="https://github.com/Equim-chan/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
+SRC_URI="https://github.com/Equim-chan/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
