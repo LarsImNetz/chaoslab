@@ -3,12 +3,13 @@
 
 EAPI=6
 
-#TODO: We an init script!
+#TODO: We need an init script!
 
 EGO_PN="github.com/shadowsocks/go-${PN}"
 EGO_VENDOR=(
-	"github.com/Yawning/chacha20 e3b1f96"
-	"golang.org/x/crypto 2b6c088 github.com/golang/crypto"
+	"github.com/aead/chacha20 8b13a72"
+	"golang.org/x/crypto 614d502 github.com/golang/crypto"
+	"golang.org/x/sys 4910a1d github.com/golang/sys"
 )
 
 inherit golang-vcs-snapshot user
