@@ -37,7 +37,7 @@ CONFIG_CHECK="~BINFMT_MISC"
 ERROR_BINFMT_MISC="CONFIG_BINFMT_MISC: is required to build ARM images"
 
 pkg_setup() {
-	if use build-images; then
+	if use build-images && [ "${MERGE_TYPE}" != binary ]; then
 		linux-info_pkg_setup
 
 		# shellcheck disable=SC2086
@@ -177,7 +177,7 @@ pkg_postinst() {
 		chmod 0700 "${EROOT%/}/var/lib/gitlab-runner" || die
 	fi
 
-	if use build-images; then
+	if use build-images && [ "${MERGE_TYPE}" != binary ]; then
 		ewarn
 		ewarn "As a security measure, you should remove portage from"
 		ewarn "the 'docker' group (e.g. gpasswd -d portage docker)."
