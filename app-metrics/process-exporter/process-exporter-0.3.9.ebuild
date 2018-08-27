@@ -14,7 +14,7 @@ EGO_VENDOR=(
 	"github.com/matttproud/golang_protobuf_extensions c12348c"
 	"github.com/ncabatoff/fakescraper 1593842"
 	"github.com/ncabatoff/go-seq b08ef85"
-	"github.com/ncabatoff/procfs d7a0c83"
+	"github.com/ncabatoff/procfs 67d51d2"
 	"github.com/prometheus/client_golang c5b7fcc"
 	"github.com/prometheus/client_model 5c3871d"
 	"github.com/prometheus/common c7de230"
