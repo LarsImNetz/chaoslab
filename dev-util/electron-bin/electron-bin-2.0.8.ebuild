@@ -41,27 +41,19 @@ RDEPEND="
 "
 DEPEND="app-arch/unzip"
 
+S="${WORKDIR}"
+MY_PN="${PN}-${SLOT}"
+
 QA_PRESTRIPPED="
 	/opt/${MY_PN}/libffmpeg.so
 	/opt/${MY_PN}/libnode.so
 	/opt/${MY_PN}/electron
 "
 
-S="${WORKDIR}"
-MY_PN="${PN}-${SLOT}"
-
 src_install() {
-	exeinto "/opt/${MY_PN}"
-	doexe electron
-
-	insinto "/opt/${MY_PN}"
-	doins -r locales resources
-	doins ./*.pak \
-		icudtl.dat \
-		natives_blob.bin \
-		snapshot_blob.bin \
-		libnode.so \
-		libffmpeg.so
+	dodir "/opt/${MY_PN}"
+	# note: intentionally not using "doins" so that we preserve +x bits
+	cp -R ./* "${ED}/opt/${MY_PN}" || die
 
 	dosym "../../opt/${MY_PN}/electron" "/usr/bin/electron-${SLOT}"
 }
