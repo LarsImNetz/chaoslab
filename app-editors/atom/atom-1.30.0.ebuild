@@ -104,11 +104,11 @@ src_prepare() {
 		-e "s|{{ATOM_SUFFIX}}|${suffix}|g" \
 		./src/config-schema.js || die
 
+	export N_PREFIX="${WORKDIR}/npm"
 	mkdir "${N_PREFIX}"{,-cache} || die
 }
 
 src_compile() {
-	export N_PREFIX="${WORKDIR}/npm"
 	local ctags_d="app.asar.unpacked/node_modules/symbols-view/vendor"
 	local PATH="${N_PREFIX}"/bin:$PATH
 
