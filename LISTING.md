@@ -33,6 +33,7 @@ app-crypt/**[keybase](app-crypt/keybase)** `*` | Client for Keybase
 app-crypt/**[minisign](app-crypt/minisign)** | A dead simple tool to sign files and verify digital signatures
 app-crypt/**[opmsg](app-crypt/opmsg)** | opmsg message encryption (an alternative to GnuPG)
 app-crypt/**[ssh-vault](app-crypt/ssh-vault)** | Encrypt/Decrypt using SSH private keys
+app-editors/**[atom](app-editors/atom)** `*` | A hackable text editor for the 21st Century
 app-editors/**[micro](app-editors/micro)** | A modern and intuitive terminal-based text editor
 app-emulation/**[containerd](app-emulation/containerd)** `*` | A daemon to control runC
 app-emulation/**[docker](app-emulation/docker)** `*` `**` | The core functions you need to create Docker images and run Docker containers
