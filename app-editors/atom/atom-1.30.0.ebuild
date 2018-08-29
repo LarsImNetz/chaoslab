@@ -149,7 +149,7 @@ src_install() {
 	dosym ../libexec/atom/resources/app/atom.sh /usr/bin/atom
 	dosym ../libexec/atom/resources/app/apm/bin/apm /usr/bin/apm
 	# Symlink LICENSE.md to work with "View License" in Help menu
-	dosym ../libexec/atom/resources/LICENSE.md /usr/share/licenses/atom/LICENSE.md
+	dosym ../../../libexec/atom/resources/LICENSE.md /usr/share/licenses/atom/LICENSE.md
 }
 
 # Return the installation suffix appropriate for the slot.
