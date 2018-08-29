@@ -52,5 +52,7 @@ src_install() {
 	# note: intentionally not using "doins" so that we preserve +x bits
 	cp -R ./* "${ED}/opt/${MY_PN}" || die
 
+	scanelf -Xe "${ED}/opt/${MY_PN}/electron" || die
+
 	dosym "../../opt/${MY_PN}/electron" "/usr/bin/electron-${SLOT}"
 }
