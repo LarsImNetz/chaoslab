@@ -13,8 +13,6 @@ then
 fi
 
 ELECTRON_SLOT="2.0"
-NODE_VERSION="6.14.4" # Use latest 6.x.x LTS (less error-prone)
-
 DESCRIPTION="A hackable text editor for the 21st Century"
 HOMEPAGE="https://atom.io"
 SRC_URI="https://github.com/${PN}/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
@@ -35,29 +33,28 @@ RDEPEND="${DEPEND}
 	!sys-apps/apmd
 "
 
-QA_PRESTRIPPED_PATH="usr/libexec/atom/resources/app.asar.unpacked/node_modules"
+NODE_MODULES_PATH="usr/libexec/atom/resources/app.asar.unpacked/node_modules"
 QA_PRESTRIPPED="
-	${QA_PRESTRIPPED_PATH}/dugite/git/bin/git
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-credential-cache
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-credential-cache--daemon
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-credential-store
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-daemon
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-fast-import
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-http-backend
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-http-fetch
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-http-push
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-imap-send
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-lfs
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-remote-http
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-sh-i18n--envsubst
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-show-index
-	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-shell
-	${QA_PRESTRIPPED_PATH}/keytar/build/Release/keytar.node
-	${QA_PRESTRIPPED_PATH}/symbols-view/vendor/ctags-linux
-	${QA_PRESTRIPPED_PATH}/tree-sitter-bash/build/Release/tree_sitter_bash_binding.node
-	${QA_PRESTRIPPED_PATH}/tree-sitter-ruby/build/Release/tree_sitter_ruby_binding.node
-	${QA_PRESTRIPPED_PATH/.asar.unpacked//apm}/keytar/build/Release/keytar.node
+	${NODE_MODULES_PATH}/dugite/git/bin/git
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-credential-cache
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-credential-cache--daemon
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-credential-store
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-daemon
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-fast-import
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-http-backend
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-http-fetch
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-http-push
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-imap-send
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-lfs
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-remote-http
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-sh-i18n--envsubst
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-shell
+	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-show-index
+	${NODE_MODULES_PATH}/keytar/build/Release/keytar.node
+	${NODE_MODULES_PATH}/tree-sitter-bash/build/Release/tree_sitter_bash_binding.node
+	${NODE_MODULES_PATH}/tree-sitter-ruby/build/Release/tree_sitter_ruby_binding.node
+	${NODE_MODULES_PATH/.asar.unpacked//apm}/keytar/build/Release/keytar.node
 "
 
 PATCHES=(
@@ -89,7 +86,11 @@ src_prepare() {
 
 	# Make bootstrap process more verbose
 	sed -i 's|node script/bootstrap|node script/bootstrap --no-quiet|g' \
-		./script/build || die "Fail fixing verbosity of script/build"
+		./script/build || die
+
+	# Fix path for "View License" in Help menu
+	sed -i "s|path.join(process.resourcesPath, 'LICENSE.md')|'/usr/share/licenses/atom/LICENSE.md'|g" \
+		./src/main-process/atom-application.js || die
 
 	sed -i \
 		-e "s|{{NPM_CONFIG_NODEDIR}}|/usr/bin/node|g" \
@@ -103,25 +104,12 @@ src_prepare() {
 		-e "s|{{ATOM_PREFIX}}|${EROOT}|g" \
 		-e "s|{{ATOM_SUFFIX}}|${suffix}|g" \
 		./src/config-schema.js || die
-
-	export N_PREFIX="${WORKDIR}/npm"
-	mkdir "${N_PREFIX}"{,-cache} || die
 }
 
 src_compile() {
 	local ctags_d="app.asar.unpacked/node_modules/symbols-view/vendor"
-	local PATH="${N_PREFIX}"/bin:$PATH
 
-	ebegin "Installing node ${NODE_VERSION}"
-	pushd "${N_PREFIX}" > /dev/null || die
-	npm install --cache "${WORKDIR}"/npm-cache n || die
-	./node_modules/n/bin/n -q ${NODE_VERSION} || die
-	popd > /dev/null || die
-	eend $?
-
-	ebegin "Using node $(node --version) to install dependencies"
 	./script/build --verbose || die "Failed to compile"
-	eend $?
 
 	pushd "out/${PN}-${MY_PV}-amd64/resources" > /dev/null || die
 	./app/apm/bin/apm rebuild || die "Failed to rebuild native module"
@@ -134,14 +122,14 @@ src_compile() {
 	ln -s "${EROOT}/usr/bin/ctags" ./${ctags_d}/ctags-linux || die
 	popd > /dev/null || die
 
-	unset ELECTRON_SLOT NODE_VERSION N_PREFIX
+	unset ELECTRON_SLOT NODE_MODULES_PATH
 }
 
 src_install() {
 	insinto /usr/libexec/atom
 	doins -r "out/${PN}-${MY_PV}-amd64"/{resources,snapshot_blob.bin}
 
-	# Install icons and desktop entry.
+	# Install icons and desktop entry
 	local size
 	for size in 16 24 32 48 64 128 256 512; do
 		newicon -s ${size} "resources/app-icons/stable/png/${size}.png" atom.png
@@ -157,9 +145,11 @@ src_install() {
 	fperms +x /usr/libexec/atom/resources/app/apm/bin/apm
 	fperms +x /usr/libexec/atom/resources/app/apm/bin/node
 	fperms +x /usr/libexec/atom/resources/app/apm/node_modules/npm/bin/node-gyp-bin/node-gyp
-	# Symlinking to /usr/bin
+	# Symlink to /usr/bin
 	dosym ../libexec/atom/resources/app/atom.sh /usr/bin/atom
 	dosym ../libexec/atom/resources/app/apm/bin/apm /usr/bin/apm
+	# Symlink LICENSE.md to work with "View License" in Help menu
+	dosym ../libexec/atom/resources/LICENSE.md /usr/share/licenses/atom/LICENSE.md
 }
 
 # Return the installation suffix appropriate for the slot.
