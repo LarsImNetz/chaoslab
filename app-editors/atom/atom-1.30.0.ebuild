@@ -55,8 +55,8 @@ QA_PRESTRIPPED="
 	${QA_PRESTRIPPED_PATH}/dugite/git/libexec/git-core/git-shell
 	${QA_PRESTRIPPED_PATH}/keytar/build/Release/keytar.node
 	${QA_PRESTRIPPED_PATH}/symbols-view/vendor/ctags-linux
-	${QA_PRESTRIPPED_PATH}/tree-sitter-bash/build/Release/tree_sitter_bash_binding.nod
-	${QA_PRESTRIPPED_PATH}/tree-sitter-ruby/build/Release/tree_sitter_ruby_binding.nod
+	${QA_PRESTRIPPED_PATH}/tree-sitter-bash/build/Release/tree_sitter_bash_binding.node
+	${QA_PRESTRIPPED_PATH}/tree-sitter-ruby/build/Release/tree_sitter_ruby_binding.node
 	${QA_PRESTRIPPED_PATH/.asar.unpacked//apm}/keytar/build/Release/keytar.node
 "
 
