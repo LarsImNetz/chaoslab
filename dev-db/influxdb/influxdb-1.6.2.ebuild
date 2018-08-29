@@ -4,7 +4,7 @@
 EAPI=6
 
 MY_PV="${PV/_/}"
-GIT_COMMIT="62ab18a" # Change this when you update the ebuild
+GIT_COMMIT="7adf7f9" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Godeps
 # Deps that are not needed:
@@ -27,10 +27,10 @@ EGO_VENDOR=(
 	"github.com/gogo/protobuf 1adfc12"
 	"github.com/golang/protobuf 9255415"
 	"github.com/golang/snappy d9eb7a3"
-	"github.com/influxdata/influxql 145e067"
+	"github.com/influxdata/influxql a7267bf"
 	"github.com/influxdata/usage-client 6d38953"
 	"github.com/influxdata/yamux 1f58ded"
-	"github.com/influxdata/yarpc 3f4e3d2"
+	"github.com/influxdata/yarpc f0da2db"
 	"github.com/jsternberg/zap-logfmt 5ea5386"
 	"github.com/jwilder/encoding 2789473"
 	"github.com/klauspost/compress 6c8db69"
@@ -73,15 +73,18 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="man pie"
 
-DEPEND="man? ( app-text/asciidoc
-	app-text/xmlto )"
+DEPEND="
+	man? ( app-text/asciidoc app-text/xmlto )
+"
 
-QA_PRESTRIPPED="usr/bin/influx
+QA_PRESTRIPPED="
+	usr/bin/influx
 	usr/bin/influxd
 	usr/bin/influx_inspect
 	usr/bin/influx_stress
 	usr/bin/influx_tsm
-	usr/bin/influx-tools"
+	usr/bin/influx-tools
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
