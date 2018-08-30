@@ -115,6 +115,9 @@ src_compile() {
 	./app/apm/bin/apm rebuild || die "Failed to rebuild native module"
 	echo "python = ${PYTHON}" >> ./app/apm/.apmrc
 
+	# Sed fix python-interceptor.sh to use python2
+	sed -i "s|python|python2|g" ./app/apm/bin/python-interceptor.sh || die
+
 	# Remove non-Linux vendored ctags binaries
 	rm ./${ctags_d}/ctags-{darwin,win32.exe} || die
 	# Replace vendored ctags with a symlink to system ctags
@@ -144,6 +147,7 @@ src_install() {
 	fperms +x /usr/libexec/atom/resources/app/atom.sh
 	fperms +x /usr/libexec/atom/resources/app/apm/bin/apm
 	fperms +x /usr/libexec/atom/resources/app/apm/bin/node
+	fperms +x /usr/libexec/atom/resources/app/apm/bin/python-interceptor.sh
 	fperms +x /usr/libexec/atom/resources/app/apm/node_modules/npm/bin/node-gyp-bin/node-gyp
 	# Symlink to /usr/bin
 	dosym ../libexec/atom/resources/app/atom.sh /usr/bin/atom
