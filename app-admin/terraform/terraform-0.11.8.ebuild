@@ -18,7 +18,7 @@ RESTRICT="mirror"
 
 LICENSE="MPL-2.0"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~x86"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 IUSE="examples fish-completion pie terraform-bundle"
 
 RDEPEND="fish-completion? ( app-shells/fish )"
