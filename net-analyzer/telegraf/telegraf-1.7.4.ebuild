@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="4dc29d0" # Change this when you update the ebuild
+GIT_COMMIT="578db7e" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Godeps
 # Deps that are not needed:
