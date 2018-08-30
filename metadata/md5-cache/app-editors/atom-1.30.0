@@ -10,4 +10,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/atom/atom/archive/v1.30.0.tar.gz -> atom-1.30.0.tar.gz
 _eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	multilib	97f470f374f2e94ccab04a2fb21d811e	python-any-r1	4900ae970f827a22d33d41bd8b8f9ace	python-utils-r1	12114a2a9aab35b93efc037a196b3234	toolchain-funcs	e4a9360924c5ce9f52e61342cde58512
-_md5_=3196f83cec807a765078af8c631eae4a
+_md5_=dc10116041fb911b1ae4ebbe53bcd96f
