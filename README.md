@@ -2,7 +2,7 @@ ChaosLab: Overlay for Gentoo Linux
 ----------------------------------
 
 [![packages 197](https://img.shields.io/badge/packages-197-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
-[![ebuilds 285](https://img.shields.io/badge/ebuilds-285-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![ebuilds 284](https://img.shields.io/badge/ebuilds-284-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
 
