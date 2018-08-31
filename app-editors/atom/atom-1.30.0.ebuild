@@ -93,8 +93,8 @@ src_prepare() {
 		./src/main-process/atom-application.js || die
 
 	sed -i \
-		-e "s|{{NPM_CONFIG_NODEDIR}}|/usr/bin/node|g" \
-		-e "s|{{ATOM_PATH}}|/opt/electron-bin-${ELECTRON_SLOT}/electron|g" \
+		-e "s|{{NPM_CONFIG_NODEDIR}}|${EROOT}/usr/bin/node|g" \
+		-e "s|{{ATOM_PATH}}|${EROOT}/opt/electron-bin-${ELECTRON_SLOT}/electron|g" \
 		-e "s|{{ATOM_RESOURCE_PATH}}|${EROOT}/usr/libexec/atom/resources/app.asar|g" \
 		-e "s|{{ATOM_PREFIX}}|${EROOT}|g" \
 		-e "s|^#!/bin/bash|#!${EROOT}/bin/bash|g" \
@@ -104,6 +104,8 @@ src_prepare() {
 		-e "s|{{ATOM_PREFIX}}|${EROOT}|g" \
 		-e "s|{{ATOM_SUFFIX}}|${suffix}|g" \
 		./src/config-schema.js || die
+
+	unset ELECTRON_SLOT NODE_MODULES_PATH
 }
 
 src_compile() {
@@ -115,8 +117,8 @@ src_compile() {
 	./app/apm/bin/apm rebuild || die "Failed to rebuild native module"
 	echo "python = ${PYTHON}" >> ./app/apm/.apmrc
 
-	# Sed fix python-interceptor.sh to use python2
-	sed -i "s|python|python2|g" ./app/apm/bin/python-interceptor.sh || die
+	# Fix python-interceptor.sh to use python2
+	sed -i "s|python|${PYTHON}|g" ./app/apm/bin/python-interceptor.sh || die
 
 	# Remove non-Linux vendored ctags binaries
 	rm ./${ctags_d}/ctags-{darwin,win32.exe} || die
@@ -124,8 +126,6 @@ src_compile() {
 	rm ./${ctags_d}/ctags-linux || die
 	ln -s "${EROOT}/usr/bin/ctags" ./${ctags_d}/ctags-linux || die
 	popd > /dev/null || die
-
-	unset ELECTRON_SLOT NODE_MODULES_PATH
 }
 
 src_install() {
@@ -140,10 +140,10 @@ src_install() {
 	# shellcheck disable=SC1117
 	make_desktop_entry atom Atom atom \
 		"GNOME;GTK;Utility;TextEditor;Development;" \
-		"MimeType=text/plain;\nStartupWMClass=Atom"
+		"MimeType=text/plain;\nStartupNotify=true\nStartupWMClass=Atom"
 	sed -e "/^Exec/s/$/ %F/" -i "${ED}"/usr/share/applications/*.desktop || die
 
-	# Fixes permissions
+	# Fix permissions
 	fperms +x /usr/libexec/atom/resources/app/atom.sh
 	fperms +x /usr/libexec/atom/resources/app/apm/bin/apm
 	fperms +x /usr/libexec/atom/resources/app/apm/bin/node

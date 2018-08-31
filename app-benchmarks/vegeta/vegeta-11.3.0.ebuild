@@ -4,7 +4,7 @@
 EAPI=6
 
 # Change this when you update the ebuild:
-GIT_COMMIT="0d315c8e151c13efbf15c1e65f5fc5a09973d1ae"
+GIT_COMMIT="c6176ccd5d95c452ad255cccca31c1114a79451d"
 EGO_PN="github.com/tsenart/${PN}"
 # Keep EGO_VENDOR in sync with Gopkg.lock
 EGO_VENDOR=(
