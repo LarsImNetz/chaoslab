@@ -21,13 +21,14 @@ bit-vec-0.4.4
 bitflags-0.7.0
 bitflags-0.9.1
 bitflags-1.0.1
-byteorder-1.2.1
+byteorder-1.2.3
 bytes-0.4.6
 cc-1.0.17
 cfg-if-0.1.2
 chrono-0.4.2
 cid-0.2.3
 clap-2.29.1
+cloudabi-0.0.3
 cmake-0.1.31
 crossbeam-0.3.2
 crossbeam-deque-0.2.0
@@ -37,6 +38,7 @@ crossbeam-epoch-0.4.1
 crossbeam-utils-0.2.2
 crossbeam-utils-0.3.2
 crunchy-0.1.6
+crunchy-0.2.1
 ct-logs-0.2.0
 ctrlc-1.1.1
 daemonize-0.2.3
@@ -158,6 +160,8 @@ quick-error-1.2.2
 quote-0.5.1
 rand-0.3.20
 rand-0.4.2
+rand-0.5.4
+rand_core-0.2.1
 rayon-1.0.1
 rayon-core-1.4.0
 redox_syscall-0.1.40
