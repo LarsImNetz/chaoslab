@@ -8,6 +8,6 @@ KEYWORDS=~amd64 ~x86
 LICENSE=Apache-2.0
 RESTRICT=mirror
 SLOT=0
-SRC_URI=https://github.com/shadowsocks/go-shadowsocks2/archive/v0.0.10.tar.gz -> shadowsocks2-0.0.10.tar.gz https://github.com/aead/chacha20/archive/8b13a72.tar.gz -> github.com-aead-chacha20-8b13a72.tar.gz https://github.com/golang/crypto/archive/614d502.tar.gz -> github.com-golang-crypto-614d502.tar.gz https://github.com/golang/sys/archive/4910a1d.tar.gz -> github.com-golang-sys-4910a1d.tar.gz
+SRC_URI=https://github.com/shadowsocks/go-shadowsocks2/archive/v0.0.11.tar.gz -> shadowsocks2-0.0.11.tar.gz https://github.com/aead/chacha20/archive/8b13a72.tar.gz -> github.com-aead-chacha20-8b13a72.tar.gz https://github.com/golang/crypto/archive/614d502.tar.gz -> github.com-golang-crypto-614d502.tar.gz https://github.com/golang/sys/archive/4910a1d.tar.gz -> github.com-golang-sys-4910a1d.tar.gz
 _eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	user	8bc2845510e2109af75e3eeac607ec81
 _md5_=cd29192cead2bbb62494c700248700f7
