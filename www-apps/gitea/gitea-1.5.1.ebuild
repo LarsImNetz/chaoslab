@@ -6,7 +6,7 @@ EAPI=6
 EGO_PN="code.gitea.io/gitea"
 EGO_VENDOR=( "github.com/kevinburke/go-bindata 06af60a" )
 
-inherit golang-vcs-snapshot systemd user
+inherit fcaps golang-vcs-snapshot systemd user
 
 DESCRIPTION="Gitea - Git with a cup of tea"
 HOMEPAGE="https://gitea.io"
@@ -19,7 +19,8 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="memcached mysql openssh pam pie postgres redis sqlite tidb"
 
-RDEPEND="dev-vcs/git[curl,threads]
+RDEPEND="
+	dev-vcs/git[curl,threads]
 	memcached? ( net-misc/memcached )
 	mysql? ( virtual/mysql )
 	openssh? ( net-misc/openssh )
@@ -27,8 +28,10 @@ RDEPEND="dev-vcs/git[curl,threads]
 	postgres? ( dev-db/postgresql )
 	redis? ( dev-db/redis )
 	sqlite? ( dev-db/sqlite )
-	tidb? ( dev-db/tidb )"
+	tidb? ( dev-db/tidb )
+"
 
+FILECAPS=( cap_net_bind_service+ep usr/bin/gitea )
 QA_PRESTRIPPED="usr/bin/gitea"
 
 G="${WORKDIR}/${P}"
@@ -112,6 +115,8 @@ src_install() {
 }
 
 pkg_postinst() {
+	fcaps_pkg_postinst
+
 	if [[ $(stat -c %a "${EROOT%/}/var/lib/gitea") != "750" ]]; then
 		einfo "Fixing ${EROOT%/}/var/lib/gitea permissions"
 		chown -R git:git "${EROOT%/}/var/lib/gitea" || die
@@ -123,5 +128,13 @@ pkg_postinst() {
 		cp "${EROOT%/}"/var/lib/gitea/conf/app.ini{.example,} || die
 	else
 		elog "app.ini found, please check example file for possible changes"
+	fi
+
+	if ! use filecaps; then
+		ewarn
+		ewarn "'filecaps' USE flag is disabled"
+		ewarn "${PN} will fail to listen on port < 1024"
+		ewarn "please either change port to > 1024 or re-enable 'filecaps'"
+		ewarn
 	fi
 }

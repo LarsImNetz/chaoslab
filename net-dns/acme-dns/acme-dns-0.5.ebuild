@@ -18,8 +18,10 @@ KEYWORDS="~amd64 ~x86"
 IUSE="pie postgres +sqlite"
 REQUIRED_USE="|| ( postgres sqlite )"
 
-RDEPEND="postgres? ( dev-db/postgresql )
-	sqlite? ( dev-db/sqlite:3 )"
+RDEPEND="
+	postgres? ( dev-db/postgresql )
+	sqlite? ( dev-db/sqlite:3 )
+"
 
 DOCS=( README.md )
 FILECAPS=( cap_net_bind_service+ep usr/bin/acme-dns )
@@ -66,6 +68,8 @@ src_install() {
 }
 
 pkg_postinst() {
+	fcaps_pkg_postinst
+
 	if [[ $(stat -c %a "${EROOT%/}/var/lib/acme-dns") != "750" ]]; then
 		einfo "Fixing ${EROOT%/}/var/lib/acme-dns permissions"
 		chown -R acme-dns:acme-dns "${EROOT%/}/var/lib/acme-dns" || die
@@ -75,9 +79,8 @@ pkg_postinst() {
 	if ! use filecaps; then
 		ewarn
 		ewarn "'filecaps' USE flag is disabled"
-		ewarn "${PN} will fail to listen on port 53 if started via OpenRC"
-		ewarn "please either change port to > 1024, configure to run ${PN} as root"
-		ewarn "or re-enable 'filecaps'"
+		ewarn "${PN} will fail to listen on port 53"
+		ewarn "please either change port to > 1024 or re-enable 'filecaps'"
 		ewarn
 	fi
 }
