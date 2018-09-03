@@ -6,7 +6,7 @@ EAPI=6
 GIT_COMMIT="91441c3" # Change this when you update the ebuild
 EGO_PN="github.com/gogs/gogs"
 
-inherit golang-vcs-snapshot systemd user
+inherit fcaps golang-vcs-snapshot systemd user
 
 DESCRIPTION="A painless self-hosted Git service"
 HOMEPAGE="https://gogs.io"
@@ -18,7 +18,8 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="cert memcached mysql openssh pam pie postgres redis sqlite tidb"
 
-RDEPEND="dev-vcs/git[curl,threads]
+RDEPEND="
+	dev-vcs/git[curl,threads]
 	memcached? ( net-misc/memcached )
 	mysql? ( virtual/mysql )
 	openssh? ( net-misc/openssh )
@@ -26,8 +27,10 @@ RDEPEND="dev-vcs/git[curl,threads]
 	postgres? ( dev-db/postgresql )
 	redis? ( dev-db/redis )
 	sqlite? ( dev-db/sqlite )
-	tidb? ( dev-db/tidb )"
+	tidb? ( dev-db/tidb )
+"
 
+FILECAPS=( cap_net_bind_service+ep usr/bin/gogs )
 QA_PRESTRIPPED="usr/bin/gogs"
 
 G="${WORKDIR}/${P}"
@@ -100,16 +103,26 @@ src_install() {
 }
 
 pkg_postinst() {
+	fcaps_pkg_postinst
+
 	if [[ $(stat -c %a "${EROOT%/}/var/lib/gogs") != "750" ]]; then
 		einfo "Fixing ${EROOT%/}/var/lib/gogs permissions"
 		chown -R gogs:gogs "${EROOT%/}/var/lib/gogs" || die
 		chmod 0750 "${EROOT%/}/var/lib/gogs" || die
 	fi
 
-	if [ ! -e "${EROOT%/}"/var/lib/gogs/conf/app.ini ]; then
+	if [[ ! -e "${EROOT%/}/var/lib/gogs/conf/app.ini" ]]; then
 		elog "No app.ini found, copying the example over"
 		cp "${EROOT%/}"/var/lib/gogs/conf/app.ini{.example,} || die
 	else
 		elog "app.ini found, please check example file for possible changes"
+	fi
+
+	if ! use filecaps; then
+		ewarn
+		ewarn "'filecaps' USE flag is disabled"
+		ewarn "${PN} will fail to listen on port < 1024"
+		ewarn "please either change port to > 1024 or re-enable 'filecaps'"
+		ewarn
 	fi
 }
