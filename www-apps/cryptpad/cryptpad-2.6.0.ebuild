@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 inherit systemd user
 
@@ -36,11 +36,13 @@ src_prepare() {
 	# shellcheck disable=SC2153
 	local CRYPTPAD_DATADIR="${EPREFIX}/var/lib/cryptpad"
 	sed -i \
-		-e "s:'./tasks':'${CRYPTPAD_DATADIR}/tasks':" \
-		-e "s:'./datastore/':'${CRYPTPAD_DATADIR}/datastore':" \
-		-e "s:'./pins':'${CRYPTPAD_DATADIR}/pins':" \
-		-e "s:'./blob':'${CRYPTPAD_DATADIR}/blob':" \
-		-e "s:'./blobstage':'${CRYPTPAD_DATADIR}/blobstage':" \
+		-e "s|'::'|'127.0.0.1'|" \
+		-e "s|'./tasks'|'${CRYPTPAD_DATADIR}/tasks'|" \
+		-e "s|'./block'|'${CRYPTPAD_DATADIR}/block'|" \
+		-e "s|'./datastore/'|'${CRYPTPAD_DATADIR}/datastore/'|" \
+		-e "s|'./pins'|'${CRYPTPAD_DATADIR}/pins'|" \
+		-e "s|'./blob'|'${CRYPTPAD_DATADIR}/blob'|" \
+		-e "s|'./blobstage'|'${CRYPTPAD_DATADIR}/blobstage'|" \
 		config.example.js || die
 
 	default
@@ -56,7 +58,7 @@ src_compile() {
 	if ! command -v bower &>/dev/null; then
 		ebegin "Installing bower locally"
 		pushd "${N_PREFIX}" || die
-		npm install --cache "${WORKDIR}"/npm-cache bower || die
+		npm install --cache "${N_PREFIX}-cache" bower || die
 		popd || die
 		eend $?
 	fi
@@ -74,15 +76,17 @@ src_install() {
 
 	insinto /etc/cryptpad
 	newins config.example.js config.js
-	dosym ../../../etc/cryptpad/config.js \
-		/usr/share/cryptpad/config.js
-	# Now remove the redundant file
+	dosym ../../../etc/cryptpad/config.js /usr/share/cryptpad/config.js
+
+	# Remove the redundant file
 	rm config.example.js || die
+	# Remove phantomjs, it's not required anymore
+	rm -R node_modules/phantomjs-prebuilt || die
 
 	insinto /usr/share/cryptpad
 	doins -r {customize.dist,node_modules,storage,www}
 	doins ./*.{js,json}
 
-	diropts  -m 0750 -o cryptpad -g cryptpad
+	diropts -o cryptpad -g cryptpad -m 0750
 	keepdir /var/{lib,log}/cryptpad
 }

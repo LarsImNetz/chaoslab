@@ -3,11 +3,12 @@
 
 EAPI=6
 
+# Snapshot taken on 2018.09.05
 EGO_VENDOR=(
-	"github.com/hanwen/go-fuse 363c44c"
-	"github.com/mattn/go-sqlite3 615c193"
-	"golang.org/x/net a337091 github.com/golang/net"
-	"golang.org/x/sys 75813c6 github.com/golang/sys"
+	"github.com/hanwen/go-fuse 1d35017"
+	"github.com/mattn/go-sqlite3 3198c77"
+	"golang.org/x/net 8a410e7 github.com/golang/net"
+	"golang.org/x/sys 2b02437 github.com/golang/sys"
 )
 
 inherit golang-vcs-snapshot
