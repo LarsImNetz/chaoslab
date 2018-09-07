@@ -4,8 +4,8 @@
 EAPI=6
 
 EGO_PN="github.com/influxdata/${PN}"
-EGO_VENDOR=( "github.com/kevinburke/go-bindata 95df019" )
-GIT_COMMIT="cc398c1" # Change this when you update the ebuild
+EGO_VENDOR=( "github.com/kevinburke/go-bindata 06af60a" )
+GIT_COMMIT="8ba2980" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
@@ -18,14 +18,17 @@ RESTRICT="mirror"
 LICENSE="AGPL-3+"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE=""
 
-DEPEND="<=net-libs/nodejs-9
-	sys-apps/yarn"
+DEPEND="
+	<=net-libs/nodejs-9
+	sys-apps/yarn
+"
 
 DOCS=( CHANGELOG.md )
-QA_PRESTRIPPED="usr/bin/chronoctl
-	usr/bin/chronograf"
+QA_PRESTRIPPED="
+	usr/bin/chronoctl
+	usr/bin/chronograf
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -36,7 +39,7 @@ pkg_setup() {
 		ewarn ""
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn ""
-		die "'network-sandbox' is enabled in FEATURES"
+		die "[network-sandbox] is enabled in FEATURES"
 	fi
 
 	enewgroup chronograf
@@ -60,9 +63,7 @@ src_compile() {
 	go install ./vendor/github.com/kevinburke/go-bindata/go-bindata || die
 	touch .godep || die
 
-	make VERSION="${PV}" \
-		COMMIT="${GIT_COMMIT}" \
-		build || die
+	make VERSION="${PV}" COMMIT="${GIT_COMMIT}" build || die
 }
 
 src_install() {

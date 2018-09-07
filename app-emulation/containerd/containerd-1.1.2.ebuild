@@ -3,6 +3,8 @@
 
 EAPI=6
 
+# For docker-18.06.1
+# https://github.com/docker/docker-ce/blob/v18.06.1-ce/components/engine/hack/dockerfile/install/containerd.installer
 EGO_PN="github.com/${PN}/${PN}"
 GIT_COMMIT="468a545" # Change this when you update the ebuild
 

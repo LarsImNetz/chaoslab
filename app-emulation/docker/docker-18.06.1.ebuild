@@ -4,20 +4,19 @@
 EAPI=6
 
 EGO_PN="github.com/${PN}/${PN}-ce"
-GIT_COMMIT="0ffa825" # Change this when you update the ebuild
+GIT_COMMIT="e68fc7a" # Change this when you update the ebuild
 
 inherit bash-completion-r1 golang-vcs-snapshot linux-info systemd udev user
 
 DESCRIPTION="The core functions you need to create Docker images and run Docker containers"
 HOMEPAGE="https://dockerproject.org"
 SRC_URI="https://${EGO_PN}/archive/v${PV}-ce.tar.gz -> ${P}.tar.gz"
-RESTRICT="installsources mirror"
+RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~arm"
-IUSE="apparmor aufs bash-completion btrfs +container-init +device-mapper
-	fish-completion +overlay pkcs11 seccomp systemd zsh-completion"
+IUSE="apparmor aufs btrfs +container-init +device-mapper +overlay pkcs11 seccomp systemd"
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#build-dependencies
 CDEPEND="
@@ -34,7 +33,7 @@ DEPEND="${CDEPEND}
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#optional-dependencies
 RDEPEND="${CDEPEND}
 	>=app-arch/xz-utils-4.9
-	~app-emulation/containerd-1.1.1
+	~app-emulation/containerd-1.1.2
 	~app-emulation/docker-proxy-0.8.0_p20180705
 	~app-emulation/runc-1.0.0_p20180309[apparmor?,seccomp?]
 	dev-libs/libltdl
@@ -42,8 +41,6 @@ RDEPEND="${CDEPEND}
 	>=net-firewall/iptables-1.4
 	sys-process/procps
 	container-init? ( >=sys-process/tini-0.18.0[static] )
-	fish-completion? ( app-shells/fish )
-	zsh-completion? ( app-shells/zsh )
 "
 
 PATCHES=( "${FILESDIR}"/bsc1073877-docker-apparmor-add-signal.patch )
@@ -98,7 +95,7 @@ ERROR_XFRM_USER="CONFIG_XFRM_USER: is optional for secure networks"
 
 pkg_setup() {
 	if kernel_is lt 3 10; then
-		ewarn ""
+		ewarn
 		ewarn "Using Docker with kernels older than 3.10 is unstable and unsupported."
 		ewarn " - http://docs.docker.com/engine/installation/binaries/#check-kernel-dependencies"
 	fi
@@ -284,17 +281,11 @@ src_install() {
 
 	doman man/man*/*
 
-	use bash-completion && dobashcomp contrib/completion/bash/docker
-
-	if use fish-completion; then
-		insinto /usr/share/fish/vendor_completions.d
-		doins contrib/completion/fish/docker.fish
-	fi
-
-	if use zsh-completion; then
-		insinto /usr/share/zsh/site-functions
-		doins contrib/completion/zsh/_docker
-	fi
+	dobashcomp contrib/completion/bash/docker
+	insinto /usr/share/fish/vendor_completions.d
+	doins contrib/completion/fish/docker.fish
+	insinto /usr/share/zsh/site-functions
+	doins contrib/completion/zsh/_docker
 	popd || die
 
 	diropts -g docker -m 0750
@@ -310,7 +301,7 @@ pkg_postinst() {
 	elog "  rc-update add docker default"
 	elog "Similarly for systemd:"
 	elog "  systemctl enable docker.service"
-	elog ""
+	elog
 	elog "To use Docker as a non-root user, add yourself to the 'docker' group:"
 	elog "  usermod -aG docker youruser"
 	einfo

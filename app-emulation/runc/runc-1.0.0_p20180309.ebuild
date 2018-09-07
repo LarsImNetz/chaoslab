@@ -3,8 +3,8 @@
 
 EAPI=6
 
-# For docker-18.06.0
-# https://github.com/docker/docker-ce/blob/v18.06.0-ce/components/engine/hack/dockerfile/install/runc.installer
+# For docker-18.06.1
+# https://github.com/docker/docker-ce/blob/v18.06.1-ce/components/engine/hack/dockerfile/install/runc.installer
 
 EGO_PN="github.com/opencontainers/${PN}"
 GIT_COMMIT="69663f0bd4b60df09991c08812a60108003fa340"

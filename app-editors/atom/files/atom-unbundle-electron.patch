@@ -1,6 +1,6 @@
 --- a/atom.sh
 +++ b/atom.sh
-@@ -123,31 +123,21 @@
+@@ -123,31 +123,20 @@
    SCRIPT=$(readlink -f "$0")
    USR_DIRECTORY=$(readlink -f $(dirname $SCRIPT)/..)
  
@@ -18,7 +18,6 @@
 -      ATOM_PATH="$USR_DIRECTORY/share/atom/atom"
 -      ;;
 -  esac
-+  export NPM_CONFIG_NODEDIR="{{NPM_CONFIG_NODEDIR}}"
 +  export ATOM_RESOURCE_PATH="{{ATOM_RESOURCE_PATH}}"
 +  export LOCAL_GIT_DIRECTORY="{{ATOM_PREFIX}}/usr"
 +  ATOM_PATH="{{ATOM_PATH}}"

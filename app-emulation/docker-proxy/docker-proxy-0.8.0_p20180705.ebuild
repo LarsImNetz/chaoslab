@@ -3,8 +3,8 @@
 
 EAPI=6
 
-# For docker-18.06.0
-# https://github.com/docker/docker-ce/blob/v18.06.0-ce/components/engine/hack/dockerfile/install/proxy.installer
+# For docker-18.06.1
+# https://github.com/docker/docker-ce/blob/v18.06.1-ce/components/engine/hack/dockerfile/install/proxy.installer
 
 EGO_PN="github.com/docker/libnetwork"
 GIT_COMMIT="3ac297bc7fd0afec9051bbb47024c9bc1d75bf5b"
