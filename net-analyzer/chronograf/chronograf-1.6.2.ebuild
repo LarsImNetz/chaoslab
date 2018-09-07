@@ -4,8 +4,8 @@
 EAPI=6
 
 EGO_PN="github.com/influxdata/${PN}"
-EGO_VENDOR=( "github.com/kevinburke/go-bindata f58eea1" )
-GIT_COMMIT="3d10597" # Change this when you update the ebuild
+EGO_VENDOR=( "github.com/kevinburke/go-bindata 06af60a" )
+GIT_COMMIT="8ba2980" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
