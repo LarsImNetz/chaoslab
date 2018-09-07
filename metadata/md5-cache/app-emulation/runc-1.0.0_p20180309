@@ -11,4 +11,4 @@ RESTRICT=mirror test
 SLOT=0
 SRC_URI=https://github.com/opencontainers/runc/archive/69663f0bd4b60df09991c08812a60108003fa340.tar.gz -> runc-1.0.0_p20180309.tar.gz
 _eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	multilib	97f470f374f2e94ccab04a2fb21d811e	toolchain-funcs	e4a9360924c5ce9f52e61342cde58512
-_md5_=fd38f4c2ddb543e68870086fc8fbb9ad
+_md5_=0094f3a586cee48f227c537b32003632

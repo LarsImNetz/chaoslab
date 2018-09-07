@@ -1,13 +1,15 @@
 DEFINED_PHASES=compile install prepare setup
-DEPEND=|| ( >=dev-lang/python-2.7.5-r2:2.7 ) >net-libs/nodejs-6.0
+DEPEND=python_targets_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 ) >=dev-lang/python-exec-2:=[python_targets_python2_7(-)?,-python_single_target_jython2_7(-),-python_single_target_pypy(-),-python_single_target_pypy3(-),-python_single_target_python3_4(-),-python_single_target_python3_5(-),-python_single_target_python3_6(-),-python_single_target_python3_7(-),python_single_target_python2_7(+)] >net-libs/nodejs-6.0
 DESCRIPTION=A hackable text editor for the 21st Century
 EAPI=7
 HOMEPAGE=https://atom.io
+IUSE=python_targets_python2_7
 KEYWORDS=~amd64
 LICENSE=MIT
-RDEPEND=|| ( >=dev-lang/python-2.7.5-r2:2.7 ) >net-libs/nodejs-6.0 >=dev-util/ctags-5.8 dev-util/electron-bin:2.0 media-fonts/inconsolata !app-editors/atom-bin !sys-apps/apmd
+RDEPEND=python_targets_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 ) >=dev-lang/python-exec-2:=[python_targets_python2_7(-)?,-python_single_target_jython2_7(-),-python_single_target_pypy(-),-python_single_target_pypy3(-),-python_single_target_python3_4(-),-python_single_target_python3_5(-),-python_single_target_python3_6(-),-python_single_target_python3_7(-),python_single_target_python2_7(+)] >net-libs/nodejs-6.0 >=dev-util/ctags-5.8 ~dev-util/electron-bin-2.0.5:2.0 media-fonts/inconsolata !app-editors/atom-bin !sys-apps/apmd
+REQUIRED_USE=python_targets_python2_7
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/atom/atom/archive/v1.30.0.tar.gz -> atom-1.30.0.tar.gz
-_eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	multilib	97f470f374f2e94ccab04a2fb21d811e	python-any-r1	4900ae970f827a22d33d41bd8b8f9ace	python-utils-r1	12114a2a9aab35b93efc037a196b3234	toolchain-funcs	e4a9360924c5ce9f52e61342cde58512
-_md5_=167986d0c0b92c581a4fed269ff57498
+_eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	multilib	97f470f374f2e94ccab04a2fb21d811e	python-single-r1	3a0fc81f484bfdbd9c2b7448015a36e4	python-utils-r1	12114a2a9aab35b93efc037a196b3234	toolchain-funcs	e4a9360924c5ce9f52e61342cde58512
+_md5_=6c33c17d8c08e47e3cb46b54dd43412f
