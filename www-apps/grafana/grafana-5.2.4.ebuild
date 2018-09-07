@@ -4,7 +4,7 @@
 EAPI=6
 
 EGO_PN="github.com/${PN}/${PN}"
-GIT_COMMIT="cf4c090" # Change this when you update the ebuild
+GIT_COMMIT="0bbac5c" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
@@ -25,7 +25,6 @@ DEPEND="
 "
 
 DOCS=( CHANGELOG.md README.md )
-
 QA_PRESTRIPPED="
 	usr/bin/grafana-cli
 	usr/bin/grafana-server
@@ -124,12 +123,12 @@ pkg_postinst() {
 		elog "grafana.ini found, please check example file for possible changes"
 	fi
 
-	einfo ""
+	einfo
 	elog "${PN} has built-in log rotation. Please see [log.file] section of"
 	elog "${EROOT%/}/etc/grafana/grafana.ini for related settings."
-	elog ""
+	elog
 	elog "You may add your own custom configuration for app-admin/logrotate if you"
 	elog "wish to use external rotation of logs. In this case, you also need to make"
 	elog "sure the built-in rotation is turned off."
-	einfo ""
+	einfo
 }
