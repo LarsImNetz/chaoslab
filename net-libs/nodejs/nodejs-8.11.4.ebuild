@@ -184,10 +184,11 @@ src_install() {
 
 		local find_exp="-or -name"
 		local find_name=()
+		# shellcheck disable=SC2206
 		for match in "AUTHORS*" "CHANGELOG*" "CONTRIBUT*" "README*" \
 			".travis.yml" ".eslint*" ".wercker.yml" ".npmignore" \
 			"*.md" "*.markdown" "*.bat" "*.cmd"; do
-			find_name+=( "${find_exp}" "${match}" )
+			find_name+=( ${find_exp} "${match}" )
 		done
 
 		# Remove various development and/or inappropriate files and
