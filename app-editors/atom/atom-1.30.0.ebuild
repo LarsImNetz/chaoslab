@@ -4,15 +4,12 @@
 EAPI=7
 PYTHON_COMPAT=( python2_7 )
 
-inherit desktop python-any-r1
-
-MY_PV="${PV}"
-if [[ $PV == *_alpha* ]] || [[ $PV == *_beta* ]] || [[ $PV == *_pre* ]]
-then
-	MY_PV=${PV/_/-}
-fi
+inherit desktop python-single-r1
 
 ELECTRON_SLOT="2.0"
+MY_PV=${PV/_/-}
+RSRC_DIR="out/${PN}-${MY_PV}-amd64/resources"
+
 DESCRIPTION="A hackable text editor for the 21st Century"
 HOMEPAGE="https://atom.io"
 SRC_URI="https://github.com/${PN}/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
@@ -21,13 +18,14 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 DEPEND="${PYTHON_DEPS}
 	>net-libs/nodejs-6.0
 "
 RDEPEND="${DEPEND}
 	>=dev-util/ctags-5.8
-	dev-util/electron-bin:${ELECTRON_SLOT}
+	~dev-util/electron-bin-2.0.5:${ELECTRON_SLOT}
 	media-fonts/inconsolata
 	!app-editors/atom-bin
 	!sys-apps/apmd
@@ -75,7 +73,7 @@ pkg_setup() {
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
 
-	python-any-r1_pkg_setup
+	python-single-r1_pkg_setup
 	npm config set python "${PYTHON}" || die
 }
 
@@ -93,31 +91,45 @@ src_prepare() {
 		./src/main-process/atom-application.js || die
 
 	sed -i \
-		-e "s|{{NPM_CONFIG_NODEDIR}}|${EROOT}/usr/bin/node|g" \
 		-e "s|{{ATOM_PATH}}|${EROOT}/opt/electron-bin-${ELECTRON_SLOT}/electron|g" \
 		-e "s|{{ATOM_RESOURCE_PATH}}|${EROOT}/usr/libexec/atom/resources/app.asar|g" \
 		-e "s|{{ATOM_PREFIX}}|${EROOT}|g" \
-		-e "s|^#!/bin/bash|#!${EROOT}/bin/bash|g" \
 		./atom.sh || die
 
 	sed -i \
 		-e "s|{{ATOM_PREFIX}}|${EROOT}|g" \
 		-e "s|{{ATOM_SUFFIX}}|${suffix}|g" \
 		./src/config-schema.js || die
-
-	unset ELECTRON_SLOT NODE_MODULES_PATH
 }
 
 src_compile() {
+	NO_UPDATE_NOTIFIER="" ./script/build --verbose || die "Failed to compile"
+}
+
+src_install() {
+	# Clean up
 	local ctags_d="app.asar.unpacked/node_modules/symbols-view/vendor"
+	local find_exp="-or -name"
+	local find_name=()
 
-	./script/build --verbose || die "Failed to compile"
+	pushd "${RSRC_DIR}" > /dev/null || die
+	# shellcheck disable=SC2206
+	for match in "AUTHORS*" "CHANGE*" "CONTRIBUT*" "README*" \
+		".travis.yml" ".eslint*" ".wercker.yml" ".npmignore" \
+		"*.md" "*.markdown" "*.bat" "*.cmd" ".mailmap" \
+		".npmignore" "Makefile"; do
+		find_name+=( ${find_exp} "${match}" )
+	done
 
-	pushd "out/${PN}-${MY_PV}-amd64/resources" > /dev/null || die
-	./app/apm/bin/apm rebuild || die "Failed to rebuild native module"
-	echo "python = ${PYTHON}" >> ./app/apm/.apmrc
+	# Remove various development and/or inappropriate files and
+	# useless docs of dependend packages
+	find ./app \
+		\( -type d -name examples \) -or \( -type f \( \
+			-iname "LICEN?E*" \
+			"${find_name[@]}" \
+		\) \) -exec rm -rf "{}" \;
 
-	# Fix python-interceptor.sh to use python2
+	# Make sure python-interceptor.sh use python2.*
 	sed -i "s|python|${PYTHON}|g" ./app/apm/bin/python-interceptor.sh || die
 
 	# Remove non-Linux vendored ctags binaries
@@ -125,12 +137,14 @@ src_compile() {
 	# Replace vendored ctags with a symlink to system ctags
 	rm ./${ctags_d}/ctags-linux || die
 	ln -s "${EROOT}/usr/bin/ctags" ./${ctags_d}/ctags-linux || die
-	popd > /dev/null || die
-}
 
-src_install() {
+	# Remove redundant atom.png
+	rm -r ./app.asar.unpacked/resources || die
+	popd > /dev/null || die
+
 	insinto /usr/libexec/atom
-	doins -r "out/${PN}-${MY_PV}-amd64"/{resources,snapshot_blob.bin}
+	doins -r "${RSRC_DIR}"
+	doins "${RSRC_DIR/resources/snapshot_blob.bin}"
 
 	# Install icons and desktop entry
 	local size
@@ -156,7 +170,7 @@ src_install() {
 	dosym ../../../libexec/atom/resources/LICENSE.md /usr/share/licenses/atom/LICENSE.md
 }
 
-# Return the installation suffix appropriate for the slot.
+# Return the installation suffix appropriate for the slot
 get_install_suffix() {
 	local slot=${SLOT%%/*}
 	local suffix
