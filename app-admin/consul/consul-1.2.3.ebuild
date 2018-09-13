@@ -4,7 +4,7 @@
 EAPI=6
 
 EGO_PN="github.com/hashicorp/${PN}"
-GIT_COMMIT="e716d1b" # Change this when you update the ebuild
+GIT_COMMIT="48d287e" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
