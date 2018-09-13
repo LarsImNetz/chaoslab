@@ -18,7 +18,7 @@ required_files="${configfile}"
 
 depend() {
 	need net
-	use dns
+	use dns logger
 }
 
 start_pre() {
