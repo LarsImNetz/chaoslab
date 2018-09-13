@@ -1,10 +1,10 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=6
 PYTHON_COMPAT=( python2_7 )
 
-inherit desktop python-single-r1
+inherit desktop gnome2-utils python-single-r1
 
 ELECTRON_SLOT="2.0"
 MY_PV=${PV/_/-}
@@ -182,4 +182,14 @@ get_install_suffix() {
 	fi
 
 	echo "${suffix}"
+}
+
+pkg_postinst() {
+	# Update mimedb for the new .desktop file
+	xdg_desktop_database_update
+	gnome2_icon_cache_update
+}
+
+pkg_postrm() {
+	gnome2_icon_cache_update
 }
