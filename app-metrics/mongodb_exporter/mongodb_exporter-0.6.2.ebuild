@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="e5a3c61" # Change this when you update the ebuild
+GIT_COMMIT="fbf8e3a" # Change this when you update the ebuild
 EGO_PN="github.com/percona/${PN}"
 EGO_VENDOR=(
 	"github.com/AlekSi/gocoverutil c7c9efd"
@@ -15,7 +15,7 @@ inherit golang-vcs-snapshot systemd user
 
 DESCRIPTION="A Prometheus exporter for MongoDB"
 HOMEPAGE="https://github.com/percona/mongodb_exporter"
-SRC_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
+SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
@@ -34,15 +34,15 @@ S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
 	if use test; then
-		ewarn ""
+		ewarn
 		ewarn "The test phase requires a local MongoDB server running on default port"
-		ewarn ""
+		ewarn
 		# shellcheck disable=SC2086
 		if has network-sandbox $FEATURES; then
-			ewarn ""
+			ewarn
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn ""
-			die "'network-sandbox' is enabled in FEATURES"
+			ewarn
+			die "[network-sandbox] is enabled in FEATURES"
 		fi
 	fi
 
