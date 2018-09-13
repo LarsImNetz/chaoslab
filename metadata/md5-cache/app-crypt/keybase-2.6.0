@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile install postinst unpack
+DEPEND=>=dev-lang/go-1.9 virtual/pkgconfig
+DESCRIPTION=Client for Keybase
+EAPI=6
+HOMEPAGE=https://keybase.io
+IUSE=pie
+KEYWORDS=~amd64 ~x86
+LICENSE=BSD
+RDEPEND=app-crypt/kbfs app-crypt/gnupg
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/keybase/client/archive/v2.6.0.tar.gz -> keybase-2.6.0.tar.gz
+_eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	e4a9360924c5ce9f52e61342cde58512
+_md5_=55e8ec66009c62bb307175b18a0d7030

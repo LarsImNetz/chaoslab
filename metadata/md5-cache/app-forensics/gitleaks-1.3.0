@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install setup test unpack
+DEPEND=>=dev-lang/go-1.9
+DESCRIPTION=Audit git repos for secrets
+EAPI=6
+HOMEPAGE=https://github.com/zricethezav/gitleaks
+IUSE=pie test
+KEYWORDS=~amd64 ~arm ~x86
+LICENSE=GPL-3
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/zricethezav/gitleaks/archive/v1.3.0.tar.gz -> gitleaks-1.3.0.tar.gz
+_eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc
+_md5_=17111e3806ae84c295b8e6717d1edf63
