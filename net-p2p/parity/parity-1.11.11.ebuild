@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 CRATES="
 adler32-1.0.3
@@ -287,9 +287,9 @@ S="${WORKDIR}/parity-ethereum-${PV}"
 pkg_setup() {
 	# shellcheck disable=SC2086
 	if has network-sandbox $FEATURES; then
-		ewarn ""
+		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn ""
+		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
 
