@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="26b3c85"
+GIT_COMMIT="84cab6d"
 EGO_PN="github.com/prometheus/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -30,9 +30,9 @@ pkg_setup() {
 	if use test; then
 		# shellcheck disable=SC2086
 		if has network-sandbox $FEATURES; then
-			ewarn ""
+			ewarn
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn ""
+			ewarn
 			die "[network-sandbox] is enabled in FEATURES"
 		fi
 	fi
