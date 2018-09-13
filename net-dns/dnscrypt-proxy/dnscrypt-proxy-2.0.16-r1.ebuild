@@ -4,12 +4,14 @@
 EAPI=6
 
 EGO_PN="github.com/jedisct1/${PN}"
+EGO_VENDOR=( "github.com/aead/poly1305 3fee0db0b6" )
 
 inherit fcaps golang-vcs-snapshot systemd user
 
 DESCRIPTION="A flexible DNS proxy, with support for modern encrypted DNS protocols"
 HOMEPAGE="https://dnscrypt.info"
-SRC_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
+	${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="ISC"

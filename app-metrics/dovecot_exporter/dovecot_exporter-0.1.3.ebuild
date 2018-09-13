@@ -4,14 +4,16 @@
 EAPI=6
 
 EGO_PN="github.com/kumina/${PN}"
+# Snapshot taken on 2018.09.13
 EGO_VENDOR=(
 	"github.com/beorn7/perks 3a771d9"
-	"github.com/golang/protobuf b4deda0"
+	"github.com/gogo/protobuf 636bf03"
+	"github.com/golang/protobuf aa810b6"
 	"github.com/matttproud/golang_protobuf_extensions c12348c"
-	"github.com/prometheus/client_golang 82f5ff1"
-	"github.com/prometheus/client_model 99fa1f4"
-	"github.com/prometheus/common d811d2e"
-	"github.com/prometheus/procfs 8b1c2da"
+	"github.com/prometheus/client_golang b5bfa0e"
+	"github.com/prometheus/client_model 5c3871d"
+	"github.com/prometheus/common c7de230"
+	"github.com/prometheus/procfs 05ee40e"
 	"github.com/alecthomas/template a0175ee"
 	"github.com/alecthomas/units 2efee85"
 	"gopkg.in/alecthomas/kingpin.v2 947dcec github.com/alecthomas/kingpin"
@@ -30,7 +32,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="pie"
 
-DOCS=( CHANGELOG README.md )
+DOCS=( CHANGELOG.md README.md )
 QA_PRESTRIPPED="usr/bin/dovecot_exporter"
 
 G="${WORKDIR}/${P}"

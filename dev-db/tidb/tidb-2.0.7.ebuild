@@ -5,7 +5,7 @@ EAPI=6
 
 # TODO: Add an init script and systemd unit file
 
-GIT_COMMIT="b13bc08" # Change this when you update the ebuild
+GIT_COMMIT="29ec059" # Change this when you update the ebuild
 EGO_PN="github.com/pingcap/tidb"
 EGO_VENDOR=( "github.com/coreos/gofail bdde102" )
 

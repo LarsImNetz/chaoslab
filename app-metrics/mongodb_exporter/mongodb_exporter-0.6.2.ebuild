@@ -3,14 +3,20 @@
 
 EAPI=6
 
-GIT_COMMIT="26b3c85"
-EGO_PN="github.com/prometheus/${PN}"
+GIT_COMMIT="fbf8e3a" # Change this when you update the ebuild
+EGO_PN="github.com/percona/${PN}"
+EGO_VENDOR=(
+	"github.com/AlekSi/gocoverutil c7c9efd"
+	"github.com/stretchr/testify f35b8ab"
+	"golang.org/x/tools 16f8f9b github.com/golang/tools"
+)
 
 inherit golang-vcs-snapshot systemd user
 
-DESCRIPTION="An exporter that exposes information gathered from SNMP for Prometheus"
-HOMEPAGE="https://prometheus.io"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+DESCRIPTION="A Prometheus exporter for MongoDB"
+HOMEPAGE="https://github.com/percona/mongodb_exporter"
+SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
+	${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
@@ -18,32 +24,35 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="pie test"
 
-DEPEND="test? ( net-analyzer/net-snmp )"
+DEPEND="test? ( dev-db/mongodb )"
 
-DOCS=( NOTICE README.md )
-QA_PRESTRIPPED="usr/bin/snmp_exporter"
+DOCS=( CHANGELOG.md README.md )
+QA_PRESTRIPPED="usr/bin/mongodb_exporter"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
 	if use test; then
+		ewarn
+		ewarn "The test phase requires a local MongoDB server running on default port"
+		ewarn
 		# shellcheck disable=SC2086
 		if has network-sandbox $FEATURES; then
-			ewarn ""
+			ewarn
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn ""
+			ewarn
 			die "[network-sandbox] is enabled in FEATURES"
 		fi
 	fi
 
-	enewgroup snmp_exporter
-	enewuser snmp_exporter -1 -1 -1 snmp_exporter
+	enewgroup mongodb_exporter
+	enewuser mongodb_exporter -1 -1 -1 mongodb_exporter
 }
 
 src_compile() {
 	export GOPATH="${G}"
-	local PROMU="${EGO_PN}/vendor/${EGO_PN%/*}/common/version"
+	local PROMU="${EGO_PN}/vendor/github.com/prometheus/common/version"
 	local myldflags=( -s -w
 		-X "${PROMU}.Version=${PV}"
 		-X "${PROMU}.Revision=${GIT_COMMIT}"
@@ -59,32 +68,26 @@ src_compile() {
 		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
+
+	if use test; then
+		# Build gocoverutil locally
+		go install ./vendor/github.com/AlekSi/gocoverutil || die
+	fi
 }
 
 src_test() {
-	go test -v ./... || die
+	local PATH="${G}/bin:$PATH"
+	default
 }
 
 src_install() {
-	dobin snmp_exporter
+	dobin mongodb_exporter
 	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
-	insinto /etc/snmp_exporter
-	newins snmp.yml snmp.yml.example
-
-	diropts -o snmp_exporter -g snmp_exporter -m 0750
-	keepdir /var/log/snmp_exporter
-}
-
-pkg_postinst() {
-	if [[ ! -e "${EROOT%/}/etc/snmp_exporter/snmp.yml" ]]; then
-		elog "No snmp.yml found, copying the example over"
-		cp "${EROOT%/}"/etc/snmp_exporter/snmp.yml{.example,} || die
-	else
-		elog "snmp.yml found, please check example file for possible changes"
-	fi
+	diropts -o mongodb_exporter -g mongodb_exporter -m 0750
+	keepdir /var/log/mongodb_exporter
 }
