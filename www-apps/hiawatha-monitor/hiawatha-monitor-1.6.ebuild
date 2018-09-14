@@ -12,14 +12,19 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
-RDEPEND="dev-lang/php[mysql,xslt]
+RDEPEND="
+	dev-lang/php[mysql,xslt]
 	virtual/cron
 	virtual/mysql
-	www-servers/hiawatha[xslt]"
+	www-servers/hiawatha[xslt]
+"
+
+DOCS=( ChangeLog README )
 
 S="${WORKDIR}/monitor"
 
 src_install () {
+	einstalldocs
 	rm -f ChangeLog README LICENSE || die
 
 	insinto "/usr/share/${PN}"
