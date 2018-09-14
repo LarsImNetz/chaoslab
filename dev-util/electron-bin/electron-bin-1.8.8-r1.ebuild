@@ -3,12 +3,13 @@
 
 EAPI=7
 
+MY_PN="${PN/-bin}"
 SRC_URI_BASE="https://github.com/electron/electron/releases/download"
 DESCRIPTION="Cross platform application development framework based on web technologies"
 HOMEPAGE="https://electron.atom.io"
 SRC_URI="
-	amd64? ( ${SRC_URI_BASE}/v${PV}/${PN/-bin}-v${PV}-linux-x64.zip -> ${P}-x64.zip )
-	x86? ( ${SRC_URI_BASE}/v${PV}/${PN/-bin}-v${PV}-linux-ia32.zip -> ${P}-ia32.zip )
+	amd64? ( ${SRC_URI_BASE}/v${PV}/${MY_PN}-v${PV}-linux-x64.zip -> ${P}-x64.zip )
+	x86? ( ${SRC_URI_BASE}/v${PV}/${MY_PN}-v${PV}-linux-ia32.zip -> ${P}-ia32.zip )
 "
 RESTRICT="mirror"
 
@@ -39,18 +40,18 @@ RDEPEND="
 DEPEND="app-arch/unzip"
 
 S="${WORKDIR}"
-MY_PN=${PN}-${SLOT}
+MY_P="${MY_PN}-${SLOT}"
 
 QA_PRESTRIPPED="
-	/opt/${MY_PN}/libffmpeg.so
-	/opt/${MY_PN}/libnode.so
-	/opt/${MY_PN}/electron
+	opt/${MY_P}/libffmpeg.so
+	opt/${MY_P}/libnode.so
+	opt/${MY_P}/electron
 "
 
 src_install() {
-	dodir "/opt/${MY_PN}"
+	dodir "/opt/${MY_P}"
 	# note: intentionally not using "doins" so that we preserve +x bits
-	cp -R ./* "${ED}/opt/${MY_PN}" || die
+	cp -R ./* "${ED}/opt/${MY_P}" || die
 
-	dosym "../../opt/${MY_PN}/electron" "/usr/bin/electron-${SLOT}"
+	dosym "../../opt/${MY_P}/electron" "/usr/bin/${MY_P}"
 }

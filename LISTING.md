@@ -17,10 +17,8 @@ app-admin/**[scaleway-cli](app-admin/scaleway-cli)** | Interact with Scaleway AP
 app-admin/**[terraform](app-admin/terraform)** `*` | A tool for building, changing, and combining infrastructure safely/efficiently
 app-admin/**[vault](app-admin/vault)** `*` | A tool for managing secrets
 app-admin/**[vault-client](app-admin/vault-client)** | A CLI to HashiCorp's Vault inspired by pass
-app-arch/**[squash](app-arch/squash)** | Compression abstraction library and utilities
 app-backup/**[duplicacy](app-backup/duplicacy)** | A new generation cloud backup tool
 app-backup/**[restic](app-backup/restic)** `*` | A backup program that is fast, efficient and secure
-app-backup/**[zvault](app-backup/zvault)** | A highly efficient deduplicating backup solution
 app-benchmarks/**[bombardier](app-benchmarks/bombardier)** | Fast cross-platform HTTP benchmarking tool written in Go
 app-benchmarks/**[dnsperfbench](app-benchmarks/dnsperfbench)** | A command line tool to compare performance of DNS resolvers
 app-benchmarks/**[hey](app-benchmarks/hey)** | HTTP load generator, ApacheBench (ab) replacement
@@ -169,7 +167,6 @@ net-proxy/**[shadowsocks-rust](net-proxy/shadowsocks-rust)** | A Rust port of Sh
 net-proxy/**[toxiproxy](net-proxy/toxiproxy)** | A TCP proxy to simulate network and system conditions
 net-proxy/**[traefik](net-proxy/traefik)** | A modern HTTP reverse proxy and load balancer made to deploy microservices
 net-vpn/**[onioncat](net-vpn/onioncat)** | An IP-Transparent Tor Hidden Service Connector
-net-vpn/**[vpncloud](net-vpn/vpncloud)** | A fully-meshed VPN network in a peer-to-peer manner
 sys-apps/**[bane](sys-apps/bane)** | AppArmor profile generator for docker containers
 sys-apps/**[exa](sys-apps/exa)** `*` | A replacement for 'ls' written in Rust
 sys-apps/**[fd](sys-apps/fd)** `*` | A simple, fast and user-friendly alternative to 'find'
@@ -203,4 +200,3 @@ www-servers/**[hiawatha](www-servers/hiawatha)** `*` | Advanced and secure webse
 www-servers/**[rest-server](www-servers/rest-server)** | A high performance HTTP server that implements restic's REST backend API
 x11-misc/**[noti](x11-misc/noti)** | Trigger notifications when a process completes
 x11-misc/**[yagostatus](x11-misc/yagostatus)** | Yet Another i3status replacement written in Go
-
