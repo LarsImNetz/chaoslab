@@ -8,22 +8,24 @@ inherit cmake-utils systemd user
 DESCRIPTION="Advanced and secure webserver"
 HOMEPAGE="https://www.hiawatha-webserver.org"
 SRC_URI="https://www.hiawatha-webserver.org/files/${P}.tar.gz"
+RESTRICT="mirror"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="+cache ipv6 monitor +rewrite +rproxy +ssl tomahawk +xslt"
 
-RDEPEND="sys-libs/zlib
+RDEPEND="
+	sys-libs/zlib
 	ssl? ( >=net-libs/mbedtls-2.8.0[threads] )
 	xslt? (
 		dev-libs/libxslt
 		dev-libs/libxml2
-	)"
+	)
+"
 DEPEND="${RDEPEND}"
 PDEPEND="monitor? ( www-apps/hiawatha-monitor )"
 
-RESTRICT="mirror"
 PATCHES=( "${FILESDIR}/${PN}-9.5-cflags.patch" )
 
 pkg_setup() {
@@ -32,11 +34,8 @@ pkg_setup() {
 }
 
 src_prepare() {
-	sed -i "s:#ServerId =.*:ServerId = hiawatha:" \
-		config/hiawatha.conf.in || die
-
-	sed -i "s:www-data:hiawatha:g" \
-		extra/logrotate.in || die
+	sed -i "s:#ServerId =.*:ServerId = hiawatha:" config/hiawatha.conf.in || die
+	sed -i "s:www-data:hiawatha:g" extra/logrotate.in || die
 
 	cmake-utils_src_prepare
 }
