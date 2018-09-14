@@ -91,13 +91,13 @@ src_prepare() {
 		./src/main-process/atom-application.js || die
 
 	sed -i \
-		-e "s|{{ATOM_PATH}}|${EROOT}/opt/electron-bin-${ELECTRON_SLOT}/electron|g" \
-		-e "s|{{ATOM_RESOURCE_PATH}}|${EROOT}/usr/libexec/atom/resources/app.asar|g" \
-		-e "s|{{ATOM_PREFIX}}|${EROOT}|g" \
+		-e "s|{{ATOM_PATH}}|${EROOT%/}/opt/electron-${ELECTRON_SLOT}/electron|g" \
+		-e "s|{{ATOM_RESOURCE_PATH}}|${EROOT%/}/usr/libexec/atom/resources/app.asar|g" \
+		-e "s|{{ATOM_PREFIX}}|${EROOT%/}|g" \
 		./atom.sh || die
 
 	sed -i \
-		-e "s|{{ATOM_PREFIX}}|${EROOT}|g" \
+		-e "s|{{ATOM_PREFIX}}|${EROOT%/}|g" \
 		-e "s|{{ATOM_SUFFIX}}|${suffix}|g" \
 		./src/config-schema.js || die
 }
@@ -136,7 +136,7 @@ src_install() {
 	rm ./${ctags_d}/ctags-{darwin,win32.exe} || die
 	# Replace vendored ctags with a symlink to system ctags
 	rm ./${ctags_d}/ctags-linux || die
-	ln -s "${EROOT}/usr/bin/ctags" ./${ctags_d}/ctags-linux || die
+	ln -s "${EROOT%/}/usr/bin/ctags" ./${ctags_d}/ctags-linux || die
 
 	# Remove redundant atom.png
 	rm -r ./app.asar.unpacked/resources || die
@@ -155,7 +155,7 @@ src_install() {
 	make_desktop_entry atom Atom atom \
 		"GNOME;GTK;Utility;TextEditor;Development;" \
 		"MimeType=text/plain;\nStartupNotify=true\nStartupWMClass=Atom"
-	sed -e "/^Exec/s/$/ %F/" -i "${ED}"/usr/share/applications/*.desktop || die
+	sed -e "/^Exec/s/$/ %F/" -i "${ED%/}"/usr/share/applications/*.desktop || die
 
 	# Fix permissions
 	fperms +x /usr/libexec/atom/resources/app/atom.sh
