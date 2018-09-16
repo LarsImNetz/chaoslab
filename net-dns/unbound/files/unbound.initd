@@ -15,16 +15,16 @@ description_reload="Kills all children and reloads the configuration"
 description_save_cache="Saves the current cache to disk"
 
 getconfig() {
-	local key="$1"
-	local value_default="$2"
-	local value=
+	key="$1"
+	value_default="$2"
+	value=""
 
 	if service_started ; then
 		value="$(service_get_value "${key}")"
 	fi
 
 	if [ -z "${value}" ] && [ -n "${UNBOUND_CONFIG}" ] && [ -r "${UNBOUND_CONFIG}" ]; then
-		value="$(unbound-checkconf -o ${key} "${UNBOUND_CONFIG}")"
+		value="$(unbound-checkconf -o "${key}" "${UNBOUND_CONFIG}")"
 	fi
 
 	if [ -z "${value}" ]; then
@@ -56,7 +56,7 @@ configtest() {
 		unbound-checkconf "${UNBOUND_CONFIG}"
 	else
 		if [ -n "${UNBOUND_PRESERVE_CACHE}" ]; then
-			local _is_control_enabled=$(getconfig control-enable no)
+			_is_control_enabled="$(getconfig control-enable no)"
 			if [ "${_is_control_enabled}" != "yes" ]; then
 				eerror "Cannot preserve cache: control-enable is 'no' in the config file!"
 			fi
@@ -87,7 +87,7 @@ start_post() {
 			ebegin "Loading cache from '${UNBOUND_CACHEFILE}'"
 			# Loading cache can fail which would block this runscript.
 			# Using `timeout` from coreutils will be our safeguard ...
-			timeout -k 5 ${UNBOUND_LOAD_CACHE_TIMEOUT} unbound-control -q -c "${UNBOUND_CONFIG}" load_cache < "${UNBOUND_CACHEFILE}"
+			timeout -k 5 "${UNBOUND_LOAD_CACHE_TIMEOUT}" unbound-control -q -c "${UNBOUND_CONFIG}" load_cache < "${UNBOUND_CACHEFILE}"
 			eend $?
 		else
 			ewarn "Loading cache from '${UNBOUND_CACHEFILE}' skipped: File does not exists or is empty!"
