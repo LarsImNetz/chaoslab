@@ -11,4 +11,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://secure.nic.cz/files/knot-resolver/knot-resolver-3.0.0.tar.xz
 _eclasses_=eutils	6e6c2737b59a4b982de6fb3ecefd87f8	flag-o-matic	55aaa148741116aa54ad0d80e361818e	multilib	97f470f374f2e94ccab04a2fb21d811e	toolchain-funcs	e4a9360924c5ce9f52e61342cde58512	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=bdf8974b062bce66199376bdb7a9ec85
+_md5_=a5a3d96522f0b86dd493279e71969e4c
