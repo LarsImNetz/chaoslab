@@ -41,7 +41,7 @@ CDEPEND="
 	!libressl? ( dev-libs/openssl:0=[-bindist] )
 	libressl? ( dev-libs/libressl:0= )
 	readline? ( sys-libs/readline:0= )
-	system-unbound? ( net-dns/unbound[threads] )
+	system-unbound? ( net-dns/unbound:=[threads] )
 	unwind? ( sys-libs/libunwind )
 "
 DEPEND="${CDEPEND}
