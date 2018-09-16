@@ -22,7 +22,7 @@ start_stop_daemon_args="${SSD_OPTS}
 	-d ${directory} -1 ${output_log} -2 ${error_log}"
 
 depend() {
-	need net
+	use net logger
 	provide dns
 }
 

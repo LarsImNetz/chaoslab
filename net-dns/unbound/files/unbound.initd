@@ -3,23 +3,76 @@
 # Distributed under the terms of the GNU General Public License v2
 
 UNBOUND_CONFIG="/etc/unbound/${RC_SVCNAME}.conf"
+UNBOUND_CACHEFILE="${UNBOUND_CACHEFILE:-/var/lib/unbound/${RC_SVCNAME}.cache}"
+UNBOUND_LOAD_CACHE_TIMEOUT="${UNBOUND_LOAD_CACHE_TIMEOUT:-30}"
 
 name="${name:-Unbound daemon}"
-extra_commands="configtest"
+extra_commands="configtest save_cache"
 extra_started_commands="reload"
 description="unbound is a Domain Name Server (DNS) that is used to resolve host names to IP address"
 description_configtest="Run syntax tests for configuration files only"
 description_reload="Kills all children and reloads the configuration"
+description_save_cache="Saves the current cache to disk"
+
+getconfig() {
+	key="$1"
+	value_default="$2"
+	value=""
+
+	if service_started ; then
+		value="$(service_get_value "${key}")"
+	fi
+
+	if [ -z "${value}" ] && [ -n "${UNBOUND_CONFIG}" ] && [ -r "${UNBOUND_CONFIG}" ]; then
+		value="$(unbound-checkconf -o "${key}" "${UNBOUND_CONFIG}")"
+	fi
+
+	if [ -z "${value}" ]; then
+		# Value not explicitly set in the configfile or configfile does not exist
+		# or is not readable
+		echo "${value_default}"
+	else
+		echo "${value}"
+	fi
+
+	return 0
+}
 
 command="/usr/sbin/unbound"
-command_args="-c \"${UNBOUND_CONFIG}\""
-pidfile="$(unbound-checkconf -o pidfile "${UNBOUND_CONFIG}")"
+command_args="-c \"${UNBOUND_CONFIG}\" ${UNBOUND_OPTS}"
+pidfile="$(getconfig pidfile /run/unbound.pid)"
+retry="${retry:-TERM/25/KILL/5}"
+start_stop_daemon_args="${SSD_OPTS:---wait 1000}"
 
 depend() {
-	need net
-	use logger
+	use net logger
 	provide dns
 	after auth-dns
+}
+
+configtest() {
+	ebegin "Checking ${RC_SVCNAME} configuration"
+	if ! unbound-checkconf "${UNBOUND_CONFIG}" >/dev/null 2>&1; then
+		unbound-checkconf "${UNBOUND_CONFIG}"
+	else
+		if [ -n "${UNBOUND_PRESERVE_CACHE}" ]; then
+			_is_control_enabled="$(getconfig control-enable no)"
+			if [ "${_is_control_enabled}" != "yes" ]; then
+				eerror "Cannot preserve cache: control-enable is 'no' in the config file!"
+			fi
+		fi
+	fi
+	eend $? "Failed, please correct the errors above"
+}
+
+save_cache() {
+	if [ "${RC_CMD}" != "restart" ]; then
+		UNBOUND_PRESERVE_CACHE=1 configtest || return 1
+	fi
+
+	ebegin "Saving cache to '${UNBOUND_CACHEFILE}'"
+	unbound-control -c "${UNBOUND_CONFIG}" dump_cache > "${UNBOUND_CACHEFILE}"
+	eend $?
 }
 
 start_pre() {
@@ -28,10 +81,34 @@ start_pre() {
 	fi
 }
 
+start_post() {
+	if [ -n "${UNBOUND_PRESERVE_CACHE}" ]; then
+		if [ -s "${UNBOUND_CACHEFILE}" ]; then
+			ebegin "Loading cache from '${UNBOUND_CACHEFILE}'"
+			# Loading cache can fail which would block this runscript.
+			# Using `timeout` from coreutils will be our safeguard ...
+			timeout -k 5 "${UNBOUND_LOAD_CACHE_TIMEOUT}" unbound-control -q -c "${UNBOUND_CONFIG}" load_cache < "${UNBOUND_CACHEFILE}"
+			eend $?
+		else
+			ewarn "Loading cache from '${UNBOUND_CACHEFILE}' skipped: File does not exists or is empty!"
+		fi
+	fi
+
+	# It is not a fatal error if preserved cache could not be loaded
+	return 0
+}
+
 stop_pre() {
 	if [ "${RC_CMD}" = "restart" ]; then
 		configtest || return 1
 	fi
+
+	if [ -n "${UNBOUND_PRESERVE_CACHE}" ]; then
+		save_cache
+	fi
+
+	# It is not a fatal error if cache cannot be preserved
+	return 0
 }
 
 reload() {
@@ -39,12 +116,4 @@ reload() {
 	ebegin "Reloading ${RC_SVCNAME}"
 	start-stop-daemon --signal HUP --pidfile "${pidfile}"
 	eend $? "Failed to reload ${RC_SVCNAME}"
-}
-
-configtest() {
-	ebegin "Checking ${RC_SVCNAME} configuration"
-	if ! unbound-checkconf "${UNBOUND_CONFIG}" >/dev/null 2>&1; then
-		unbound-checkconf "${UNBOUND_CONFIG}"
-	fi
-	eend $? "Failed, please correct the errors above"
 }

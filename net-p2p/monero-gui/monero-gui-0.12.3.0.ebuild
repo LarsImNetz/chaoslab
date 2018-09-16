@@ -54,7 +54,7 @@ CDEPEND="
 		dev-qt/qtmultimedia:5[qml]
 		media-gfx/zbar
 	)
-	system-unbound? ( net-dns/unbound[threads] )
+	system-unbound? ( net-dns/unbound:=[threads] )
 	unwind? ( sys-libs/libunwind )
 "
 DEPEND="${CDEPEND}
