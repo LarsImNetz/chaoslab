@@ -47,12 +47,6 @@ sync-type = git
 sync-uri = https://gitlab.com/chaoslab/chaoslab-overlay.git
 ```
 
-> **Note:** I recommend that you manually install the overlay, as obviously you
-will be pulling directly from the original source. If you use the automatic
-installation described below, you will be pulling from
-[gentoo's mirror](https://github.com/gentoo-mirror) service, in which from time
-to time have [sync issues](https://bugs.gentoo.org/653472).
-
 Alternatively, for automatic install, you must have
 [app-eselect/eselect-repository](https://packages.gentoo.org/packages/app-eselect/eselect-repository)
 or [app-portage/layman](https://packages.gentoo.org/packages/app-portage/layman)
