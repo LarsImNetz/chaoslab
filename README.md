@@ -2,7 +2,7 @@ ChaosLab: Overlay for Gentoo Linux
 ----------------------------------
 
 [![packages 193](https://img.shields.io/badge/packages-193-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
-[![ebuilds 280](https://img.shields.io/badge/ebuilds-280-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![ebuilds 278](https://img.shields.io/badge/ebuilds-278-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
 
@@ -46,12 +46,6 @@ auto-sync = yes
 sync-type = git
 sync-uri = https://gitlab.com/chaoslab/chaoslab-overlay.git
 ```
-
-> **Note:** I recommend that you manually install the overlay, as obviously you
-will be pulling directly from the original source. If you use the automatic
-installation described below, you will be pulling from
-[gentoo's mirror](https://github.com/gentoo-mirror) service, in which from time
-to time have [sync issues](https://bugs.gentoo.org/653472).
 
 Alternatively, for automatic install, you must have
 [app-eselect/eselect-repository](https://packages.gentoo.org/packages/app-eselect/eselect-repository)

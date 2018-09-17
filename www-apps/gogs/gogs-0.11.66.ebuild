@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="91441c3" # Change this when you update the ebuild
+GIT_COMMIT="3a4c981" # Change this when you update the ebuild
 EGO_PN="github.com/gogs/gogs"
 
 inherit fcaps golang-vcs-snapshot systemd user
