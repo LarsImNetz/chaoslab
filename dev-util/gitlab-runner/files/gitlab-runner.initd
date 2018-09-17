@@ -12,7 +12,7 @@ command_args="run -c ${RUNNER_CONFIG} ${RUNNER_OPTS}"
 command_background=yes
 pidfile="/run/${RC_SVCNAME}.pid"
 required_files="${RUNNER_CONFIG}"
-retry="${retry:-TERM/30/KILL/5}"
+retry="${retry:-TERM/60/KILL/5}"
 start_stop_daemon_args="${SSD_OPTS}
 	-1 ${output_log} -2 ${error_log}"
 
