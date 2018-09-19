@@ -4,9 +4,10 @@
 EAPI=6
 
 EGO_PN="github.com/rakyll/hey"
+# Snapshot taken on 2018.09.19
 EGO_VENDOR=(
-	"golang.org/x/net f01ecb6 github.com/golang/net"
-	"golang.org/x/text 836efe4 github.com/golang/text"
+	"golang.org/x/net 26e67e7 github.com/golang/net"
+	"golang.org/x/text 905a571 github.com/golang/text"
 )
 
 inherit golang-vcs-snapshot
@@ -30,7 +31,7 @@ S="${G}/src/${EGO_PN}"
 src_compile() {
 	export GOPATH="${G}"
 	local mygoargs=(
-		-v -work -x
+		-v
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "-s -w"
