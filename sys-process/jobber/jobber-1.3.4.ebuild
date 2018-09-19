@@ -18,9 +18,11 @@ KEYWORDS="~amd64"
 IUSE="pie"
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/jobber
+QA_PRESTRIPPED="
+	usr/bin/jobber
 	usr/libexec/jobbermaster
-	usr/libexec/jobberrunner"
+	usr/libexec/jobberrunner
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"

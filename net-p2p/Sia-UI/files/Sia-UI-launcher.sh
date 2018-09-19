@@ -1,3 +1,3 @@
 #!/bin/bash
 
-%%ELECTRON%% --app=/usr/lib/sia-ui $@
+%%ELECTRON%% --app=/usr/share/sia-ui $@

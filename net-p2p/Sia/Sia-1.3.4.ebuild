@@ -3,8 +3,9 @@
 
 EAPI=6
 
-GIT_COMMIT="910034d" # Change this when you update the ebuild
+GIT_COMMIT="a251832" # Change this when you update the ebuild
 EGO_PN="github.com/NebulousLabs/Sia"
+# Snapshot taken on 2018.09.18
 # Deps that are not needed:
 # github.com/NebulousLabs/bolt a22e934
 # github.com/inconshreveable/mousetrap 76626ae
@@ -19,20 +20,20 @@ EGO_VENDOR=(
 	"github.com/NebulousLabs/ratelimit 9dddc2c"
 	"github.com/NebulousLabs/threadgroup d137120"
 	"github.com/NebulousLabs/writeaheadlog af695ed"
-	"github.com/klauspost/reedsolomon 7d9453e"
-	"github.com/julienschmidt/httprouter adbc77e"
+	"github.com/klauspost/reedsolomon 925cb01"
+	"github.com/julienschmidt/httprouter 348b672"
 	"github.com/inconshreveable/go-update 8152e7e"
 	"github.com/kardianos/osext ae77be6"
 
-	"github.com/spf13/cobra 1e58aa3"
-	"github.com/spf13/pflag 3ebe029"
-	"github.com/cpuguy83/go-md2man 48d8747"
+	"github.com/spf13/cobra 8d114be"
+	"github.com/spf13/pflag 298182f"
+	"github.com/cpuguy83/go-md2man 691ee98"
 	"github.com/klauspost/cpuid e7e905e"
 
-	"golang.org/x/crypto b47b158 github.com/golang/crypto"
-	"golang.org/x/net 1e49130 github.com/golang/net"
-	"golang.org/x/text 5c1cf69 github.com/golang/text"
-	"golang.org/x/sys 9527bec github.com/golang/sys"
+	"golang.org/x/crypto 0e37d00 github.com/golang/crypto"
+	"golang.org/x/net 26e67e7 github.com/golang/net"
+	"golang.org/x/text 905a571 github.com/golang/text"
+	"golang.org/x/sys d0be072 github.com/golang/sys"
 	"gopkg.in/yaml.v2 5420a8b github.com/go-yaml/yaml"
 )
 
@@ -49,8 +50,10 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="pie"
 
-QA_PRESTRIPPED="usr/bin/siac
-	usr/bin/siad"
+QA_PRESTRIPPED="
+	usr/bin/siac
+	usr/bin/siad
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"

@@ -3,9 +3,9 @@
 
 EAPI=6
 
-inherit gnome2-utils xdg
+inherit desktop gnome2-utils
 
-ELECTRON_SLOT="1.7"
+ELECTRON_SLOT="2.0"
 DESCRIPTION="The graphical front-end for Sia"
 HOMEPAGE="https://sia.tech"
 SRC_URI="https://github.com/NebulousLabs/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
@@ -15,26 +15,24 @@ LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
 
-DEPEND=">=net-libs/nodejs-6.0.0"
-RDEPEND="net-p2p/Sia
-	dev-util/electron-bin:${ELECTRON_SLOT}"
+DEPEND=">=net-libs/nodejs-6.9.0"
+RDEPEND="
+	net-p2p/Sia
+	dev-util/electron-bin:${ELECTRON_SLOT}
+"
 
 pkg_setup() {
 	# shellcheck disable=SC2086
 	if has network-sandbox $FEATURES; then
-		ewarn ""
+		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn ""
+		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
 }
 
-src_prepare() {
-	npm install || die
-	default
-}
-
 src_compile() {
+	npm install || die
 	npm run build || die
 }
 
@@ -43,28 +41,23 @@ src_install() {
 	sed "s:%%ELECTRON%%:electron-${ELECTRON_SLOT}:" \
 		-i "${ED%/}"/usr/bin/sia-ui || die
 
-	insinto /usr/lib/sia-ui
-	doins -r {plugins,assets,css,dist,index.html,package.json,js}
+	insinto /usr/share/sia-ui
+	doins -r {assets,css,dist,js,plugins,app.html,app.js,package.json}
 
 	# Install icons and desktop entry
-	newicon assets/icon.ico sia.ico
-	make_desktop_entry sia-ui Sia /usr/share/pixmaps/sia.ico \
-		Utility "Terminal=false"
-	sed "/^Exec/s/$/ %f/" -i \
-		"${ED%/}"/usr/share/applications/*.desktop || die
-}
-
-pkg_preinst() {
-	xdg_pkg_preinst
-	gnome2_icon_savelist
+	local size
+	for size in 16 22 24 32 48 64 128 256; do
+		newicon -s ${size} "${FILESDIR}/icon/${size}.png" sia-ui.png
+	done
+	make_desktop_entry sia-ui Sia-UI sia-ui Utility \
+		"Terminal=false\\nStartupNotify=true\\nStartupWMClass=Sia-UI"
+	sed "/^Exec/s/$/ %f/" -i "${ED%/}"/usr/share/applications/*.desktop || die
 }
 
 pkg_postinst() {
-	xdg_pkg_postinst
 	gnome2_icon_cache_update
 }
 
 pkg_postrm() {
-	xdg_pkg_postrm
 	gnome2_icon_cache_update
 }
