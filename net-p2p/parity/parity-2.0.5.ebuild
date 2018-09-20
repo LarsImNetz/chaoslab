@@ -289,9 +289,9 @@ S="${WORKDIR}/parity-ethereum-${PV/_*}"
 pkg_setup() {
 	# shellcheck disable=SC2086
 	if has network-sandbox $FEATURES; then
-		ewarn ""
+		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn ""
+		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
 
@@ -329,10 +329,10 @@ src_install() {
 
 pkg_postinst() {
 	if use daemon; then
-		if [[ $(stat -c %a "${EROOT%/}/var/lib/parity") != "750" ]]; then
-			einfo "Fixing ${EROOT%/}/var/lib/parity permissions"
-			chown -R parity:parity "${EROOT%/}/var/lib/parity" || die
-			chmod 0750 "${EROOT%/}/var/lib/parity" || die
+		if [[ $(stat -c %a "${EROOT}/var/lib/parity") != "750" ]]; then
+			einfo "Fixing ${EROOT}/var/lib/parity permissions"
+			chown -R parity:parity "${EROOT}/var/lib/parity" || die
+			chmod 0750 "${EROOT}/var/lib/parity" || die
 		fi
 	fi
 }
