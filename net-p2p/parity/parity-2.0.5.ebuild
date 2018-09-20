@@ -61,7 +61,7 @@ fdlimit-0.1.1
 fixed-hash-0.2.1
 fixedbitset-0.1.9
 fnv-1.0.5
-fs-swap-0.2.3
+fs-swap-0.2.4
 fuchsia-zircon-0.3.3
 fuchsia-zircon-sys-0.3.3
 futures-0.1.21
