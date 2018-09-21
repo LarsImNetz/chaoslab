@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI="7"
 
 inherit systemd user
 
@@ -22,9 +22,9 @@ DOCS=( docs/{ARCHITECTURE.md,cryptpad-docker.md,example.nginx.conf} )
 pkg_setup() {
 	# shellcheck disable=SC2086
 	if has network-sandbox $FEATURES; then
-		ewarn ""
+		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn ""
+		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
 
@@ -36,11 +36,13 @@ src_prepare() {
 	# shellcheck disable=SC2153
 	local CRYPTPAD_DATADIR="${EPREFIX}/var/lib/cryptpad"
 	sed -i \
-		-e "s:'./tasks':'${CRYPTPAD_DATADIR}/tasks':" \
-		-e "s:'./datastore/':'${CRYPTPAD_DATADIR}/datastore':" \
-		-e "s:'./pins':'${CRYPTPAD_DATADIR}/pins':" \
-		-e "s:'./blob':'${CRYPTPAD_DATADIR}/blob':" \
-		-e "s:'./blobstage':'${CRYPTPAD_DATADIR}/blobstage':" \
+		-e "s|'::'|'127.0.0.1'|" \
+		-e "s|'./tasks'|'${CRYPTPAD_DATADIR}/tasks'|" \
+		-e "s|'./block'|'${CRYPTPAD_DATADIR}/block'|" \
+		-e "s|'./datastore/'|'${CRYPTPAD_DATADIR}/datastore/'|" \
+		-e "s|'./pins'|'${CRYPTPAD_DATADIR}/pins'|" \
+		-e "s|'./blob'|'${CRYPTPAD_DATADIR}/blob'|" \
+		-e "s|'./blobstage'|'${CRYPTPAD_DATADIR}/blobstage'|" \
 		config.example.js || die
 
 	default
@@ -56,7 +58,7 @@ src_compile() {
 	if ! command -v bower &>/dev/null; then
 		ebegin "Installing bower locally"
 		pushd "${N_PREFIX}" || die
-		npm install --cache "${WORKDIR}"/npm-cache bower || die
+		npm install --cache "${N_PREFIX}-cache" bower || die
 		popd || die
 		eend $?
 	fi
@@ -68,6 +70,26 @@ src_compile() {
 }
 
 src_install() {
+	# Clean up
+	local find_exp="-or -name"
+	local find_name=()
+
+	# shellcheck disable=SC2206
+	for match in "AUTHORS*" "CHANGE*" "CONTRIBUT*" "README*" \
+		".travis.yml" ".eslint*" ".wercker.yml" ".npmignore" \
+		"*.md" "*.markdown" "*.bat" "*.cmd" ".mailmap" \
+		".npmignore" "Makefile"; do
+		find_name+=( ${find_exp} "${match}" )
+	done
+
+	# Remove various development and/or inappropriate files and
+	# useless docs of dependend packages
+	find ./node_modules \
+		\( -type d -name examples \) -or \( -type f \( \
+			-iname "LICEN?E*" \
+			"${find_name[@]}" \
+		\) \) -exec rm -rf "{}" \;
+
 	einstalldocs
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
@@ -76,8 +98,10 @@ src_install() {
 	newins config.example.js config.js
 	dosym ../../../etc/cryptpad/config.js /usr/share/cryptpad/config.js
 
-	# Now remove the redundant file
+	# Remove the redundant file
 	rm config.example.js || die
+	# Remove phantomjs, it's not required anymore
+	rm -R node_modules/{phantomjs-prebuilt,.bin/phantomjs} || die
 
 	insinto /usr/share/cryptpad
 	doins -r {customize.dist,node_modules,storage,www}

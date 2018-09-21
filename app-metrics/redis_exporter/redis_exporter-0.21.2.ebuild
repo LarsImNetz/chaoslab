@@ -4,7 +4,7 @@
 EAPI=6
 
 # Change this when you update the ebuild:
-GIT_COMMIT="ce489e333b3a3d83422e48fb0988c2469441b966"
+GIT_COMMIT="8bb0b841e9a70b0348f69483e58fea01d521c47a"
 EGO_PN="github.com/oliver006/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -27,14 +27,14 @@ S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
 	if use test; then
-		ewarn ""
+		ewarn
 		ewarn "The test phase requires a local Redis server running on default port"
-		ewarn ""
+		ewarn
 		# shellcheck disable=SC2086
 		if has network-sandbox $FEATURES; then
-			ewarn ""
+			ewarn
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn ""
+			ewarn
 			die "[network-sandbox] is enabled in FEATURES"
 		fi
 	fi
