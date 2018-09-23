@@ -22,10 +22,9 @@ for the following:
    `git checkout -b my-new-feature develop`
 3. When your code changes are ready, make sure to run `repoman manifest` and
    `repoman full` in the package directory to ensure that all the Gentoo's QA
-   tests pass. This is necessary to assure nothing was accidentally broken by
-   your changes; for the purpose this project integrates GitLab's Continuous
-   Integration for _repoman_ and _shellcheck_ tests. **I only take merge
-   requests with passing _repoman_ and _shellcheck_ tests**.
+   tests pass. This is necessary to assure that nothing was accidentally broken
+   by your changes; for the purpose this project integrates
+   [GitLab's CI](.gitlab-ci.yml) for _**repoman**_ and _**shellcheck**_ tests.
 4. Make sure your git commit messages are in the proper format to make reading
    history easier. Commit your message with `repoman commit`, which should look
    like:
@@ -48,10 +47,14 @@ for the following:
 6. Push your changes/branch in your fork `git push origin my-new-feature`, and
    then submit a [merge request](https://docs.gitlab.com/ee/gitlab-basics/add-merge-request.html)
    against this project.
+
+   > **Note:**  If you get in trouble with _**shellcheck's**_ tests, please see
+   their [checks guide](https://github.com/koalaman/shellcheck/wiki/Checks).
+
 7. Squash your commits into a single one with `git rebase -i`. It's okay to
    force update your merge request.
 8. Comment in the merge request when you are ready for the changes to be
    reviewed: `PR ready for review`.
 
 At this point you are waiting for my feedbacks. I look at pull requests within
-few hours. Bear in mind that I may suggest some improvements or alternatives. 
+few hours. Bear in mind that I may suggest some improvements or alternatives.
