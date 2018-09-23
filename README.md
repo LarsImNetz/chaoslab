@@ -8,13 +8,13 @@ ChaosLab: Overlay for Gentoo Linux
 
 The scope of this overlay is to maintain ebuilds for packages related to secure
 communication, cryptography, cryptocurrency, server-side applications, and other
-things that I'm interested in. You may visit [LISTING.md](LISTING.md) to see a
+things that I'm interested in. You may check [LISTING.md](LISTING.md) to see a
 list of available packages and their associated description.
 
 The overlay also includes full support for `libressl` USE flag and **OpenRC**,
 but unfortunately the support for **systemd** has been _less-than-stellar_
 because I don't have any machines to test its unit files. If you have spare time
-and would like to improve it, please contribute.
+and would like to improve it, please [contribute](CONTRIBUTING.md).
 
 **DISCLAIMER:** As I don't have the resources, nor the time to make stable
 ebuilds in the same way Gentoo developers do, all ebuilds are permanently kept
@@ -30,6 +30,14 @@ should file a bug report to let the developers know about it.* —
 [Gentoo's Handbook](https://wiki.gentoo.org/wiki/Handbook:AMD64/Full/Portage#Testing)
 
 ## How to install the overlay
+
+> **Note:** To use the testing branch for particular packages, you must add the
+package category and name (e.g., foo-bar/xyz) in `/etc/portage/package.accept_keywords`.
+It is also possible to create a directory (with the same name) and list the
+package in the files under that directory. Please see the
+[Gentoo Wiki](https://wiki.gentoo.org/wiki/Ebuild_repository) for an expanded
+overview of ebuilds and unofficial repositories for Gentoo.
+
 You can clone the repository and create `/etc/portage/repos.conf/chaoslab.conf`
 with the following contents:
 
@@ -42,31 +50,46 @@ sync-type = git
 sync-uri = https://gitlab.com/chaoslab/chaoslab-overlay.git
 ```
 
-Alternatively, for automatic install, you must have
+For automatic install, you must have
 [app-eselect/eselect-repository](https://packages.gentoo.org/packages/app-eselect/eselect-repository)
 or [app-portage/layman](https://packages.gentoo.org/packages/app-portage/layman)
 installed on your system for this to work.
 
-#### Using `eselect-repository`:
+#### Using [eselect-repository](https://wiki.gentoo.org/wiki/Eselect/Repository)
 ```
 eselect repository enable chaoslab
 ```
 
-#### Using `layman`:
+#### Using [layman](https://wiki.gentoo.org/wiki/Layman)
 ```
 layman -fa chaoslab
 ```
 
-> **Note:** To use the testing branch for particular packages, you must add the
-package category and name (e.g., foo-bar/xyz) in `/etc/portage/package.accept_keywords`.
-It is also possible to create a directory (with the same name) and list the
-package in the files under that directory. Please see the
-[Gentoo Wiki](https://wiki.gentoo.org/wiki/Ebuild_repository) for an expanded
-overview of ebuilds and unofficial repositories for Gentoo.
+#### Loner's MO
+
+Alternatively, if you really don't want to install the overlay, but are
+interested in some package/s (want to keep outdated versions, customize things,
+other reasons), that's also fine. You can keep such ebuilds in your local
+repository.
+
+Here is a complete example of creating minimal local repository:
+
+```shell
+MY_REPO="/path/to/local/repository"
+
+mkdir -p "${MY_REPO}"/{metadata,profiles}
+echo "localrepo" > "${MY_REPO}"/profiles/repo_name
+printf "masters = gentoo\nauto-sync = false" > "${MY_REPO}"/metadata/layout.conf
+# Register your local overlay in /etc/portage/repos.conf:
+printf "[localrepo]\nlocation = ${MY_REPO}" > /etc/portage/repos.conf/localrepo.conf
+
+# Copy the desired 'category/package-name' to your ${MY_REPO}
+# You're now ready to emerge your local package. Kudos to you! (:
+```
 
 ## Signature
 All commits and manifests on the first parent (at least) are signed by me.
-* Signing key: `0x5010AD684AB2A4EE` @ _your favorite public key server_
+* Signing key: `0x5010AD684AB2A4EE`
 * Fingerprint: `46D2 70C0 8BAA 08C2 3250 16B4 4B7D 696C 954F 8EDD`
 
 Also, you can easily do full-tree verification
@@ -79,4 +102,5 @@ find */* -maxdepth 2 -type d ! -path 'profiles*' -exec gemato verify -k -s {} +
 
 ## Contributing
 
-Please see our [contribution guide](CONTRIBUTING.md).
+We welcome contributions and improvements, please see the
+[contribution guidelines](CONTRIBUTING.md).
