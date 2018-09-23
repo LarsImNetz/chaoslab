@@ -16,11 +16,6 @@ but unfortunately the support for **systemd** has been _less-than-stellar_
 because I don't have any machines to test its unit files. If you have spare time
 and would like to improve it, please contribute.
 
-**If you find any bugs, please report them!** You can use the
-[GitLab issue tracker](https://gitlab.com/chaoslab/chaoslab-overlay/issues) or
-[e-mail](overlay.xml#L9) ([PGP](#signature)) to report bugs, ask
-questions or suggest new features. Needless to say, MR are welcomed. (:
-
 **DISCLAIMER:** As I don't have the resources, nor the time to make stable
 ebuilds in the same way Gentoo developers do, all ebuilds are permanently kept
 in the _testing branch¹_. Thus, you should probably consider it to be _unsafe_
@@ -81,3 +76,7 @@ Also, you can easily do full-tree verification
 ```shell
 find */* -maxdepth 2 -type d ! -path 'profiles*' -exec gemato verify -k -s {} +
 ```
+
+## Contributing
+
+Please see our [contribution guide](CONTRIBUTING.md).
