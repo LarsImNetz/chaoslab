@@ -34,3 +34,9 @@
 # think that it is quite experimental. You should NOT use this, unless you really
 # know what you are doing. Please use the Gentoo's official ebuild.
 app-emulation/docker
+
+# Ian Moone <gentoo@chaoslab.org> (23 Sep 2018)
+# It's insecure and upstream seems dead or burnout, as alternative
+# www-client/ungoogled-chromium will be available soon:
+# https://gitlab.com/chaoslab/chaoslab-overlay/issues/35
+<=www-client/inox-68

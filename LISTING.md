@@ -2,7 +2,7 @@
 This is a list of packages available and their associated description:
 
 * `*` Packages that have similar ebuild in the main tree, but for personal reasons, we maintain our own versions.
-* `**` [Masked packages](profiles/package.mask), probably too unstable and/or experimental.
+* `**` [Masked packages](profiles/package.mask), probably insecure/unstable/experimental.
 * `***` Temporary packages, you shouldn't rely on it. We probably have it because
 it's a dependency for other packages, and the main tree still doesn't have said package.
 
@@ -189,7 +189,7 @@ www-apps/**[mattermost-server](www-apps/mattermost-server)** | Open source Slack
 www-apps/**[mattermost-server-ee](www-apps/mattermost-server-ee)** | Open source Slack-alternative in Golang and React (Enterprise Edition)
 www-apps/**[modoboa](www-apps/modoboa)** | A mail hosting and management platform with a modern and simplified Web UI
 www-apps/**[modoboa-dmarc](www-apps/modoboa-dmarc)** | A set of tools to use DMARC through Modoboa
-www-client/**[inox](www-client/inox)** | Chromium spin-off to enhance privacy by disabling data transmission to Google
+www-client/**[inox](www-client/inox)** `**` | Chromium spin-off to enhance privacy by disabling data transmission to Google
 www-misc/**[httplab](www-misc/httplab)** | An interactive web server that let you inspect HTTP requests and forge responses
 www-misc/**[wuzz](www-misc/wuzz)** | Interactive cli tool for HTTP inspection
 www-plugins/**[browserpass](www-plugins/browserpass)** `*` | WebExtension host binary for app-admin/pass, a UNIX password manager
