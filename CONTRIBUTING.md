@@ -54,7 +54,7 @@ for the following:
 7. Squash your commits into a single one with `git rebase -i`. It's okay to
    force update your merge request.
 8. Comment in the merge request when you are ready for the changes to be
-   reviewed: `PR ready for review`.
+   reviewed: `MR ready for review`.
 
 At this point you are waiting for my feedbacks. I look at pull requests within
 few hours. Bear in mind that I may suggest some improvements or alternatives.
