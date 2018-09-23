@@ -45,7 +45,6 @@ with the following contents:
 [chaoslab]
 priority = 50
 location = /path/to/local/chaoslab-overlay
-auto-sync = yes
 sync-type = git
 sync-uri = https://gitlab.com/chaoslab/chaoslab-overlay.git
 ```
@@ -79,12 +78,11 @@ MY_REPO="/path/to/local/repository"
 
 mkdir -p "${MY_REPO}"/{metadata,profiles}
 echo "localrepo" > "${MY_REPO}"/profiles/repo_name
-printf "masters = gentoo\nauto-sync = false" > "${MY_REPO}"/metadata/layout.conf
+printf "masters = gentoo\nauto-sync = false\n" > "${MY_REPO}"/metadata/layout.conf
 # Register your local overlay in /etc/portage/repos.conf:
-printf "[localrepo]\nlocation = ${MY_REPO}" > /etc/portage/repos.conf/localrepo.conf
+printf "[localrepo]\nlocation = ${MY_REPO}\n" > /etc/portage/repos.conf/localrepo.conf
 
-# Copy the desired 'category/package-name' to your ${MY_REPO}
-# You're now ready to emerge your local package. Kudos to you! (:
+# Now copy the desired 'category/package-name' directories to your ${MY_REPO}
 ```
 
 ## Signature
