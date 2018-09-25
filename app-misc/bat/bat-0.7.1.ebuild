@@ -4,9 +4,10 @@
 EAPI=7
 
 # Generated with:
-# curl -s https://raw.githubusercontent.com/sharkdp/bat/v0.7.0/Cargo.lock | sed 's/^"checksum \([[:graph:]]\+\) \([[:graph:]]\+\) (.*$/\1-\2/'
+# curl -s https://raw.githubusercontent.com/sharkdp/bat/v0.7.1/Cargo.lock | sed 's/^"checksum \([[:graph:]]\+\) \([[:graph:]]\+\) (.*$/\1-\2/'
 CRATES="
 aho-corasick-0.6.8
+ansi_colours-1.0.1
 ansi_term-0.11.0
 atty-0.2.11
 base64-0.8.0
@@ -19,7 +20,6 @@ chrono-0.4.6
 clap-2.32.0
 clicolors-control-0.2.0
 cloudabi-0.0.3
-cmake-0.1.33
 console-0.6.2
 directories-1.0.1
 error-chain-0.12.0
@@ -34,16 +34,16 @@ kernel32-sys-0.2.2
 lazy_static-0.2.11
 lazy_static-1.1.0
 libc-0.2.43
-libgit2-sys-0.7.7
-libz-sys-1.0.20
+libgit2-sys-0.7.9
+libz-sys-1.0.22
 linked-hash-map-0.5.1
 lock_api-0.1.3
 log-0.4.5
 matches-0.1.8
-memchr-2.0.2
+memchr-2.1.0
 miniz-sys-0.1.10
 num-integer-0.1.39
-num-traits-0.2.5
+num-traits-0.2.6
 onig-3.2.2
 onig_sys-68.2.1
 owning_ref-0.3.3
@@ -70,13 +70,13 @@ same-file-1.0.3
 scopeguard-0.3.3
 semver-0.9.0
 semver-parser-0.7.0
-serde-1.0.78
-serde_derive-1.0.78
-serde_json-1.0.27
+serde-1.0.79
+serde_derive-1.0.79
+serde_json-1.0.28
 smallvec-0.6.5
 stable_deref_trait-1.1.1
 strsim-0.7.0
-syn-0.15.4
+syn-0.15.5
 syntect-2.1.0
 tempdir-0.3.7
 term_size-0.3.1
@@ -98,13 +98,13 @@ version_check-0.1.4
 void-1.0.2
 walkdir-2.2.5
 winapi-0.2.8
-winapi-0.3.5
+winapi-0.3.6
 winapi-build-0.1.1
 winapi-i686-pc-windows-gnu-0.4.0
 winapi-util-0.1.1
 winapi-x86_64-pc-windows-gnu-0.4.0
 xml-rs-0.7.0
-yaml-rust-0.4.0
+yaml-rust-0.4.2
 "
 
 inherit cargo
