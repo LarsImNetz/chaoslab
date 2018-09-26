@@ -4,7 +4,7 @@
 EAPI=6
 
 EGO_PN="github.com/${PN}/${PN}"
-GIT_COMMIT="0bbac5c" # Change this when you update the ebuild
+GIT_COMMIT="6f9b7347fc" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
@@ -37,9 +37,9 @@ S="${G}/src/${EGO_PN}"
 pkg_setup() {
 	# shellcheck disable=SC2086
 	if has network-sandbox $FEATURES; then
-		ewarn ""
+		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn ""
+		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
 
@@ -48,8 +48,6 @@ pkg_setup() {
 }
 
 src_prepare() {
-	# Unfortunately 'network-sandbox' needs to disabled
-	# because yarn/npm fetches some dependencies here:
 	emake deps
 	default
 }

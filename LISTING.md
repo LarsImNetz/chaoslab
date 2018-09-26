@@ -170,13 +170,13 @@ net-vpn/**[onioncat](net-vpn/onioncat)** | An IP-Transparent Tor Hidden Service 
 sys-apps/**[bane](sys-apps/bane)** | AppArmor profile generator for docker containers
 sys-apps/**[exa](sys-apps/exa)** `*` | A replacement for 'ls' written in Rust
 sys-apps/**[fd](sys-apps/fd)** `*` | A simple, fast and user-friendly alternative to 'find'
+sys-apps/**[yarn](sys-apps/yarn)** `*` | Fast, reliable, and secure node dependency management
 sys-auth/**[otpclient](sys-auth/otpclient)** | Simple GTK+ 3 OTP client (TOTP and HOTP)
 sys-auth/**[yubikey-touch-detector](sys-auth/yubikey-touch-detector)** | A tool that can detect when your YubiKey is waiting for a touch
 sys-fs/**[gocryptfs](sys-fs/gocryptfs)** | Encrypted overlay filesystem written in Go
 sys-fs/**[tmsu](sys-fs/tmsu)** `*` | Files tagger and virtual tag-based filesystem
 sys-process/**[gkill](sys-process/gkill)** | An interactive process killer
 sys-process/**[gotop](sys-process/gotop)** | A terminal based graphical activity monitor inspired by gtop and vtop
-sys-process/**[jobber](sys-process/jobber)** | A replacement for cron, with sophisticated status-reporting and error-handling
 www-apps/**[cryptpad](www-apps/cryptpad)** | The zero knowledge realtime collaborative editor
 www-apps/**[filebrowser](www-apps/filebrowser)** | A stylish web file manager
 www-apps/**[gitea](www-apps/gitea)** `*` | Gitea - Git with a cup of tea
@@ -190,6 +190,7 @@ www-apps/**[mattermost-server-ee](www-apps/mattermost-server-ee)** | Open source
 www-apps/**[modoboa](www-apps/modoboa)** | A mail hosting and management platform with a modern and simplified Web UI
 www-apps/**[modoboa-dmarc](www-apps/modoboa-dmarc)** | A set of tools to use DMARC through Modoboa
 www-client/**[inox](www-client/inox)** `**` | Chromium spin-off to enhance privacy by disabling data transmission to Google
+www-client/**[ungoogled-chromium](www-client/ungoogled-chromium)** | Modifications to Chromium for removing Google integration and enhancing privacy
 www-misc/**[httplab](www-misc/httplab)** | An interactive web server that let you inspect HTTP requests and forge responses
 www-misc/**[wuzz](www-misc/wuzz)** | Interactive cli tool for HTTP inspection
 www-plugins/**[browserpass](www-plugins/browserpass)** `*` | WebExtension host binary for app-admin/pass, a UNIX password manager

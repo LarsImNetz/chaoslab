@@ -1,7 +1,7 @@
-ChaosLab: Overlay for Gentoo Linux
-----------------------------------
+ChaosLab: Overlay for Gentoo/Funtoo Linux
+-----------------------------------------
 
-[![packages 193](https://img.shields.io/badge/packages-193-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![packages 194](https://img.shields.io/badge/packages-194-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
 [![ebuilds 277](https://img.shields.io/badge/ebuilds-277-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
@@ -11,10 +11,10 @@ communication, cryptography, cryptocurrency, server-side applications, and other
 things that I'm interested in. You may check [LISTING.md](LISTING.md) to see a
 list of available packages and their associated description.
 
-The overlay also includes full support for `libressl` USE flag and **OpenRC**,
+This overlay also includes full support for `libressl` USE flag and **OpenRC**,
 but unfortunately the support for **systemd** has been _less-than-stellar_
-because I don't have any machines to test its unit files. If you have spare time
-and would like to improve it, please [contribute](CONTRIBUTING.md).
+because I don't have any machines to test its _unit_ files. If you have spare
+time and would like to improve it, please [contribute](CONTRIBUTING.md).
 
 **DISCLAIMER:** As I don't have the resources, nor the time to make stable
 ebuilds in the same way Gentoo developers do, all ebuilds are permanently kept
@@ -29,14 +29,14 @@ might very well be the first to discover a bug in the package in which case they
 should file a bug report to let the developers know about it.* —
 [Gentoo's Handbook](https://wiki.gentoo.org/wiki/Handbook:AMD64/Full/Portage#Testing)
 
-## How to install the overlay
-
 > **Note:** To use the testing branch for particular packages, you must add the
 package category and name (e.g., foo-bar/xyz) in `/etc/portage/package.accept_keywords`.
 It is also possible to create a directory (with the same name) and list the
 package in the files under that directory. Please see the
 [Gentoo Wiki](https://wiki.gentoo.org/wiki/Ebuild_repository) for an expanded
 overview of ebuilds and unofficial repositories for Gentoo.
+
+## How to install the overlay
 
 You can clone the repository and create `/etc/portage/repos.conf/chaoslab.conf`
 with the following contents:
@@ -67,8 +67,8 @@ layman -fa chaoslab
 #### Loner's MO
 
 Alternatively, if you really don't want to install the overlay, but are
-interested in some package/s (want to keep outdated versions, customize things,
-other reasons), that's also fine. You can keep such ebuilds in your local
+interested in some package(s) (want to keep outdated versions, customize things,
+other reasons), that's also fine. You can keep such ebuilds in your _local_
 repository.
 
 Here is a complete example of creating minimal local repository:
@@ -82,7 +82,7 @@ printf "masters = gentoo\nauto-sync = false\n" > "${MY_REPO}"/metadata/layout.co
 # Register your local overlay in /etc/portage/repos.conf:
 printf "[localrepo]\nlocation = ${MY_REPO}\n" > /etc/portage/repos.conf/localrepo.conf
 
-# Now copy the desired 'category/package-name' directories to your ${MY_REPO}
+# Now copy the desired directories (category/package-name) into your ${MY_REPO}
 ```
 
 ## Signature
@@ -100,5 +100,5 @@ find */* -maxdepth 2 -type d ! -path 'profiles*' -exec gemato verify -k -s {} +
 
 ## Contributing
 
-We welcome contributions and improvements, please see the
+I welcome contributions and improvements, please see the
 [contribution guidelines](CONTRIBUTING.md).

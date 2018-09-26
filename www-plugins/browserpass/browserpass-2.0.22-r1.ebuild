@@ -23,7 +23,7 @@ RDEPEND="app-admin/pass
 		www-client/firefox-bin
 		www-client/google-chrome
 		www-client/chromium
-		www-client/inox
+		www-client/ungoogled-chromium
 	)"
 
 DOCS=( README.md )
@@ -64,7 +64,7 @@ src_install() {
 
 	if has_version www-client/google-chrome || \
 		has_version www-client/chromium || \
-		has_version www-client/inox; then
+		has_version www-client/ungoogled-chromium; then
 		insinto /etc/chromium/native-messaging-hosts
 		newins chrome/host.json com.dannyvankooten.browserpass.json
 	fi
@@ -78,7 +78,7 @@ pkg_postinst() {
 	fi
 	if has_version www-client/google-chrome || \
 		has_version www-client/chromium || \
-		has_version www-client/inox; then
+		has_version www-client/ungoogled-chromium; then
 		elog "- https://chrome.google.com/webstore/detail/browserpass-ce/naepdomgkenhinolocfifgehidddafch"
 	fi
 }

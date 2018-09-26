@@ -3,24 +3,16 @@
 
 EAPI=6
 
-GIT_COMMIT="1db57d4a" # Change this when you update the ebuild
+GIT_COMMIT="0aa5179e" # Change this when you update the ebuild
 EGO_PN="gitlab.com/gitlab-org/${PN}"
-EGO_VENDOR=(
-	"github.com/mitchellh/gox e05df8d"
-	"github.com/kevinburke/go-bindata 2197b05"
-)
+EGO_VENDOR=( "github.com/mitchellh/gox 51ed453898" )
 
 inherit golang-vcs-snapshot linux-info systemd user
 
-PREBUILT_SRC_URI="https://${PN}-downloads.s3.amazonaws.com/v${PV}/docker"
 DESCRIPTION="The official GitLab Runner, written in Go"
 HOMEPAGE="https://gitlab.com/gitlab-org/gitlab-runner"
 SRC_URI="https://${EGO_PN}/repository/v${PV}/archive.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}
-	!build-images? (
-		${PREBUILT_SRC_URI}/prebuilt-x86_64.tar.xz -> ${P}-prebuilt-x86_64.tar.xz
-		${PREBUILT_SRC_URI}/prebuilt-arm.tar.xz -> ${P}-prebuilt-arm.tar.xz
-	)"
+	${EGO_VENDOR_URI}"
 RESTRICT="mirror test"
 # test requires tons of stuff, doesn't work with portage
 
@@ -29,14 +21,16 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="+build-images pie"
 
-DEPEND="app-arch/xz-utils
-	build-images? (
-		app-emulation/docker
-		app-emulation/qemu
-	)"
+RDEPEND="
+	app-arch/xz-utils
+	app-emulation/docker
+"
+DEPEND="${RDEPEND}
+	build-images? ( app-emulation/qemu )
+"
 
 DOCS=( CHANGELOG.md README.md )
-QA_PRESTRIPPED="usr/bin/gitlab-runner"
+QA_PRESTRIPPED="usr/libexec/gitlab-runner/gitlab-runner"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -55,7 +49,7 @@ pkg_setup() {
 			ewarn "compile phase, you must disable 'network-sandbox'"
 			ewarn "in FEATURES (${EROOT%/}/etc/portage/make.conf)."
 			ewarn
-			die "'network-sandbox' is enabled in FEATURES"
+			die "[network-sandbox] is enabled in FEATURES"
 		fi
 
 		# Does portage have access to docker's socket?
@@ -78,8 +72,8 @@ pkg_setup() {
 		fi
 
 		# Is 'arm' and 'armeb' registered?
-		if [ ! -f /proc/sys/fs/binfmt_misc/arm ] && \
-			[ ! -f /proc/sys/fs/binfmt_misc/armeb ]; then
+		if [[ ! -e "/proc/sys/fs/binfmt_misc/arm" ]] && \
+			[[ ! -e "/proc/sys/fs/binfmt_misc/armeb" ]]; then
 			ewarn
 			ewarn "You must enable support for ARM binaries through Qemu."
 			ewarn
@@ -94,17 +88,8 @@ pkg_setup() {
 	fi
 }
 
-src_unpack() {
-	# We only need to unpack main sources
-	golang-vcs-snapshot_src_unpack
-}
-
 src_prepare() {
-	mkdir -p out/docker || die
-	if ! use build-images; then
-		ln -s "${DISTDIR}/${P}-prebuilt-x86_64.tar.xz" "${S}/out/docker/prebuilt-x86_64.tar.xz"
-		ln -s "${DISTDIR}/${P}-prebuilt-arm.tar.xz" "${S}/out/docker/prebuilt-arm.tar.xz"
-	fi
+	mkdir -p out/helper-images || die
 	default
 }
 
@@ -128,83 +113,58 @@ src_compile() {
 	)
 
 	if use build-images; then
+		local i img_arch=( x86_64 arm )
+		local osarch osarch_x86_64="amd64" osarch_arm="arm"
+
 		# Build gox locally
 		go install ./vendor/github.com/mitchellh/gox || die
 
-		ebegin "Building gitlab-runner-prebuilt-x86_64-${GIT_COMMIT}"
-		# Building gitlab-runner-helper
-		gox -osarch=linux/amd64 \
-			-ldflags "${myldflags[*]}" \
-			-output="dockerfiles/build/gitlab-runner-helper" \
-			./apps/gitlab-runner-helper || die
+		for i in "${img_arch[@]}"; do
+			osarch="osarch_${i}"
+			ebegin "Building gitlab-runner-prebuilt-${i}-${GIT_COMMIT}"
+			# Building gitlab-runner-helper.${i}
+			gox -osarch=linux/"${!osarch}" \
+				-ldflags "${myldflags[*]}" \
+				-output="dockerfiles/build/binaries/gitlab-runner-helper.${i}" \
+				./apps/gitlab-runner-helper || die
 
-		# Build docker images
-		docker build -t gitlab/gitlab-runner-helper:x86_64-${GIT_COMMIT} \
-			-f dockerfiles/build/Dockerfile.x86_64 dockerfiles/build || die
-		docker create --name=gitlab-runner-prebuilt-x86_64-${GIT_COMMIT} \
-			gitlab/gitlab-runner-helper:x86_64-${GIT_COMMIT} /bin/sh || die
-		docker export -o out/docker/prebuilt-x86_64.tar \
-			gitlab-runner-prebuilt-x86_64-${GIT_COMMIT} || die
-		docker rm -f gitlab-runner-prebuilt-x86_64-${GIT_COMMIT} || die
-		xz -f -9 out/docker/prebuilt-x86_64.tar || die
-		eend $?
-
-		ebegin "Building gitlab-runner-prebuilt-arm-${GIT_COMMIT}"
-		# Building gitlab-runner-helper
-		gox -osarch=linux/arm \
-			-ldflags "${myldflags[*]}" \
-			-output="dockerfiles/build/gitlab-runner-helper" \
-			./apps/gitlab-runner-helper || die
-
-		# Build docker images
-		docker build -t gitlab/gitlab-runner-helper:arm-${GIT_COMMIT} \
-			-f dockerfiles/build/Dockerfile.arm dockerfiles/build || die
-		docker create --name=gitlab-runner-prebuilt-arm-${GIT_COMMIT} \
-			gitlab/gitlab-runner-helper:arm-${GIT_COMMIT} /bin/sh || die
-		docker export -o out/docker/prebuilt-arm.tar \
-			gitlab-runner-prebuilt-arm-${GIT_COMMIT} || die
-		docker rm -f gitlab-runner-prebuilt-arm-${GIT_COMMIT} || die
-		xz -f -9 out/docker/prebuilt-arm.tar || die
-		eend $?
-	else
-		ewarn "WARNING: prebuilt docker images will be embedded in gitlab-runner"
-		ewarn "WARNING: it is NOT safe, as it may contain outdated code, to use"
-		ewarn "WARNING: images compiled from your system, enable 'build-images'"
+			# Build docker images
+			docker build -t "gitlab/gitlab-runner-helper:${i}-${GIT_COMMIT}" \
+				-f "dockerfiles/build/Dockerfile.${i}" dockerfiles/build || die
+			docker create --name="gitlab-runner-prebuilt-${i}-${GIT_COMMIT}" \
+				"gitlab/gitlab-runner-helper:${i}-${GIT_COMMIT}" /bin/sh || die
+			docker export -o "out/helper-images/prebuilt-${i}.tar" \
+				"gitlab-runner-prebuilt-${i}-${GIT_COMMIT}" || die
+			docker rm -f "gitlab-runner-prebuilt-${i}-${GIT_COMMIT}" || die
+			xz -f -9 "out/helper-images/prebuilt-${i}.tar" || die
+			eend $?
+		done
 	fi
-
-	# Build go-bindata locally
-	go install ./vendor/github.com/kevinburke/go-bindata/go-bindata || die
-
-	# Generating embedded data
-	go-bindata \
-		-pkg docker \
-		-nocompress \
-		-nomemcopy \
-		-nometadata \
-		-prefix out/docker/ \
-		-o executors/docker/bindata.go \
-		out/docker/prebuilt-x86_64.tar.xz \
-		out/docker/prebuilt-arm.tar.xz || die
-	go fmt executors/docker/bindata.go || die
 
 	go build "${mygoargs[@]}" || die
 }
 
 src_install() {
-	dobin gitlab-runner
+	exeinto /usr/libexec/gitlab-runner
+	doexe gitlab-runner
+	dosym ../libexec/gitlab-runner/gitlab-runner /usr/bin/gitlab-runner
 	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
+	if use build-images; then
+		insinto /usr/libexec/gitlab-runner/helper-images
+		doins -r out/helper-images/*.tar.xz
+	fi
+
 	diropts -m 0700
 	dodir /etc/gitlab-runner
+	keepdir /var/log/gitlab-runner
 
 	insinto /etc/gitlab-runner
 	doins config.toml.example
-
-	keepdir /var/log/gitlab-runner
 }
 
 pkg_preinst() {
