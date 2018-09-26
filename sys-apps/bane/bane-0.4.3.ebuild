@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="ddd7851" # Change this when you update the ebuild
+GIT_COMMIT="59179759f9" # Change this when you update the ebuild
 EGO_PN="github.com/genuinetools/${PN}"
 
 inherit golang-vcs-snapshot
