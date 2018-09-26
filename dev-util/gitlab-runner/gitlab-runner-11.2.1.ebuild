@@ -3,9 +3,9 @@
 
 EAPI=6
 
-GIT_COMMIT="35e8515d" # Change this when you update the ebuild
+GIT_COMMIT="a3884675" # Change this when you update the ebuild
 EGO_PN="gitlab.com/gitlab-org/${PN}"
-EGO_VENDOR=( "github.com/mitchellh/gox e05df8d" )
+EGO_VENDOR=( "github.com/mitchellh/gox 51ed453898" )
 
 inherit golang-vcs-snapshot linux-info systemd user
 
@@ -21,9 +21,11 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="+build-images pie"
 
-RDEPEND="app-emulation/docker"
-DEPEND="${RDEPEND}
+RDEPEND="
 	app-arch/xz-utils
+	app-emulation/docker
+"
+DEPEND="${RDEPEND}
 	build-images? ( app-emulation/qemu )
 "
 
