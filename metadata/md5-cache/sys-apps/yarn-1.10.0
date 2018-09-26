@@ -1,0 +1,12 @@
+DEFINED_PHASES=install
+DEPEND=!dev-util/cmdtest net-libs/nodejs[npm]
+DESCRIPTION=Fast, reliable, and secure node dependency management
+EAPI=6
+HOMEPAGE=https://yarnpkg.com
+KEYWORDS=~amd64 ~x86
+LICENSE=BSD-2
+RDEPEND=!dev-util/cmdtest net-libs/nodejs[npm]
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/yarnpkg/yarn/releases/download/v1.10.0/yarn-v1.10.0.tar.gz
+_md5_=63ed5dc32f52da85891d455b567c5c53
