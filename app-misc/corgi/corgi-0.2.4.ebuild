@@ -11,11 +11,11 @@ EGO_PN="github.com/DrakeW/${PN}"
 # github.com/mattn/go-isatty
 # golang.org/x/sys
 EGO_VENDOR=(
-	"github.com/chzyer/readline 2972be2"
-	"github.com/fatih/color 5b77d2a"
-	"github.com/mitchellh/go-homedir 3864e76"
-	"github.com/spf13/cobra ef82de7"
-	"github.com/spf13/pflag 583c0c0"
+	"github.com/chzyer/readline 2972be24d4"
+	"github.com/fatih/color 5b77d2a35f"
+	"github.com/mitchellh/go-homedir 3864e76763"
+	"github.com/spf13/cobra ef82de70bb"
+	"github.com/spf13/pflag 583c0c0531"
 )
 
 inherit golang-vcs-snapshot
@@ -35,8 +35,6 @@ QA_PRESTRIPPED="usr/bin/corgi"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
-
-PATCHES=( "${FILESDIR}/${P}-standard_import_structure.patch" )
 
 src_compile() {
 	export GOPATH="${G}"
