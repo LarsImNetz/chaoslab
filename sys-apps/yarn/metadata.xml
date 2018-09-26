@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">yarnpkg/yarn</remote-id>
+		<bugs-to>https://github.com/yarnpkg/yarn/issues</bugs-to>
+		<changelog>https://yarnpkg.com/en/docs</changelog>
+	</upstream>
+	<longdescription lang="en">
+		Yarn is a package manager for your code. It allows you
+		to use and share code with other developers from around
+		the world. Yarn does this quickly, securely, and reliably
+		so you don’t ever have to worry.
+	</longdescription>
+</pkgmetadata>
