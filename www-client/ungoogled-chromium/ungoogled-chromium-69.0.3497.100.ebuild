@@ -10,7 +10,7 @@ CHROMIUM_LANGS="
 	th tr uk vi zh-CN zh-TW
 "
 
-inherit check-reqs chromium-2 gnome2-utils flag-o-matic multilib ninja-utils pax-utils portability python-r1 toolchain-funcs xdg-utils
+inherit check-reqs chromium-2 gnome2-utils flag-o-matic multilib ninja-utils pax-utils portability python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
 UGC_PV="${PV}-1"
 UGC_P="ungoogled-chromium-${UGC_PV}"
@@ -712,6 +712,8 @@ src_install() {
 	# Install GNOME default application entry (bug #303100).
 	insinto /usr/share/gnome-control-center/default-apps
 	doins "${FILESDIR}"/chromium-browser.xml
+
+	readme.gentoo_create_doc
 }
 
 pkg_preinst() {
@@ -726,4 +728,5 @@ pkg_postrm() {
 pkg_postinst() {
 	gnome2_icon_cache_update
 	xdg_desktop_database_update
+	readme.gentoo_print_elog
 }
