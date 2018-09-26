@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 # Ian Moone <gentoo@chaoslab.org> (30 May 2018)
-# Requires >=media-video/ffmpeg-4 (bug 654208).
+# Requires >=media-video/ffmpeg-4 (bug 654208)
 >=www-client/inox-67 system-ffmpeg
 
 # Ian Moone <gentoo@chaoslab.org> (26 May 2018)
@@ -15,3 +15,13 @@
 # https://bugs.gentoo.org/611394
 # https://gitlab.com/chaoslab/chaoslab-overlay/issues/2
 >=www-client/inox-58.0.3026.3 system-libvpx
+
+# Ian Moone <gentoo@chaoslab.org> (26 Sep 2018)
+# Following profiles/base/package.use.mask:
+# Requires >=media-video/ffmpeg-4 (bug 654208)
+>=www-client/ungoogled-chromium-69 system-ffmpeg
+
+# Ian Moone <gentoo@chaoslab.org> (26 Sep 2018)
+# Following profiles/releases/17.0/package.use.mask:
+# https://bugs.gentoo.org/661880
+>=www-client/ungoogled-chromium-69 system-icu
