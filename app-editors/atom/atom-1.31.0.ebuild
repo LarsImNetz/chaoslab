@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -7,7 +7,7 @@ PYTHON_COMPAT=( python2_7 )
 inherit desktop gnome2-utils python-single-r1
 
 ELECTRON_SLOT="2.0"
-MY_PV=${PV/_/-}
+MY_PV="${PV/_/-}"
 RSRC_DIR="out/${PN}-${MY_PV}-amd64/resources"
 
 DESCRIPTION="A hackable text editor for the 21st Century"
@@ -31,28 +31,15 @@ RDEPEND="${DEPEND}
 	!sys-apps/apmd
 "
 
-NODE_MODULES_PATH="usr/libexec/atom/resources/app.asar.unpacked/node_modules"
-QA_PRESTRIPPED="
-	${NODE_MODULES_PATH}/dugite/git/bin/git
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-credential-cache
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-credential-cache--daemon
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-credential-store
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-daemon
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-fast-import
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-http-backend
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-http-fetch
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-http-push
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-imap-send
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-lfs
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-remote-http
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-sh-i18n--envsubst
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-shell
-	${NODE_MODULES_PATH}/dugite/git/libexec/git-core/git-show-index
-	${NODE_MODULES_PATH}/keytar/build/Release/keytar.node
-	${NODE_MODULES_PATH}/tree-sitter-bash/build/Release/tree_sitter_bash_binding.node
-	${NODE_MODULES_PATH}/tree-sitter-ruby/build/Release/tree_sitter_ruby_binding.node
-	${NODE_MODULES_PATH/.asar.unpacked//apm}/keytar/build/Release/keytar.node
+ND_PATH="usr/libexec/atom/resources/app.asar.unpacked/node_modules"
+QA_PREBUILT="
+	${ND_PATH}/dugite/git/bin/git
+	${ND_PATH}/dugite/git/libexec/git-core/*
+	${ND_PATH}/keytar/build/Release/keytar.node
+	${ND_PATH}/tree-sitter/build/Release/tree_sitter_runtime_binding.node
+	${ND_PATH}/tree-sitter-bash/build/Release/tree_sitter_bash_binding.node
+	${ND_PATH}/tree-sitter-ruby/build/Release/tree_sitter_ruby_binding.node
+	${ND_PATH/.asar.unpacked//apm}/keytar/build/Release/keytar.node
 "
 
 PATCHES=(

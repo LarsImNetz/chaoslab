@@ -27,9 +27,9 @@ pkg_setup() {
 	if use test; then
 		# shellcheck disable=SC2086
 		if has network-sandbox $FEATURES; then
-			ewarn ""
+			ewarn
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn ""
+			ewarn
 			die "[network-sandbox] is enabled in FEATURES"
 		fi
 	fi
