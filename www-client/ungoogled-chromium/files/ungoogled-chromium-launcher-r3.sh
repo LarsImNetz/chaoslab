@@ -34,6 +34,6 @@ if [[ ${EUID} == 0 && -O ${XDG_CONFIG_HOME:-${HOME}} ]]; then
 fi
 
 # Set the .desktop file name
-export CHROME_DESKTOP="chromium-browser-chromium.desktop"
+export CHROME_DESKTOP="chromium-browser-ungoogled-chromium.desktop"
 
 exec -a "chromium-browser" "$PROGDIR/chrome" --extra-plugin-dir=/usr/lib/nsbrowser/plugins ${CHROMIUM_FLAGS} "$@"

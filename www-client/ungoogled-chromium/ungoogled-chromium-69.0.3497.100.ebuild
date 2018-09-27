@@ -10,7 +10,7 @@ CHROMIUM_LANGS="
 	th tr uk vi zh-CN zh-TW
 "
 
-inherit check-reqs chromium-2 gnome2-utils flag-o-matic multilib ninja-utils pax-utils portability python-r1 toolchain-funcs xdg-utils
+inherit check-reqs chromium-2 gnome2-utils flag-o-matic multilib ninja-utils pax-utils portability python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
 UGC_PV="${PV}-1"
 UGC_P="ungoogled-chromium-${UGC_PV}"
@@ -26,7 +26,7 @@ SRC_URI="
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="component-build custom-cflags cups gnome-keyring jumbo-build kerberos pic +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg +system-icu +system-libevent +system-libvpx +tcmalloc widevine"
+IUSE="component-build cups custom-cflags gnome-keyring jumbo-build kerberos pic +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg +system-icu +system-libevent +system-libvpx +tcmalloc widevine"
 RESTRICT="!system-ffmpeg? ( proprietary-codecs? ( bindist ) )"
 
 COMMON_DEPEND="
@@ -647,9 +647,9 @@ src_install() {
 
 	doexe out/Release/chromedriver
 
-	local sedargs=( -e "s:/usr/lib/:/usr/$(get_libdir)/:g" )
-	sed "${sedargs[@]}" "${FILESDIR}/chromium-launcher-r3.sh" > chromium-launcher.sh || die
-	doexe chromium-launcher.sh
+	newexe "${FILESDIR}/${PN}-launcher-r3.sh" chromium-launcher.sh
+	sed -i "s:/usr/lib/:/usr/$(get_libdir)/:g" \
+		"${ED%/}${CHROMIUM_HOME}/chromium-launcher.sh" || die
 
 	# It is important that we name the target "chromium-browser",
 	# xdg-utils expect it; bug #355517.
@@ -712,6 +712,8 @@ src_install() {
 	# Install GNOME default application entry (bug #303100).
 	insinto /usr/share/gnome-control-center/default-apps
 	doins "${FILESDIR}"/chromium-browser.xml
+
+	readme.gentoo_create_doc
 }
 
 pkg_preinst() {
@@ -726,4 +728,5 @@ pkg_postrm() {
 pkg_postinst() {
 	gnome2_icon_cache_update
 	xdg_desktop_database_update
+	readme.gentoo_print_elog
 }
