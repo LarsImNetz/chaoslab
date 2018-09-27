@@ -9,5 +9,5 @@ LICENSE=MIT
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/jedisct1/piknik/archive/0.9.1.tar.gz -> piknik-0.9.1.tar.gz https://github.com/BurntSushi/toml/archive/bbd5bb6.tar.gz -> github.com-BurntSushi-toml-bbd5bb6.tar.gz https://github.com/minio/blake2b-simd/archive/3f5f724.tar.gz -> github.com-minio-blake2b-simd-3f5f724.tar.gz https://github.com/mitchellh/go-homedir/archive/756f7b1.tar.gz -> github.com-mitchellh-go-homedir-756f7b1.tar.gz https://github.com/yawning/chacha20/archive/c91e78d.tar.gz -> github.com-yawning-chacha20-c91e78d.tar.gz https://github.com/golang/crypto/archive/d172538.tar.gz -> github.com-golang-crypto-d172538.tar.gz
-_eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	e4a9360924c5ce9f52e61342cde58512	user	8bc2845510e2109af75e3eeac607ec81
+_eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81
 _md5_=e82c0a6c4ce258555c1743c420274f91

@@ -10,5 +10,5 @@ RDEPEND=fuse? ( sys-fs/fuse:0 )
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/ipfs/go-ipfs/archive/v0.4.16.tar.gz -> go-ipfs-0.4.16.tar.gz
-_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	e4a9360924c5ce9f52e61342cde58512	user	8bc2845510e2109af75e3eeac607ec81
+_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	multilib	97f470f374f2e94ccab04a2fb21d811e	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81
 _md5_=3d667dc8f9dcadcba9b35db549ffd8bf
