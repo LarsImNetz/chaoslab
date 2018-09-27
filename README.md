@@ -2,7 +2,7 @@ ChaosLab: Overlay for Gentoo/Funtoo Linux
 -----------------------------------------
 
 [![packages 194](https://img.shields.io/badge/packages-194-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
-[![ebuilds 277](https://img.shields.io/badge/ebuilds-277-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![ebuilds 276](https://img.shields.io/badge/ebuilds-276-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
 
@@ -55,11 +55,13 @@ or [app-portage/layman](https://packages.gentoo.org/packages/app-portage/layman)
 installed on your system for this to work.
 
 #### Using [eselect-repository](https://wiki.gentoo.org/wiki/Eselect/Repository)
+
 ```
 eselect repository enable chaoslab
 ```
 
 #### Using [layman](https://wiki.gentoo.org/wiki/Layman)
+
 ```
 layman -fa chaoslab
 ```
@@ -86,7 +88,8 @@ printf "[localrepo]\nlocation = ${MY_REPO}\n" > /etc/portage/repos.conf/localrep
 ```
 
 ## Signature
-All commits and manifests on the first parent (at least) are signed by me.
+
+All manifests and commits on the first parent (at least) are signed by me.
 * Signing key: `0x5010AD684AB2A4EE`
 * Fingerprint: `46D2 70C0 8BAA 08C2 3250 16B4 4B7D 696C 954F 8EDD`
 
