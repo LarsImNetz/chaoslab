@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
@@ -525,7 +525,7 @@ src_configure() {
 	fi
 	myconf_gn+=" link_pulseaudio=true"
 	myconf_gn+=" linux_use_bundled_binutils=false"
-	myconf_gn+=" optimize_for_size=false" # patches/debian/fixes/optimize.patch
+	myconf_gn+=" optimize_for_size=false"
 	myconf_gn+=" use_allocator=$(usex tcmalloc \"tcmalloc\" \"none\")"
 	myconf_gn+=" use_cups=$(usex cups true false)"
 	myconf_gn+=" use_custom_libcxx=false"
@@ -572,9 +572,6 @@ src_configure() {
 		fi
 	fi
 
-	# https://bugs.gentoo.org/588596
-	#append-cxxflags $(test-flags-CXX -fno-delete-null-pointer-checks)
-
 	# Bug 491582.
 	export TMPDIR="${WORKDIR}/temp"
 	# shellcheck disable=SC2174
@@ -610,8 +607,6 @@ src_configure() {
 src_compile() {
 	# Calling this here supports resumption via FEATURES=keepwork
 	python_setup 'python2*'
-
-	#"${EPYTHON}" tools/clang/scripts/update.py --force-local-build --gcc-toolchain /usr --skip-checkout --use-system-cmake --without-android || die
 
 	# Build mksnapshot and pax-mark it.
 	local x
@@ -678,12 +673,6 @@ src_install() {
 
 	doins -r out/Release/locales
 	doins -r out/Release/resources
-
-	# FIXME: Do we still need this?
-	if [[ -d out/Release/swiftshader ]]; then
-		insinto "${CHROMIUM_HOME}/swiftshader"
-		doins out/Release/swiftshader/*.so
-	fi
 
 	# Install icons and desktop entry.
 	local branding size
