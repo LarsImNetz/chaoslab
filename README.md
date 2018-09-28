@@ -103,5 +103,5 @@ find */* -maxdepth 2 -type d ! -path 'profiles*' -exec gemato verify -k -s {} +
 
 ## Contributing
 
-I welcome contributions and improvements, please see the
+Anyone and everyone is welcome to contribute. Please take a moment to review the
 [contribution guidelines](CONTRIBUTING.md).
