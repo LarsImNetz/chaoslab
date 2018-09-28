@@ -26,7 +26,9 @@ SRC_URI="
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="component-build cups custom-cflags gnome-keyring jumbo-build kerberos pic +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg +system-icu +system-libevent +system-libvpx +tcmalloc widevine"
+IUSE="component-build cups custom-cflags gnome-keyring jumbo-build kerberos
+	openh264 pic +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
+	+system-icu +system-libevent +system-libvpx +tcmalloc widevine"
 RESTRICT="!system-ffmpeg? ( proprietary-codecs? ( bindist ) )"
 
 COMMON_DEPEND="
@@ -51,7 +53,7 @@ COMMON_DEPEND="
 	media-libs/libjpeg-turbo:=
 	media-libs/libpng:=
 	system-libvpx? ( >=media-libs/libvpx-1.7.0:=[postproc,svc] )
-	>=media-libs/openh264-1.6.0:=
+	openh264? ( >=media-libs/openh264-1.6.0:= )
 	pulseaudio? ( media-sound/pulseaudio:= )
 	system-ffmpeg? (
 		>=media-video/ffmpeg-4:=
@@ -323,7 +325,6 @@ src_prepare() {
 		third_party/libwebm
 		third_party/libxml/chromium
 		third_party/libyuv
-		third_party/llvm
 		third_party/lss
 		third_party/lzma_sdk
 		third_party/markupsafe
@@ -344,7 +345,6 @@ src_prepare() {
 		third_party/pdfium/third_party/libpng16
 		third_party/pdfium/third_party/libtiff
 		third_party/pdfium/third_party/skia_shared
-		third_party/perfetto
 		third_party/ply
 		third_party/polymer
 		third_party/protobuf
@@ -387,6 +387,9 @@ src_prepare() {
 		third_party/xdg-utils
 		third_party/yasm/run_yasm.py
 	)
+	if ! use openh264; then
+		keeplibs+=( third_party/openh264 )
+	fi
 	if ! use system-ffmpeg; then
 		keeplibs+=( third_party/ffmpeg third_party/opus )
 	fi
@@ -445,12 +448,14 @@ src_configure() {
 		libwebp
 		libxml
 		libxslt
-		openh264
 		re2
 		snappy
 		yasm
 		zlib
 	)
+	if use openh264; then
+		gn_system_libraries+=( openh264 )
+	fi
 	if use system-ffmpeg; then
 		gn_system_libraries+=( ffmpeg opus )
 	fi

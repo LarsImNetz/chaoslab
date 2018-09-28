@@ -1,4 +1,4 @@
-I welcome bug reports, feedbacks and ebuild requests; you can use the
+I welcome bug reports, feedbacks and ebuild feature requests; you can use the
 [GitLab issue tracker](https://gitlab.com/chaoslab/chaoslab-overlay/issues) or
 [e-mail](overlay.xml#L9) ([PGP](README.md#signature)) to provide them.
 
@@ -37,7 +37,7 @@ for the following:
 
    If you have questions about how to write the short/long descriptions,
    please read these blog articles:
-   [How to Write a Commit Message](http://chris.beams.io/posts/git-commit),
+   [How to Write a Commit Message](https://chris.beams.io/posts/git-commit/),
    [5 Useful Tips For A Better Commit Message](https://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message).
    Both of them are excellent resources for learning how to write a well-crafted
    git commit message. If your commit references one or more GitLab issues, or
