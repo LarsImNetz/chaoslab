@@ -31,15 +31,15 @@ RDEPEND="${DEPEND}
 	!sys-apps/apmd
 "
 
-ND_PATH="usr/libexec/atom/resources/app.asar.unpacked/node_modules"
+NM_PATH="usr/libexec/atom/resources/app.asar.unpacked/node_modules"
 QA_PREBUILT="
-	${ND_PATH}/dugite/git/bin/git
-	${ND_PATH}/dugite/git/libexec/git-core/*
-	${ND_PATH}/keytar/build/Release/keytar.node
-	${ND_PATH}/tree-sitter/build/Release/tree_sitter_runtime_binding.node
-	${ND_PATH}/tree-sitter-bash/build/Release/tree_sitter_bash_binding.node
-	${ND_PATH}/tree-sitter-ruby/build/Release/tree_sitter_ruby_binding.node
-	${ND_PATH/.asar.unpacked//apm}/keytar/build/Release/keytar.node
+	${NM_PATH}/dugite/git/bin/git
+	${NM_PATH}/dugite/git/libexec/git-core/*
+	${NM_PATH}/keytar/build/Release/keytar.node
+	${NM_PATH}/tree-sitter/build/Release/tree_sitter_runtime_binding.node
+	${NM_PATH}/tree-sitter-bash/build/Release/tree_sitter_bash_binding.node
+	${NM_PATH}/tree-sitter-ruby/build/Release/tree_sitter_ruby_binding.node
+	${NM_PATH/.asar.unpacked//apm}/keytar/build/Release/keytar.node
 "
 
 PATCHES=(
@@ -172,11 +172,11 @@ get_install_suffix() {
 }
 
 pkg_postinst() {
-	# Update mimedb for the new .desktop file
-	xdg_desktop_database_update
 	gnome2_icon_cache_update
+	xdg_desktop_database_update
 }
 
 pkg_postrm() {
 	gnome2_icon_cache_update
+	xdg_desktop_database_update
 }
