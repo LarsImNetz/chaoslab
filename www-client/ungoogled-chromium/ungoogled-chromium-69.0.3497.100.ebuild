@@ -206,15 +206,9 @@ src_prepare() {
 		-e '/arm\/gcc_skcms_ice.patch/d' \
 		"${UGC_WD}/config_bundles/common/patch_order.list" || die
 
-	sed -i '/system\/nspr.patch/d' \
-		"${UGC_WD}/config_bundles/linux_rooted/patch_order.list" || die
-
 	if ! use system-libevent; then
 		sed -i '/system\/event.patch/d' \
 			"${UGC_WD}/config_bundles/linux_rooted/patch_order.list" || die
-	else
-		# Introduced by debian/system/nspr.patch
-		sed -i '/-lnspr4/d' "${UGC_WD}/patches/debian/system/event.patch" || die
 	fi
 
 	if ! use system-icu; then
@@ -240,7 +234,6 @@ src_prepare() {
 		base/third_party/dmg_fp
 		base/third_party/dynamic_annotations
 		base/third_party/icu
-		base/third_party/nspr
 		base/third_party/superfasthash
 		base/third_party/symbolize
 		base/third_party/valgrind
