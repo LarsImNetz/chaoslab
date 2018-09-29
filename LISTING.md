@@ -191,6 +191,7 @@ www-apps/**[modoboa](www-apps/modoboa)** | A mail hosting and management platfor
 www-apps/**[modoboa-dmarc](www-apps/modoboa-dmarc)** | A set of tools to use DMARC through Modoboa
 www-client/**[inox](www-client/inox)** `**` | Chromium spin-off to enhance privacy by disabling data transmission to Google
 www-client/**[ungoogled-chromium](www-client/ungoogled-chromium)** | Modifications to Chromium for removing Google integration and enhancing privacy
+www-client/**[ungoogled-chromium-bin](www-client/ungoogled-chromium-bin)** | Modifications to Chromium for removing Google integration and enhancing privacy
 www-misc/**[httplab](www-misc/httplab)** | An interactive web server that let you inspect HTTP requests and forge responses
 www-misc/**[wuzz](www-misc/wuzz)** | Interactive cli tool for HTTP inspection
 www-plugins/**[browserpass](www-plugins/browserpass)** `*` | WebExtension host binary for app-admin/pass, a UNIX password manager
