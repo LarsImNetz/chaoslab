@@ -28,7 +28,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="component-build cups custom-cflags gnome-keyring jumbo-build kerberos
 	openh264 +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
-	+system-icu +system-libevent +system-libvpx +tcmalloc widevine"
+	+system-icu +system-libevent +system-libvpx +tcmalloc vaapi widevine"
 RESTRICT="!system-ffmpeg? ( proprietary-codecs? ( bindist ) )"
 
 COMMON_DEPEND="
@@ -70,7 +70,7 @@ COMMON_DEPEND="
 	x11-libs/cairo:=
 	x11-libs/gdk-pixbuf:2
 	x11-libs/gtk+:3[X]
-	>=x11-libs/libva-2.1.0:=
+	vaapi? ( >=x11-libs/libva-2.1.0:= )
 	x11-libs/libX11:=
 	x11-libs/libXcomposite:=
 	x11-libs/libXcursor:=
@@ -218,6 +218,11 @@ src_prepare() {
 
 	if ! use system-libvpx; then
 		sed -i '/system\/vpx.patch/d' \
+			"${UGC_WD}/config_bundles/linux_rooted/patch_order.list" || die
+	fi
+
+	if ! use vaapi; then
+		sed -i '/patchset\/chromium-vaapi-r18.patch/d' \
 			"${UGC_WD}/config_bundles/linux_rooted/patch_order.list" || die
 	fi
 
@@ -545,7 +550,7 @@ src_configure() {
 	myconf_gn+=" use_system_lcms2=true"
 	myconf_gn+=" use_system_libjpeg=true"
 	myconf_gn+=" use_system_zlib=true"
-	myconf_gn+=" use_vaapi=true"
+	myconf_gn+=" use_vaapi=$(usex vaapi true false)"
 
 	# SC2155
 	local myarch
