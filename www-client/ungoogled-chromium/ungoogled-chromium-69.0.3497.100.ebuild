@@ -20,7 +20,7 @@ DESCRIPTION="Modifications to Chromium for removing Google integration and enhan
 HOMEPAGE="https://github.com/Eloston/ungoogled-chromium https://www.chromium.org/"
 SRC_URI="
 	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${PV}.tar.xz
-	https://github.com/Eloston/ungoogled-chromium/archive/${UGC_PV}.tar.gz -> ${UGC_P}.tar.gz
+	https://github.com/Eloston/${PN}/archive/${UGC_PV}.tar.gz -> ${UGC_P}.tar.gz
 "
 
 LICENSE="BSD"
@@ -89,7 +89,7 @@ COMMON_DEPEND="
 	sys-libs/zlib:=[minizip]
 	kerberos? ( virtual/krb5 )
 "
-# For nvidia-drivers blocker, see bug #413637 .
+# For nvidia-drivers blocker (Bug #413637)
 RDEPEND="${COMMON_DEPEND}
 	!www-client/chromium
 	!<www-plugins/chrome-binary-plugins-57
@@ -102,7 +102,7 @@ RDEPEND="${COMMON_DEPEND}
 		widevine? ( www-plugins/chrome-binary-plugins[widevine(-)] )
 	)
 "
-# dev-vcs/git - https://bugs.gentoo.org/593476
+# dev-vcs/git (Bug #593476)
 # sys-apps/sandbox - https://crbug.com/586444
 DEPEND="${COMMON_DEPEND}
 	>=app-arch/gzip-1.7
@@ -162,7 +162,7 @@ PATCHES=(
 S="${WORKDIR}/chromium-${PV}"
 
 pre_build_checks() {
-	# Check build requirements, bug #541816 and bug #471810 .
+	# Check build requirements (Bug #541816, #471810)
 	CHECKREQS_MEMORY="3G"
 	CHECKREQS_DISK_BUILD="5G"
 	eshopts_push -s extglob
@@ -409,7 +409,7 @@ src_prepare() {
 
 	python_setup 'python2*'
 
-	# Remove most bundled libraries. Some are still needed.
+	# Remove most bundled libraries, some are still needed
 	build/linux/unbundle/remove_bundled_libraries.py "${keeplibs[@]}" --do-remove || die
 }
 
@@ -419,7 +419,7 @@ src_configure() {
 
 	local myconf_gn=""
 
-	# Make sure the build system will use the right tools, bug #340795.
+	# Make sure the build system will use the right tools (Bug #340795)
 	tc-export AR CC CXX NM
 
 	# Force clang
@@ -429,13 +429,13 @@ src_configure() {
 	NM=llvm-nm
 	strip-unsupported-flags
 
-	# Use system-provided libraries.
-	# TODO: freetype -- remove sources (https://bugs.chromium.org/p/pdfium/issues/detail?id=733).
-	# TODO: use_system_hunspell (upstream changes needed).
-	# TODO: use_system_libsrtp (bug #459932).
-	# TODO: use_system_protobuf (bug #525560).
-	# TODO: use_system_ssl (http://crbug.com/58087).
-	# TODO: use_system_sqlite (http://crbug.com/22208).
+	# Use system-provided libraries
+	# TODO: freetype -- remove sources (https://bugs.chromium.org/p/pdfium/issues/detail?id=733)
+	# TODO: use_system_hunspell (upstream changes needed)
+	# TODO: use_system_libsrtp (Bug #459932)
+	# TODO: use_system_protobuf (Bug #525560)
+	# TODO: use_system_ssl (http://crbug.com/58087)
+	# TODO: use_system_sqlite (http://crbug.com/22208)
 
 	local gn_system_libraries=(
 		flac
@@ -473,8 +473,8 @@ src_configure() {
 
 	ffmpeg_branding="$(usex proprietary-codecs Chrome Chromium)"
 
-	# Component build isn't generally intended for use by end users. It's mostly useful
-	# for development and debugging.
+	# Component build isn't generally intended for use by end users.
+	# It's mostly useful for development and debugging.
 	myconf_gn+=" is_component_build=$(usex component-build true false)"
 
 	# Keep in sync with config_bundles/common/gn_flags.map
@@ -561,28 +561,28 @@ src_configure() {
 		die "Failed to determine target arch, got '$myarch'."
 	fi
 
-	# Avoid CFLAGS problems, bug #352457, bug #390147.
+	# Avoid CFLAGS problems (Bug #352457, #390147)
 	if ! use custom-cflags; then
 		replace-flags "-Os" "-O2"
 		strip-flags
 
-		# Prevent linker from running out of address space, bug #471810 .
+		# Prevent linker from running out of address space (Bug #471810)
 		if use x86; then
 			filter-flags "-g*"
 		fi
 
-		# Prevent libvpx build failures. Bug 530248, 544702, 546984.
+		# Prevent libvpx build failures (Bug #530248, #544702, #546984)
 		if [[ ${myarch} == amd64 || ${myarch} == x86 ]]; then
 			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
 		fi
 	fi
 
-	# Bug 491582.
+	# Bug #491582
 	export TMPDIR="${WORKDIR}/temp"
 	# shellcheck disable=SC2174
 	mkdir -p -m 755 "${TMPDIR}" || die
 
-	# https://bugs.gentoo.org/654216
+	# But #654216
 	addpredict /dev/dri/ #nowarn
 
 	einfo "Configuring Chromium..."
@@ -595,7 +595,7 @@ src_compile() {
 	# Calling this here supports resumption via FEATURES=keepwork
 	python_setup 'python2*'
 
-	# Build mksnapshot and pax-mark it.
+	# Build mksnapshot and pax-mark it
 	local x
 	for x in mksnapshot v8_context_snapshot_generator; do
 		if tc-is-cross-compiler; then
@@ -608,7 +608,7 @@ src_compile() {
 	done
 
 	# Even though ninja autodetects number of CPUs, we respect
-	# user's options, for debugging with -j 1 or any other reason.
+	# user's options, for debugging with -j 1 or any other reason
 	eninja -C out/Release chrome chromedriver
 	use suid && eninja -C out/Release chrome_sandbox
 
@@ -634,14 +634,14 @@ src_install() {
 		"${ED%/}${CHROMIUM_HOME}/chromium-launcher.sh" || die
 
 	# It is important that we name the target "chromium-browser",
-	# xdg-utils expect it; bug #355517.
+	# xdg-utils expect it (Bug #355517)
 	dosym "${CHROMIUM_HOME}/chromium-launcher.sh" /usr/bin/chromium-browser
 	# keep the old symlink around for consistency
 	dosym "${CHROMIUM_HOME}/chromium-launcher.sh" /usr/bin/chromium
 
 	dosym "${CHROMIUM_HOME}/chromedriver" /usr/bin/chromedriver
 
-	# Allow users to override command-line options, bug #357629.
+	# Allow users to override command-line options (Bug #357629)
 	insinto /etc/chromium
 	newins "${FILESDIR}/chromium.default" "default"
 
@@ -661,9 +661,9 @@ src_install() {
 	doins -r out/Release/locales
 	doins -r out/Release/resources
 
-	# Install icons and desktop entry.
+	# Install icons and desktop entry
 	local branding size
-	for size in 16 22 24 32 48 64 128 256 ; do
+	for size in 16 22 24 32 48 64 128 256; do
 		case ${size} in
 			16|32) branding="chrome/app/theme/default_100_percent/chromium" ;;
 				*) branding="chrome/app/theme/chromium" ;;
@@ -673,9 +673,9 @@ src_install() {
 	done
 
 	local mime_types="text/html;text/xml;application/xhtml+xml;"
-	mime_types+="x-scheme-handler/http;x-scheme-handler/https;" # bug #360797
-	mime_types+="x-scheme-handler/ftp;" # bug #412185
-	mime_types+="x-scheme-handler/mailto;x-scheme-handler/webcal;" # bug #416393
+	mime_types+="x-scheme-handler/http;x-scheme-handler/https;" # Bug #360797
+	mime_types+="x-scheme-handler/ftp;" # Bug #412185
+	mime_types+="x-scheme-handler/mailto;x-scheme-handler/webcal;" # Bug #416393
 	# shellcheck disable=SC1117
 	make_desktop_entry \
 		chromium-browser \
@@ -685,7 +685,7 @@ src_install() {
 		"MimeType=${mime_types}\nStartupWMClass=chromium-browser"
 	sed -e "/^Exec/s/$/ %U/" -i "${ED%/}"/usr/share/applications/*.desktop || die
 
-	# Install GNOME default application entry (bug #303100).
+	# Install GNOME default application entry (Bug #303100)
 	insinto /usr/share/gnome-control-center/default-apps
 	doins "${FILESDIR}"/chromium-browser.xml
 
