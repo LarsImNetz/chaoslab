@@ -70,7 +70,7 @@ COMMON_DEPEND="
 	x11-libs/cairo:=
 	x11-libs/gdk-pixbuf:2
 	x11-libs/gtk+:3[X]
-	x11-libs/libva
+	>=x11-libs/libva-2.1.0:=
 	x11-libs/libX11:=
 	x11-libs/libXcomposite:=
 	x11-libs/libXcursor:=
@@ -91,8 +91,6 @@ COMMON_DEPEND="
 "
 # For nvidia-drivers blocker (Bug #413637)
 RDEPEND="${COMMON_DEPEND}
-	!www-client/chromium
-	!<www-plugins/chrome-binary-plugins-57
 	x11-misc/xdg-utils
 	virtual/opengl
 	virtual/ttf-fonts
@@ -101,22 +99,25 @@ RDEPEND="${COMMON_DEPEND}
 	!x86? (
 		widevine? ( www-plugins/chrome-binary-plugins[widevine(-)] )
 	)
+	!www-client/chromium
+	!www-client/ungoogled-chromium-bin
 "
 # dev-vcs/git (Bug #593476)
 # sys-apps/sandbox - https://crbug.com/586444
 DEPEND="${COMMON_DEPEND}
 	>=app-arch/gzip-1.7
-	dev-lang/yasm
 	dev-lang/perl
+	dev-lang/yasm
 	dev-util/gn
 	>=dev-util/gperf-3.0.3
 	>=dev-util/ninja-1.7.2
 	>=net-libs/nodejs-6.9.4
 	sys-apps/hwids[usb(+)]
 	>=sys-devel/bison-2.4.3
-	sys-devel/flex
 	>=sys-devel/clang-6
+	sys-devel/flex
 	>=sys-devel/lld-6
+	>=sys-devel/llvm-6
 	virtual/pkgconfig
 	dev-vcs/git
 "
