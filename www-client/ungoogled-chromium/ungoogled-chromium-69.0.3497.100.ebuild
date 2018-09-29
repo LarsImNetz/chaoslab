@@ -206,14 +206,19 @@ src_prepare() {
 		-e '/arm\/gcc_skcms_ice.patch/d' \
 		"${UGC_WD}/config_bundles/common/patch_order.list" || die
 
+	if ! use system-icu; then
+		sed -i '/common\/icudtl.dat/d' \
+			"${UGC_WD}/config_bundles/linux_rooted/pruning.list" || die
+	fi
+
 	if ! use system-libevent; then
 		sed -i '/system\/event.patch/d' \
 			"${UGC_WD}/config_bundles/linux_rooted/patch_order.list" || die
 	fi
 
-	if ! use system-icu; then
-		sed -i '/common\/icudtl.dat/d' \
-			"${UGC_WD}/config_bundles/linux_rooted/pruning.list" || die
+	if ! use system-libvpx; then
+		sed -i '/system\/vpx.patch/d' \
+			"${UGC_WD}/config_bundles/linux_rooted/patch_order.list" || die
 	fi
 
 	python_setup 'python3*'
