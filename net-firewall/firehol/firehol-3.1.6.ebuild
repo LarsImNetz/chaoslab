@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 inherit linux-info
 
@@ -13,48 +13,50 @@ RESTRIC="mirror"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64"
-IUSE="doc ipv6 ipset qos"
+IUSE="doc ipset ipv6 qos"
 
-RDEPEND="net-firewall/iptables
+RDEPEND="
+	net-firewall/iptables
 	sys-apps/iproute2[-minimal,ipv6?]
 	net-misc/iputils[ipv6?]
 	net-misc/iprange
 	net-analyzer/traceroute
 	virtual/modutils
 	app-arch/gzip
-	ipset? ( net-firewall/ipset )"
+	ipset? ( net-firewall/ipset )
+"
 DEPEND="${RDEPEND}"
 
 pkg_setup() {
-	local KCONFIG_OPTS=" \
-		~IP_NF_FILTER \
-		~IP_NF_IPTABLES \
-		~IP_NF_MANGLE \
+	local KCONFIG_OPTS="
+		~IP_NF_FILTER
+		~IP_NF_IPTABLES
+		~IP_NF_MANGLE
 		~IP_NF_TARGET_MASQUERADE
-		~IP_NF_TARGET_REDIRECT \
-		~IP_NF_TARGET_REJECT \
-		~NETFILTER_XT_MATCH_LIMIT \
-		~NETFILTER_XT_MATCH_OWNER \
-		~NETFILTER_XT_MATCH_STATE \
-		~NF_CONNTRACK \
-		~NF_CONNTRACK_IPV4 \
-		~NF_CONNTRACK_MARK \
-		~NF_NAT \
-		~NF_NAT_FTP \
-		~NF_NAT_IRC \
+		~IP_NF_TARGET_REDIRECT
+		~IP_NF_TARGET_REJECT
+		~NETFILTER_XT_MATCH_LIMIT
+		~NETFILTER_XT_MATCH_OWNER
+		~NETFILTER_XT_MATCH_STATE
+		~NF_CONNTRACK
+		~NF_CONNTRACK_IPV4
+		~NF_CONNTRACK_MARK
+		~NF_NAT
+		~NF_NAT_FTP
+		~NF_NAT_IRC
 	"
 
 	if use qos; then
-		KCONFIG_OPTS+=" \
-			~IFB \
-			~NET_SCH_HTB \
-			~NET_SCH_FQ_CODEL \
-			~NET_SCH_INGRESS \
-			~NET_CLS_U32 \
-			~NET_CLS_ACT \
-			~NET_ACT_MIRRED \
-			~NET_CLS_IND \
-			~NETFILTER_XT_TARGET_CLASSIFY \
+		KCONFIG_OPTS+="
+			~IFB
+			~NET_SCH_HTB
+			~NET_SCH_FQ_CODEL
+			~NET_SCH_INGRESS
+			~NET_CLS_U32
+			~NET_CLS_ACT
+			~NET_ACT_MIRRED
+			~NET_CLS_IND
+			~NETFILTER_XT_TARGET_CLASSIFY
 		"
 	fi
 
