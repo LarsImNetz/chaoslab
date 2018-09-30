@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
-PYTHON_COMPAT=( python{2_7,3_{4,5,6,7}} )
+PYTHON_COMPAT=( python{2_7,3_{5,6,7}} )
 
 CHROMIUM_LANGS="
 	am ar bg bn ca cs da de el en-GB es es-419 et fa fi fil fr gu he hi hr hu id
