@@ -44,9 +44,9 @@ for the following:
    other merge requests, please see:
    [Crosslinking Issues](https://docs.gitlab.com/ee/user/project/issues/crosslinking_issues.html)
 5. GPG signing your changes is a good idea, but not mandatory.
-6. Push your changes/branch in your fork `git push origin my-new-feature`, and
-   then submit a [merge request](https://docs.gitlab.com/ee/gitlab-basics/add-merge-request.html)
-   against this project.
+6. Push your changes in your fork `git push origin my-new-feature`, and then
+   submit a [merge request](https://docs.gitlab.com/ee/gitlab-basics/add-merge-request.html)
+   against the **develop** branch.
 
    > **Note:**  If you get in trouble with _**shellcheck's**_ tests, please see
    their [checks guide](https://github.com/koalaman/shellcheck/wiki/Checks).

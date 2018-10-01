@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
-PYTHON_COMPAT=( python{2_7,3_{4,5,6,7}} )
+PYTHON_COMPAT=( python{2_7,3_{5,6,7}} )
 
 CHROMIUM_LANGS="
 	am ar bg bn ca cs da de el en-GB es es-419 et fa fi fil fr gu he hi hr hu id
@@ -10,7 +10,7 @@ CHROMIUM_LANGS="
 	th tr uk vi zh-CN zh-TW
 "
 
-inherit check-reqs chromium-2 gnome2-utils flag-o-matic multilib ninja-utils pax-utils portability python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
+inherit check-reqs chromium-2 gnome2-utils eapi7-ver flag-o-matic multilib ninja-utils pax-utils portability python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
 UGC_PV="${PV}-1"
 UGC_P="ungoogled-chromium-${UGC_PV}"
@@ -194,36 +194,45 @@ src_prepare() {
 	default
 
 	mkdir -p third_party/node/linux/node-linux-x64/bin || die
-	ln -s "${EPREFIX}"/usr/bin/node third_party/node/linux/node-linux-x64/bin/node || die
+	ln -s "${EPREFIX%/}"/usr/bin/node third_party/node/linux/node-linux-x64/bin/node || die
 
+	# Apply extra patches
+	local ep
+	for ep in "${FILESDIR}/extra-$(ver_cut 1-1)"/*.patch; do
+		eapply "${ep}"
+	done
+
+	# Adapt ungoogled-chromium to *Gentoo* way
 	local ugc_cli="${UGC_WD}/run_buildkit_cli.py"
 	local ugc_config="${UGC_WD}/config_bundles/archlinux"
+	local ugc_common_dir="${UGC_WD}/config_bundles/common"
+	local ugc_rooted_dir="${UGC_WD}/config_bundles/linux_rooted"
 
-	# Adapt ungoogled-chromium to our needs
+	# Remove redundant patch and remove arm/gcc patches
 	sed -i \
 		-e '/chromium-clang-compiler-flags.patch/d' \
 		-e '/arm\/skia.patch/d' \
 		-e '/arm\/gcc_skcms_ice.patch/d' \
-		"${UGC_WD}/config_bundles/common/patch_order.list" || die
+		"${ugc_common_dir}/patch_order.list" || die
 
 	if ! use system-icu; then
 		sed -i '/common\/icudtl.dat/d' \
-			"${UGC_WD}/config_bundles/linux_rooted/pruning.list" || die
+			"${ugc_rooted_dir}/pruning.list" || die
 	fi
 
 	if ! use system-libevent; then
 		sed -i '/system\/event.patch/d' \
-			"${UGC_WD}/config_bundles/linux_rooted/patch_order.list" || die
+			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
 	if ! use system-libvpx; then
 		sed -i '/system\/vpx.patch/d' \
-			"${UGC_WD}/config_bundles/linux_rooted/patch_order.list" || die
+			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
 	if ! use vaapi; then
 		sed -i '/patchset\/chromium-vaapi-r18.patch/d' \
-			"${UGC_WD}/config_bundles/linux_rooted/patch_order.list" || die
+			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
 	python_setup 'python3*'
@@ -232,7 +241,7 @@ src_prepare() {
 	"${ugc_cli}" prune -b "${ugc_config}" ./ || die
 	eend $?
 
-	ebegin "Applying patches"
+	ebegin "Applying ungoogled-chromium patches"
 	"${ugc_cli}" patches apply -b "${ugc_config}" ./ || die
 	eend $?
 

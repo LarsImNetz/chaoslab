@@ -53,7 +53,7 @@ S="${WORKDIR}/${PN}-${MY_PV}"
 
 pkg_setup() {
 	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES; then
+	if has network-sandbox ${FEATURES}; then
 		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn
@@ -78,13 +78,14 @@ src_prepare() {
 		./src/main-process/atom-application.js || die
 
 	sed -i \
-		-e "s|{{ATOM_PATH}}|${EROOT%/}/opt/electron-${ELECTRON_SLOT}/electron|g" \
-		-e "s|{{ATOM_RESOURCE_PATH}}|${EROOT%/}/usr/libexec/atom/resources/app.asar|g" \
-		-e "s|{{ATOM_PREFIX}}|${EROOT%/}|g" \
+		-e "/ATOM_HOME=/i export PYTHON=${PYTHON}\\n" \
+		-e "s|{{ATOM_PATH}}|${EPREFIX%/}/opt/electron-${ELECTRON_SLOT}/electron|g" \
+		-e "s|{{ATOM_RESOURCE_PATH}}|${EPREFIX%/}/usr/libexec/atom/resources/app.asar|g" \
+		-e "s|{{ATOM_PREFIX}}|${EPREFIX%/}|g" \
 		./atom.sh || die
 
 	sed -i \
-		-e "s|{{ATOM_PREFIX}}|${EROOT%/}|g" \
+		-e "s|{{ATOM_PREFIX}}|${EPREFIX%/}|g" \
 		-e "s|{{ATOM_SUFFIX}}|${suffix}|g" \
 		./src/config-schema.js || die
 }
@@ -117,13 +118,13 @@ src_install() {
 		\) \) -exec rm -rf "{}" \;
 
 	# Make sure python-interceptor.sh use python2.*
-	sed -i "s|python|${PYTHON}|g" ./app/apm/bin/python-interceptor.sh || die
+	sed -i "s|exec python|exec ${PYTHON}|g" ./app/apm/bin/python-interceptor.sh || die
 
 	# Remove non-Linux vendored ctags binaries
 	rm ./${ctags_d}/ctags-{darwin,win32.exe} || die
 	# Replace vendored ctags with a symlink to system ctags
 	rm ./${ctags_d}/ctags-linux || die
-	ln -s "${EROOT%/}/usr/bin/ctags" ./${ctags_d}/ctags-linux || die
+	ln -s "${EPREFIX%/}/usr/bin/ctags" ./${ctags_d}/ctags-linux || die
 
 	# Remove redundant atom.png
 	rm -r ./app.asar.unpacked/resources || die

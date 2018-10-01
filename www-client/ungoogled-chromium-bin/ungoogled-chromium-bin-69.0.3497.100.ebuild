@@ -17,7 +17,7 @@ MY_P="${MY_PN}_${MY_PV}_linux"
 
 DESCRIPTION="Modifications to Chromium for removing Google integration and enhancing privacy"
 HOMEPAGE="https://github.com/Eloston/ungoogled-chromium"
-SRC_URI="https://github.com/intika/${PN}aries/releases/download/${MY_PV}/${MY_P}.tar.xz -> ${P}.tar.xz"
+SRC_URI="https://github.com/intika/${PN}aries/releases/download/${MY_PV}/${MY_P}.tar.xz -> ${PN}-${MY_PV}.tar.xz"
 RESTRICT="mirror"
 
 LICENSE="BSD"
