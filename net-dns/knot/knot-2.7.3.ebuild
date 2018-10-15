@@ -8,8 +8,8 @@ inherit systemd tmpfiles user
 KNOT_MODULES=(
 	+module-cookies +module-dnsproxy module-dnstap
 	+module-geoip +module-noudp +module-onlinesign
-	+module-rrl +module-stats +module-synthrecord
-	+module-whoami
+	+module-queryacl +module-rrl +module-stats
+	+module-synthrecord +module-whoami
 )
 
 DESCRIPTION="High-performance authoritative-only DNS server"
@@ -33,11 +33,11 @@ done
 unset X
 
 RDEPEND="
-	>=net-libs/gnutls-3.5:=
-	>=dev-db/lmdb-0.9.18
-	>=dev-libs/userspace-rcu-0.9.1
+	dev-db/lmdb
 	dev-libs/libedit
-	caps? ( >=sys-libs/libcap-ng-0.7.8 )
+	dev-libs/userspace-rcu
+	net-libs/gnutls
+	caps? ( sys-libs/libcap-ng )
 	daemon? ( dev-python/lmdb )
 	idn? (
 		!libidn2? ( net-dns/libidn:0 )
@@ -47,7 +47,7 @@ RDEPEND="
 		dev-libs/fstrm
 		dev-libs/protobuf-c
 	)
-	module-geoip? ( dev-libs/geoip )
+	module-geoip? ( dev-libs/libmaxminddb )
 "
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
