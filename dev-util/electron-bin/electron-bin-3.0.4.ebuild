@@ -24,7 +24,6 @@ RDEPEND="
 	dev-libs/expat
 	dev-libs/glib:2
 	dev-libs/nss
-	gnome-base/gconf:2
 	media-gfx/graphite2
 	media-libs/alsa-lib
 	media-libs/fontconfig:1.0
