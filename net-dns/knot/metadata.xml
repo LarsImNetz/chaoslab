@@ -36,6 +36,9 @@
 			Enable the module that sign zones on the fly instead of
 			pre-signing zone
 		</flag>
+		<flag name="module-queryacl">
+			Enable the module for query access control
+		</flag>
 		<flag name="module-rosedb">
 			Enable the module that staticaly override certain
 			responses
