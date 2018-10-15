@@ -230,6 +230,11 @@ src_prepare() {
 			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
+	if ! use widevine; then
+		sed -i '/widevine/d' \
+			"${ugc_common_dir}/patch_order.list" || die
+	fi
+
 	if ! use vaapi; then
 		sed -i '/patchset\/chromium-vaapi-r18.patch/d' \
 			"${ugc_rooted_dir}/patch_order.list" || die
