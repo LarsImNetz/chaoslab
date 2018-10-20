@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit autotools bash-completion-r1 gnome2-utils systemd user xdg-utils
+inherit autotools bash-completion-r1 gnome2-utils systemd user
 
 DESCRIPTION="A full node Bitcoin Cash implementation with GUI, daemon and utils"
 HOMEPAGE="https://bitcoinabc.org"
@@ -13,14 +13,17 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86"
-IUSE="daemon dbus +gui hardened libressl +qrcode reduce-exports system-univalue test upnp utils +wallet zeromq"
+IUSE="daemon dbus +gui hardened libressl +qrcode +reduce-exports system-univalue test upnp utils +wallet zeromq"
+REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
+
 LANGS="af af:af_ZA ar be:be_BY bg bg:bg_BG ca ca@valencia ca:ca_ES cs cy da de el el:el_GR en en_GB
 	eo es es_AR es_CL es_CO es_DO es_ES es_MX es_UY es_VE et et:et_EE eu:eu_ES fa fa:fa_IR fi
 	fr fr_CA fr:fr_FR gl he hi:hi_IN hr hu id:id_ID it it:it_IT ja ka kk:kk_KZ ko:ko_KR ku:ku_IQ ky la lt
 	lv:lv_LV mk:mk_MK mn ms:ms_MY nb ne nl pam pl pt_BR pt_PT ro ro:ro_RO ru ru:ru_RU sk sl:sl_SI sq sr
 	sr-Latn:sr@latin sv ta th:th_TH tr tr:tr_TR uk ur_PK uz@Cyrl vi vi:vi_VN zh zh_CN zh_HK zh_TW"
 
-CDEPEND="dev-libs/boost:0=[threads(+)]
+CDEPEND="
+	dev-libs/boost:0=[threads(+)]
 	dev-libs/libevent
 	gui? (
 		dev-libs/protobuf
@@ -32,12 +35,21 @@ CDEPEND="dev-libs/boost:0=[threads(+)]
 	)
 	!libressl? ( dev-libs/openssl:0=[-bindist] )
 	libressl? ( dev-libs/libressl:0= )
-	system-univalue? ( dev-libs/univalue )
+	system-univalue? ( >=dev-libs/univalue-1.0.3 )
 	upnp? ( net-libs/miniupnpc )
-	wallet? ( sys-libs/db:5.3[cxx] )
-	zeromq? ( net-libs/zeromq )"
+	wallet? (
+		|| (
+			sys-libs/db:5.3[cxx]
+			sys-libs/db:6.0[cxx]
+			sys-libs/db:6.1[cxx]
+			sys-libs/db:6.2[cxx]
+		)
+	)
+	zeromq? ( net-libs/zeromq )
+"
 DEPEND="${CDEPEND}
-	gui? ( dev-qt/linguist-tools )"
+	gui? ( dev-qt/linguist-tools:5 )
+"
 RDEPEND="${CDEPEND}
 	daemon? (
 		!net-p2p/bitcoind
@@ -54,9 +66,8 @@ RDEPEND="${CDEPEND}
 		!net-p2p/bitcoin-tx
 		!net-p2p/bitcoinxt[utils]
 		!net-p2p/bitcoin-unlimited[utils]
-	)"
-
-REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
+	)
+"
 
 declare -A LANG2USE USE2LANGS
 bitcoin_langs_prep() {
