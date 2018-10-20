@@ -1,20 +1,5 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-
-# Ian Moone <gentoo@chaoslab.org> (30 May 2018)
-# Requires >=media-video/ffmpeg-4 (bug 654208)
->=www-client/inox-67 system-ffmpeg
-
-# Ian Moone <gentoo@chaoslab.org> (26 May 2018)
-# profiles/base/package.use.mask still blocks
-# www-client/chromium-62.0.3202.9 system-icu
->=www-client/inox-62.0.3202.9 system-icu
-
-# Ian Moone <gentoo@chaoslab.org> (18 Apr 2018)
-# Known build issue with system libvpx:
-# https://bugs.gentoo.org/611394
-# https://gitlab.com/chaoslab/chaoslab-overlay/issues/2
->=www-client/inox-58.0.3026.3 system-libvpx
 
 # Ian Moone <gentoo@chaoslab.org> (26 Sep 2018)
 # Following profiles/base/package.use.mask:

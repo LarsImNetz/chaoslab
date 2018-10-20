@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -26,7 +26,7 @@ S="${G}/src/${EGO_PN}"
 pkg_setup() {
 	if use test; then
 		# shellcheck disable=SC2086
-		if has network-sandbox $FEATURES; then
+		if has network-sandbox ${FEATURES}; then
 			ewarn
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 			ewarn

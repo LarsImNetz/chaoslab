@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -19,6 +19,11 @@ RDEPEND="!www-apps/mattermost-server"
 DOCS=( NOTICE.txt README.md )
 
 S="${WORKDIR}/mattermost"
+
+pkg_pretend() {
+	# Protect against people using autounmask overzealously
+	use amd64 || die "${PN} only works on amd64"
+}
 
 pkg_setup() {
 	enewgroup mattermost
@@ -57,7 +62,7 @@ src_install() {
 	fperms 600 /etc/mattermost/config.json
 
 	insinto /usr/share/mattermost
-	doins -r {client,fonts,i18n,templates}
+	doins -r {client,fonts,i18n,prepackaged_plugins,templates}
 
 	insinto /usr/share/mattermost/config
 	doins config/timezones.json
@@ -70,6 +75,7 @@ src_install() {
 	dosym ../../../share/mattermost/config/timezones.json /usr/libexec/mattermost/config/timezones.json
 	dosym ../../share/mattermost/fonts /usr/libexec/mattermost/fonts
 	dosym ../../share/mattermost/i18n /usr/libexec/mattermost/i18n
+	dosym ../../share/mattermost/prepackaged_plugins /usr/libexec/mattermost/prepackaged_plugins
 	dosym ../../share/mattermost/templates /usr/libexec/mattermost/templates
 	dosym ../../share/mattermost/client /usr/libexec/mattermost/client
 	dosym ../../../var/log/mattermost /usr/libexec/mattermost/logs

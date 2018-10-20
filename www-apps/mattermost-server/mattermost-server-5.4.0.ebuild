@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 inherit systemd user
 
-GIT_COMMIT="b5d5504" # Change this when you update the ebuild
+GIT_COMMIT="d5b613cb1b" # Change this when you update the ebuild
 EGO_PN="github.com/mattermost/${PN}"
 MMWAPP_PN="mattermost-webapp"
 MMWAPP_P="${MMWAPP_PN}-${PV}"
