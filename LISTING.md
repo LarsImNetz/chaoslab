@@ -189,7 +189,6 @@ www-apps/**[mattermost-server](www-apps/mattermost-server)** | Open source Slack
 www-apps/**[mattermost-server-ee](www-apps/mattermost-server-ee)** | Open source Slack-alternative in Golang and React (Enterprise Edition)
 www-apps/**[modoboa](www-apps/modoboa)** | A mail hosting and management platform with a modern and simplified Web UI
 www-apps/**[modoboa-dmarc](www-apps/modoboa-dmarc)** | A set of tools to use DMARC through Modoboa
-www-client/**[inox](www-client/inox)** `**` | Chromium spin-off to enhance privacy by disabling data transmission to Google
 www-client/**[ungoogled-chromium](www-client/ungoogled-chromium)** | Modifications to Chromium for removing Google integration and enhancing privacy
 www-client/**[ungoogled-chromium-bin](www-client/ungoogled-chromium-bin)** | Modifications to Chromium for removing Google integration and enhancing privacy
 www-misc/**[httplab](www-misc/httplab)** | An interactive web server that let you inspect HTTP requests and forge responses
