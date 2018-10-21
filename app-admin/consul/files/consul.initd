@@ -1,5 +1,5 @@
 #!/sbin/openrc-run
-# Copyright 2015-2018 Gentoo Foundation
+# Copyright 2015-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 description="A tool for service discovery, monitoring and configuration"
@@ -16,7 +16,7 @@ command_user="${command_use:-consul:consul}"
 command_background=yes
 pidfile="/run/${RC_SVCNAME}.pid"
 retry="${retry:-TERM/30/KILL/5}"
-start_stop_daemon_args="-1 ${output_log} -2 ${error_log}"
+start_stop_daemon_args="${SSD_OPTS}"
 stopsig="SIGINT"
 
 depend() {

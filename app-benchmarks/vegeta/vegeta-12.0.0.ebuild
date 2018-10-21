@@ -1,17 +1,26 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 # Change this when you update the ebuild:
-GIT_COMMIT="6f0659435229e0adcbddf1cbbdf9c0adf95f9081"
+GIT_COMMIT="f25ac6abb70a3a82b435aecf62946573e56a73ea"
 EGO_PN="github.com/tsenart/${PN}"
 # Keep EGO_VENDOR in sync with Gopkg.lock
 EGO_VENDOR=(
 	"github.com/alecthomas/jsonschema f2c9385"
-	"github.com/lucasb-eyer/go-colorful 8abd3be"
+	"github.com/bmizerany/perks d9a9656"
+	"github.com/c2h5oh/datasize 4eba002"
+	"github.com/dgryski/go-gk 201884a"
+	"github.com/dgryski/go-lttb 318fcdf"
+	"github.com/google/go-cmp 3af367b"
+	"github.com/influxdata/tdigest a7d76c6"
+	"github.com/mailru/easyjson 60711f1"
+	"github.com/shurcooL/httpfs 809bece"
+	"github.com/shurcooL/vfsgen 62bca83"
 	"github.com/streadway/quantile b0c5887"
-	"golang.org/x/net 2491c5d github.com/golang/net"
+	"github.com/tsenart/go-tsz cdeb9e1"
+	"golang.org/x/net c394268 github.com/golang/net"
 	"golang.org/x/text f21a4df github.com/golang/text"
 )
 
@@ -50,7 +59,7 @@ src_compile() {
 }
 
 src_test() {
-	go test -v ./... || die
+	go test ./... || die
 }
 
 src_install() {
