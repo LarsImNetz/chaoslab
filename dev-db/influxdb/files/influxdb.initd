@@ -1,5 +1,5 @@
 #!/sbin/openrc-run
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
@@ -12,8 +12,7 @@ command_user="${command_user:-influxdb:influxdb}"
 command_background=yes
 pidfile="/run/${RC_SVCNAME}.pid"
 required_files="${INFLUXDB_CONFIG}"
-start_stop_daemon_args="${SSD_OPTS}
-	-1 ${output_log} -2 ${error_log}"
+start_stop_daemon_args="${SSD_OPTS}"
 
 depend() {
 	need net
