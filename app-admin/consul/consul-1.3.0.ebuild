@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 EGO_PN="github.com/hashicorp/${PN}"
-GIT_COMMIT="9a494b5" # Change this when you update the ebuild
+GIT_COMMIT="e8757838a4" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
@@ -18,7 +18,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="pie"
 
-DOCS=( {CHANGELOG,README}.md )
+DOCS=( CHANGELOG.md README.md )
 QA_PRESTRIPPED="usr/bin/consul"
 
 G="${WORKDIR}/${P}"
