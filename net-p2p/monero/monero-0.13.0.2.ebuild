@@ -17,9 +17,9 @@ DESCRIPTION="The secure, private and untraceable cryptocurrency"
 HOMEPAGE="https://getmonero.org"
 SRC_URI="
 	https://github.com/monero-project/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	https://github.com/monero-project/miniupnp/archive/${MINIUPNP_COMMIT}.tar.gz -> ${MINIUPNP_P}.tar.gz
-	https://github.com/Tencent/rapidjson/archive/${RAPIDJSON_COMMIT}.tar.gz -> ${RAPIDJSON_P}.tar.gz
-	!system-unbound? ( https://github.com/monero-project/unbound/archive/${UNBOUND_COMMIT}.tar.gz -> ${UNBOUND_P}.tar.gz )
+	https://github.com/monero-project/miniupnp/archive/${MINIUPNP_PV}.tar.gz -> ${MINIUPNP_P}.tar.gz
+	https://github.com/Tencent/rapidjson/archive/${RAPIDJSON_PV}.tar.gz -> ${RAPIDJSON_P}.tar.gz
+	!system-unbound? ( https://github.com/monero-project/unbound/archive/${UNBOUND_PV}.tar.gz -> ${UNBOUND_P}.tar.gz )
 "
 RESTRICT="mirror"
 
