@@ -117,7 +117,7 @@ src_install() {
 	exeinto /usr/libexec/mattermost/bin
 	doexe mattermost platform
 
-	newinitd "${FILESDIR}/${PN}.initd-r1" "${PN}"
+	newinitd "${FILESDIR}/${PN}.initd-r2" "${PN}"
 	systemd_newunit "${FILESDIR}/${PN}.service-r1" "${PN}.service"
 
 	insinto /etc/mattermost
