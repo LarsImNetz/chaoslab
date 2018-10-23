@@ -25,7 +25,8 @@ IUSE="pie"
 
 DEPEND="
 	>=dev-lang/go-1.10.1
-	>=net-libs/nodejs-6.0.0
+	media-libs/libpng:0
+	>net-libs/nodejs-6
 "
 RDEPEND="!www-apps/mattermost-server-ee"
 
@@ -102,7 +103,12 @@ src_compile() {
 		-ldflags "${myldflags[*]}"
 	)
 
-	emake -C client build
+	pushd client || die
+	emake build
+	ebegin "Attempting to fix potential vulnerabilities"
+	npm audit fix --force || die
+	eend $?
+	popd || die
 
 	go install "${mygoargs[@]}" ./cmd/{mattermost,platform} || die
 }
@@ -131,6 +137,7 @@ src_install() {
 
 	diropts -o mattermost -g mattermost -m 0750
 	keepdir /var/{lib,log}/mattermost
+	keepdir /var/lib/mattermost/client
 
 	dosym ../libexec/mattermost/bin/mattermost /usr/bin/mattermost
 	dosym ../../../../etc/mattermost/config.json /usr/libexec/mattermost/config/config.json
