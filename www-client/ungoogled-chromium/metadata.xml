@@ -14,11 +14,6 @@
 		and enhancing privacy, control, and transparency
 	</longdescription>
 	<use>
-		<flag name="component-build">
-			Split build into more shared libraries to speed up linking,
-			mostly intended for debugging and development (NOT RECOMMENDED
-			for general use)
-		</flag>
 		<flag name="jumbo-build">
 			Combine source files to speed up build process
 		</flag>
