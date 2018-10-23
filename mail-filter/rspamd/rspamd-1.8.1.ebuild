@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -19,8 +19,8 @@ REQUIRED_USE="torch? ( jit )"
 DEPEND="
 	dev-db/sqlite:3
 	dev-libs/glib:2
-	dev-libs/icu
-	dev-libs/libevent
+	dev-libs/icu:=
+	dev-libs/libevent:=
 	<dev-util/ragel-7.0
 	sys-apps/file
 	cpu_flags_x86_ssse3? ( dev-libs/hyperscan )
@@ -35,8 +35,6 @@ DEPEND="
 	pcre2? ( dev-libs/libpcre2[jit=] )
 "
 RDEPEND="${DEPEND}"
-
-QA_MULTILIB_PATHS="usr/lib/rspamd/.*"
 
 pkg_setup() {
 	enewgroup rspamd
@@ -69,8 +67,7 @@ src_install() {
 
 	# Remove mprotect for JIT support
 	if use jit; then
-		pax-mark m "${ED%/}"/usr/bin/rspamd-* \
-			"${ED%/}"/usr/bin/rspamadm-* || die
+		pax-mark m "${ED%/}"/usr/bin/rspamd-* "${ED%/}"/usr/bin/rspamadm-*
 	fi
 
 	insinto /etc/logrotate.d
