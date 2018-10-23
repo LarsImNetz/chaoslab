@@ -34,3 +34,8 @@
 # think that it is quite experimental. You should NOT use this, unless you really
 # know what you are doing. Please use the Gentoo's official ebuild.
 app-emulation/docker
+
+# Ian Moone <gentoo@chaoslab.org> (23 May 2018)
+# As we cannot remove ungoogled-chromium-bin-69,
+# mask it until we have a secure version
+~www-client/ungoogled-chromium-bin-69.0.3497.100
