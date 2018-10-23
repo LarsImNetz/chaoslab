@@ -52,7 +52,7 @@ src_install() {
 	doexe bin/{mattermost,platform}
 	einstalldocs
 
-	newinitd "${FILESDIR}/${PN}.initd" "${PN/-ee}"
+	newinitd "${FILESDIR}/${PN}.initd-r1" "${PN/-ee}"
 	systemd_newunit "${FILESDIR}/${PN}.service" "${PN/-ee}.service"
 
 	insinto /etc/mattermost
@@ -69,6 +69,7 @@ src_install() {
 
 	diropts -o mattermost -g mattermost -m 0750
 	keepdir /var/{lib,log}/mattermost
+	keepdir /var/lib/mattermost/client
 
 	dosym ../libexec/mattermost/bin/mattermost /usr/bin/mattermost
 	dosym ../../../../etc/mattermost/config.json /usr/libexec/mattermost/config/config.json
