@@ -14,16 +14,19 @@
 		and enhancing privacy, control, and transparency
 	</longdescription>
 	<use>
-		<flag name="component-build">
-			Split build into more shared libraries to speed up linking,
-			mostly intended for debugging and development (NOT RECOMMENDED
-			for general use)
-		</flag>
 		<flag name="jumbo-build">
 			Combine source files to speed up build process
 		</flag>
+		<flag name="new-tcmalloc">
+			Use the new tcmalloc (EXPERIMENTAL)
+		</flag>
 		<flag name="openh264">
 			Use <pkg>media-libs/openh264</pkg> instead of the bundled one
+		</flag>
+		<flag name="optimize-webui">
+			Optimize parts of Chromium's UI written with web technologies
+			(HTML/CSS/JS) for runtime performance purposes. This does more
+			work at compile time for speed benefits at runtime
 		</flag>
 		<flag name="proprietary-codecs">
 			Enable proprietary codecs like H.264, MP3
@@ -33,6 +36,9 @@
 		</flag>
 		<flag name="system-ffmpeg">
 			Use system ffmpeg instead of the bundled one
+		</flag>
+		<flag name="system-harfbuzz">
+			Use system harfbuzz instead of the bundled one
 		</flag>
 		<flag name="system-icu">
 			Use system icu instead of the bundled one

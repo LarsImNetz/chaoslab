@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -19,6 +19,11 @@ RDEPEND="!www-apps/mattermost-server"
 DOCS=( NOTICE.txt README.md )
 
 S="${WORKDIR}/mattermost"
+
+pkg_pretend() {
+	# Protect against people using autounmask overzealously
+	use amd64 || die "${PN} only works on amd64"
+}
 
 pkg_setup() {
 	enewgroup mattermost
@@ -47,7 +52,7 @@ src_install() {
 	doexe bin/{mattermost,platform}
 	einstalldocs
 
-	newinitd "${FILESDIR}/${PN}.initd" "${PN/-ee}"
+	newinitd "${FILESDIR}/${PN}.initd-r1" "${PN/-ee}"
 	systemd_newunit "${FILESDIR}/${PN}.service" "${PN/-ee}.service"
 
 	insinto /etc/mattermost
@@ -64,6 +69,7 @@ src_install() {
 
 	diropts -o mattermost -g mattermost -m 0750
 	keepdir /var/{lib,log}/mattermost
+	keepdir /var/lib/mattermost/client
 
 	dosym ../libexec/mattermost/bin/mattermost /usr/bin/mattermost
 	dosym ../../../../etc/mattermost/config.json /usr/libexec/mattermost/config/config.json

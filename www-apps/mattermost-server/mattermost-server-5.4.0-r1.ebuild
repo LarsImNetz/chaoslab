@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 inherit systemd user
 
-GIT_COMMIT="536fa89" # Change this when you update the ebuild
+GIT_COMMIT="d5b613cb1b" # Change this when you update the ebuild
 EGO_PN="github.com/mattermost/${PN}"
 MMWAPP_PN="mattermost-webapp"
 MMWAPP_P="${MMWAPP_PN}-${PV}"
@@ -25,7 +25,8 @@ IUSE="pie"
 
 DEPEND="
 	>=dev-lang/go-1.10.1
-	>=net-libs/nodejs-6.0.0
+	media-libs/libpng:0
+	>net-libs/nodejs-6
 "
 RDEPEND="!www-apps/mattermost-server-ee"
 
@@ -102,7 +103,12 @@ src_compile() {
 		-ldflags "${myldflags[*]}"
 	)
 
-	emake -C client build
+	pushd client || die
+	emake build
+	ebegin "Attempting to fix potential vulnerabilities"
+	npm audit fix --force || die
+	eend $?
+	popd || die
 
 	go install "${mygoargs[@]}" ./cmd/{mattermost,platform} || die
 }
@@ -111,7 +117,7 @@ src_install() {
 	exeinto /usr/libexec/mattermost/bin
 	doexe mattermost platform
 
-	newinitd "${FILESDIR}/${PN}.initd-r1" "${PN}"
+	newinitd "${FILESDIR}/${PN}.initd-r2" "${PN}"
 	systemd_newunit "${FILESDIR}/${PN}.service-r1" "${PN}.service"
 
 	insinto /etc/mattermost
@@ -131,6 +137,7 @@ src_install() {
 
 	diropts -o mattermost -g mattermost -m 0750
 	keepdir /var/{lib,log}/mattermost
+	keepdir /var/lib/mattermost/client
 
 	dosym ../libexec/mattermost/bin/mattermost /usr/bin/mattermost
 	dosym ../../../../etc/mattermost/config.json /usr/libexec/mattermost/config/config.json
