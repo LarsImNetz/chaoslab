@@ -1,12 +1,12 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 EGO_PN="github.com/hashicorp/terraform"
-EGO_VENDOR=( "golang.org/x/tools 9de1900 github.com/golang/tools" )
+EGO_VENDOR=( "golang.org/x/tools 40a48ad93f github.com/golang/tools" )
 # Change this when you update the ebuild:
-GIT_COMMIT="6dfc4d748de9cda23835bc5704307ed45e839622"
+GIT_COMMIT="17850e9a55d33c43d7c31fd6ac122ba97a51d899"
 
 inherit golang-vcs-snapshot
 
@@ -37,7 +37,7 @@ src_compile() {
 	export PATH="${G}/bin:$PATH"
 	local myldflags=( -s -w
 		-X "main.GitCommit=${GIT_COMMIT}"
-		-X "${EGO_PN}/terraform.VersionPrerelease="
+		-X "version.Prerelease="
 	)
 	local mygoargs=(
 		-v -work -x
@@ -55,15 +55,13 @@ src_compile() {
 	)
 
 	# Build stringer locally
-	go build -o "${G}"/bin/stringer \
-		./vendor/golang.org/x/tools/cmd/stringer || die
+	go build -o "${G}"/bin/stringer ./vendor/golang.org/x/tools/cmd/stringer || die
 
 	emake generate
 	go build "${mygoargs[@]}" || die
 
 	if use terraform-bundle; then
-		go build "${mygoargs2[@]}" \
-		./tools/terraform-bundle || die
+		go build "${mygoargs2[@]}" ./tools/terraform-bundle || die
 	fi
 }
 
@@ -73,8 +71,7 @@ src_install() {
 
 	if use terraform-bundle; then
 		dobin terraform-bundle
-		newdoc tools/terraform-bundle/README.md \
-			terraform-bundle.md
+		newdoc tools/terraform-bundle/README.md terraform-bundle.md
 	fi
 
 	if use examples; then
