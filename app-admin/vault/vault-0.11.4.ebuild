@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 EGO_PN="github.com/hashicorp/${PN}"
-GIT_COMMIT="8575f8f" # Change this when you update the ebuild
+GIT_COMMIT="612120e76d" # Change this when you update the ebuild
 
 inherit fcaps golang-vcs-snapshot systemd user
 
