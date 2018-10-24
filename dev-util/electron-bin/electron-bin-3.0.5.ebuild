@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="7"
@@ -16,7 +16,7 @@ SRC_URI="
 RESTRICT="mirror"
 
 LICENSE="MIT"
-SLOT="2.0"
+SLOT="3.0"
 KEYWORDS="-* ~amd64 ~arm ~arm64 ~x86"
 
 RDEPEND="
@@ -24,7 +24,6 @@ RDEPEND="
 	dev-libs/expat
 	dev-libs/glib:2
 	dev-libs/nss
-	gnome-base/gconf:2
 	media-gfx/graphite2
 	media-libs/alsa-lib
 	media-libs/fontconfig:1.0

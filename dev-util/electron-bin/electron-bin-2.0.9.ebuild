@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="7"
@@ -9,14 +9,14 @@ DESCRIPTION="Cross platform application development framework based on web techn
 HOMEPAGE="https://electron.atom.io"
 SRC_URI="
 	amd64? ( ${SRC_URI_BASE}/v${PV}/${MY_PN}-v${PV}-linux-x64.zip -> ${P}-x64.zip )
-	x86? ( ${SRC_URI_BASE}/v${PV}/${MY_PN}-v${PV}-linux-ia32.zip -> ${P}-ia32.zip )
 	arm? ( ${SRC_URI_BASE}/v${PV}/${MY_PN}-v${PV}-linux-armv7l.zip -> ${P}-armv7l.zip )
 	arm64? ( ${SRC_URI_BASE}/v${PV}/${MY_PN}-v${PV}-linux-arm64.zip -> ${P}-arm64.zip )
+	x86? ( ${SRC_URI_BASE}/v${PV}/${MY_PN}-v${PV}-linux-ia32.zip -> ${P}-ia32.zip )
 "
 RESTRICT="mirror"
 
 LICENSE="MIT"
-SLOT="3.0"
+SLOT="2.0"
 KEYWORDS="-* ~amd64 ~arm ~arm64 ~x86"
 
 RDEPEND="
@@ -24,6 +24,7 @@ RDEPEND="
 	dev-libs/expat
 	dev-libs/glib:2
 	dev-libs/nss
+	gnome-base/gconf:2
 	media-gfx/graphite2
 	media-libs/alsa-lib
 	media-libs/fontconfig:1.0

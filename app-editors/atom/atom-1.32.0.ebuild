@@ -25,7 +25,7 @@ DEPEND="${PYTHON_DEPS}
 "
 RDEPEND="${DEPEND}
 	>=dev-util/ctags-5.8
-	dev-util/electron-bin:${ELECTRON_SLOT}
+	>=dev-util/electron-bin-2.0.9:${ELECTRON_SLOT}
 	media-fonts/inconsolata
 	!app-editors/atom-bin
 	!sys-apps/apmd
