@@ -49,6 +49,9 @@
 		<flag name="system-libvpx">
 			Use system libvpx instead of the bundled one
 		</flag>
+		<flag name="system-openjpeg">
+			Use system openjpeg instead of the bundled one
+		</flag>
 		<flag name="tcmalloc">
 			Use bundled tcmalloc instead of system malloc
 		</flag>
