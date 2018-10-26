@@ -1,5 +1,5 @@
 #!/sbin/openrc-run
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 extra_started_commands="reload"
@@ -13,8 +13,7 @@ command_background=yes
 pidfile="/run/${RC_SVCNAME}.pid"
 required_files="${RUNNER_CONFIG}"
 retry="${retry:-TERM/60/KILL/5}"
-start_stop_daemon_args="${SSD_OPTS}
-	-1 ${output_log} -2 ${error_log}"
+start_stop_daemon_args="${SSD_OPTS}"
 
 depend() {
 	need localmount net
