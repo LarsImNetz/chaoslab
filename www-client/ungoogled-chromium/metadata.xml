@@ -15,7 +15,8 @@
 	</longdescription>
 	<use>
 		<flag name="jumbo-build">
-			Combine source files to speed up build process
+			Combine source files to speed up build process, at the expense
+			of more memory during build time
 		</flag>
 		<flag name="new-tcmalloc">
 			Use the new tcmalloc (EXPERIMENTAL)
@@ -35,22 +36,23 @@
 			Build the SUID sandbox, which is only needed on CONFIG_USER_NS=n kernels
 		</flag>
 		<flag name="system-ffmpeg">
-			Use system ffmpeg instead of the bundled one
+			Use system <pkg>media-video/ffmpeg</pkg> instead of the bundled one
 		</flag>
 		<flag name="system-harfbuzz">
-			Use system harfbuzz instead of the bundled one
+			Use system <pkg>media-libs/harfbuzz</pkg> instead of the bundled one
 		</flag>
 		<flag name="system-icu">
-			Use system icu instead of the bundled one
+			Use system <pkg>dev-libs/icu</pkg> instead of the bundled one
 		</flag>
 		<flag name="system-libevent">
-			Use system libevent instead of the bundled one
+			Use system <pkg>dev-libs/libevent</pkg> instead of the bundled one
 		</flag>
 		<flag name="system-libvpx">
-			Use system libvpx instead of the bundled one
+			Use system <pkg>media-libs/libvpx</pkg> instead of the bundled one
 		</flag>
 		<flag name="system-openjpeg">
-			Use system openjpeg instead of the bundled one
+			Use system <pkg>media-libs/openjpeg</pkg> instead of the bundled
+			one, exclusively for Chromium's PDF viewer
 		</flag>
 		<flag name="tcmalloc">
 			Use bundled tcmalloc instead of system malloc
