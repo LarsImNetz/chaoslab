@@ -20,19 +20,19 @@ RDEPEND="${DEPEND}"
 DOCS=( docs/{ARCHITECTURE.md,cryptpad-docker.md,example.nginx.conf} )
 
 pkg_setup() {
-	enewgroup cryptpad
-	enewuser cryptpad -1 -1 -1 cryptpad
-}
-
-src_prepare() {
 	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES; then
+	if has network-sandbox $FEATURES && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
 
+	enewgroup cryptpad
+	enewuser cryptpad -1 -1 -1 cryptpad
+}
+
+src_prepare() {
 	# shellcheck disable=SC2153
 	local CRYPTPAD_DATADIR="${EPREFIX}/var/lib/cryptpad"
 	sed -i \
