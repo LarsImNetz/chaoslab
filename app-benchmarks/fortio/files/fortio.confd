@@ -1,0 +1,9 @@
+# config file for /etc/init.d/fortio
+
+FORTIO_OPTS="-http-port 127.0.0.1:8080"
+FORTIO_DATADIR="/var/lib/fortio"
+FORTIO_LOGDIR="/var/log/${RC_SVCNAME}"
+
+# Logging
+#output_log="${FORTIO_LOGDIR}/fortio.log"
+#error_log="${FORTIO_LOGDIR}/error.log"

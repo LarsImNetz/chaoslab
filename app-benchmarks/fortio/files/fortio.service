@@ -1,0 +1,12 @@
+[Unit]
+Description=A load testing CLI, advanced echo server, and web UI in Go
+After=network.target
+
+[Service]
+Type=simple
+User=fortio
+ExecStart=/usr/bin/fortio server -http-port 127.0.0.1:8080
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
