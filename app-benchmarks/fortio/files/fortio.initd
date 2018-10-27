@@ -18,5 +18,5 @@ depend() {
 
 start_pre() {
 	checkpath -d -m 0750 -o "${command_user}" \
-        "${FORTIO_DATADIR}" ${FORTIO_LOGDIR}
+        "${FORTIO_DATADIR}" "${FORTIO_LOGDIR}"
 }
