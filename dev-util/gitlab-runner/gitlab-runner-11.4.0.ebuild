@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-GIT_COMMIT="a3884675" # Change this when you update the ebuild
+GIT_COMMIT="8af42251" # Change this when you update the ebuild
 EGO_PN="gitlab.com/gitlab-org/${PN}"
-EGO_VENDOR=( "github.com/mitchellh/gox 51ed453898" )
+EGO_VENDOR=( "github.com/mitchellh/gox 9cc4875981" )
 
 inherit golang-vcs-snapshot linux-info systemd user
 

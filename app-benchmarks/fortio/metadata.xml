@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">fortio/fortio</remote-id>
+		<bugs-to>https://github.com/fortio/fortio/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Fortio is a microservices (http, grpc) load testing
+		library, command line tool, advanced echo server, and
+		web UI in Go (golang). Fortio allows to specify a set
+		query-per-second load and record latency histograms
+		and other useful stats.
+	</longdescription>
+	<use>
+		<flag name="daemon">
+			Allow fortio to run as a system-wide service; installs
+			an init script and creates a fortio user:group
+		</flag>
+	</use>
+</pkgmetadata>

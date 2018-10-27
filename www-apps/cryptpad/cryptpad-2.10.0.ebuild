@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=6
 
 inherit systemd user
 
@@ -20,19 +20,19 @@ RDEPEND="${DEPEND}"
 DOCS=( docs/{ARCHITECTURE.md,cryptpad-docker.md,example.nginx.conf} )
 
 pkg_setup() {
-	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES; then
-		ewarn ""
-		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn ""
-		die "[network-sandbox] is enabled in FEATURES"
-	fi
-
 	enewgroup cryptpad
 	enewuser cryptpad -1 -1 -1 cryptpad
 }
 
 src_prepare() {
+	# shellcheck disable=SC2086
+	if has network-sandbox $FEATURES; then
+		ewarn
+		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
+		ewarn
+		die "[network-sandbox] is enabled in FEATURES"
+	fi
+
 	# shellcheck disable=SC2153
 	local CRYPTPAD_DATADIR="${EPREFIX}/var/lib/cryptpad"
 	sed -i \
@@ -70,8 +70,29 @@ src_compile() {
 }
 
 src_install() {
+	# Clean up
+	local find_exp="-or -name"
+	local find_name=()
+
+	# shellcheck disable=SC2206
+	for match in "AUTHORS*" "CHANGE*" "CONTRIBUT*" "README*" \
+		".travis.yml" ".eslint*" ".wercker.yml" ".npmignore" \
+		"*.md" "*.markdown" "*.bat" "*.cmd" ".mailmap" \
+		".npmignore" "Makefile"; do
+		find_name+=( ${find_exp} "${match}" )
+	done
+
+	# Remove various development and/or inappropriate files and
+	# useless docs of dependend packages
+	find ./node_modules \
+		\( -type d -name examples \) -or \( -type f \( \
+			-iname "LICEN?E*" \
+			"${find_name[@]}" \
+		\) \) -exec rm -rf "{}" \;
+
 	einstalldocs
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	insinto /etc/cryptpad
@@ -81,7 +102,7 @@ src_install() {
 	# Remove the redundant file
 	rm config.example.js || die
 	# Remove phantomjs, it's not required anymore
-	rm -R node_modules/phantomjs-prebuilt || die
+	rm -R node_modules/{phantomjs-prebuilt,.bin/phantomjs} || die
 
 	insinto /usr/share/cryptpad
 	doins -r {customize.dist,node_modules,storage,www}

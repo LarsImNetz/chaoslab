@@ -1,0 +1,22 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+output_log="${output_log:-/dev/null}"
+error_log="${error_log:-${FORTIO_LOGDIR}/error.log}"
+
+command="/usr/bin/fortio"
+command_args="server ${FORTIO_OPTS}"
+command_user="${command_user:-fortio:fortio}"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="${SSD_OPTS}"
+
+depend() {
+   need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" \
+        "${FORTIO_DATADIR}" "${FORTIO_LOGDIR}"
+}

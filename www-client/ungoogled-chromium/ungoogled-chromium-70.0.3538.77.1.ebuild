@@ -70,9 +70,8 @@ COMMON_DEPEND="
 		>=media-video/ffmpeg-4:=
 		|| (
 			media-video/ffmpeg[-samba]
-			>=net-fs/samba-4.5.10-r1[-debug(-)]
+			>=net-fs/samba-4.5.16[-debug(-)]
 		)
-		!=net-fs/samba-4.5.12-r0
 		media-libs/opus:=
 	)
 	sys-apps/dbus:=
@@ -123,10 +122,10 @@ DEPEND="${COMMON_DEPEND}
 	>net-libs/nodejs-6[inspector]
 	sys-apps/hwids[usb(+)]
 	>=sys-devel/bison-2.4.3
-	>=sys-devel/clang-6
+	>=sys-devel/clang-7.0.0
 	sys-devel/flex
-	>=sys-devel/lld-6
-	>=sys-devel/llvm-6
+	>=sys-devel/lld-7.0.0
+	>=sys-devel/llvm-7.0.0
 	virtual/libusb:1
 	virtual/pkgconfig
 	dev-vcs/git
