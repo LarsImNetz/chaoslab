@@ -11,13 +11,13 @@ CHROMIUM_LANGS="
 
 inherit chromium-2 gnome2-utils readme.gentoo-r1 xdg-utils
 
-MY_PV="${PV}-2"
+MY_PV="${PV/_p/-}"
 MY_PN="${PN/-bin}"
 MY_P="${MY_PN}_${MY_PV}_linux"
-
 DESCRIPTION="Modifications to Chromium for removing Google integration and enhancing privacy"
 HOMEPAGE="https://github.com/Eloston/ungoogled-chromium"
-SRC_URI="https://github.com/intika/${PN}aries/releases/download/${MY_PV}/${MY_P}.tar.xz -> ${PN}-${MY_PV}.tar.xz"
+BASE_SRC_URI="https://dl.opendesktop.org/api/files/download/id"
+SRC_URI="${BASE_SRC_URI}/1540555385/s/e061da5632443ee3e1a83a8e212c8300/t/1540642559/${MY_P}.tar.xz.tar.xz -> ${PN}-${MY_PV}.tar.xz"
 RESTRICT="mirror"
 
 LICENSE="BSD"
@@ -87,7 +87,6 @@ GTK+ icon theme.
 "
 
 QA_PREBUILT="*"
-
 S="${WORKDIR}/${MY_P}"
 
 pkg_pretend() {
@@ -159,11 +158,11 @@ src_install() {
 		chromium-browser \
 		"Network;WebBrowser" \
 		"MimeType=${mime_types}\nStartupWMClass=chromium-browser"
-	sed -e "/^Exec/s/$/ %U/" -i "${ED%/}"/usr/share/applications/*.desktop || die
+	sed -i "/^Exec/s/$/ %U/" "${ED%/}"/usr/share/applications/*.desktop || die
 
 	# Install GNOME default application entry (bug #303100)
 	insinto /usr/share/gnome-control-center/default-apps
-	doins "${FILESDIR}"/chromium-browser.xml
+	doins "${FILESDIR}/chromium-browser.xml"
 
 	readme.gentoo_create_doc
 }
