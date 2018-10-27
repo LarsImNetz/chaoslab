@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -94,10 +94,10 @@ S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
 	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES; then
-		ewarn ""
+	if has network-sandbox $FEATURES && [[ "${MERGE_TYPE}" != binary ]]; then
+		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn ""
+		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
 
@@ -109,14 +109,10 @@ pkg_setup() {
 
 src_unpack() {
 	golang-vcs-snapshot_src_unpack
+	cd "${S}" || die
 	unpack "${FRONTEND_P}.tar.gz"
-}
-
-src_prepare() {
 	rmdir frontend || die
-	mv "${WORKDIR}/${FRONTEND_P}" frontend || die
-
-	default
+	mv "${FRONTEND_P}" frontend || die
 }
 
 src_compile() {
@@ -131,8 +127,8 @@ src_compile() {
 	)
 
 	pushd frontend || die
-		yarn install || die
-		yarn build || die
+	yarn install || die
+	yarn build || die
 	popd || die
 
 	# Build rice locally
