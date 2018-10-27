@@ -20,5 +20,5 @@ depend() {
 
 start_pre() {
 	checkpath -d -m 0750 -o "${command_user}" \
-        "${CRYPTPAD_DATADIR}" ${CRYPTPAD_LOGDIR}
+        "${CRYPTPAD_DATADIR}" "${CRYPTPAD_LOGDIR}"
 }
