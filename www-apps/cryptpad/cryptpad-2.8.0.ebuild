@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="7"
+EAPI=6
 
 inherit systemd user
 
@@ -20,6 +20,11 @@ RDEPEND="${DEPEND}"
 DOCS=( docs/{ARCHITECTURE.md,cryptpad-docker.md,example.nginx.conf} )
 
 pkg_setup() {
+	enewgroup cryptpad
+	enewuser cryptpad -1 -1 -1 cryptpad
+}
+
+src_prepare() {
 	# shellcheck disable=SC2086
 	if has network-sandbox $FEATURES; then
 		ewarn
@@ -28,11 +33,6 @@ pkg_setup() {
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
 
-	enewgroup cryptpad
-	enewuser cryptpad -1 -1 -1 cryptpad
-}
-
-src_prepare() {
 	# shellcheck disable=SC2153
 	local CRYPTPAD_DATADIR="${EPREFIX}/var/lib/cryptpad"
 	sed -i \
@@ -92,6 +92,7 @@ src_install() {
 
 	einstalldocs
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	insinto /etc/cryptpad

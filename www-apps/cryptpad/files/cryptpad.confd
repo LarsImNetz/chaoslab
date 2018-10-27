@@ -1,0 +1,8 @@
+# config file for /etc/init.d/cryptpad
+
+CRYPTPAD_DATADIR="/var/lib/cryptpad"
+CRYPTPAD_LOGDIR="/var/log/${RC_SVCNAME}"
+
+# Logging
+#output_log="${CRYPTPAD_LOGDIR}/cryptpad.log"
+#error_log="${CRYPTPAD_LOGDIR}/error.log"
