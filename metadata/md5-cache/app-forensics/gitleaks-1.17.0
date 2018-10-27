@@ -8,6 +8,6 @@ KEYWORDS=~amd64 ~arm ~x86
 LICENSE=GPL-3
 RESTRICT=mirror test
 SLOT=0
-SRC_URI=https://github.com/zricethezav/gitleaks/archive/v1.16.0.tar.gz -> gitleaks-1.16.0.tar.gz
+SRC_URI=https://github.com/zricethezav/gitleaks/archive/v1.17.0.tar.gz -> gitleaks-1.17.0.tar.gz
 _eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc
 _md5_=8a92b2954f1d185c628a31dd96ea228d
