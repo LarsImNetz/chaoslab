@@ -21,6 +21,7 @@ app-backup/**[duplicacy](app-backup/duplicacy)** | A new generation cloud backup
 app-backup/**[restic](app-backup/restic)** `*` | A backup program that is fast, efficient and secure
 app-benchmarks/**[bombardier](app-benchmarks/bombardier)** | Fast cross-platform HTTP benchmarking tool written in Go
 app-benchmarks/**[dnsperfbench](app-benchmarks/dnsperfbench)** | A command line tool to compare performance of DNS resolvers
+app-benchmarks/**[fortio](app-benchmarks/fortio)** | A load testing CLI, advanced echo server, and web UI in Go
 app-benchmarks/**[hey](app-benchmarks/hey)** | HTTP load generator, ApacheBench (ab) replacement
 app-benchmarks/**[pewpew](app-benchmarks/pewpew)** | Flexible HTTP command line stress tester for websites and web services
 app-benchmarks/**[vegeta](app-benchmarks/vegeta)** | HTTP load testing tool and library. It's over 9000!
