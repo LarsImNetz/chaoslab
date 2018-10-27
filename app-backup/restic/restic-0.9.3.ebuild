@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -15,11 +15,10 @@ RESTRICT="mirror"
 LICENSE="BSD-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="doc pie zsh-completion"
+IUSE="doc pie"
 
 RDEPEND="
 	sys-fs/fuse:0
-	zsh-completion? ( app-shells/zsh )
 "
 DEPEND="doc? ( dev-python/sphinx )"
 
@@ -57,8 +56,6 @@ src_install() {
 	doman doc/man/*.1
 	newbashcomp doc/bash-completion.sh restic
 
-	if use zsh-completion; then
-		insinto /usr/share/zsh/site-functions
-		newins doc/zsh-completion.zsh _restic
-	fi
+	insinto /usr/share/zsh/site-functions
+	newins doc/zsh-completion.zsh _restic
 }
