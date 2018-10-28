@@ -30,7 +30,6 @@ app-crypt/**[enchive](app-crypt/enchive)** | A tool to encrypt files to yourself
 app-crypt/**[kbfs](app-crypt/kbfs)** `*` | Keybase Filesystem (KBFS)
 app-crypt/**[keybase](app-crypt/keybase)** `*` | Client for Keybase
 app-crypt/**[minisign](app-crypt/minisign)** | A dead simple tool to sign files and verify digital signatures
-app-crypt/**[opmsg](app-crypt/opmsg)** | opmsg message encryption (an alternative to GnuPG)
 app-crypt/**[ssh-vault](app-crypt/ssh-vault)** | Encrypt/Decrypt using SSH private keys
 app-editors/**[atom](app-editors/atom)** `*` | A hackable text editor for the 21st Century
 app-editors/**[micro](app-editors/micro)** | A modern and intuitive terminal-based text editor
@@ -152,7 +151,6 @@ net-p2p/**[bitcoin-abc](net-p2p/bitcoin-abc)** | A full node Bitcoin Cash implem
 net-p2p/**[bitcoin-unlimited](net-p2p/bitcoin-unlimited)** | A full node Bitcoin (and Bitcoin Cash) implementation with GUI, daemon and utils
 net-p2p/**[bitcoinxt](net-p2p/bitcoinxt)** | A full node Bitcoin Cash implementation with GUI, daemon and utils
 net-p2p/**[dash-core](net-p2p/dash-core)** | A peer-to-peer privacy-centric digital currency
-net-p2p/**[drops](net-p2p/drops)** | A p2p transport network for opmsg end2end encrypted messages
 net-p2p/**[go-ipfs](net-p2p/go-ipfs)** | IPFS implementation written in Go
 net-p2p/**[monero](net-p2p/monero)** | The secure, private and untraceable cryptocurrency
 net-p2p/**[monero-gui](net-p2p/monero-gui)** | The secure, private and untraceable cryptocurrency (with GUI wallet)
