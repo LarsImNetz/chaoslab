@@ -3,16 +3,21 @@
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-/var/log/vault/error.log}"
+error_log="${error_log:-${VAULT_LOGDIR}/error.log}"
 
+name="${name:-${RC_SVCNAME}}"
 command="/usr/bin/vault"
 command_args="server -config=${VAULT_CONFDIR} ${VAULT_OPTS}"
 command_user="${command_user:-vault:vault}"
-command_background=yes
+command_background=true
 pidfile="/run/${RC_SVCNAME}.pid"
 retry="${retry:-TERM/30/KILL/5}"
 start_stop_daemon_args="${SSD_OPTS}"
 
 depend() {
 	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" "${VAULT_LOGDIR}"
 }
