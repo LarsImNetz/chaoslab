@@ -1,15 +1,14 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-EGO_PN="github.com/getantibody/antibody"
+EGO_PN="github.com/getantibody/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
 # github.com/davecgh/go-spew
 # github.com/pmezard/go-difflib
 EGO_VENDOR=(
-	"github.com/pierrre/gotestcover 924dca7" #for tests
 	"github.com/alecthomas/kingpin a395891"
 	"github.com/alecthomas/template a0175ee"
 	"github.com/alecthomas/units 2efee85"
@@ -35,22 +34,25 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="pie test"
 
-RDEPEND="app-shells/zsh[unicode]
-	dev-vcs/git"
+RDEPEND="
+	app-shells/zsh[unicode]
+	dev-vcs/git
+"
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/antibody"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
+
+QA_PRESTRIPPED="usr/bin/antibody"
 
 pkg_setup() {
 	if use test; then
 		# shellcheck disable=SC2086
 		if has network-sandbox $FEATURES; then
-			ewarn ""
+			ewarn
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn ""
+			ewarn
 			die "[network-sandbox] is enabled in FEATURES"
 		fi
 	fi
@@ -66,15 +68,6 @@ src_compile() {
 		-ldflags "-s -w -X main.version=${PV}"
 	)
 	go build "${mygoargs[@]}" || die
-
-	if use test; then
-		go install ./vendor/github.com/pierrre/gotestcover || die
-	fi
-}
-
-src_test() {
-	local PATH="${G}/bin:$PATH"
-	default
 }
 
 src_install() {

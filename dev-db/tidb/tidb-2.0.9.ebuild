@@ -1,13 +1,14 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 # TODO: Add an init script and systemd unit file
 
-GIT_COMMIT="29ec059" # Change this when you update the ebuild
+# Change this when you update the ebuild:
+GIT_COMMIT="3e53dfd03be383ca8b4eb543378079961d63b2fa"
 EGO_PN="github.com/pingcap/tidb"
-EGO_VENDOR=( "github.com/coreos/gofail bdde102" )
+EGO_VENDOR=( "github.com/etcd-io/gofail 51ce9a7151" )
 
 inherit golang-vcs-snapshot
 
@@ -31,10 +32,10 @@ S="${G}/src/${EGO_PN}"
 src_prepare() {
 	# The tarball isn't a proper git repository, so let's silence
 	# the "fatal" error message. Also remove references to
-	# "go get github.com/coreos/gofail"
+	# "go get github.com/etcd-io/gofail"
 	sed -i \
 		-e '/LDFLAGS +/d' \
-		-e '/coreos\/gofail/d' \
+		-e '/etcd-io\/gofail/d' \
 		Makefile || die
 
 	default
@@ -59,11 +60,10 @@ src_compile() {
 	)
 
 	emake parser
-
 	go build "${mygoargs[@]}" ./tidb-server || die
 
 	if use test; then
-		go install ./vendor/github.com/coreos/gofail || die
+		go install ./vendor/github.com/etcd-io/gofail || die
 	fi
 }
 

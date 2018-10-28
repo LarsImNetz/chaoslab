@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-GIT_COMMIT="fb61cd5" # Change this when you update the ebuild
+GIT_COMMIT="fc50161302" # Change this when you update the ebuild
 EGO_PN="github.com/senorprogrammer/${PN}"
 
 inherit golang-vcs-snapshot
@@ -27,7 +27,7 @@ QA_PRESTRIPPED="usr/bin/wtf"
 src_compile() {
 	export GOPATH="${G}"
 	local myldflags=( -s -w
-		-X "main.version=v${PV}-${GIT_COMMIT}"
+		-X "main.version=v${PV}-${GIT_COMMIT:0:6}"
 		-X "'main.date=$(date -u '+%FT%T%z')'"
 	)
 	local mygoargs=(

@@ -16,9 +16,6 @@
 		hostnames, bookmarks, git commits, etc.
 	</longdescription>
 	<use>
-		<flag name="fish-completion">Enable fish completion support</flag>
-		<flag name="neovim">Install neovim plugin</flag>
 		<flag name="tmux">Install TMUX extra tools</flag>
-		<flag name="vim">Install vim plugin</flag>
 	</use>
 </pkgmetadata>
