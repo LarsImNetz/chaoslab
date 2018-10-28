@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile install test unpack
+DEPEND=>=dev-lang/go-1.9
+DESCRIPTION=A general-purpose command-line fuzzy finder
+EAPI=6
+HOMEPAGE=https://github.com/junegunn/fzf
+IUSE=pie tmux
+KEYWORDS=~amd64 ~x86
+LICENSE=MIT
+RDEPEND=tmux? ( app-misc/tmux )
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/junegunn/fzf/archive/0.17.5.tar.gz -> fzf-0.17.5.tar.gz https://github.com/mattn/go-isatty/archive/66b8e73f3f.tar.gz -> github.com-mattn-go-isatty-66b8e73f3f.tar.gz https://github.com/mattn/go-runewidth/archive/14207d285c.tar.gz -> github.com-mattn-go-runewidth-14207d285c.tar.gz https://github.com/mattn/go-shellwords/archive/02e3cf038d.tar.gz -> github.com-mattn-go-shellwords-02e3cf038d.tar.gz https://github.com/golang/crypto/archive/558b6879de.tar.gz -> github.com-golang-crypto-558b6879de.tar.gz https://github.com/golang/sys/archive/b90f89a1e7.tar.gz -> github.com-golang-sys-b90f89a1e7.tar.gz
+_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	multilib	b2f01ad412baf81650c23fcf0975fa33	toolchain-funcs	f164325a2cdb5b3ea39311d483988861
+_md5_=51043bf7bc99d7bc55a010ec3857ccd6
