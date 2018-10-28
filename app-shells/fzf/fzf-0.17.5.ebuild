@@ -67,11 +67,6 @@ src_install() {
 	einstalldocs
 
 	newbashcomp shell/completion.bash fzf
-	insinto /etc/profile.d/
-	newins shell/key-bindings.bash fzf.sh
-
-	insinto /usr/share/fish/functions/
-	newins shell/key-bindings.fish fzf_key_bindings.fish
 
 	insinto /usr/share/nvim/runtime/plugin
 	doins plugin/fzf.vim
