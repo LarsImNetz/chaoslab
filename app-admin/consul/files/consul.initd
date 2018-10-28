@@ -2,18 +2,17 @@
 # Copyright 2015-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-description="A tool for service discovery, monitoring and configuration"
 extra_commands="configtest"
 extra_started_commands="reload"
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-/var/log/consul/error.log}"
+error_log="${error_log:-${CONSUL_LOGDIR}/error.log}"
 
-name="${RC_SVCNAME}"
+name="${name:-${RC_SVCNAME}}"
 command="/usr/bin/consul"
 command_args="agent -config-dir=${CONSUL_CONFDIR} ${CONSUL_OPTS}"
 command_user="${command_use:-consul:consul}"
-command_background=yes
+command_background=true
 pidfile="/run/${RC_SVCNAME}.pid"
 retry="${retry:-TERM/30/KILL/5}"
 start_stop_daemon_args="${SSD_OPTS}"
@@ -27,6 +26,9 @@ start_pre() {
 	# Make sure to use all our CPUs, because Consul can block a scheduler thread
 	# upstream strongly recommends > 1
 	export GOMAXPROCS=${GOMAXPROCS:-2}
+
+	checkpath -d -m 0750 -o "${command_user}" \
+		"${CONSUL_DATADIR}" "${CONSUL_LOGDIR}"
 
 	if [ "${RC_CMD}" != "restart" ]; then
 		configtest || return 1

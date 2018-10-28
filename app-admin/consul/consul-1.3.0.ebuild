@@ -62,11 +62,3 @@ src_install() {
 	diropts -o consul -g consul -m 0750
 	keepdir /var/log/consul
 }
-
-pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/consul") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/consul permissions"
-		chown consul:consul "${EROOT%/}/var/lib/consul" || die
-		chmod 0750 "${EROOT%/}/var/lib/consul" || die
-	fi
-}
