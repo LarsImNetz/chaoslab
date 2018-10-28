@@ -80,7 +80,6 @@ app-misc/**[genact](app-misc/genact)** | A nonsense activity generator
 app-misc/**[pet](app-misc/pet)** `*` | Simple command-line snippet manager, written in Go
 app-misc/**[vanity-monero](app-misc/vanity-monero)** | Generate vanity address for CryptoNote currency
 app-misc/**[watchexec](app-misc/watchexec)** | Executes commands in response to file modifications
-app-misc/**[watchman](app-misc/watchman)** | An inotify-based file watching and job triggering command line utility
 app-misc/**[wtf](app-misc/wtf)** | A personal information dashboard for your terminal
 app-shells/**[antibody](app-shells/antibody)** | The fastest shell plugin manager
 app-shells/**[fzf](app-shells/fzf)** `*` | A general-purpose command-line fuzzy finder
