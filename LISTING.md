@@ -78,7 +78,6 @@ app-misc/**[bat](app-misc/bat)** | A 'cat' clone with syntax highlighting and Gi
 app-misc/**[corgi](app-misc/corgi)** | A CLI workflow manager that helps with your repetitive command usages
 app-misc/**[genact](app-misc/genact)** | A nonsense activity generator
 app-misc/**[pet](app-misc/pet)** `*` | Simple command-line snippet manager, written in Go
-app-misc/**[skim](app-misc/skim)** `*` | Fuzzy finder in Rust
 app-misc/**[vanity-monero](app-misc/vanity-monero)** | Generate vanity address for CryptoNote currency
 app-misc/**[watchexec](app-misc/watchexec)** | Executes commands in response to file modifications
 app-misc/**[watchman](app-misc/watchman)** | An inotify-based file watching and job triggering command line utility
