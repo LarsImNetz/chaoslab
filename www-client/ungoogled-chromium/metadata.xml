@@ -14,6 +14,9 @@
 		and enhancing privacy, control, and transparency
 	</longdescription>
 	<use>
+		<flag name="gnome">
+			Improve integration with Gnome by enabling support for GIO (libgio)
+		</flag>
 		<flag name="jumbo-build">
 			Combine source files to speed up build process, at the expense
 			of more memory during build time
