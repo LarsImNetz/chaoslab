@@ -1,0 +1,8 @@
+# config file for /etc/init.d/parity
+
+PARITY_DATADIR="/var/lib/parity"
+PARITY_CONFIG="/etc/parity/config.toml"
+PARITY_LOGDIR="/var/log/${RC_SVCNAME}"
+
+# Additional options (avoid --base-path and --config, use the variables above)
+PARITY_OPTS="--log-file=\"${PARITY_LOGDIR}/parity.log\""

@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=6
 
 CRATES="
 aho-corasick-0.6.4
@@ -33,10 +33,13 @@ cmake-0.1.31
 crossbeam-0.3.2
 crossbeam-deque-0.2.0
 crossbeam-deque-0.3.0
+crossbeam-deque-0.6.1
 crossbeam-epoch-0.3.1
 crossbeam-epoch-0.4.1
+crossbeam-epoch-0.5.2
 crossbeam-utils-0.2.2
 crossbeam-utils-0.3.2
+crossbeam-utils-0.5.0
 crunchy-0.1.6
 crunchy-0.2.1
 ct-logs-0.2.0
@@ -103,7 +106,7 @@ linked-hash-map-0.5.0
 local-encoding-0.2.0
 lock_api-0.1.3
 log-0.3.9
-log-0.4.1
+log-0.4.5
 lru-cache-0.1.1
 matches-0.1.6
 memchr-2.0.1
@@ -288,7 +291,7 @@ S="${WORKDIR}/parity-ethereum-${PV/_*}"
 
 pkg_setup() {
 	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES; then
+	if has network-sandbox $FEATURES && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn
@@ -322,17 +325,8 @@ src_install() {
 		insinto /etc/parity
 		doins "${FILESDIR}"/config.toml
 
-		newinitd "${FILESDIR}/${PN}-2.initd" "${PN}"
+		newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+		newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 		systemd_dounit "scripts/${PN}.service"
-	fi
-}
-
-pkg_postinst() {
-	if use daemon; then
-		if [[ $(stat -c %a "${EROOT}/var/lib/parity") != "750" ]]; then
-			einfo "Fixing ${EROOT}/var/lib/parity permissions"
-			chown -R parity:parity "${EROOT}/var/lib/parity" || die
-			chmod 0750 "${EROOT}/var/lib/parity" || die
-		fi
 	fi
 }

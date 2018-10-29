@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=6
 
 CRATES="
 aho-corasick-0.6.8
@@ -141,7 +141,7 @@ parity-bytes-0.1.0
 parity-crypto-0.1.0
 parity-path-0.1.1
 parity-rocksdb-0.5.0
-parity-rocksdb-sys-0.5.2
+parity-rocksdb-sys-0.5.3
 parity-snappy-0.1.0
 parity-snappy-sys-0.1.1
 parity-wasm-0.31.3
@@ -322,7 +322,7 @@ S="${WORKDIR}/parity-ethereum-${PV/_*}"
 
 pkg_setup() {
 	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES; then
+	if has network-sandbox $FEATURES && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn
@@ -356,17 +356,8 @@ src_install() {
 		insinto /etc/parity
 		doins "${FILESDIR}"/config.toml
 
-		newinitd "${FILESDIR}/${PN}-2.initd" "${PN}"
+		newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+		newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 		systemd_dounit "scripts/${PN}.service"
-	fi
-}
-
-pkg_postinst() {
-	if use daemon; then
-		if [[ $(stat -c %a "${EROOT}/var/lib/parity") != "750" ]]; then
-			einfo "Fixing ${EROOT}/var/lib/parity permissions"
-			chown -R parity:parity "${EROOT}/var/lib/parity" || die
-			chmod 0750 "${EROOT}/var/lib/parity" || die
-		fi
 	fi
 }
