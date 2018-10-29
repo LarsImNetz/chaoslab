@@ -1,14 +1,14 @@
 DEFINED_PHASES=compile configure install postinst setup
-DEPEND=>=net-libs/gnutls-3.5:= >=dev-db/lmdb-0.9.18 >=dev-libs/userspace-rcu-0.9.1 dev-libs/libedit caps? ( >=sys-libs/libcap-ng-0.7.8 ) daemon? ( dev-python/lmdb ) module-dnstap? ( dev-libs/fstrm dev-libs/protobuf-c ) idn? ( !libidn2? ( net-dns/libidn:0 ) libidn2? ( >=net-dns/libidn2-2 ) ) virtual/pkgconfig doc? ( dev-python/sphinx ) virtual/pkgconfig
+DEPEND=dev-db/lmdb dev-libs/libedit dev-libs/userspace-rcu:= net-libs/gnutls caps? ( sys-libs/libcap-ng ) daemon? ( dev-python/lmdb ) idn? ( !libidn2? ( net-dns/libidn:0 ) libidn2? ( >=net-dns/libidn2-2 ) ) module-dnstap? ( dev-libs/fstrm dev-libs/protobuf-c ) virtual/pkgconfig doc? ( dev-python/sphinx ) virtual/pkgconfig
 DESCRIPTION=High-performance authoritative-only DNS server
 EAPI=6
 HOMEPAGE=https://www.knot-dns.cz
 IUSE=caps +daemon doc +fastparser idn libidn2 static-libs systemd +utils +module-dnsproxy module-dnstap +module-noudp +module-onlinesign module-rosedb +module-rrl +module-stats +module-synthrecord +module-whoami
 KEYWORDS=~amd64 ~x86
 LICENSE=GPL-3
-RDEPEND=>=net-libs/gnutls-3.5:= >=dev-db/lmdb-0.9.18 >=dev-libs/userspace-rcu-0.9.1 dev-libs/libedit caps? ( >=sys-libs/libcap-ng-0.7.8 ) daemon? ( dev-python/lmdb ) module-dnstap? ( dev-libs/fstrm dev-libs/protobuf-c ) idn? ( !libidn2? ( net-dns/libidn:0 ) libidn2? ( >=net-dns/libidn2-2 ) ) virtual/tmpfiles
+RDEPEND=dev-db/lmdb dev-libs/libedit dev-libs/userspace-rcu:= net-libs/gnutls caps? ( sys-libs/libcap-ng ) daemon? ( dev-python/lmdb ) idn? ( !libidn2? ( net-dns/libidn:0 ) libidn2? ( >=net-dns/libidn2-2 ) ) module-dnstap? ( dev-libs/fstrm dev-libs/protobuf-c ) virtual/tmpfiles
 REQUIRED_USE=caps? ( daemon ) idn? ( daemon ) systemd? ( daemon ) module-dnsproxy? ( daemon ) module-dnstap? ( daemon ) module-noudp? ( daemon ) module-onlinesign? ( daemon ) module-rosedb? ( daemon ) module-rrl? ( daemon ) module-stats? ( daemon ) module-synthrecord? ( daemon ) module-whoami? ( daemon )
 SLOT=0
 SRC_URI=https://secure.nic.cz/files/knot-dns/knot-2.6.9.tar.xz
 _eclasses_=multilib	b2f01ad412baf81650c23fcf0975fa33	systemd	47c677ae1d7b69031f11f630ac09f0d1	tmpfiles	c8f9ea76ade103890e42d0f339afb64c	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=3f8436d00c9539663358c90678a02e63
+_md5_=ed6a5b22bfb349f0fc7b74ae49baeb20
