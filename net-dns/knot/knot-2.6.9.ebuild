@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -32,19 +32,19 @@ done
 unset X
 
 RDEPEND="
-	>=net-libs/gnutls-3.5:=
-	>=dev-db/lmdb-0.9.18
-	>=dev-libs/userspace-rcu-0.9.1
+	dev-db/lmdb
 	dev-libs/libedit
-	caps? ( >=sys-libs/libcap-ng-0.7.8 )
+	dev-libs/userspace-rcu:=
+	net-libs/gnutls
+	caps? ( sys-libs/libcap-ng )
 	daemon? ( dev-python/lmdb )
-	module-dnstap? (
-		dev-libs/fstrm
-		dev-libs/protobuf-c
-	)
 	idn? (
 		!libidn2? ( net-dns/libidn:0 )
 		libidn2? ( >=net-dns/libidn2-2 )
+	)
+	module-dnstap? (
+		dev-libs/fstrm
+		dev-libs/protobuf-c
 	)
 "
 DEPEND="${RDEPEND}
@@ -107,14 +107,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	if use daemon; then
-		# Trigger cache dir creation to allow immediate use of knot
-		tmpfiles_process "${PN}.conf"
-
-		if [[ $(stat -c %a "${EROOT%/}/var/lib/knot") != "750" ]]; then
-			einfo "Fixing ${EROOT%/}/var/lib/knot permissions"
-			chown knot:knot "${EROOT%/}/var/lib/knot" || die
-			chmod 0750 "${EROOT%/}/var/lib/knot" || die
-		fi
-	fi
+	# Trigger cache dir creation to allow immediate use of knot
+	use daemon && tmpfiles_process "${PN}.conf"
 }
