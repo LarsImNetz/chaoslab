@@ -1,8 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
-RESTRICT="test"
+EAPI=6
 
 PYTHON_COMPAT=( python2_7 )
 PYTHON_REQ_USE="threads"
@@ -19,33 +18,30 @@ KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~x86 ~amd64-linux ~x64-macos"
 IUSE="bundled-ssl cpu_flags_x86_sse2 debug doc icu inspector libressl +npm +snapshot +ssl systemtap test"
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
+	bundled-ssl? ( ssl )
 	inspector? ( icu ssl )
 	libressl? ( bundled-ssl )
-	bundled-ssl? ( ssl )
 	npm? ( ssl )
 "
 
 RDEPEND="
-	>=dev-libs/libuv-1.19.1:=
+	>=dev-libs/libuv-1.23.2:=
+	>=net-dns/c-ares-1.14.0
 	>=net-libs/http-parser-2.8.0:=
-	>=net-libs/nghttp2-1.25.0
+	>=net-libs/nghttp2-1.34.0
 	sys-libs/zlib
-	icu? ( >=dev-libs/icu-60.1:= )
-	npm? ( ${PYTHON_DEPS} )
-	ssl? (
-		!bundled-ssl? (
-			>=dev-libs/openssl-1.0.2n:0=[-bindist]
-		)
-	)"
-DEPEND="${RDEPEND}
+	icu? ( >=dev-libs/icu-62.1:= )
+	ssl? ( !bundled-ssl? ( =dev-libs/openssl-1.1.0*:0=[-bindist] ) )
+"
+DEPEND="
+	${RDEPEND}
 	${PYTHON_DEPS}
 	systemtap? ( dev-util/systemtap )
-	test? ( net-misc/curl )"
-
+	test? ( net-misc/curl )
+"
 S="${WORKDIR}/node-v${PV}"
-
 PATCHES=(
-	"${FILESDIR}"/gentoo-global-npm-config.patch
+	"${FILESDIR}/${PN}-10.3.0-global-npm-config.patch"
 )
 
 pkg_pretend() {
@@ -76,7 +72,7 @@ src_prepare() {
 	local LIBDIR
 	LIBDIR=$(get_libdir)
 	sed -i -e "s|lib/|${LIBDIR}/|g" tools/install.py || die
-	sed -i -e "s/'lib'/'${LIBDIR}'/" lib/module.js deps/npm/lib/npm.js || die
+	sed -i -e "s/'lib'/'${LIBDIR}'/" deps/npm/lib/npm.js || die
 
 	# Avoid writing a depfile, not useful
 	sed -i -e "/DEPFLAGS =/d" tools/gyp/pylib/gyp/generator/make.py || die
@@ -101,7 +97,7 @@ src_prepare() {
 
 # shellcheck disable=SC2191
 src_configure() {
-	local myconf=( --shared-http-parser --shared-libuv --shared-nghttp2 --shared-zlib )
+	local myconf=( --shared-cares --shared-http-parser --shared-libuv --shared-nghttp2 --shared-zlib )
 	use debug && myconf+=( --debug )
 	use icu && myconf+=( --with-intl=system-icu ) || myconf+=( --with-intl=none )
 	use inspector || myconf+=( --without-inspector )
@@ -141,8 +137,8 @@ src_compile() {
 src_install() {
 	local LIBDIR npm_config tmp_npm_completion_file
 	LIBDIR="${ED%/}/usr/$(get_libdir)"
-	emake install DESTDIR="${D%/}"
-	pax-mark -m "${ED%/}"usr/bin/node
+	emake install DESTDIR="${D}"
+	pax-mark -m "${ED%/}"/usr/bin/node
 
 	# set up a symlink structure that node-gyp expects..
 	dodir /usr/include/node/deps/{v8,uv}
@@ -157,9 +153,9 @@ src_install() {
 		for i in $(grep -rl 'fonts.googleapis.com' "${S}"/out/doc/api/*); do
 			sed -i '/fonts.googleapis.com/ d' "$i";
 		done
-		# Install docs!
-		HTML_DOCS=( doc/* )
-		einstalldocs
+		# Install docs
+		docinto html
+		dodoc -r "${S}"/doc/*
 	fi
 
 	if use npm; then
@@ -188,7 +184,7 @@ src_install() {
 		for match in "AUTHORS*" "CHANGELOG*" "CONTRIBUT*" "README*" \
 			".travis.yml" ".eslint*" ".wercker.yml" ".npmignore" \
 			"*.md" "*.markdown" "*.bat" "*.cmd"; do
-			find_name+=( ${find_exp} "${match}" )
+			find_name+=( ${find_exp} ${match} )
 		done
 
 		# Remove various development and/or inappropriate files and
@@ -199,6 +195,8 @@ src_install() {
 				"${find_name[@]}" \
 			\) \) -exec rm -rf "{}" \;
 	fi
+
+	mv "${D}/usr/share/doc/node" "${D}/usr/share/doc/${PF}" || die
 }
 
 src_test() {
@@ -207,10 +205,12 @@ src_test() {
 }
 
 pkg_postinst() {
+	einfo
 	einfo "The global npm config lives in /etc/npm. This deviates slightly"
 	einfo "from upstream which otherwise would have it live in /usr/etc/."
-	einfo ""
+	einfo
 	einfo "Protip: When using node-gyp to install native modules, you can"
 	einfo "avoid having to download extras by doing the following:"
-	einfo "$ node-gyp --nodedir /usr/include/node <command>"
+	einfo "$ node-gyp --nodedir ${EROOT%/}/usr/include/node <command>"
+	einfo
 }

@@ -145,8 +145,6 @@ net-misc/**[piknik](net-misc/piknik)** | Copy/paste anything over the network
 net-misc/**[ssf](net-misc/ssf)** | A network toolkit for TCP/UDP port forwarding, SOCKS proxy and remote shell
 net-misc/**[ssh-chat](net-misc/ssh-chat)** | A chat over SSH server written in Go
 net-misc/**[tinyssh](net-misc/tinyssh)** | A small SSH server with state-of-the-art cryptography
-net-p2p/**[Sia-UI](net-p2p/Sia-UI)** | The graphical front-end for Sia
-net-p2p/**[Sia](net-p2p/Sia)** | Blockchain-based marketplace for file storage
 net-p2p/**[bitcoin-abc](net-p2p/bitcoin-abc)** | A full node Bitcoin Cash implementation with GUI, daemon and utils
 net-p2p/**[bitcoin-unlimited](net-p2p/bitcoin-unlimited)** | A full node Bitcoin (and Bitcoin Cash) implementation with GUI, daemon and utils
 net-p2p/**[bitcoinxt](net-p2p/bitcoinxt)** | A full node Bitcoin Cash implementation with GUI, daemon and utils

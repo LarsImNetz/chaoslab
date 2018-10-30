@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="8af42251" # Change this when you update the ebuild
+GIT_COMMIT="cf91d5e1" # Change this when you update the ebuild
 EGO_PN="gitlab.com/gitlab-org/${PN}"
 EGO_VENDOR=( "github.com/mitchellh/gox 9cc4875981" )
 
@@ -173,12 +173,6 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/gitlab-runner") != "700" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/gitlab-runner permissions"
-		chown gitlab-runner:gitlab-runner "${EROOT%/}/var/lib/gitlab-runner" || die
-		chmod 0700 "${EROOT%/}/var/lib/gitlab-runner" || die
-	fi
-
 	if use build-images && [ "${MERGE_TYPE}" != binary ]; then
 		ewarn
 		ewarn "As a security measure, you should remove portage from"
