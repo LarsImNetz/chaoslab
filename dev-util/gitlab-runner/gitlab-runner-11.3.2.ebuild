@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-GIT_COMMIT="0aa5179e" # Change this when you update the ebuild
+GIT_COMMIT="96b1bb13" # Change this when you update the ebuild
 EGO_PN="gitlab.com/gitlab-org/${PN}"
-EGO_VENDOR=( "github.com/mitchellh/gox 51ed453898" )
+EGO_VENDOR=( "github.com/mitchellh/gox 9cc4875981" )
 
 inherit golang-vcs-snapshot linux-info systemd user
 
@@ -173,12 +173,6 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/gitlab-runner") != "700" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/gitlab-runner permissions"
-		chown gitlab-runner:gitlab-runner "${EROOT%/}/var/lib/gitlab-runner" || die
-		chmod 0700 "${EROOT%/}/var/lib/gitlab-runner" || die
-	fi
-
 	if use build-images && [ "${MERGE_TYPE}" != binary ]; then
 		ewarn
 		ewarn "As a security measure, you should remove portage from"
