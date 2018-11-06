@@ -34,3 +34,9 @@
 # think that it is quite experimental. You should NOT use this, unless you really
 # know what you are doing. Please use the Gentoo's official ebuild.
 app-emulation/docker
+
+# Ian Moone <gentoo@chaoslab.rog> (6 Nov 2018)
+# Although the package works fine for users upgrading from older versions, the
+# welcome screen that shows up for first-time users are "broken". Masking until
+# I got the time to properly investigate this.
+net-p2p/monero-gui
