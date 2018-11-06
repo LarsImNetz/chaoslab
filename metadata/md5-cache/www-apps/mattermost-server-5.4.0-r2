@@ -1,9 +1,9 @@
 DEFINED_PHASES=compile install prepare setup unpack
-DEPEND=>=dev-lang/go-1.10.1 media-libs/libpng:0 >net-libs/nodejs-6 virtual/pkgconfig
+DEPEND=>=dev-lang/go-1.10.1 media-libs/libpng:0 >net-libs/nodejs-6[npm] virtual/pkgconfig
 DESCRIPTION=Open source Slack-alternative in Golang and React (Team Edition)
 EAPI=6
 HOMEPAGE=https://mattermost.com
-IUSE=pie
+IUSE=+audit pie
 KEYWORDS=~amd64
 LICENSE=AGPL-3
 RDEPEND=!www-apps/mattermost-server-ee
@@ -11,4 +11,4 @@ RESTRICT=mirror test
 SLOT=0
 SRC_URI=https://github.com/mattermost/mattermost-server/archive/v5.4.0.tar.gz -> mattermost-server-5.4.0.tar.gz https://github.com/mattermost/mattermost-webapp/archive/v5.4.0.tar.gz -> mattermost-webapp-5.4.0.tar.gz
 _eclasses_=multilib	b2f01ad412baf81650c23fcf0975fa33	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=eaa8b68376fcc65c07d2d84ac8f139f0
+_md5_=3a1546675503f53066e209e36e0b4fa6
