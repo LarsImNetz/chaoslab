@@ -21,12 +21,12 @@ RESTRICT="mirror test"
 LICENSE="AGPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="pie"
+IUSE="+audit pie"
 
 DEPEND="
 	>=dev-lang/go-1.10.1
 	media-libs/libpng:0
-	>net-libs/nodejs-6
+	>net-libs/nodejs-6[npm]
 "
 RDEPEND="!www-apps/mattermost-server-ee"
 
@@ -39,12 +39,21 @@ G="${WORKDIR}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
-	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES; then
-		ewarn
-		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn
-		die "[network-sandbox] is enabled in FEATURES"
+	if [[ "${MERGE_TYPE}" != binary ]]; then
+		# shellcheck disable=SC2086
+		if has network-sandbox $FEATURES; then
+			ewarn
+			ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
+			ewarn
+			die "[network-sandbox] is enabled in FEATURES"
+		fi
+
+		if use audit && [[ $(npm --version) != 6.* ]]; then
+			ewarn
+			ewarn "npm v6 is required to run 'npm audit', which is a new command that"
+			ewarn "performs security reports and tries to fix known vulnerabilities"
+			ewarn
+		fi
 	fi
 
 	enewgroup mattermost
@@ -105,9 +114,11 @@ src_compile() {
 
 	pushd client || die
 	emake build
-	ebegin "Attempting to fix potential vulnerabilities"
-	npm audit fix --force || die
-	eend $?
+	if use audit && [[ $(npm --version) =~ 6.* ]]; then
+		ebegin "Attempting to fix potential vulnerabilities"
+		npm audit fix --force || die
+		eend $?
+	fi
 	popd || die
 
 	go install "${mygoargs[@]}" ./cmd/{mattermost,platform} || die
