@@ -1,18 +1,24 @@
 #!/sbin/openrc-run
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-MONEROD_CONFIGFILE="${MONEROD_CONFIGFILE:-/etc/monero/monerod.conf}"
+MONEROD_DATADIR="${MONEROD_DATADIR:-/var/lib/monero}"
+MONEROD_CONFIG="${MONEROD_CONFIG:-/etc/monero/monerod.conf}"
 
 command="/usr/bin/monerod"
-command_args="--config-file ${MONEROD_CONFIGFILE} ${MONEROD_OPTS}"
+command_args="--config-file ${MONEROD_CONFIG} ${MONEROD_OPTS}"
 command_user="${command_user:-monero:monero}"
-command_background=yes
+command_background=true
 pidfile="/run/${RC_SVCNAME}.pid"
-required_files="${MONEROD_CONFIGFILE}"
+required_files="${MONEROD_CONFIG}"
 retry=${retry:-"TERM/60/KILL/5"}
 start_stop_daemon_args="${SSD_OPTS:-"--wait 2000"}"
 
 depend() {
 	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" "${MONEROD_DATADIR}"
+	checkpath -f -m 0600 -o "${command_user}" "${MONEROD_CONFIG}"
 }

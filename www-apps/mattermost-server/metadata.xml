@@ -16,4 +16,10 @@
 		partnership with over 500 contributors from around the world,
 		rivals the productivity of SaaS solutions.
 	</longdescription>
+	<use>
+		<flag name="audit">
+			Run 'npm audit' to perform security reports and try to fix
+			known vulnerabilities (requires npm v6)
+		</flag>
+	</use>
 </pkgmetadata>
