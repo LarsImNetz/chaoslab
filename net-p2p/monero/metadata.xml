@@ -19,7 +19,6 @@
 		<flag name="daemon">Build the system daemon</flag>
 		<flag name="dot">Allow to create dot graphs using <pkg>media-gfx/graphviz</pkg></flag>
 		<flag name="simplewallet">Build the CLI wallet</flag>
-		<flag name="system-unbound">Use the system Unbound instead of the bundled one</flag>
 		<flag name="utils">Enable command-line tools</flag>
 	</use>
 </pkgmetadata>
