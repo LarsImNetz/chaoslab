@@ -124,6 +124,10 @@ src_compile() {
 	use man && emake -C man
 }
 
+src_test() {
+	go test -v -timeout 10s ./cmd/influxd/run || die
+}
+
 src_install() {
 	dobin influx{,d,_stress,_inspect,_tsm,-tools}
 
