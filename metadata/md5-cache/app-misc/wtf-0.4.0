@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile install postinst unpack
+DEPEND=>=dev-lang/go-1.9
+DESCRIPTION=A personal information dashboard for your terminal
+EAPI=6
+HOMEPAGE=https://wtfutil.com
+KEYWORDS=~amd64
+LICENSE=MIT
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/senorprogrammer/wtf/archive/0.4.0.tar.gz -> wtf-0.4.0.tar.gz
+_eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc
+_md5_=00fa534fd3b0193b00d5595c9de583b3
