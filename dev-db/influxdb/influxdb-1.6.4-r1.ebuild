@@ -4,9 +4,9 @@
 EAPI=6
 
 MY_PV="${PV/_/}"
-GIT_COMMIT="389de31c96" # Change this when you update the ebuild
+GIT_COMMIT="a2ba6e7654" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/${PN}"
-# Note: Keep EGO_VENDOR in sync with Godeps
+# Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
 # github.com/davecgh/go-spew 346938d642
 # github.com/google/go-cmp 3af367b6b3
@@ -142,12 +142,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/influxdb") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/influxdb permissions"
-		chown influxdb:influxdb "${EROOT%/}/var/lib/influxdb" || die
-		chmod 0750 "${EROOT%/}/var/lib/influxdb" || die
-	fi
-
 	if [[ ! -e "${EROOT%/}/etc/influxdb/influxdb.conf" ]]; then
 		elog "No influxdb.conf found, copying the example over"
 		cp "${EROOT%/}"/etc/influxdb/influxdb.conf{.example,} || die
