@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -116,12 +116,6 @@ src_install() {
 
 pkg_postinst() {
 	fcaps_pkg_postinst
-
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/gitea") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/gitea permissions"
-		chown -R git:git "${EROOT%/}/var/lib/gitea" || die
-		chmod 0750 "${EROOT%/}/var/lib/gitea" || die
-	fi
 
 	if [[ ! -e "${EROOT%/}/var/lib/gitea/conf/app.ini" ]]; then
 		elog "No app.ini found, copying the example over"
