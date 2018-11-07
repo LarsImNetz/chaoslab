@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="7"
+EAPI=6
 
 inherit flag-o-matic user
 
@@ -16,7 +16,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="dnstap go +pie test"
 
 RDEPEND="
-	>=net-dns/knot-2.7.1
+	>=net-dns/knot-2.7.2
 	>=dev-libs/libuv-1.7.0
 	dev-lang/luajit:2
 	dev-lua/luasocket
