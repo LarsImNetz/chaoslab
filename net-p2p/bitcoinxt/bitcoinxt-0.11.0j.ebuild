@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -225,11 +225,6 @@ update_caches() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/bitcoinxt") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/bitcoinxt permissions"
-		chown -R bitcoinxt:bitcoinxt "${EROOT%/}/var/lib/bitcoinxt" || die
-		chmod 0750 "${EROOT%/}/var/lib/bitcoinxt" || die
-	fi
 	use gui && update_caches
 }
 

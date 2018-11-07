@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -104,12 +104,6 @@ src_install() {
 
 pkg_postinst() {
 	fcaps_pkg_postinst
-
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/gogs") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/gogs permissions"
-		chown -R gogs:gogs "${EROOT%/}/var/lib/gogs" || die
-		chmod 0750 "${EROOT%/}/var/lib/gogs" || die
-	fi
 
 	if [[ ! -e "${EROOT%/}/var/lib/gogs/conf/app.ini" ]]; then
 		elog "No app.ini found, copying the example over"

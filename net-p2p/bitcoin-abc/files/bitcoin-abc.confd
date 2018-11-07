@@ -5,7 +5,8 @@ BITCOIND_CONFIG="/etc/bitcoin/bitcoin.conf"
 
 # Where to write bitcoind data (-datadir option)
 # Be mindful that the blockchain is large
-BITCOIND_DATADIR="/var/lib/bitcoin/.bitcoin"
+BITCOIND_HOMEDIR="/var/lib/bitcoin"
+BITCOIND_DATADIR="${BITCOIND_HOMEDIR}/.bitcoin"
 
 # Additional options (avoid -conf and -datadir, use flags above)
 BITCOIND_OPTS="-disablewallet"

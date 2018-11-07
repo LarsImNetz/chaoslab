@@ -1,5 +1,5 @@
 #!/sbin/openrc-run
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 extra_commands="checkconfig"
@@ -8,7 +8,7 @@ extra_started_commands="reload"
 command="/usr/bin/dashd"
 command_args="-daemon=0 -conf=${DASHD_CONFIG} -datadir=${DASHD_DATADIR} ${DASHD_OPTS}"
 command_user="${DASHD_UG}"
-command_background=yes
+command_background=true
 pidfile="/run/${RC_SVCNAME}.pid"
 retry="${DASHD_SIGTERM_TIMEOUT}"
 required_files="${DASHD_CONFIG}"
@@ -19,6 +19,7 @@ depend() {
 }
 
 start_pre() {
+	checkpath -d -m 0750 -o "${DASHD_UG}" "${DASHD_DATADIR}"
 	checkpath -f -m 0600 -o "${DASHD_UG}" "${DASHD_CONFIGFILE}"
 
 	if [ "${RC_CMD}" != "restart" ]; then

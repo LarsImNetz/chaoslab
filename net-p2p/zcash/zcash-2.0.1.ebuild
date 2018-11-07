@@ -264,12 +264,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT}/var/lib/zcashd") != "750" ]]; then
-		einfo "Fixing ${EROOT}/var/lib/zcashd permissions"
-		chown -R zcash:zcash "${EROOT}/var/lib/zcashd" || die
-		chmod 0750 "${EROOT}/var/lib/zcashd" || die
-	fi
-
 	ewarn
 	ewarn "SECURITY WARNINGS:"
 	ewarn "Zcash is experimental and a work-in-progress. Use at your own risk."

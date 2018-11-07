@@ -1,12 +1,13 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit autotools bash-completion-r1 gnome2-utils systemd user xdg-utils
+inherit autotools bash-completion-r1 gnome2-utils systemd user
 
 MY_PN="BitcoinUnlimited"
 MY_P="bucash${PV}"
+
 DESCRIPTION="A full node Bitcoin (and Bitcoin Cash) implementation with GUI, daemon and utils"
 HOMEPAGE="https://www.bitcoinunlimited.info"
 SRC_URI="https://github.com/${MY_PN}/${MY_PN}/archive/${MY_P}.tar.gz -> ${P}.tar.gz"
@@ -15,9 +16,11 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="bucash"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86"
-IUSE="daemon dbus +gui hardened libressl +qrcode reduce-exports upnp utils +wallet zeromq"
+IUSE="daemon dbus +gui hardened libressl +qrcode +reduce-exports upnp utils +wallet zeromq"
+REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
 
-CDEPEND="dev-libs/boost:0=[threads(+)]
+CDEPEND="
+	dev-libs/boost:0=[threads(+)]
 	dev-libs/libevent
 	gui? (
 		dev-libs/protobuf
@@ -31,9 +34,11 @@ CDEPEND="dev-libs/boost:0=[threads(+)]
 	libressl? ( dev-libs/libressl:0= )
 	upnp? ( net-libs/miniupnpc )
 	wallet? ( sys-libs/db:4.8[cxx] )
-	zeromq? ( net-libs/zeromq )"
+	zeromq? ( net-libs/zeromq )
+"
 DEPEND="${CDEPEND}
-	gui? ( dev-qt/linguist-tools )"
+	gui? ( dev-qt/linguist-tools:5 )
+"
 RDEPEND="${CDEPEND}
 	daemon? (
 		!net-p2p/bitcoind
@@ -51,8 +56,6 @@ RDEPEND="${CDEPEND}
 		!net-p2p/bitcoinxt[utils]
 		!net-p2p/bitcoin-abc[utils]
 	)"
-
-REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
 
 S="${WORKDIR}/${MY_PN}-${MY_P}"
 
@@ -150,14 +153,6 @@ update_caches() {
 }
 
 pkg_postinst() {
-	if use daemon; then
-		if [[ $(stat -c %a "${EROOT%/}/var/lib/bitcoin") != "750" ]]; then
-			einfo "Fixing ${EROOT%/}/var/lib/bitcoin permissions"
-			chown -R bitcoin:bitcoin "${EROOT%/}/var/lib/bitcoin" || die
-			chmod 0750 "${EROOT%/}/var/lib/bitcoin" || die
-		fi
-	fi
-
 	use gui && update_caches
 }
 
