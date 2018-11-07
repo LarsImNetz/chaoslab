@@ -230,11 +230,6 @@ update_caches() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/bitcoin") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/bitcoin permissions"
-		chown -R bitcoin:bitcoin "${EROOT%/}/var/lib/bitcoin" || die
-		chmod 0750 "${EROOT%/}/var/lib/bitcoin" || die
-	fi
 	use gui && update_caches
 }
 
