@@ -25,19 +25,21 @@ REQUIRED_USE="
 	systemd? ( daemon )
 "
 
-for X in "${KNOT_MODULES[@]}"; do
-	IUSE+=" ${X}"
-	REQUIRED_USE+=" ${X#+}? ( daemon )"
+for mod in "${KNOT_MODULES[@]}"; do
+	IUSE+=" ${mod}"
+	REQUIRED_USE+=" ${mod#+}? ( daemon )"
 done
-unset X
+unset mod
 
 RDEPEND="
 	dev-db/lmdb
-	dev-libs/libedit
 	dev-libs/userspace-rcu:=
 	net-libs/gnutls
 	caps? ( sys-libs/libcap-ng )
-	daemon? ( dev-python/lmdb )
+	daemon? (
+		dev-libs/libedit
+		dev-python/lmdb
+	)
 	idn? (
 		!libidn2? ( net-dns/libidn:0 )
 		libidn2? ( >=net-dns/libidn2-2 )
@@ -46,6 +48,7 @@ RDEPEND="
 		dev-libs/fstrm
 		dev-libs/protobuf-c
 	)
+	utils? ( dev-libs/libedit )
 "
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
@@ -61,15 +64,20 @@ pkg_setup() {
 
 # shellcheck disable=SC2191,SC2206,SC2207,SC2086
 src_configure() {
-	local myconf X
-
+	local myconf=""
 	use daemon && myconf+=(
 		--with-storage="${EPREFIX}"/var/lib/knot
 		--with-rundir="${EPREFIX}"/var/run/knot
 	)
 
-	for X in "${KNOT_MODULES[@]#+}"; do
-		myconf+=( --with-${X}=$(usex ${X} 'shared') )
+	local mod
+	for mod in "${KNOT_MODULES[@]#+}"; do
+		if [[ "${mod}" == module-dnsproxy ]] || \
+			[[ "${mod}" == module-onlinesign ]]; then
+			myconf+=("$(use_with ${mod})")
+		else
+			myconf+=(--with-${mod}=$(usex ${mod} 'shared'))
+		fi
 	done
 
 	myconf+=(
@@ -82,6 +90,7 @@ src_configure() {
 		$(use_enable utils utilities)
 		$(use_with idn libidn)
 	)
+
 	econf "${myconf[@]}" || die "econf failed"
 }
 
@@ -102,7 +111,10 @@ src_install() {
 		systemd_dounit "${FILESDIR}/${PN}.service"
 		newtmpfiles "${FILESDIR}/${PN}.tmpfilesd" "${PN}.conf"
 
+		keepdir /var/lib/knot
+
 		rmdir "${D%/}"/var/run/knot "${D%/}"/var/run || die
+		find "${D}" -name '*.la' -delete || die
 	fi
 }
 
