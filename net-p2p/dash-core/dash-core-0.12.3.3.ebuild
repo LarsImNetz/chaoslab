@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -196,11 +196,6 @@ update_caches() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/dash") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/dash permissions"
-		chown -R dash:dash "${EROOT%/}/var/lib/dash" || die
-		chmod 0750 "${EROOT%/}/var/lib/dash" || die
-	fi
 	use gui && update_caches
 }
 
