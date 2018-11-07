@@ -50,7 +50,7 @@ src_compile() {
 	)
 	go build "${mygoargs[@]}" || die
 
-	use man && emake -C man-pages
+	use man && emake man-pages
 }
 
 src_install() {
