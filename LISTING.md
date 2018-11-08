@@ -89,8 +89,6 @@ dev-db/**[pgweb](dev-db/pgweb)** | Web-based PostgreSQL database browser written
 dev-db/**[tidb](dev-db/tidb)** | A distributed NewSQL database compatible with MySQL protocol
 dev-go/**[depth](dev-go/depth)** | Retrieve and visualize Go source code dependency trees
 dev-go/**[go-md2man](dev-go/go-md2man)** `*` | A utility to convert markdown to man pages
-dev-libs/**[libbaseencode](dev-libs/libbaseencode)** | Library written in C for encoding and decoding data using base32 or base64
-dev-libs/**[libcotp](dev-libs/libcotp)** | C library that generates TOTP and HOTP
 dev-libs/**[libmesode](dev-libs/libmesode)** | Fork of libstrophe for use with Profanity XMPP Client
 dev-libs/**[libstrophe](dev-libs/libstrophe)** | A simple, lightweight C library for writing XMPP clients
 dev-python/**[coreapi](dev-python/coreapi)** | Python client library for Core API
@@ -166,7 +164,6 @@ sys-apps/**[bane](sys-apps/bane)** | AppArmor profile generator for docker conta
 sys-apps/**[exa](sys-apps/exa)** `*` | A replacement for 'ls' written in Rust
 sys-apps/**[fd](sys-apps/fd)** `*` | A simple, fast and user-friendly alternative to 'find'
 sys-apps/**[yarn](sys-apps/yarn)** `*` | Fast, reliable, and secure node dependency management
-sys-auth/**[otpclient](sys-auth/otpclient)** | Simple GTK+ 3 OTP client (TOTP and HOTP)
 sys-auth/**[yubikey-touch-detector](sys-auth/yubikey-touch-detector)** | A tool that can detect when your YubiKey is waiting for a touch
 sys-fs/**[gocryptfs](sys-fs/gocryptfs)** | Encrypted overlay filesystem written in Go
 sys-fs/**[tmsu](sys-fs/tmsu)** `*` | Files tagger and virtual tag-based filesystem
