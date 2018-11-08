@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -30,6 +30,10 @@ src_compile() {
 		-ldflags "-s -w -X main.version=${PV}"
 	)
 	go build "${mygoargs[@]}" || die
+}
+
+src_test() {
+	go test -v ./... || die
 }
 
 src_install() {
