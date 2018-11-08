@@ -1,14 +1,17 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 inherit systemd user
 
-MY_P=${P/_p/.r}
+# v0.2.2.r578 See $PACKAGE_VERSION in configure file
+MY_PV="8e7f6eb655e342d14c2f06411d9c0c459b8f6f8f"
+MY_P="${PN}-${MY_PV}"
+
 DESCRIPTION="An IP-Transparent Tor Hidden Service Connector"
 HOMEPAGE="https://www.onioncat.org"
-SRC_URI="https://www.cypherpunk.at/ocat/download/Source/current/${MY_P}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/rahra/onioncat/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="GPL-3"
@@ -16,10 +19,10 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="debug +http i2p log +queue relay +rtt"
 
-RDEPEND="net-vpn/tor
-	i2p? (
-		|| ( net-vpn/i2pd net-vpn/i2p )
-	)"
+RDEPEND="
+	net-vpn/tor
+	i2p? ( || ( net-vpn/i2pd net-vpn/i2p ) )
+"
 
 S="${WORKDIR}/${MY_P}"
 

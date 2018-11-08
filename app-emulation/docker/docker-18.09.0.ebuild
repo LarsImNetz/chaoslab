@@ -1,16 +1,16 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 EGO_PN="github.com/${PN}/${PN}-ce"
-GIT_COMMIT="e68fc7a" # Change this when you update the ebuild
+GIT_COMMIT="4d60db472b" # Change this when you update the ebuild
 
 inherit bash-completion-r1 golang-vcs-snapshot linux-info systemd udev user
 
 DESCRIPTION="The core functions you need to create Docker images and run Docker containers"
 HOMEPAGE="https://dockerproject.org"
-SRC_URI="https://${EGO_PN}/archive/v${PV}-ce.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
@@ -34,8 +34,8 @@ DEPEND="${CDEPEND}
 RDEPEND="${CDEPEND}
 	>=app-arch/xz-utils-4.9
 	~app-emulation/containerd-1.1.2
-	~app-emulation/docker-proxy-0.8.0_p20180705
-	~app-emulation/runc-1.0.0_p20180309[apparmor?,seccomp?]
+	~app-emulation/docker-proxy-0.8.0_pre20181015
+	~app-emulation/runc-1.0.0_pre20180309[apparmor?,seccomp?]
 	dev-libs/libltdl
 	>=dev-vcs/git-1.7
 	>=net-firewall/iptables-1.4
@@ -230,6 +230,7 @@ src_compile() {
 	)
 	local mygoargs2=(
 		-v -work -x
+		"-buildmode=pie"
 		-asmflags "-trimpath=${G}/src/${EGO_PNCLI}"
 		-gcflags "-trimpath=${G}/src/${EGO_PNCLI}"
 		-ldflags "${myldflags[*]}"

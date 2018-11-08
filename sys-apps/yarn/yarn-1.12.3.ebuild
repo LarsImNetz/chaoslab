@@ -3,9 +3,10 @@
 
 EAPI=6
 
+MY_P="${PN}-v${PV}"
 DESCRIPTION="Fast, reliable, and secure node dependency management"
 HOMEPAGE="https://yarnpkg.com"
-SRC_URI="https://github.com/yarnpkg/yarn/releases/download/v${PV}/yarn-v${PV}.tar.gz"
+SRC_URI="https://github.com/yarnpkg/yarn/releases/download/v${PV}/${MY_P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="BSD-2"
@@ -16,9 +17,8 @@ RDEPEND="
 	!dev-util/cmdtest
 	net-libs/nodejs[npm]
 "
-DEPEND="${RDEPEND}"
 
-S="${WORKDIR}/${PN}-v${PV}"
+S="${WORKDIR}/${MY_P}"
 
 src_install() {
 	local install_dir path

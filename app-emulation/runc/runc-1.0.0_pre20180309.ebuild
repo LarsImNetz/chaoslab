@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-# For docker-18.06.1
-# https://github.com/docker/docker-ce/blob/v18.06.1-ce/components/engine/hack/dockerfile/install/runc.installer
+# For docker-18.09.0
+# https://github.com/docker/docker-ce/blob/v18.09.0/components/engine/hack/dockerfile/install/runc.installer
 
 EGO_PN="github.com/opencontainers/${PN}"
 GIT_COMMIT="69663f0bd4b60df09991c08812a60108003fa340"

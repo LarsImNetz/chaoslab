@@ -15,7 +15,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="man test"
+IUSE="man"
 
 DEPEND="man? ( app-text/ronn dev-ruby/bundler )"
 RDEPEND=">=dev-vcs/git-1.7.3"
@@ -38,14 +38,6 @@ src_setup() {
 	fi
 }
 
-src_prepare() {
-	if use test; then
-		# Remove tests that won't work inside portage's sandbox
-		rm commands/remote_test.go || die
-	fi
-	default
-}
-
 src_compile() {
 	export GOPATH="${G}"
 	local mygoargs=(
@@ -60,6 +52,9 @@ src_compile() {
 }
 
 src_test() {
+	# Remove tests that doesn't play nicely with portage's sandbox
+	rm commands/remote_test.go || die
+
 	go test -v ./... || die
 }
 

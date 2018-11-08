@@ -1,12 +1,12 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-# For docker-18.06.1
-# https://github.com/docker/docker-ce/blob/v18.06.1-ce/components/engine/hack/dockerfile/install/containerd.installer
+# For docker-18.09.0
+# https://github.com/docker/docker-ce/blob/v18.09.0/components/engine/hack/dockerfile/install/containerd.installer
 EGO_PN="github.com/${PN}/${PN}"
-GIT_COMMIT="468a545" # Change this when you update the ebuild
+GIT_COMMIT="468a545b9e" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot
 
@@ -21,13 +21,17 @@ IUSE="+btrfs test"
 REQUIRED_USE="test? ( btrfs )"
 
 DEPEND="btrfs? ( sys-fs/btrfs-progs )"
-RDEPEND=">=app-emulation/runc-1.0.0_rc4
-	sys-libs/libseccomp"
+RDEPEND="
+	>=app-emulation/runc-1.0.0_pre20180309
+	sys-libs/libseccomp
+"
 
-QA_PRESTRIPPED="usr/bin/containerd
+QA_PRESTRIPPED="
+	usr/bin/containerd
 	usr/bin/containerd-shim
 	usr/bin/containerd-stress
-	usr/bin/ctr"
+	usr/bin/ctr
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -57,11 +61,9 @@ src_compile() {
 		-tags "$(usex !btrfs 'no_btrfs' '')"
 	)
 
-	go install "${mygoargs[@]}" \
-		./cmd/{containerd{,-stress},ctr} || die
+	go install "${mygoargs[@]}" ./cmd/{containerd{,-stress},ctr} || die
 
-	CGO_ENABLED=0 go install "${mygoargs2[@]}" \
-		./cmd/containerd-shim || die
+	CGO_ENABLED=0 go install "${mygoargs2[@]}" ./cmd/containerd-shim || die
 }
 
 src_test() {
@@ -69,5 +71,6 @@ src_test() {
 }
 
 src_install() {
-	dobin containerd{,-shim,-stress} ctr
+	dobin containerd{,-shim,-stress}
+	dobin ctr
 }
