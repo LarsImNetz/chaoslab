@@ -1,4 +1,4 @@
-DEFINED_PHASES=compile install unpack
+DEFINED_PHASES=compile install test unpack
 DEPEND=>=dev-lang/go-1.9
 DESCRIPTION=A minimal password manager written in Go
 EAPI=6
@@ -7,6 +7,6 @@ KEYWORDS=~amd64 ~x86
 LICENSE=MIT
 RESTRICT=mirror
 SLOT=0
-SRC_URI=https://github.com/bndw/pick/archive/v0.7.0.tar.gz -> pick-0.7.0.tar.gz
+SRC_URI=https://github.com/bndw/pick/archive/v0.8.0.tar.gz -> pick-0.8.0.tar.gz
 _eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc
-_md5_=17fd6f98f29f32f0a7aece925c31ab80
+_md5_=6e2e1ea41719a81e61f335fc373d3ce7
