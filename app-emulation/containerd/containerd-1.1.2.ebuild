@@ -22,7 +22,7 @@ REQUIRED_USE="test? ( btrfs )"
 
 DEPEND="btrfs? ( sys-fs/btrfs-progs )"
 RDEPEND="
-	>=app-emulation/runc-1.0.0_rc4
+	>=app-emulation/runc-1.0.0_pre20180309
 	sys-libs/libseccomp
 "
 
