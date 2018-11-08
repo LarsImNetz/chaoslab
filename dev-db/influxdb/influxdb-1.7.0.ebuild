@@ -154,7 +154,7 @@ src_compile() {
 		-X "main.commit=${GIT_COMMIT}"
 	)
 	local mygoargs=(
-		-v
+		-v -work -x
 		"-buildmode=$(usex pie pie default)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
