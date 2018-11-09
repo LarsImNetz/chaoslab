@@ -1,14 +1,14 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-# Snapshot taken on 2018.09.05
+# Snapshot taken on 2018.11.08
 EGO_VENDOR=(
-	"github.com/hanwen/go-fuse 1d35017"
-	"github.com/mattn/go-sqlite3 3198c77"
-	"golang.org/x/net 8a410e7 github.com/golang/net"
-	"golang.org/x/sys 2b02437 github.com/golang/sys"
+	"github.com/hanwen/go-fuse c029b69a13"
+	"github.com/mattn/go-sqlite3 1fc3fd346d"
+	"golang.org/x/net 03003ca0c8 github.com/golang/net"
+	"golang.org/x/sys 66b7b1311a github.com/golang/sys"
 )
 
 inherit golang-vcs-snapshot
@@ -23,9 +23,7 @@ RESTRICT="mirror"
 LICENSE="GPL-3+"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="pie zsh-completion"
-
-RDEPEND="zsh-completion? ( app-shells/zsh )"
+IUSE="pie"
 
 QA_PRESTRIPPED="usr/bin/tmsu"
 
@@ -33,14 +31,13 @@ G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_prepare() {
-	# Move the sources from src/${EGO_PN} to
+	# Move the sources from src/${EGO_PN} into
 	# ${S}, as we will use a vendored setup.
 	mv src/${EGO_PN}/* ./ || die
 
 	# We will only use make for tests,
 	# so let's silence the "compile".
-	sed -i "s/ compile//g" \
-		Makefile || die
+	sed -i "s/ compile//g" Makefile || die
 
 	default
 }
@@ -70,8 +67,6 @@ src_install() {
 
 	doman misc/man/tmsu.1
 
-	if use zsh-completion; then
-		insinto /usr/share/zsh/site-functions
-		doins misc/zsh/_tmsu
-	fi
+	insinto /usr/share/zsh/site-functions
+	doins misc/zsh/_tmsu
 }
