@@ -5,3 +5,8 @@
 # Following profiles/releases/17.0/package.use.mask:
 # https://bugs.gentoo.org/661880
 >=www-client/ungoogled-chromium-69 system-icu
+
+# Ian Moone <gentoo@chaoslab.org> (9 Nov 2018)
+# QT wallet segfault at launch for me on a few machines. I need more time to
+# investigate.
+=net-p2p/bitcoin-abc-0.18.3 gui

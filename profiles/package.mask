@@ -35,12 +35,8 @@
 # know what you are doing. Please use the Gentoo's official ebuild.
 app-emulation/docker
 
-# Ian Moone <gentoo@chaoslab.rog> (6 Nov 2018)
+# Ian Moone <gentoo@chaoslab.org> (6 Nov 2018)
 # Although the package works fine for users upgrading from older versions, the
 # welcome screen that shows up for first-time users are "broken". Masking until
 # I got the time to properly investigate this.
 net-p2p/monero-gui
-
-# Ian Moone <gentoo@chaoslab.rog> (9 Nov 2018)
-# Segfault at startup for me on a few machines. I need more time to investigate.
-=net-p2p/bitcoin-abc-0.18.3
