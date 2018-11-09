@@ -1,22 +1,26 @@
 #!/sbin/openrc-run
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-/var/log/chronograf/error.log}"
+error_log="${error_log:-${CHRONOGRAF_LOGDIR}/error.log}"
 
 command="/usr/bin/chronograf"
 command_args="${CHRONOGRAF_OPTS}"
 command_user="${command_user:-chronograf:chronograf}"
-command_background=yes
+command_background=true
 pidfile="/run/${RC_SVCNAME}.pid"
 start_stop_daemon_args="${SSD_OPTS}
 	-e \"HOST=${CHRONOGRAF_HOST:-127.0.0.1}\"
 	-e \"PORT=${CHRONOGRAF_PORT:-8888}\"
-	-e \"BOLT_PATH=${CHRONOGRAF_BOLT:-/var/lib/chronograf/chronograf-v1.db}\"
-	-e \"CANNED_PATH=${CHRONOGRAF_CANNED:-/usr/share/chronograf/canned}\"
-	-1 ${output_log} -2 ${error_log}"
+	-e \"BOLT_PATH=${CHRONOGRAF_BOLT:-${CHRONOGRAF_DATADIR}/chronograf-v1.db}\"
+	-e \"CANNED_PATH=${CHRONOGRAF_CANNED:-/usr/share/chronograf/canned}\""
 
 depend() {
 	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" \
+		"${CHRONOGRAF_DATADIR}" "${CHRONOGRAF_LOGDIR}"
 }
