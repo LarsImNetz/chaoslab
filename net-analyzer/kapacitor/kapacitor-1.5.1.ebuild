@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 MY_PV="${PV/_/-}"
-GIT_COMMIT="89828ff" # Change this when you update the ebuild
+GIT_COMMIT="89828ffff6" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/kapacitor"
 
 inherit bash-completion-r1 golang-vcs-snapshot systemd user
@@ -80,12 +80,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/kapacitor") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/kapacitor permissions"
-		chown kapacitor:kapacitor "${EROOT%/}/var/lib/kapacitor" || die
-		chmod 0750 "${EROOT%/}/var/lib/kapacitor" || die
-	fi
-
 	if [[ ! -e "${EROOT%/}/etc/kapacitor/kapacitor.conf" ]]; then
 		elog "No kapacitor.conf found, copying the example over"
 		cp "${EROOT%/}"/etc/kapacitor/kapacitor.conf{.example,} || die
