@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -20,7 +20,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 DEPEND="
-	<=net-libs/nodejs-9
+	<=net-libs/nodejs-11
 	sys-apps/yarn
 "
 
@@ -35,10 +35,10 @@ S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
 	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES; then
-		ewarn ""
+	if has network-sandbox $FEATURES && [[ "${MERGE_TYPE}" != binary ]]; then
+		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn ""
+		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
 
@@ -51,7 +51,6 @@ src_prepare() {
 	# so let's silence the "fatal" error message.
 	sed -e "/VERSION ?=/d" -e "/COMMIT ?=/d" -i Makefile || die
 
-	emake .jsdep
 	default
 }
 
@@ -61,6 +60,7 @@ src_compile() {
 
 	# Build go-bindata locally
 	go install ./vendor/github.com/kevinburke/go-bindata/go-bindata || die
+	emake .jsdep
 	touch .godep || die
 
 	make VERSION="${PV}" COMMIT="${GIT_COMMIT}" build || die
@@ -83,12 +83,4 @@ src_install() {
 
 	diropts -o chronograf -g chronograf -m 0750
 	keepdir /var/log/chronograf
-}
-
-pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/chronograf") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/chronograf permissions"
-		chown chronograf:chronograf "${EROOT%/}/var/lib/chronograf" || die
-		chmod 0750 "${EROOT%/}/var/lib/chronograf" || die
-	fi
 }
