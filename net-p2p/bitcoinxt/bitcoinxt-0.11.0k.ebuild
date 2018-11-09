@@ -5,7 +5,7 @@ EAPI=6
 
 inherit autotools bash-completion-r1 gnome2-utils systemd user xdg-utils
 
-MY_PV="${PV/\.0j/J}"
+MY_PV="${PV/\.0k/K}"
 DESCRIPTION="A full node Bitcoin Cash implementation with GUI, daemon and utils"
 HOMEPAGE="https://bitcoinxt.software"
 SRC_URI="https://github.com/${PN}/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
@@ -21,7 +21,8 @@ LANGS="ach af:af_ZA ar be:be_BY bg bs ca ca@valencia ca:ca_ES cs cy da de el:el_
 	nb nl pam pl pt_BR pt_PT ro:ro_RO ru ru:sah sk sl:sl_SI sq sr sv th:th_TH tr uk
 	ur_PK uz@Cyrl vi vi:vi_VN zh:cmn zh_HK zh_CN zh_TW"
 
-CDEPEND="dev-libs/boost:0=[threads(+)]
+CDEPEND="
+	dev-libs/boost:0=[threads(+)]
 	dev-libs/libevent
 	net-misc/curl
 	gui? (
@@ -36,9 +37,10 @@ CDEPEND="dev-libs/boost:0=[threads(+)]
 	libressl? ( dev-libs/libressl:0= )
 	upnp? ( net-libs/miniupnpc )
 	wallet? ( sys-libs/db:4.8[cxx] )
-	zeromq? ( net-libs/zeromq )"
+	zeromq? ( net-libs/zeromq )
+"
 DEPEND="${CDEPEND}
-	gui? ( dev-qt/linguist-tools )"
+	gui? ( dev-qt/linguist-tools:5 )"
 RDEPEND="${CDEPEND}
 	daemon? (
 		!net-p2p/bitcoind
@@ -55,7 +57,8 @@ RDEPEND="${CDEPEND}
 		!net-p2p/bitcoin-tx
 		!net-p2p/bitcoin-abc[utils]
 		!net-p2p/bitcoin-unlimited[utils]
-	)"
+	)
+"
 
 REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
 
@@ -117,7 +120,7 @@ src_prepare() {
 		for lan in $LANGS; do
 			lan="${lan/*:/}"
 			# shellcheck disable=SC2086
-			if [ ! -e src/qt/locale/bitcoin_$lan.ts ]; then
+			if [[ ! -e src/qt/locale/bitcoin_$lan.ts ]]; then
 				continue
 				die "Language '$lan' no longer supported. Ebuild needs update."
 			fi
@@ -204,7 +207,8 @@ src_install() {
 		done
 		# shellcheck disable=SC1117
 		make_desktop_entry "bitcoin-qt %u" "Bitcoin XT" "bitcoin" \
-			"Qt;Network;P2P;Office;Finance;" "MimeType=x-scheme-handler/bitcoincash;\nTerminal=false"
+			"Qt;Network;P2P;Office;Finance;" \
+			"MimeType=x-scheme-handler/bitcoincash;\nTerminal=false"
 
 		doman contrib/debian/manpages/bitcoin-qt.1
 	fi
