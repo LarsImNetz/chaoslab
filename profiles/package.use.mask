@@ -2,11 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 
 # Ian Moone <gentoo@chaoslab.org> (26 Sep 2018)
-# Following profiles/base/package.use.mask:
-# Requires >=media-video/ffmpeg-4 (bug 654208)
->=www-client/ungoogled-chromium-69 system-ffmpeg
-
-# Ian Moone <gentoo@chaoslab.org> (26 Sep 2018)
 # Following profiles/releases/17.0/package.use.mask:
 # https://bugs.gentoo.org/661880
 >=www-client/ungoogled-chromium-69 system-icu
+
+# Ian Moone <gentoo@chaoslab.org> (9 Nov 2018)
+# QT wallet segfault at launch for me on a few machines. I need more time to
+# investigate.
+=net-p2p/bitcoin-abc-0.18.3 gui

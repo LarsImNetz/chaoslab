@@ -3,28 +3,28 @@
 
 EAPI=6
 
-inherit autotools bash-completion-r1 gnome2-utils systemd user
+inherit autotools bash-completion-r1 gnome2-utils systemd user xdg-utils
 
+MY_PV="${PV/\.0k/K}"
 DESCRIPTION="A full node Bitcoin Cash implementation with GUI, daemon and utils"
-HOMEPAGE="https://bitcoinabc.org"
-SRC_URI="https://github.com/Bitcoin-ABC/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+HOMEPAGE="https://bitcoinxt.software"
+SRC_URI="https://github.com/${PN}/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86"
-IUSE="daemon dbus +gui hardened libressl +qrcode +reduce-exports system-univalue test upnp utils +wallet zeromq"
-REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
-
-LANGS="af af:af_ZA ar be:be_BY bg bg:bg_BG ca ca@valencia ca:ca_ES cs cy da de el el:el_GR en en_GB
-	eo es es_AR es_CL es_CO es_DO es_ES es_MX es_UY es_VE et et:et_EE eu:eu_ES fa fa:fa_IR fi
-	fr fr_CA fr:fr_FR gl he hi:hi_IN hr hu id:id_ID it it:it_IT ja ka kk:kk_KZ ko:ko_KR ku:ku_IQ ky la lt
-	lv:lv_LV mk:mk_MK mn ms:ms_MY nb ne nl pam pl pt_BR pt_PT ro ro:ro_RO ru ru:ru_RU sk sl:sl_SI sq sr
-	sr-Latn:sr@latin sv ta th:th_TH tr tr:tr_TR uk ur_PK uz@Cyrl vi vi:vi_VN zh zh_CN zh_HK zh_TW"
+IUSE="daemon dbus +gui libressl +qrcode reduce-exports test upnp utils +wallet zeromq"
+LANGS="ach af:af_ZA ar be:be_BY bg bs ca ca@valencia ca:ca_ES cs cy da de el:el_GR en
+	eo es es_CL es_DO es_MX es_UY et eu:eu_ES fa fa:fa_IR fi fr fr_CA gl gu:gu_IN he
+	hi:hi_IN hr hu id:id_ID it ja ka kk:kk_KZ ko:ko_KR ky la lt lv:lv_LV mn ms:ms_MY
+	nb nl pam pl pt_BR pt_PT ro:ro_RO ru ru:sah sk sl:sl_SI sq sr sv th:th_TH tr uk
+	ur_PK uz@Cyrl vi vi:vi_VN zh:cmn zh_HK zh_CN zh_TW"
 
 CDEPEND="
 	dev-libs/boost:0=[threads(+)]
 	dev-libs/libevent
+	net-misc/curl
 	gui? (
 		dev-libs/protobuf
 		dev-qt/qtgui:5
@@ -35,39 +35,32 @@ CDEPEND="
 	)
 	!libressl? ( dev-libs/openssl:0=[-bindist] )
 	libressl? ( dev-libs/libressl:0= )
-	system-univalue? ( >=dev-libs/univalue-1.0.3 )
 	upnp? ( net-libs/miniupnpc )
-	wallet? (
-		|| (
-			sys-libs/db:5.3[cxx]
-			sys-libs/db:6.0[cxx]
-			sys-libs/db:6.1[cxx]
-			sys-libs/db:6.2[cxx]
-		)
-	)
+	wallet? ( sys-libs/db:4.8[cxx] )
 	zeromq? ( net-libs/zeromq )
 "
 DEPEND="${CDEPEND}
-	gui? ( dev-qt/linguist-tools:5 )
-"
+	gui? ( dev-qt/linguist-tools:5 )"
 RDEPEND="${CDEPEND}
 	daemon? (
 		!net-p2p/bitcoind
-		!net-p2p/bitcoinxt[daemon]
+		!net-p2p/bitcoin-abc[daemon]
 		!net-p2p/bitcoin-unlimited[daemon]
 	)
 	gui?  (
 		!net-p2p/bitcoin-qt
-		!net-p2p/bitcoinxt[gui]
+		!net-p2p/bitcoin-abc[gui]
 		!net-p2p/bitcoin-unlimited[gui]
 	)
 	utils? (
 		!net-p2p/bitcoin-cli
 		!net-p2p/bitcoin-tx
-		!net-p2p/bitcoinxt[utils]
+		!net-p2p/bitcoin-abc[utils]
 		!net-p2p/bitcoin-unlimited[utils]
 	)
 "
+
+REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
 
 declare -A LANG2USE USE2LANGS
 bitcoin_langs_prep() {
@@ -106,17 +99,22 @@ bitcoin_lang_requireduse() {
 
 REQUIRED_USE+=" $(bitcoin_lang_requireduse)"
 
-PATCHES=( "${FILESDIR}/${PN}-qt_tls_crash_fix.patch" )
+DOCS=( doc/{assets-attribution,bips,tor}.md )
+
+S="${WORKDIR}/${PN}-${MY_PV}"
 
 pkg_setup() {
 	if use daemon; then
-		enewgroup bitcoin
-		enewuser bitcoin -1 -1 /var/lib/bitcoin bitcoin
+		enewgroup bitcoinxt
+		enewuser bitcoinxt -1 -1 /var/lib/bitcoinxt bitcoinxt
 	fi
 }
 
 src_prepare() {
 	if use gui; then
+		# Fix compatibility with LibreSSL
+		eapply "${FILESDIR}/${PN}-0.11.0g-libressl.patch"
+
 		local filt yeslang nolang lan ts x
 
 		for lan in $LANGS; do
@@ -148,6 +146,12 @@ src_prepare() {
 		einfo "Languages -- Enabled:$yeslang -- Disabled:$nolang"
 	fi
 
+	use daemon || sed -i 's/have bitcoind &&//;s/^\(complete -F _bitcoind \)bitcoind \(bitcoin-cli\)$/\1\2/' \
+		contrib/bitcoind.bash-completion || die
+
+	use utils || sed -i 's/have bitcoind &&//;s/^\(complete -F _bitcoind bitcoind\) bitcoin-cli$/\1/' \
+		contrib/bitcoind.bash-completion || die
+
 	default
 	eautoreconf
 }
@@ -162,20 +166,14 @@ src_configure() {
 		$(usex gui "--with-gui=qt5" --without-gui)
 		$(use_with daemon)
 		$(use_with qrcode qrencode)
-		$(use_with system-univalue)
 		$(use_with upnp miniupnpc)
 		$(use_with utils)
-		$(use_enable hardened hardening)
 		$(use_enable reduce-exports)
 		$(use_enable test tests)
 		$(use_enable wallet)
 		$(use_enable zeromq zmq)
 	)
 	econf "${myeconf[@]}"
-}
-
-src_test() {
-	emake -C src bitcoin_test_check
 }
 
 src_install() {
@@ -186,21 +184,20 @@ src_install() {
 		newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 		systemd_newunit "${FILESDIR}/${PN}.service-r1" "${PN}.service"
 
-		insinto /etc/bitcoin
+		insinto /etc/bitcoinxt
 		newins "${FILESDIR}/${PN}.conf" bitcoin.conf
-		fowners bitcoin:bitcoin /etc/bitcoin/bitcoin.conf
-		fperms 600 /etc/bitcoin/bitcoin.conf
+		fowners bitcoinxt:bitcoinxt /etc/bitcoinxt/bitcoin.conf
+		fperms 600 /etc/bitcoinxt/bitcoin.conf
 		newins contrib/debian/examples/bitcoin.conf bitcoin.conf.example
-		doins share/rpcuser/rpcuser.py
 
-		doman doc/man/bitcoind.1
-		newbashcomp contrib/bitcoind.bash-completion bitcoind
+		doman contrib/debian/manpages/{bitcoind.1,bitcoin.conf.5}
+		newbashcomp contrib/bitcoind.bash-completion bitcoin
 
 		insinto /etc/logrotate.d
-		newins "${FILESDIR}/${PN}.logrotate" "${PN}"
+		newins "${FILESDIR}/${PN}.logrotate-r1" "${PN}"
 
-		diropts -o bitcoin -g bitcoin -m 0750
-		keepdir /var/lib/bitcoin/.bitcoin
+		diropts -o bitcoinxt -g bitcoinxt -m 0750
+		keepdir /var/lib/bitcoinxt/.bitcoin
 	fi
 
 	if use gui; then
@@ -209,16 +206,16 @@ src_install() {
 			newicon -s ${X} "share/pixmaps/bitcoin${X}.png" bitcoin.png
 		done
 		# shellcheck disable=SC1117
-		make_desktop_entry "bitcoin-qt %u" "Bitcoin ABC" "bitcoin" \
-			"Qt;Network;P2P;Office;Finance;" "MimeType=x-scheme-handler/bitcoincash;\nTerminal=false"
+		make_desktop_entry "bitcoin-qt %u" "Bitcoin XT" "bitcoin" \
+			"Qt;Network;P2P;Office;Finance;" \
+			"MimeType=x-scheme-handler/bitcoincash;\nTerminal=false"
 
-		doman doc/man/bitcoin-qt.1
+		doman contrib/debian/manpages/bitcoin-qt.1
 	fi
 
 	if use utils; then
-		doman doc/man/bitcoin-{cli,tx}.1
-		newbashcomp contrib/bitcoin-cli.bash-completion bitcoin-cli
-		newbashcomp contrib/bitcoin-tx.bash-completion bitcoin-tx
+		doman contrib/debian/manpages/bitcoin-cli.1
+		use daemon || newbashcomp contrib/bitcoind.bash-completion bitcoin
 	fi
 }
 

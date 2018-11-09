@@ -1,13 +1,16 @@
 # config file for /etc/init.d/chronograf
 
+CHRONOGRAF_DATADIR="/var/lib/chronograf"
+CHRONOGRAF_LOGDIR="/var/log/chronograf"
+
 CHRONOGRAF_HOST=127.0.0.1
 CHRONOGRAF_PORT=8888
-CHRONOGRAF_BOLT="/var/lib/chronograf/chronograf-v1.db"
+CHRONOGRAF_BOLT="${CHRONOGRAF_DATADIR}/chronograf-v1.db"
 CHRONOGRAF_CANNED="/usr/share/chronograf/canned"
 
 # Additional options (avoid -host, -port, -b and -c use the variables above)
 CHRONOGRAF_OPTS="--reporting-disabled"
 
 # Logging
-#output_log="/var/log/telegraf/telegraf.log"
-#error_log="/var/log/telegraf/error.log"
+#output_log="${CHRONOGRAF_LOGDIR}/chronograf.log"
+#error_log="${CHRONOGRAF_LOGDIR}/error.log"

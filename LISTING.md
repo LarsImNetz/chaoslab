@@ -91,6 +91,7 @@ dev-go/**[depth](dev-go/depth)** | Retrieve and visualize Go source code depende
 dev-go/**[go-md2man](dev-go/go-md2man)** `*` | A utility to convert markdown to man pages
 dev-libs/**[libmesode](dev-libs/libmesode)** | Fork of libstrophe for use with Profanity XMPP Client
 dev-libs/**[libstrophe](dev-libs/libstrophe)** | A simple, lightweight C library for writing XMPP clients
+dev-libs/**[univalue](dev-libs/univalue)** `*` | C++ universal value object and JSON library
 dev-python/**[coreapi](dev-python/coreapi)** | Python client library for Core API
 dev-python/**[coreapi-cli](dev-python/coreapi-cli)** | An interactive command line client for Core API
 dev-python/**[coreschema](dev-python/coreschema)** | Core Schema

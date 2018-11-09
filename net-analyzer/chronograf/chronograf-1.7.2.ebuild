@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 EGO_PN="github.com/influxdata/${PN}"
-EGO_VENDOR=( "github.com/kevinburke/go-bindata 95df019" )
-GIT_COMMIT="4a97c33" # Change this when you update the ebuild
+EGO_VENDOR=( "github.com/kevinburke/go-bindata 06af60a" )
+GIT_COMMIT="62ecf3b038" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
@@ -18,25 +18,28 @@ RESTRICT="mirror"
 LICENSE="AGPL-3+"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE=""
 
-DEPEND="<=net-libs/nodejs-9
-	sys-apps/yarn"
+DEPEND="
+	<=net-libs/nodejs-11
+	sys-apps/yarn
+"
 
 DOCS=( CHANGELOG.md )
-QA_PRESTRIPPED="usr/bin/chronoctl
-	usr/bin/chronograf"
+QA_PRESTRIPPED="
+	usr/bin/chronoctl
+	usr/bin/chronograf
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
 	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES; then
-		ewarn ""
+	if has network-sandbox $FEATURES && [[ "${MERGE_TYPE}" != binary ]]; then
+		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn ""
-		die "'network-sandbox' is enabled in FEATURES"
+		ewarn
+		die "[network-sandbox] is enabled in FEATURES"
 	fi
 
 	enewgroup chronograf
@@ -46,9 +49,10 @@ pkg_setup() {
 src_prepare() {
 	# The tarball isn't a proper git repository,
 	# so let's silence the "fatal" error message.
-	sed -e "/VERSION ?=/d" -e "/COMMIT ?=/d" -i Makefile || die
+	sed -i -e "/VERSION ?=/d" -e "/COMMIT ?=/d" Makefile || die
+	sed -i "s:GIT_SHA=\$(git rev-parse HEAD):GIT_SHA=${GIT_COMMIT}:" \
+		ui/package.json || die
 
-	emake .jsdep
 	default
 }
 
@@ -58,11 +62,10 @@ src_compile() {
 
 	# Build go-bindata locally
 	go install ./vendor/github.com/kevinburke/go-bindata/go-bindata || die
+	emake .jsdep
 	touch .godep || die
 
-	make VERSION="${PV}" \
-		COMMIT="${GIT_COMMIT}" \
-		build || die
+	make VERSION="${PV}" COMMIT="${GIT_COMMIT}" build || die
 }
 
 src_install() {
@@ -73,21 +76,15 @@ src_install() {
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "etc/scripts/${PN}.service"
 
-	dodir /usr/share/chronograf/resources
 	insinto /usr/share/chronograf/canned
 	doins canned/*.json
+	insinto /usr/share/chronograf/protoboards
+	doins protoboards/*.json
+	dodir /usr/share/chronograf/resources
 
 	insinto /etc/logrotate.d
 	newins etc/scripts/logrotate chronograf
 
 	diropts -o chronograf -g chronograf -m 0750
 	keepdir /var/log/chronograf
-}
-
-pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/chronograf") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/chronograf permissions"
-		chown chronograf:chronograf "${EROOT%/}/var/lib/chronograf" || die
-		chmod 0750 "${EROOT%/}/var/lib/chronograf" || die
-	fi
 }

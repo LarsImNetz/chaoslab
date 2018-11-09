@@ -7,6 +7,7 @@ PYTHON_COMPAT=( python2_7 )
 inherit desktop gnome2-utils python-single-r1
 
 ELECTRON_SLOT="2.0"
+ELECTRON_V="2.0.9"
 MY_PV="${PV/_/-}"
 RSRC_DIR="out/${PN}-${MY_PV}-amd64/resources"
 
@@ -25,7 +26,7 @@ DEPEND="${PYTHON_DEPS}
 "
 RDEPEND="${DEPEND}
 	>=dev-util/ctags-5.8
-	>=dev-util/electron-bin-2.0.9:${ELECTRON_SLOT}
+	>=dev-util/electron-bin-${ELECTRON_V}:${ELECTRON_SLOT}
 	media-fonts/inconsolata
 	!app-editors/atom-bin
 	!sys-apps/apmd
@@ -52,16 +53,18 @@ PATCHES=(
 S="${WORKDIR}/${PN}-${MY_PV}"
 
 pkg_setup() {
-	# shellcheck disable=SC2086
-	if has network-sandbox ${FEATURES}; then
-		ewarn
-		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn
-		die "[network-sandbox] is enabled in FEATURES"
-	fi
+	if [[ "${MERGE_TYPE}" != binary ]]; then
+		# shellcheck disable=SC2086
+		if has network-sandbox ${FEATURES}; then
+			ewarn
+			ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
+			ewarn
+			die "[network-sandbox] is enabled in FEATURES"
+		fi
 
-	python-single-r1_pkg_setup
-	npm config set python "${PYTHON}" || die
+		python-single-r1_pkg_setup
+		npm config set python "${PYTHON}" || die
+	fi
 }
 
 src_prepare() {
