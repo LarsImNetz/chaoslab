@@ -1,4 +1,12 @@
 # config file for /etc/init.d/kapacitor
 
-KAPACITOR_CONFIG="${KAPACITOR_CONFIG:-/etc/kapacitor/kapacitor.conf}"
+KAPACITOR_DATADIR="/var/lib/kapacitor"
+KAPACITOR_LOGDIR="/var/log/kapacitor"
+KAPACITOR_CONFIG="/etc/kapacitor/kapacitor.conf"
+
+# Additional options (avoid -config use the variable above)
 KAPACITOR_OPTS=""
+
+# Logging
+#output_log="${KAPACITOR_LOGDIR}/kapacitor.log"
+#error_log="${KAPACITOR_LOGDIR}/error.log"
