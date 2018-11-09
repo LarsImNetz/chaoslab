@@ -106,6 +106,8 @@ bitcoin_lang_requireduse() {
 
 REQUIRED_USE+=" $(bitcoin_lang_requireduse)"
 
+PATCHES=( "${FILESDIR}/${PN}-qt_tls_crash_fix.patch" )
+
 pkg_setup() {
 	if use daemon; then
 		enewgroup bitcoin
@@ -120,7 +122,7 @@ src_prepare() {
 		for lan in $LANGS; do
 			lan="${lan/*:/}"
 			# shellcheck disable=SC2086
-			if [ ! -e src/qt/locale/bitcoin_$lan.ts ]; then
+			if [[ ! -e src/qt/locale/bitcoin_$lan.ts ]]; then
 				continue
 				die "Language '$lan' no longer supported. Ebuild needs update."
 			fi

@@ -1,0 +1,49 @@
+From 7d173c4cd1885ff5bcf9e5f8f7f712138dd8a445 Mon Sep 17 00:00:00 2001
+From: Tim Ruffing <crypto@timruffing.de>
+Date: Fri, 5 Oct 2018 10:24:52 +0200
+Subject: [PATCH] qt: Revert "Force TLS1.0+ for SSL connections"
+
+This reverts commit 15e26a6a9afe299b9ca6fced73b876644365879b, whose
+purpose was to tweak the Qt configuration to force TLS, i.e., to
+disable SSLv3, in Qt versions >= 5.5. However, the default behavior
+of Qt >= 5.4 is to disable SSLv3 anyway [1], so the configuration
+tweak is redundant.
+
+With Qt 5.11.2, the configuration tweak is not only redundant but in
+fact provokes a deadlock (#14359) due to Qt 5.11.2 being incompatible
+with OpenSSL 1.1.1 [2]. Since the deadlock occurs at the early startup
+stage of bitcoin-qt, it renders bitcoin-qt entirely non-functional
+when compiled against OpenSSL 1.1.1 and Qt 5.11.2 (and possible future
+combinations of OpenSSL and Qt versions).
+
+This commit fixes #14359 by removing the redundant code.
+
+[1] https://code.qt.io/cgit/qt/qtbase.git/commit/?id=3fd2d9eff8c1f948306ee5fbfe364ccded1c4b84
+[2] https://bugreports.qt.io/browse/QTBUG-70956
+---
+diff --git a/src/qt/bitcoin.cpp b/src/qt/bitcoin.cpp
+index 858b6d2..d9c914f 100644
+--- a/src/qt/bitcoin.cpp
++++ b/src/qt/bitcoin.cpp
+@@ -49,7 +49,6 @@
+ #include <QLocale>
+ #include <QMessageBox>
+ #include <QSettings>
+-#include <QSslConfiguration>
+ #include <QStringList>
+ #include <QThread>
+ #include <QTimer>
+@@ -608,13 +608,6 @@ int main(int argc, char *argv[])
+ #ifdef Q_OS_MAC
+     QApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
+ #endif
+-#if QT_VERSION >= 0x050500
+-    // Because of the POODLE attack it is recommended to disable SSLv3
+-    // (https://disablessl3.com/), so set SSL protocols to TLS1.0+.
+-    QSslConfiguration sslconf = QSslConfiguration::defaultConfiguration();
+-    sslconf.setProtocol(QSsl::TlsV1_0OrLater);
+-    QSslConfiguration::setDefaultConfiguration(sslconf);
+-#endif
+
+     // Register meta types used for QMetaObject::invokeMethod
+     qRegisterMetaType<bool *>();
