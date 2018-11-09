@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-GIT_COMMIT="07d2f2d8bb" # Change this when you update the ebuild
+GIT_COMMIT="f297910623" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
