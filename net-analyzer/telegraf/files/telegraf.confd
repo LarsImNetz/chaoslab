@@ -1,8 +1,11 @@
 # config file for /etc/init.d/telegraf
 
+TELEGRAF_DATADIR="/var/lib/telegraf"
+TELEGRAF_LOGDIR="/var/log/telegraf"
+
 TELEGRAF_CONFIG="/etc/telegraf/telegraf.conf"
 TELEGRAF_OPTS="-config-directory /etc/telegraf/telegraf.d"
 
 # Logging
-#output_log="/var/log/telegraf/telegraf.log"
-#error_log="/var/log/telegraf/error.log"
+#output_log="${TELEGRAF_LOGDIR}/telegraf.log"
+#error_log="${TELEGRAF_LOGDIR}/error.log"

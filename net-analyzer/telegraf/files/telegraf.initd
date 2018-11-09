@@ -1,24 +1,27 @@
 #!/sbin/openrc-run
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-TELEGRAF_CONFIG="${TELEGRAF_CONFIG:-/etc/telegraf/telegraf.conf}"
-
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-/var/log/telegraf/error.log}"
+error_log="${error_log:-${TELEGRAF_LOGDIR}/error.log}"
 extra_started_commands="reload"
 
 command="/usr/bin/telegraf"
 command_args="--config ${TELEGRAF_CONFIG} ${TELEGRAF_OPTS}"
 command_user="${command_user:-telegraf:telegraf}"
-command_background=yes
+command_background=true
 pidfile="/run/${RC_SVCNAME}.pid"
 required_files="${TELEGRAF_CONFIG}"
-start_stop_daemon_args="${SSD_OPTS}
-	-1 ${output_log} -2 ${error_log}"
+retry="${retry:-TERM/30/KILL/5}"
+start_stop_daemon_args="${SSD_OPTS}"
 
 depend() {
 	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" \
+		"${TELEGRAF_DATADIR}" "${TELEGRAF_LOGDIR}"
 }
 
 reload() {
