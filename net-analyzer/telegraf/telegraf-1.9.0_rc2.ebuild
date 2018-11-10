@@ -1,25 +1,35 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-GIT_COMMIT="07d2f2d8bb" # Change this when you update the ebuild
+GIT_COMMIT="dfa67e536a" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
 # github.com/Microsoft/go-winio a6d595ae73
 # github.com/StackExchange/wmi 5d049714c4
+# github.com/docker/distribution edc3ab29cd
+# github.com/docker/go-connections 3ede32e203
+# github.com/docker/go-units 47565b4f72
 # github.com/go-ini/ini 358ee76639
 # github.com/go-ole/go-ole a41e3c4b70
 # github.com/google/uuid 064e2069ce
 # github.com/gorilla/context 08b5f424b9
+# github.com/hashicorp/go-cleanhttp d5fe4b57a1
+# github.com/hashicorp/go-rootcerts 6bb64b370b
+# github.com/hashicorp/serf d6574a5bb1
 # github.com/jmespath/go-jmespath 0b12d6b521
 # github.com/kardianos/osext ae77be60af
 # github.com/kr/logfmt b84e30acd5
 # github.com/mitchellh/go-homedir 3864e76763
+# github.com/opencontainers/go-digest 279bed9867
+# github.com/opencontainers/image-spec d60099175f
 # github.com/pmezard/go-difflib 792786c740
 # github.com/shirou/w32 bb4de0191a
 # github.com/stretchr/objx 477a77ecc6
+# github.com/vishvananda/netlink b2de5d10e3
+# github.com/vishvananda/netns 13995c7128
 # google.golang.org/appengine b1f26356af
 # gopkg.in/fsnotify.v1 c2828203cd
 # gopkg.in/tomb.v1 dd632973f1
@@ -27,6 +37,7 @@ EGO_VENDOR=(
 	"cloud.google.com/go c728a003b2 github.com/GoogleCloudPlatform/google-cloud-go"
 	"code.cloudfoundry.org/clock 02e53af36e github.com/cloudfoundry/clock"
 	"collectd.org 2ce144541b github.com/collectd/go-collectd"
+	"contrib.go.opencensus.io/exporter/stackdriver 2b93072101 github.com/census-ecosystem/opencensus-go-exporter-stackdriver"
 	"github.com/Azure/go-autorest 1f7cd6cfe0"
 	"github.com/Microsoft/ApplicationInsights-Go d2df5d440e"
 	"github.com/Shopify/sarama a6144ae922"
@@ -35,7 +46,7 @@ EGO_VENDOR=(
 	"github.com/alecthomas/units 2efee857e7"
 	"github.com/amir/raidman 1ccc43bfb9"
 	"github.com/apache/thrift f2867c2498"
-	"github.com/aws/aws-sdk-go 8cf662a972"
+	"github.com/aws/aws-sdk-go bf8067ceb6"
 	"github.com/beorn7/perks 3a771d9929"
 	"github.com/bsm/sarama-cluster cf455bc755"
 	"github.com/cenkalti/backoff 2ea60e5f09"
@@ -46,28 +57,25 @@ EGO_VENDOR=(
 	"github.com/denisenkom/go-mssqldb 1eb28afdf9"
 	"github.com/dgrijalva/jwt-go 06ea103174"
 	"github.com/dimchansky/utfbom 6c6132ff69"
-	"github.com/docker/distribution edc3ab29cd"
 	"github.com/docker/docker ed7b6428c1"
-	"github.com/docker/go-connections 3ede32e203"
-	"github.com/docker/go-units 47565b4f72"
+	"github.com/docker/libnetwork d7b61745d1"
 	"github.com/eapache/go-resiliency ea41b0fad3"
 	"github.com/eapache/go-xerial-snappy 040cc1a32f"
 	"github.com/eapache/queue 44cc805cf1"
 	"github.com/eclipse/paho.mqtt.golang 36d01c2b4c"
+	"github.com/ericchiang/k8s d1bbc0cffa"
 	"github.com/go-logfmt/logfmt 390ab7935e"
 	"github.com/go-redis/redis 83fb42932f"
 	"github.com/go-sql-driver/mysql d523deb1b2"
 	"github.com/gobwas/glob 5ccd90ef52"
-	"github.com/gogo/protobuf 636bf0302b"
+	"github.com/gogo/protobuf 636bf0302b" #tests
 	"github.com/golang/protobuf b4deda0973"
 	"github.com/golang/snappy 2e65f85255"
-	"github.com/google/go-cmp 3af367b6b3"
+	"github.com/google/go-cmp 3af367b6b3" #tests
+	"github.com/googleapis/gax-go 317e000625"
 	"github.com/gorilla/mux e3702bed27"
 	"github.com/hailocab/go-hostpool e80d13ce29"
 	"github.com/hashicorp/consul 39f93f011e"
-	"github.com/hashicorp/go-cleanhttp d5fe4b57a1"
-	"github.com/hashicorp/go-rootcerts 6bb64b370b"
-	"github.com/hashicorp/serf d6574a5bb1"
 	"github.com/influxdata/go-syslog eecd51df3a"
 	"github.com/influxdata/tail c43482518d"
 	"github.com/influxdata/toml 2a2e3012f7"
@@ -85,14 +93,11 @@ EGO_VENDOR=(
 	"github.com/nats-io/go-nats 062418ea1c"
 	"github.com/nats-io/nuid 289cccf02c"
 	"github.com/nsqio/go-nsq eee57a3ac4"
-	"github.com/opencontainers/go-digest 279bed9867"
-	"github.com/opencontainers/image-spec d60099175f"
-	"github.com/opentracing-contrib/go-observer a52f234244"
-	"github.com/opentracing/opentracing-go 1949ddbfd1"
+	"github.com/opentracing-contrib/go-observer a52f234244" #tests
+	"github.com/opentracing/opentracing-go 1949ddbfd1" #tests
 	"github.com/openzipkin/zipkin-go-opentracing 26cf970748"
 	"github.com/pierrec/lz4 1958fd8fff"
 	"github.com/pkg/errors 645ef00459"
-	"github.com/pmezard/go-difflib 792786c740"
 	"github.com/prometheus/client_golang c5b7fccd20"
 	"github.com/prometheus/client_model 5c3871d899"
 	"github.com/prometheus/common 7600349dcf"
@@ -112,11 +117,13 @@ EGO_VENDOR=(
 	"github.com/wvanbergen/kafka e2edea948d"
 	"github.com/wvanbergen/kazoo-go f72d861129"
 	"github.com/yuin/gopher-lua 46796da1b0"
+	"go.opencensus.io 79993219be github.com/census-instrumentation/opencensus-go"
 	"golang.org/x/crypto a214413485 github.com/golang/crypto"
 	"golang.org/x/net a680a1efc5 github.com/golang/net"
 	"golang.org/x/oauth2 d2e6202438 github.com/golang/oauth2"
 	"golang.org/x/sys ac767d655b github.com/golang/sys"
 	"golang.org/x/text f21a4dfb5e github.com/golang/text"
+	"google.golang.org/api 19ff8768a5 github.com/googleapis/google-api-go-client"
 	"google.golang.org/genproto fedd286124 github.com/google/go-genproto"
 	"google.golang.org/grpc 168a6198bc github.com/grpc/grpc-go"
 	"gopkg.in/alecthomas/kingpin.v2 947dcec5ba github.com/alecthomas/kingpin"
@@ -164,7 +171,7 @@ pkg_setup() {
 }
 
 src_prepare() {
-	# Remove tests that won't work inside portage environment
+	# Remove tests that doesn't work inside portage's sandbox
 	if use test; then
 		rm plugins/inputs/socket_listener/socket_listener_test.go || die
 		rm plugins/outputs/socket_writer/socket_writer_test.go || die
