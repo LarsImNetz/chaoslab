@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">codablock/bls-signatures</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		Implements BLS signatures with aggregation as in Boneh, Drijvers,
+		Neven 2018, using relic toolkit for cryptographic primitives
+		(pairings, EC, hashing). The BLS12-381 curve is used.
+	</longdescription>
+</pkgmetadata>
