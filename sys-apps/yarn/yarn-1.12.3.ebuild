@@ -21,14 +21,15 @@ RDEPEND="
 S="${WORKDIR}/${MY_P}"
 
 src_install() {
-	local install_dir path
+	local install_dir path shebang
 	install_dir="/usr/$(get_libdir)/node_modules/yarn"
 	insinto "${install_dir}"
 	doins -r .
 	dosym "../$(get_libdir)/node_modules/yarn/bin/yarn.js" "/usr/bin/yarn"
-	fperms a+x "${install_dir}/bin/yarn.js"
+
 	while read -r -d '' path; do
-		[[ $(head -n1 "${path}") == \#\!* ]] || continue
-		chmod +x "${path}" || die #614094
-	done < <(find "${ED}" -type f -print0)
+		read -r shebang < "${ED}${path}" || die
+		[[ "${shebang}" == \#\!* ]] || continue
+		fperms +x "${path}"
+	done < <(find "${ED}" -type f -printf '/%P\0' || die)
 }
