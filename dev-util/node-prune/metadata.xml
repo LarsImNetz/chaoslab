@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">tj/node-prune</remote-id>
+		<bugs-to>https://github.com/tj/node-prune/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		node-prune is a small tool to prune unnecessary files
+		from ./node_modules, such as markdown, typescript source
+		files, and so on.
+	</longdescription>
+</pkgmetadata>
