@@ -1,0 +1,10 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=Signal (Tray)
+Type=Application
+GenericName=Signal Messenger (tray mode)
+Comment=Signal Private Messenger for the Desktop (Start in Tray)
+Exec=signal-desktop --start-in-tray
+Icon=signal
+Categories=GTK;Network;Chat;InstantMessaging;
+StartupNotify=false
