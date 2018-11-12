@@ -28,6 +28,5 @@ RDEPEND="
 src_prepare() {
 	# Remove tests directory
 	rm -r tests || die
-	
 	default
 }

@@ -3,30 +3,28 @@
 
 EAPI=7
 
-inherit autotools git-r3
+inherit autotools
 
-DESCRIPTION="A simple, lightweight C library for writing XMPP clients"
-HOMEPAGE="http://strophe.im/libstrophe/"
-EGIT_REPO_URI="https://github.com/strophe/${PN}.git"
+DESCRIPTION="Fork of libstrophe for use with Profanity XMPP Client"
+HOMEPAGE="https://github.com/boothj5/libmesode"
+SRC_URI="https://github.com/boothj5/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+RESTRICT="mirror"
 
 LICENSE="|| ( MIT GPL-3 )"
 SLOT="0"
-KEYWORDS=""
-IUSE="doc examples libressl +ssl static-libs +xml"
+KEYWORDS="~amd64 ~x86"
+IUSE="doc examples libressl +ssl static-libs test"
 
 RDEPEND="
+	dev-libs/expat
 	ssl? (
 		!libressl? ( dev-libs/openssl:0= )
 		libressl? ( dev-libs/libressl:0= )
 	)
-	xml? ( dev-libs/libxml2:2 )
-	!xml? ( dev-libs/expat )
 "
 DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen )
 "
-
-PATCHES=( "${FILESDIR}/${PN}-0.9.2-libressl.patch" )
 
 src_prepare() {
 	default
@@ -37,7 +35,7 @@ src_configure() {
 	# shellcheck disable=SC2207
 	local myeconf=(
 		$(use_enable ssl tls)
-		$(use_with xml libxml2)
+		$(use_enable test static)
 		$(use_enable static-libs static)
 	)
 	econf "${myeconf[@]}"

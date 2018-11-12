@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -11,19 +11,21 @@ RESTRICT="mirror"
 LICENSE="|| ( MIT GPL-3 )"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86"
-IUSE="doc examples libressl +ssl +xml"
+IUSE="doc examples libressl +ssl static-libs +xml"
 
-DOCS=( README ChangeLog )
-
-RDEPEND="ssl? (
+RDEPEND="
+	ssl? (
 		!libressl? ( dev-libs/openssl:0= )
 		libressl? ( dev-libs/libressl:0= )
 	)
 	xml? ( dev-libs/libxml2:2 )
-	!xml? ( dev-libs/expat )"
+	!xml? ( dev-libs/expat )
+"
 DEPEND="${RDEPEND}
-	doc? ( app-doc/doxygen )"
+	doc? ( app-doc/doxygen )
+"
 
+DOCS=( README ChangeLog )
 PATCHES=( "${FILESDIR}/${P}-libressl.patch" )
 
 src_configure() {
@@ -31,6 +33,7 @@ src_configure() {
 	local myeconf=(
 		$(use_enable ssl tls)
 		$(use_with xml libxml2)
+		$(use_enable static-libs static)
 	)
 	econf "${myeconf[@]}"
 }
@@ -45,4 +48,5 @@ src_compile() {
 src_install() {
 	default
 	use examples && dodoc -r examples
+	find "${D}" -name '*.la' -delete || die
 }

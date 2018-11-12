@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -14,13 +14,16 @@ SLOT="0"
 KEYWORDS=""
 IUSE="doc examples libressl +ssl static-libs test"
 
-RDEPEND="dev-libs/expat
+RDEPEND="
+	dev-libs/expat
 	ssl? (
 		!libressl? ( dev-libs/openssl:0= )
 		libressl? ( dev-libs/libressl:0= )
-	)"
+	)
+"
 DEPEND="${RDEPEND}
-	doc? ( app-doc/doxygen )"
+	doc? ( app-doc/doxygen )
+"
 
 src_prepare() {
 	default
@@ -47,4 +50,5 @@ src_compile() {
 src_install() {
 	default
 	use examples && dodoc -r examples
+	find "${D}" -name '*.la' -delete || die
 }

@@ -89,6 +89,7 @@ dev-db/**[pgweb](dev-db/pgweb)** | Web-based PostgreSQL database browser written
 dev-db/**[tidb](dev-db/tidb)** | A distributed NewSQL database compatible with MySQL protocol
 dev-go/**[depth](dev-go/depth)** | Retrieve and visualize Go source code dependency trees
 dev-go/**[go-md2man](dev-go/go-md2man)** `*` | A utility to convert markdown to man pages
+dev-libs/**[bls-signatures](dev-libs/bls-signatures)** | BLS signatures in C++, using the relic toolkit
 dev-libs/**[libmesode](dev-libs/libmesode)** | Fork of libstrophe for use with Profanity XMPP Client
 dev-libs/**[libstrophe](dev-libs/libstrophe)** | A simple, lightweight C library for writing XMPP clients
 dev-libs/**[univalue](dev-libs/univalue)** `*` | C++ universal value object and JSON library
@@ -98,17 +99,22 @@ dev-python/**[coreschema](dev-python/coreschema)** | Core Schema
 dev-python/**[django-auth-ldap](dev-python/django-auth-ldap)** `***` | Django LDAP authentication backend
 dev-python/**[django-braces](dev-python/django-braces)** | Reusable, generic mixins for Django
 dev-python/**[django-ckeditor](dev-python/django-ckeditor)** | Django admin CKEditor integration
-dev-python/**[djangorestframework](dev-python/djangorestframework)** | Web APIs for Django, made easy
 dev-python/**[django-reversion](dev-python/django-reversion)** | A Django extension that provides version control for model instances
 dev-python/**[django-subcommand2](dev-python/django-subcommand2)** | Support subcommands in management commands
 dev-python/**[django-xforwardedfor-middleware](dev-python/django-xforwardedfor-middleware)** | Django X-Forwarded-For Middleware
+dev-python/**[djangorestframework](dev-python/djangorestframework)** | Web APIs for Django, made easy
+dev-python/**[geoip2](dev-python/geoip2)** | MaxMind GeoIP2 API
+dev-python/**[google](dev-python/google)** | Google search from Python
 dev-python/**[itypes](dev-python/itypes)** | Basic immutable container types for Python
 dev-python/**[jsonfield](dev-python/jsonfield)** `***` | A reusable JSONField model for Django to store ad-hoc data
 dev-python/**[LEPL](dev-python/LEPL)** | A Parser Library for Python 2.6+/3+: Recursive Descent; Full Backtracking
+dev-python/**[maxminddb](dev-python/maxminddb)** | Python MaxMind DB reader extension
 dev-python/**[progressbar33](dev-python/progressbar33)** | Text progressbar library for python
-dev-python/**[pycryptodomex](dev-python/pycryptodomex)** | A self-contained (and independent) cryptographic library for Python
+dev-python/**[proxy-db](dev-python/proxy-db)** | Manage free and private proxies on local db for Python Projects
 dev-python/**[py-dateutil](dev-python/py-dateutil)** | Extensions to the standard Python datetime module
+dev-python/**[pycryptodomex](dev-python/pycryptodomex)** | A self-contained (and independent) cryptographic library for Python
 dev-python/**[python-ldap](dev-python/python-ldap)** `***` | LDAP client API for Python
+dev-python/**[requests](dev-python/requests)** `*` | HTTP library for human beings
 dev-python/**[requests-file](dev-python/requests-file)** | File transport adapter for Requests
 dev-python/**[rfc6266](dev-python/rfc6266)** | Content-Disposition header support for Python
 dev-python/**[tldextract](dev-python/tldextract)** | Accurately separates the gTLD or ccTLD from the registered domain and subdomains
@@ -116,6 +122,7 @@ dev-util/**[drone](dev-util/drone)** `*` | Drone is a Continuous Delivery platfo
 dev-util/**[drone-cli](dev-util/drone-cli)** `*` | Command line client for the Drone continuous integration server
 dev-util/**[electron-bin](dev-util/electron-bin)** `*` | Cross platform application development framework based on web technologies
 dev-util/**[gitlab-runner](dev-util/gitlab-runner)** | The official GitLab Runner, written in Go
+dev-util/**[node-prune](dev-util/node-prune)** | Remove unnecessary files from node_modules (.md, .ts, ...)
 dev-vcs/**[fac](dev-vcs/fac)** | Easy-to-use CUI for fixing git conflicts
 dev-vcs/**[gitkraken-bin](dev-vcs/gitkraken-bin)** | The intuitive, fast, and beautiful cross-platform Git client
 dev-vcs/**[hub](dev-vcs/hub)** | A command-line wrapper for git that makes you better at GitHub
@@ -130,12 +137,13 @@ net-analyzer/**[telegraf](net-analyzer/telegraf)** `*` | An agent for collecting
 net-dns/**[acme-dns](net-dns/acme-dns)** | A simplified DNS server with a RESTful HTTP API to provide ACME DNS challenges
 net-dns/**[dnscrypt-proxy](net-dns/dnscrypt-proxy)** `*` | A tool for securing communications between a client and a DNS resolver
 net-dns/**[dnscrypt-wrapper](net-dns/dnscrypt-wrapper)** | A server-side DNSCrypt proxy
-net-dns/**[knot-resolver](net-dns/knot-resolver)** | A caching full DNS resolver implementation written in C and LuaJIT
 net-dns/**[knot](net-dns/knot)** `*` | High-performance authoritative-only DNS server
+net-dns/**[knot-resolver](net-dns/knot-resolver)** | A caching full DNS resolver implementation written in C and LuaJIT
 net-dns/**[unbound](net-dns/unbound)** `*` | A validating, recursive and caching DNS resolver
 net-firewall/**[firehol](net-firewall/firehol)** `*` | A firewall for humans...
 net-im/**[dino](net-im/dino)** | A modern Jabber/XMPP Client using GTK+/Vala
 net-im/**[profanity](net-im/profanity)** | A console based XMPP client inspired by Irssi
+net-im/**[signal-desktop](net-im/signal-desktop)** `*` | Signal Private Messenger for the Desktop
 net-libs/**[nodejs](net-libs/nodejs)** `*` | A JavaScript runtime built on Chrome's V8 JavaScript engine
 net-misc/**[cointop](net-misc/cointop)** | A terminal based UI application for tracking cryptocurrencies
 net-misc/**[electron-cash](net-misc/electron-cash)** `*` | Lightweight Bitcoin Cash client
@@ -163,6 +171,7 @@ net-proxy/**[traefik](net-proxy/traefik)** | A modern HTTP reverse proxy and loa
 net-vpn/**[onioncat](net-vpn/onioncat)** | An IP-Transparent Tor Hidden Service Connector
 sys-apps/**[bane](sys-apps/bane)** | AppArmor profile generator for docker containers
 sys-apps/**[exa](sys-apps/exa)** `*` | A replacement for 'ls' written in Rust
+sys-apps/**[nvm](sys-apps/nvm)** | A simple bash script to manage multiple active node.js versions
 sys-apps/**[yarn](sys-apps/yarn)** `*` | Fast, reliable, and secure node dependency management
 sys-auth/**[yubikey-touch-detector](sys-auth/yubikey-touch-detector)** | A tool that can detect when your YubiKey is waiting for a touch
 sys-fs/**[gocryptfs](sys-fs/gocryptfs)** | Encrypted overlay filesystem written in Go
