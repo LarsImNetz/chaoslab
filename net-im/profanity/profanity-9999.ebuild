@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 PYTHON_COMPAT=( python2_7 )
 
-inherit autotools eutils git-r3 python-single-r1
+inherit autotools git-r3 python-single-r1
 
 DESCRIPTION="A console based XMPP client inspired by Irssi"
 HOMEPAGE="http://profanity.im"
@@ -16,29 +16,35 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS=""
 IUSE="+c-plugins icons +largefile libnotify +otr pgp +plugins python-plugins test +themes xscreensaver"
-REQUIRED_USE="c-plugins? ( plugins )
-	python-plugins? ( plugins ${PYTHON_REQUIRED_USE} )"
+REQUIRED_USE="
+	c-plugins? ( plugins )
+	python-plugins? ( plugins ${PYTHON_REQUIRED_USE} )
+"
 
-CDEPEND="dev-libs/glib:2
-	net-misc/curl
-	sys-apps/util-linux:0
-	sys-libs/ncurses:0[unicode]
-	sys-libs/readline:0
+CDEPEND="
+	dev-libs/glib:2
 	|| (
 		>=dev-libs/libmesode-0.9.1[ssl]
 		>=dev-libs/libstrophe-0.9.1[ssl,xml]
 	)
+	net-misc/curl
+	sys-apps/util-linux:0
+	sys-libs/ncurses:0[unicode]
+	sys-libs/readline:0
 	icons? ( >=x11-libs/gtk+-2.24.10:2 )
 	libnotify? ( x11-libs/libnotify )
 	otr? ( net-libs/libotr )
 	pgp? ( app-crypt/gpgme )
 	python-plugins? ( ${PYTHON_DEPS} )
-	xscreensaver? ( x11-libs/libXScrnSaver )"
+	xscreensaver? ( x11-libs/libXScrnSaver )
+"
 DEPEND="${CDEPEND}
 	virtual/pkgconfig
-	test? ( dev-util/cmocka )"
+	test? ( dev-util/cmocka )
+"
 RDEPEND="${CDEPEND}
-	libnotify? ( virtual/notification-daemon )"
+	libnotify? ( virtual/notification-daemon )
+"
 
 src_prepare() {
 	default
@@ -64,5 +70,5 @@ src_configure() {
 
 src_install() {
 	default
-	prune_libtool_files
+	find "${D}" -name "*.la" -delete || die
 }
