@@ -61,8 +61,8 @@ src_compile() {
 	npm config delete prefix || die
 
 	# Switch to required node version
-	# shellcheck disable=SC1091
-	source /usr/share/nvm/init-nvm.sh --install
+	# shellcheck source=/dev/null
+	source "${EPREFIX}/usr/share/nvm/init-nvm.sh" --install
 	nvm install || die
 	nvm use || die
 
