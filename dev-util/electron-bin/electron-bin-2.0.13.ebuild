@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="7"
+EAPI=6
 
 MY_PN="${PN/-bin}"
 SRC_URI_BASE="https://github.com/electron/electron/releases/download"
@@ -16,7 +16,7 @@ SRC_URI="
 RESTRICT="mirror"
 
 LICENSE="MIT"
-SLOT="3.0"
+SLOT="2.0"
 KEYWORDS="-* ~amd64 ~arm ~arm64 ~x86"
 
 RDEPEND="
@@ -24,6 +24,7 @@ RDEPEND="
 	dev-libs/expat
 	dev-libs/glib:2
 	dev-libs/nss
+	gnome-base/gconf:2
 	media-gfx/graphite2
 	media-libs/alsa-lib
 	media-libs/fontconfig:1.0
@@ -53,7 +54,7 @@ QA_PRESTRIPPED="
 src_install() {
 	dodir "/${DIRPATH}"
 	# Note: intentionally not using "doins" so that we preserve +x bits
-	cp -R ./* "${ED}/${DIRPATH}" || die
+	cp -R ./* "${ED%/}/${DIRPATH}" || die
 
 	dosym "../../${DIRPATH}/electron" "/usr/bin/electron-${SLOT}"
 }
