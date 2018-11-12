@@ -122,6 +122,7 @@ dev-util/**[drone](dev-util/drone)** `*` | Drone is a Continuous Delivery platfo
 dev-util/**[drone-cli](dev-util/drone-cli)** `*` | Command line client for the Drone continuous integration server
 dev-util/**[electron-bin](dev-util/electron-bin)** `*` | Cross platform application development framework based on web technologies
 dev-util/**[gitlab-runner](dev-util/gitlab-runner)** | The official GitLab Runner, written in Go
+dev-util/**[node-prune](dev-util/node-prune)** | Remove unnecessary files from node_modules (.md, .ts, ...)
 dev-vcs/**[fac](dev-vcs/fac)** | Easy-to-use CUI for fixing git conflicts
 dev-vcs/**[gitkraken-bin](dev-vcs/gitkraken-bin)** | The intuitive, fast, and beautiful cross-platform Git client
 dev-vcs/**[hub](dev-vcs/hub)** | A command-line wrapper for git that makes you better at GitHub
