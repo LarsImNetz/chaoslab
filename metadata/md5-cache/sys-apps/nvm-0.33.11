@@ -1,0 +1,10 @@
+DEFINED_PHASES=compile install
+DESCRIPTION=A simple bash script to manage multiple active node.js versions
+EAPI=6
+HOMEPAGE=https://github.com/creationix/nvm
+KEYWORDS=~amd64 ~arm ~arm64 ~x86
+LICENSE=MIT
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/creationix/nvm/archive/v0.33.11.tar.gz -> nvm-0.33.11.tar.gz
+_md5_=2c4489e29a1fae53a8b29ff03a1a1999
