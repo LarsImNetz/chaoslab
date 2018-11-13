@@ -28,6 +28,14 @@ G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
+	# shellcheck disable=SC2086
+	if has network-sandbox $FEATURES && has test $FEATURES; then
+		ewarn
+		ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
+		ewarn
+		die "[network-sandbox] is enabled in FEATURES"
+	fi
+
 	enewgroup traefik
 	enewuser traefik -1 -1 -1 traefik
 }
@@ -43,8 +51,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 
