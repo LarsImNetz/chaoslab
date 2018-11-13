@@ -10,15 +10,23 @@ inherit fcaps golang-vcs-snapshot systemd user
 DESCRIPTION="A load balancing and TCP router for deploying applications managed by consul"
 HOMEPAGE="https://fabiolb.net"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-RESTRICT="mirror test"
+RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="pie"
+IUSE="pie test"
+
+DEPEND="
+	test? (
+		app-admin/consul
+		app-admin/vault
+	)
+"
+
+FILECAPS=( cap_net_bind_service+ep usr/bin/fabio )
 
 DOCS=( CHANGELOG.md README.md NOTICES.txt )
-FILECAPS=( cap_net_bind_service+ep usr/bin/fabio )
 QA_PRESTRIPPED="usr/bin/fabio"
 
 G="${WORKDIR}/${P}"
@@ -34,11 +42,15 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w -X main.version=${PV}"
 	)
 	go build "${mygoargs[@]}" || die
+}
+
+src_test() {
+	go test -v -timeout 15s ./... || die
 }
 
 src_install() {
