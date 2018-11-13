@@ -1,14 +1,14 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-GIT_COMMIT="c481507" # Change this when you update the ebuild
+GIT_COMMIT="bc22e226d0" # Change this when you update the ebuild
 EGO_PN="github.com/${PN}/${PN}"
 EGO_VENDOR=(
-	"github.com/drone/drone-ui e7597b5"
-	"github.com/golang/protobuf 9eb2c01"
-	"golang.org/x/net e514e69 github.com/golang/net"
+	"github.com/drone/drone-ui e7597b5234"
+	"github.com/golang/protobuf aa810b61a9"
+	"golang.org/x/net 03003ca0c8 github.com/golang/net"
 )
 
 inherit golang-vcs-snapshot user
@@ -25,8 +25,10 @@ KEYWORDS="~amd64"
 IUSE="pie"
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/drone-agent
-	usr/bin/drone-server"
+QA_PRESTRIPPED="
+	usr/bin/drone-agent
+	usr/bin/drone-server
+"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -38,21 +40,19 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-	local myldflags=( -s -w
-		-X "${EGO_PN}/version.VersionDev=build.${GIT_COMMIT}"
-	)
+	local myldflags=( -s -w -X "${EGO_PN}/version.VersionDev=build.${GIT_COMMIT}" )
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	# set !cgo and omit pie for a static shim
 	local mygoargs2=(
 		-v -work -x
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]} -extldflags '-static'"
 	)
 	go build "${mygoargs[@]}" ./cmd/drone-agent || die
@@ -60,6 +60,8 @@ src_compile() {
 }
 
 src_test() {
+	# Remove tests that fails inside portage's sandbox
+	rm plugins/secrets/vault/kubernetes_test.go || die
 	go test -v ./... || die
 }
 
@@ -74,12 +76,4 @@ src_install() {
 
 	diropts -o drone -g drone -m 0750
 	keepdir /var/log/drone
-}
-
-pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/drone") != "700" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/drone permissions"
-		chown drone:drone "${EROOT%/}/var/lib/drone" || die
-		chmod 0700 "${EROOT%/}/var/lib/drone" || die
-	fi
 }
