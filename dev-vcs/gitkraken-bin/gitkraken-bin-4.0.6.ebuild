@@ -66,8 +66,8 @@ src_prepare() {
 }
 
 src_install() {
-	newbin "${FILESDIR}"/gitkraken-launcher.sh-r1 gitkraken
-	sed "s:%%ELECTRON%%:electron-${ELECTRON_SLOT}:" \
+	newbin "${FILESDIR}"/gitkraken-launcher.sh gitkraken
+	sed "s:@@ELECTRON@@:electron-${ELECTRON_SLOT}:" \
 		-i "${ED%/}"/usr/bin/gitkraken || die
 
 	insinto /usr/libexec/gitkraken
