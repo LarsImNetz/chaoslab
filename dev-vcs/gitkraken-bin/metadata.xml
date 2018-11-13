@@ -19,10 +19,4 @@
 		systems. Enjoy the same luxurious experience across
 		all three!
 	</longdescription>
-	<use>
-		<flag name="patchelf-fix">
-			Use <pkg>dev-util/patchelf</pkg> to properly fix library
-			dependencies in asar archive
-		</flag>
-	</use>
 </pkgmetadata>
