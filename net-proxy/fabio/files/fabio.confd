@@ -1,0 +1,8 @@
+# config file for /etc/init.d/fabio
+
+FABIO_DATADIR="/var/lib/fabio"
+FABIO_LOGDIR="/var/log/fabio"
+
+# Logging
+#output_log="${FABIO_LOGDIR}/fabio.log"
+#error_log="${FABIO_LOGDIR}/error.log"

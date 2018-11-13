@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -46,6 +46,7 @@ src_install() {
 	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	insinto /etc/logrotate.d
@@ -53,12 +54,4 @@ src_install() {
 
 	diropts -o fabio -g fabio -m 0750
 	keepdir /var/log/fabio
-}
-
-pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/fabio") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/fabio permissions"
-		chown fabio:fabio "${EROOT%/}/var/lib/fabio" || die
-		chmod 0750 "${EROOT%/}/var/lib/fabio" || die
-	fi
 }
