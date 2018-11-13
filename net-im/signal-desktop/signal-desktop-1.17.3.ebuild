@@ -17,9 +17,13 @@ RESTRICT="mirror"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE=""
+IUSE="libressl"
 
-RDEPEND=">=dev-util/electron-bin-${ELECTRON_V}:${ELECTRON_SLOT}"
+RDEPEND="
+	>=dev-util/electron-bin-${ELECTRON_V}:${ELECTRON_SLOT}
+	!libressl? ( dev-libs/openssl:0 )
+	libressl? ( dev-libs/libressl:0 )
+"
 DEPEND="
 	sys-apps/nvm
 	sys-apps/yarn
@@ -96,8 +100,8 @@ src_install() {
 	domenu "${FILESDIR}"/signal-tray.desktop
 
 	# sqlcipher links against libcrypto.so.1.0.0, which does not exist
-	# in LibreSSL environment, and perhaps in OpenSSL 1.1.x too.
-	if [[ ! -e "${EROOT%/}/usr/$(get_libdir)/libcrypto.so.1.0.0" ]]; then
+	# in a LibreSSL environment, and perhaps OpenSSL 1.1.x too
+	if has_version 'dev-libs/libressl' || has_version '>=dev-libs/openssl-1.1.0'; then
 		dosym libcrypto.so "/usr/$(get_libdir)/libcrypto.so.1.0.0"
 	fi
 }
