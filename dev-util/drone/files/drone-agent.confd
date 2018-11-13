@@ -1,6 +1,9 @@
 # config file for /etc/init.d/drone-agent
 # See also http://readme.drone.io/admin/installation-reference/
 
+DRONE_DATADIR="/var/lib/drone"
+DRONE_LOGDIR="/var/log/drone"
+
 #DRONE_SERVER=
 #DRONE_SECRET=
 #DRONE_DEBUG=false
@@ -18,3 +21,7 @@
 #HTTP_PROXY=
 #HTTPS_PROXY=
 #NO_PROXY=
+
+# Logging
+#output_log="${DRONE_LOGDIR}/drone-agent.log"
+#error_log="${DRONE_LOGDIR}/agent-error.log"
