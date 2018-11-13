@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -14,8 +14,8 @@ RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="test"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86"
+IUSE="pie test"
 
 DOCS=( docs/{noti,release}.md )
 QA_PRESTRIPPED="usr/bin/noti"
@@ -26,15 +26,17 @@ S="${G}/src/${EGO_PN}"
 RDEPEND="|| (
 		x11-libs/libnotify
 		app-accessibility/espeak
-	)"
+	)
+"
 
 src_compile() {
 	export GOPATH="${G}"
 	local mygoargs=(
 		-v -work -x
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w"
+		"-buildmode=$(usex pie pie default)"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
+		-ldflags "-s -w -X '${EGO_PN}/internal/command.Version=${PV}'"
 	)
 	go build "${mygoargs[@]}" ./cmd/noti || die
 
