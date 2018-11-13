@@ -10,4 +10,10 @@
 		<bugs-to>https://github.com/atom/atom/issues</bugs-to>
 		<doc>https://atom.io/docs</doc>
 	</upstream>
+	<use>
+		<flag name="node-prune">
+			Use <pkg>dev-util/node-prune</pkg> to remove unnecessary
+			files from node_modules
+		</flag>
+	</use>
 </pkgmetadata>

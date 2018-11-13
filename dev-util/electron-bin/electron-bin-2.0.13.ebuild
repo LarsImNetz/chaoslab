@@ -37,24 +37,25 @@ RDEPEND="
 	x11-libs/gdk-pixbuf:2
 	x11-libs/gtk+:3
 	x11-libs/libxcb
+	x11-libs/libXScrnSaver
 	x11-libs/libXtst
 	x11-libs/pango
 "
 DEPEND="app-arch/unzip"
 
 S="${WORKDIR}"
-DIRPATH="opt/${MY_PN}-${SLOT}"
+OPTPATH="opt/${MY_PN}-${SLOT}"
 
 QA_PRESTRIPPED="
-	${DIRPATH}/libffmpeg.so
-	${DIRPATH}/libnode.so
-	${DIRPATH}/electron
+	${OPTPATH}/libffmpeg.so
+	${OPTPATH}/libnode.so
+	${OPTPATH}/electron
 "
 
 src_install() {
-	dodir "/${DIRPATH}"
+	dodir "/${OPTPATH}"
 	# Note: intentionally not using "doins" so that we preserve +x bits
-	cp -R ./* "${ED%/}/${DIRPATH}" || die
+	cp -r ./* "${ED%/}/${OPTPATH}" || die
 
-	dosym "../../${DIRPATH}/electron" "/usr/bin/electron-${SLOT}"
+	dosym "../../${OPTPATH}/electron" "/usr/bin/electron-${SLOT}"
 }

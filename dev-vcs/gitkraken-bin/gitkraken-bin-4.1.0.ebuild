@@ -6,6 +6,7 @@ EAPI=6
 inherit gnome2-utils
 
 ELECTRON_SLOT="2.0"
+ELECTRON_V="2.0.12"
 ASAR_V="0.14.3"
 
 DESCRIPTION="The intuitive, fast, and beautiful cross-platform Git client"
@@ -22,7 +23,7 @@ KEYWORDS="-* ~amd64"
 IUSE="libressl"
 
 RDEPEND="
-	dev-util/electron-bin:${ELECTRON_SLOT}
+	>=dev-util/electron-bin-${ELECTRON_V}:${ELECTRON_SLOT}
 	gnome-base/libgnome-keyring
 	net-misc/curl[ssl]
 	!libressl? ( dev-libs/openssl:0 )
@@ -46,7 +47,7 @@ src_prepare() {
 	ebegin "Fixing asar archive"
 	easar extract resources/app.asar app
 
-	pushd app/node_modules/nodegit/build/Release > /dev/null || die
+	pushd app/node_modules/@axosoft/nodegit/build/Release > /dev/null || die
 	# nodegit.node links against libcurl-gnutls.so.4, which does not exist in Gentoo
 	patchelf --replace-needed libcurl-gnutls.so.4 libcurl.so.4 \
 		nodegit.node || die "failed to patch libcurl library dependency"

@@ -8,10 +8,11 @@ inherit desktop gnome2-utils
 ELECTRON_SLOT="2.0"
 ELECTRON_V="2.0.8"
 MY_PN="Signal-Desktop"
+MY_PV="${PV/_beta/-beta.}"
 
 DESCRIPTION="Signal Private Messenger for the Desktop"
 HOMEPAGE="https://signal.org/"
-SRC_URI="https://github.com/signalapp/${MY_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/signalapp/${MY_PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="GPL-3"
@@ -29,7 +30,7 @@ DEPEND="
 	sys-apps/yarn
 "
 
-S="${WORKDIR}/${MY_PN}-${PV}"
+S="${WORKDIR}/${MY_PN}-${MY_PV}"
 
 pkg_setup() {
 	# shellcheck disable=SC2086

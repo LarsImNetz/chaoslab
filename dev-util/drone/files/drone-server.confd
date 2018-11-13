@@ -1,6 +1,9 @@
 # config file for /etc/init.d/drone-server
 # See also http://readme.drone.io/admin/installation-reference/
 
+DRONE_DATADIR="/var/lib/drone"
+DRONE_LOGDIR="/var/log/drone"
+
 #DRONE_SECRET=
 #DRONE_DEBUG=false
 #DRONE_SERVER_CERT=
@@ -46,3 +49,7 @@ DRONE_GITHUB=true
 #DRONE_GITLAB_GIT_PASSWORD=
 #DRONE_GITLAB_SKIP_VERIFY=false
 #DRONE_GITLAB_PRIVATE_MODE=false
+
+# Logging
+#output_log="${DRONE_LOGDIR}/drone-server.log"
+#error_log="${DRONE_LOGDIR}/server-error.log"
