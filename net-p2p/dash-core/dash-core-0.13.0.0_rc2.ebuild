@@ -20,7 +20,7 @@ IUSE="daemon dbus +gui hardened libressl +qrcode +reduce-exports system-univalue
 REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
 LANGS="ar bg de en es fi fr it ja ko nl pl pt ru sk sv th tr vi zh_CN zh_TW"
 
-# Use 'dev-libs/bls-signatures' in sync with depends/packages/chia_bls.mk
+# Keep 'dev-libs/bls-signatures' in sync with depends/packages/chia_bls.mk
 CDEPEND="
 	dev-libs/boost:0=[threads(+)]
 	~dev-libs/bls-signatures-0_p20181101
