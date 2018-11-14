@@ -12,7 +12,7 @@ CHROMIUM_LANGS="
 
 inherit check-reqs chromium-2 gnome2-utils eapi7-ver flag-o-matic multilib ninja-utils pax-utils portability python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
-UGC_PV="${PV/102_p/77-}"
+UGC_PV="6987eca9ac2d6b7516702f0afcad63b3a16eef84"
 UGC_P="ungoogled-chromium-${UGC_PV}"
 UGC_WD="${WORKDIR}/${UGC_P}"
 

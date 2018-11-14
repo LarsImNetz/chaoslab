@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="gitlab">jD91mZM2/powerline-rs</remote-id>
+		<bugs-to>https://gitlab.com/jD91mZM2/powerline-rs/issues</bugs-to>
+	</upstream>
+	<use>
+		<flag name="chrono">Enable time support for --shell bare</flag>
+		<flag name="git">Enable git support</flag>
+		<flag name="users">Enable username support</flag>
+	</use>
+</pkgmetadata>

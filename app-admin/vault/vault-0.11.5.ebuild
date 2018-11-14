@@ -4,22 +4,23 @@
 EAPI=6
 
 EGO_PN="github.com/hashicorp/${PN}"
-GIT_COMMIT="612120e76d" # Change this when you update the ebuild
+GIT_COMMIT="a59ffa4a0f" # Change this when you update the ebuild
 
 inherit fcaps golang-vcs-snapshot systemd user
 
 DESCRIPTION="A tool for managing secrets"
 HOMEPAGE="https://vaultproject.io"
 SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-RESTRICT="mirror test"
+RESTRICT="mirror test" # Test requires docker
 
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE="pie"
 
-DOCS=( CHANGELOG.md README.md )
 FILECAPS=( -m 755 'cap_ipc_lock=+ep' usr/bin/vault )
+
+DOCS=( CHANGELOG.md README.md )
 QA_PRESTRIPPED="usr/bin/vault"
 
 G="${WORKDIR}/${P}"
@@ -40,8 +41,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 		-tags vault
 		-o ./bin/vault
