@@ -247,7 +247,7 @@ src_prepare() {
 	# The licensing issue only matters to Debian folks, it also
 	# depends on system icu (https://bugs.debian.org/900596)
 	sed -i '/system\/convertutf.patch/d' "${ugc_rooted_dir}/patch_order.list" || die
-	
+
 	# libcxx.patch doesn't work with chromium-70.0.3538.102, we will
 	# temporarily use ungoogled-chromium-libcxx.patch
 	# https://github.com/Eloston/ungoogled-chromium/pull/587
