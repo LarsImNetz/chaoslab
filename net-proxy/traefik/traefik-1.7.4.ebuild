@@ -1,12 +1,12 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 MY_PV="${PV/_/-}"
-CODENAME="tetedemoine"
+CODENAME="maroilles"
 EGO_PN="github.com/containous/${PN}"
-EGO_VENDOR=( "github.com/containous/go-bindata e237f24" )
+EGO_VENDOR=( "github.com/containous/go-bindata e237f24c9f" )
 
 inherit golang-vcs-snapshot systemd user
 
@@ -28,6 +28,14 @@ G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
+	# shellcheck disable=SC2086
+	if has network-sandbox $FEATURES && has test $FEATURES; then
+		ewarn
+		ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
+		ewarn
+		die "[network-sandbox] is enabled in FEATURES"
+	fi
+
 	enewgroup traefik
 	enewuser traefik -1 -1 -1 traefik
 }
@@ -43,8 +51,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 
@@ -64,6 +72,7 @@ src_install() {
 	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
+	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	insinto /etc/traefik
