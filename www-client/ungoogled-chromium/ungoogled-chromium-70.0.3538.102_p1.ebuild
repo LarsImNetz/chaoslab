@@ -12,14 +12,14 @@ CHROMIUM_LANGS="
 
 inherit check-reqs chromium-2 gnome2-utils eapi7-ver flag-o-matic multilib ninja-utils pax-utils portability python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
-UGC_PV="$(ver_cut 1-4)-$(ver_cut 5)"
+UGC_PV="${PV/102_p/77-}"
 UGC_P="ungoogled-chromium-${UGC_PV}"
 UGC_WD="${WORKDIR}/${UGC_P}"
 
 DESCRIPTION="Modifications to Chromium for removing Google integration and enhancing privacy"
 HOMEPAGE="https://github.com/Eloston/ungoogled-chromium https://www.chromium.org/"
 SRC_URI="
-	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$(ver_cut 1-4).tar.xz
+	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${PV/_*}.tar.xz
 	https://github.com/Eloston/${PN}/archive/${UGC_PV}.tar.gz -> ${UGC_P}.tar.gz
 "
 
@@ -27,17 +27,17 @@ LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="
-	cups custom-cflags jumbo-build kerberos new-tcmalloc +openh264 optimize-webui
-	+proprietary-codecs pulseaudio selinux +suid +system-ffmpeg +system-harfbuzz
-	+system-icu +system-libevent +system-libvpx +system-openjpeg +tcmalloc vaapi
-	widevine
+	cups custom-cflags gnome jumbo-build kerberos new-tcmalloc +openh264
+	optimize-webui +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
+	+system-harfbuzz +system-icu +system-libevent +system-libvpx +system-openjpeg
+	+tcmalloc vaapi widevine
 "
 REQUIRED_USE="
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
 	new-tcmalloc? ( tcmalloc )
 "
-RESTRICT="
+RESTRICT="mirror
 	!system-ffmpeg? ( proprietary-codecs? ( bindist ) )
 	!openh264? ( bindist )
 "
@@ -123,6 +123,7 @@ DEPEND="${COMMON_DEPEND}
 	sys-apps/hwids[usb(+)]
 	>=sys-devel/bison-2.4.3
 	>=sys-devel/clang-7.0.0
+	>=sys-devel/clang-runtime-7.0.0[sanitize]
 	sys-devel/flex
 	>=sys-devel/lld-7.0.0
 	>=sys-devel/llvm-7.0.0
@@ -161,9 +162,10 @@ PATCHES=(
 	"${FILESDIR}/chromium-memcpy-r0.patch"
 	"${FILESDIR}/chromium-math.h-r0.patch"
 	"${FILESDIR}/chromium-stdint.patch"
+	"${FILESDIR}/${PN}-libcxx.patch"
 )
 
-S="${WORKDIR}/chromium-$(ver_cut 1-4)"
+S="${WORKDIR}/chromium-${PV/_*}"
 
 pre_build_checks() {
 	# Check build requirements (Bug #541816)
@@ -184,26 +186,25 @@ pkg_pretend() {
 }
 
 pkg_setup() {
-	pre_build_checks
-	chromium_suid_sandbox_check_kernel_config
-}
-
-src_prepare() {
-	if use custom-cflags; then
+	if use custom-cflags && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
 		ewarn "USE=custom-cflags bypass strip-flags; you are on your own."
 		ewarn "Expect build failures. Don't file bugs using that unsupported USE flag!"
 		ewarn
 		sleep 5
 	fi
+	pre_build_checks
+	chromium_suid_sandbox_check_kernel_config
+}
 
+src_prepare() {
 	# Calling this here supports resumption via FEATURES=keepwork
 	python_setup 'python3*'
 
 	default
 
 	mkdir -p third_party/node/linux/node-linux-x64/bin || die
-	ln -s "${EPREFIX%/}/usr/bin/node" third_party/node/linux/node-linux-x64/bin/node || die
+	ln -s "${EPREFIX}/usr/bin/node" third_party/node/linux/node-linux-x64/bin/node || die
 
 	# Fix build with harfbuzz-2 (Bug #669034)
 	if use system-harfbuzz; then
@@ -220,7 +221,7 @@ src_prepare() {
 
 	# Hack for libusb stuff (taken from openSUSE)
 	rm third_party/libusb/src/libusb/libusb.h || die
-	cp -a "${EPREFIX%/}/usr/include/libusb-1.0/libusb.h" \
+	cp -a "${EPREFIX}/usr/include/libusb-1.0/libusb.h" \
 		third_party/libusb/src/libusb/libusb.h || die
 
 	# From here we adapt ungoogled-chromium's patches to our needs
@@ -247,6 +248,11 @@ src_prepare() {
 	# depends on system icu (https://bugs.debian.org/900596)
 	sed -i '/system\/convertutf.patch/d' "${ugc_rooted_dir}/patch_order.list" || die
 
+	# libcxx.patch doesn't work with chromium-70.0.3538.102, we will
+	# temporarily use ungoogled-chromium-libcxx.patch
+	# https://github.com/Eloston/ungoogled-chromium/pull/587
+	sed -i '/gn\/libcxx.patch/d' "${ugc_rooted_dir}/patch_order.list" || die
+
 	if ! use system-icu; then
 		sed -i '/common\/icudtl.dat/d' "${ugc_rooted_dir}/pruning.list" || die
 	fi
@@ -268,7 +274,7 @@ src_prepare() {
 		sed -i '/chromium-vaapi-r18.patch/d' "${ugc_rooted_dir}/patch_order.list" || die
 	else
 		if has_version '<x11-libs/libva-2.0.0'; then
-			sed -i '/build.patch/i ungoogled-chromium/linux/fix-libva1-compatibility.patch' \
+			sed -i "/build.patch/i ${PN}/linux/fix-libva1-compatibility.patch" \
 				"${ugc_rooted_dir}/patch_order.list" || die
 		fi
 	fi
@@ -284,8 +290,6 @@ src_prepare() {
 	ebegin "Applying domain substitution"
 	"${ugc_cli}" domains apply -b "${ugc_config}" -c domainsubcache.tar.gz ./ || die
 	eend $?
-
-	python_setup 'python2*'
 
 	local keeplibs=(
 		base/third_party/dmg_fp
@@ -465,6 +469,7 @@ src_prepare() {
 	use tcmalloc && keeplibs+=( third_party/tcmalloc )
 
 	# Remove most bundled libraries, some are still needed
+	python_setup 'python2*'
 	build/linux/unbundle/remove_bundled_libraries.py "${keeplibs[@]}" --do-remove || die
 }
 
@@ -584,7 +589,7 @@ src_configure() {
 	myconf_gn+=" use_allocator=\"$(usex tcmalloc tcmalloc none)\""
 	myconf_gn+=" use_cups=$(usex cups true false)"
 	myconf_gn+=" use_custom_libcxx=false"
-	myconf_gn+=" use_gio=true"
+	myconf_gn+=" use_gio=$(usex gnome true false)"
 	myconf_gn+=" use_kerberos=$(usex kerberos true false)"
 	myconf_gn+=" use_openh264=$(usex !openh264 true false)" # Enable this to
 	# build OpenH264 for encoding, hence the restriction: !openh264? ( bindist )
@@ -747,13 +752,16 @@ pkg_preinst() {
 	gnome2_icon_savelist
 }
 
-pkg_postrm() {
+update_caches() {
 	gnome2_icon_cache_update
 	xdg_desktop_database_update
 }
 
+pkg_postrm() {
+	update_caches
+}
+
 pkg_postinst() {
-	gnome2_icon_cache_update
-	xdg_desktop_database_update
+	update_caches
 	readme.gentoo_print_elog
 }

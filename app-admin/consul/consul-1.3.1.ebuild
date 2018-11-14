@@ -4,7 +4,7 @@
 EAPI=6
 
 EGO_PN="github.com/hashicorp/${PN}"
-GIT_COMMIT="e8757838a4" # Change this when you update the ebuild
+GIT_COMMIT="f2b13f3020" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
@@ -38,8 +38,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die

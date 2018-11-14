@@ -28,12 +28,15 @@ G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
-	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES && has test $FEATURES; then
-		ewarn
-		ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn
-		die "[network-sandbox] is enabled in FEATURES"
+	if [[ "${MERGE_TYPE}" != binary ]]; then
+		# shellcheck disable=SC2086
+		if has test $FEATURES && has network-sandbox $FEATURES; then
+			ewarn
+			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
+			ewarn
+			die "[network-sandbox] is enabled in FEATURES"
+		fi
+
 	fi
 
 	enewgroup traefik
@@ -64,7 +67,7 @@ src_compile() {
 }
 
 src_test() {
-	go test -v ./... || die
+	./script/make.sh test-unit || die
 }
 
 src_install() {
