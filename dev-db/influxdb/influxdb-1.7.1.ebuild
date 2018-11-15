@@ -4,7 +4,7 @@
 EAPI=6
 
 MY_PV="${PV/_/}"
-GIT_COMMIT="dac4c6f571" # Change this when you update the ebuild
+GIT_COMMIT="cb03c542a4" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
@@ -61,7 +61,7 @@ EGO_VENDOR=(
 	"github.com/influxdata/flux 69370f6c35"
 	"github.com/influxdata/influxql 1cbfca8e56"
 	"github.com/influxdata/line-protocol 32c6aa80de"
-	"github.com/influxdata/platform 362d4c6b34"
+	"github.com/influxdata/platform bceb99526a"
 	"github.com/influxdata/roaring fc520f41fa"
 	"github.com/influxdata/tdigest a7d76c6f09"
 	"github.com/influxdata/usage-client 6d38953763"
@@ -138,7 +138,7 @@ pkg_setup() {
 
 src_prepare() {
 	# By default InfluxDB sends anonymous statistics to
-	# usage.influxdata.com. Let's disable it by default.
+	# usage.influxdata.com. Let's sed-fix to disable it.
 	sed -i "s:# reporting.*:reporting-disabled = true:" \
 		etc/config.sample.toml || die
 
@@ -156,8 +156,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go install "${mygoargs[@]}" \

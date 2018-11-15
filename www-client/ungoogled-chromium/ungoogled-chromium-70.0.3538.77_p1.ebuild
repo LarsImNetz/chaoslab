@@ -696,7 +696,7 @@ src_install() {
 
 	# Allow users to override command-line options (Bug #357629)
 	insinto /etc/chromium
-	newins "${FILESDIR}/chromium.default" "default"
+	newins "${FILESDIR}/${PN}.default" "default"
 
 	pushd out/Release/locales > /dev/null || die
 	chromium_remove_language_paks
