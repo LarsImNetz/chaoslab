@@ -140,7 +140,7 @@ src_install() {
 	# shellcheck disable=SC1117
 	make_desktop_entry atom Atom atom \
 		"GNOME;GTK;Utility;TextEditor;Development;" \
-		"MimeType=text/plain;\nStartupNotify=true\nStartupWMClass=Atom"
+		"MimeType=text/plain;\nStartupNotify=true\nStartupWMClass=atom"
 	sed -e "/^Exec/s/$/ %F/" -i "${ED%/}"/usr/share/applications/*.desktop || die
 
 	# Fix permissions

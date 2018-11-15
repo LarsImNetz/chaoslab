@@ -19,7 +19,4 @@
 		line interface. One explicit goal for this project is
 		to make it more approachable to non-technical users.
 	</longdescription>
-	<use>
-		<flag name="fish-completion">Enable fish completion support</flag>
-	</use>
 </pkgmetadata>

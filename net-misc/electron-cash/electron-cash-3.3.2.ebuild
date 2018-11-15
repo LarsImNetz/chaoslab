@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -16,9 +16,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="audio_modem cli cosign digitalbitbox email ncurses qrcode +qt5 sync vkb
-	l10n_es l10n_ja l10n_pt l10n_zh-CN"
-
+IUSE="audio_modem cli cosign digitalbitbox email ncurses qrcode +qt5 sync vkb l10n_es l10n_ja l10n_pt l10n_zh-CN"
 REQUIRED_USE="
 	|| ( cli ncurses qt5 )
 	audio_modem? ( qt5 )
@@ -27,7 +25,8 @@ REQUIRED_USE="
 	email? ( qt5 )
 	qrcode? ( qt5 )
 	sync? ( qt5 )
-	vkb? ( qt5 )"
+	vkb? ( qt5 )
+"
 
 RDEPEND="
 	dev-python/ecdsa[${PYTHON_USEDEP}]
@@ -47,13 +46,15 @@ RDEPEND="
 	virtual/python-dnspython[${PYTHON_USEDEP}]
 	qrcode? ( media-gfx/zbar[v4l] )
 	audio_modem? ( dev-python/amodem[${PYTHON_USEDEP}] )
-	qt5? ( dev-python/PyQt5[gui,widgets,${PYTHON_USEDEP}] )"
+	qt5? ( dev-python/PyQt5[gui,widgets,${PYTHON_USEDEP}] )
+"
 DEPEND="${RDEPEND}
-	dev-python/setuptools[${PYTHON_USEDEP}]"
+	dev-python/setuptools[${PYTHON_USEDEP}]
+"
 
 DOCS=( AUTHORS README.rst RELEASE-NOTES )
 
-S="${WORKDIR}/${PN/on-cash/um}-${PV}"
+S="${WORKDIR}/Electron-Cash-${PV}"
 
 src_prepare() {
 	eapply "${FILESDIR}/${PN}-3.3-no_user_root.patch"
@@ -140,12 +141,15 @@ pkg_preinst() {
 	gnome2_icon_savelist
 }
 
-pkg_postinst() {
+update_caches() {
 	gnome2_icon_cache_update
 	xdg_desktop_database_update
 }
 
 pkg_postrm() {
-	gnome2_icon_cache_update
-	xdg_desktop_database_update
+	update_caches
+}
+
+pkg_postinst() {
+	update_caches
 }

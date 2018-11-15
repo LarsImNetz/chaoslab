@@ -1,13 +1,13 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 EGO_PN="github.com/burik666/${PN}"
-# Snapshot taken on 2018.07.07
+# Snapshot taken on 2018.12.14
 EGO_VENDOR=(
-	"golang.org/x/net 32a936f github.com/golang/net"
-	"gopkg.in/yaml.v2 5420a8b github.com/go-yaml/yaml"
+	"golang.org/x/net 88d92db4c5 github.com/golang/net"
+	"gopkg.in/yaml.v2 5420a8b674 github.com/go-yaml/yaml"
 )
 
 inherit golang-vcs-snapshot
@@ -33,8 +33,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w"
 	)
 	go build "${mygoargs[@]}" || die

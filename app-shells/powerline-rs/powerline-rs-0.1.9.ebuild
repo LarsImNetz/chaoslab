@@ -81,7 +81,7 @@ inherit cargo
 DESCRIPTION="A powerline-shell rewritten in Rust, inspired by powerline-go"
 HOMEPAGE="https://gitlab.com/jD91mZM2/powerline-rs"
 # shellcheck disable=SC2086
-SRC_URI="https://gitlab.com/jD91mZM2/${PN}/-/archive/${PV}/powerline-rs-0.1.9.tar.gz
+SRC_URI="https://gitlab.com/jD91mZM2/${PN}/-/archive/${PV}/${P}.tar.gz
 	$(cargo_crate_uris ${CRATES})"
 RESTRICT="mirror"
 
