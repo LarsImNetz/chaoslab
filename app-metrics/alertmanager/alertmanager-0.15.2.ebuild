@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -75,12 +75,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/alertmanager") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/alertmanager permissions"
-		chown alertmanager:alertmanager "${EROOT%/}/var/lib/alertmanager" || die
-		chmod 0750 "${EROOT%/}/var/lib/alertmanager" || die
-	fi
-
 	if [[ ! -e "${EROOT%/}/etc/alertmanager/alertmanager.yml" ]]; then
 		elog "No alertmanager.yml found, copying the example over"
 		cp "${EROOT%/}"/etc/alertmanager/alertmanager.yml{.example,} || die
