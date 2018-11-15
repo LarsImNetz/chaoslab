@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="bc22e226d0" # Change this when you update the ebuild
+GIT_COMMIT="768ed784bd" # Change this when you update the ebuild
 EGO_PN="github.com/${PN}/${PN}"
 EGO_VENDOR=(
 	"github.com/drone/drone-ui e7597b5234"
