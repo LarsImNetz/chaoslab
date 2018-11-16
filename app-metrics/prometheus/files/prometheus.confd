@@ -1,8 +1,11 @@
 # config file for /etc/init.d/prometheus
 
+PROMETHEUS_DATADIR="/var/lib/prometheus"
+PROMETHEUS_LOGDIR="/var/log/${RC_SVCNAME}"
+
 PROMETHEUS_CONFIG="/etc/prometheus/prometheus.yml"
-PROMETHEUS_OPTS="--storage.tsdb.path=/var/lib/prometheus/data"
+PROMETHEUS_OPTS="--storage.tsdb.path=${PROMETHEUS_DATADIR}/data"
 
 # Logging
-#output_log="/var/log/prometheus/prometheus.log"
-#error_log="/var/log/prometheus/error.log"
+#output_log="${PROMETHEUS_LOGDIR}/prometheus.log"
+#error_log="${PROMETHEUS_LOGDIR}/error.log"

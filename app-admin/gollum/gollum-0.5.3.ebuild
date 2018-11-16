@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -15,21 +15,21 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="examples pie test"
+IUSE="examples pie"
 
-DOCS=( {CHANGELOG,README}.md )
+DOCS=( CHANGELOG.md README.md )
 QA_PRESTRIPPED="usr/bin/gollum"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
-	if use test; then
+	if [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
-		if has network-sandbox $FEATURES; then
-			ewarn ""
+		if has test && has network-sandbox $FEATURES; then
+			ewarn
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn ""
+			ewarn
 			die "[network-sandbox] is enabled in FEATURES"
 		fi
 	fi
@@ -43,8 +43,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w -X ${EGO_PN}/core.versionString=${PV}"
 	)
 	go build "${mygoargs[@]}" || die
@@ -52,8 +52,7 @@ src_compile() {
 
 src_test(){
 	# Run all unit tests
-	go test -v -cover -timeout 10s \
-		-race -tags unit ./... || die
+	go test -v -cover -timeout 10s -race -tags unit ./... || die
 
 	# Run all integration tests
 	go test -ldflags "-X ${EGO_PN}/core.versionString=${PV}" \

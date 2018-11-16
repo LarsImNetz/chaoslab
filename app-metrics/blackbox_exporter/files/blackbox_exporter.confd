@@ -3,7 +3,8 @@
 
 BLACKBOX_EXPORTER_CONFIG="/etc/blackbox_exporter/blackbox.yml"
 BLACKBOX_EXPORTER_OPTS=""
+BLACKBOX_EXPORTER_LOGIDR="/var/log/${RC_SVCNAME}"
 
 # Logging
-#output_log="/var/log/blackbox_exporter/blackbox_exporter.log"
-#error_log="/var/log/blackbox_exporter/error.log"
+#output_log="${BLACKBOX_EXPORTER_LOGIDR}/blackbox_exporter.log"
+#error_log="${BLACKBOX_EXPORTER_LOGIDR}/error.log"
