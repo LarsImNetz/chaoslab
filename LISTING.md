@@ -142,7 +142,8 @@ net-dns/**[knot](net-dns/knot)** `*` | High-performance authoritative-only DNS s
 net-dns/**[knot-resolver](net-dns/knot-resolver)** | A caching full DNS resolver implementation written in C and LuaJIT
 net-dns/**[unbound](net-dns/unbound)** `*` | A validating, recursive and caching DNS resolver
 net-firewall/**[firehol](net-firewall/firehol)** `*` | A firewall for humans...
-net-im/**[dino](net-im/dino)** | A modern Jabber/XMPP Client using GTK+/Vala
+net-im/**[dino](net-im/dino)** `*` | A modern Jabber/XMPP Client using GTK+/Vala
+net-im/**[matterircd](net-im/matterircd)** | Connect to your Mattermost or Slack using your IRC-client of choice
 net-im/**[profanity](net-im/profanity)** | A console based XMPP client inspired by Irssi
 net-im/**[signal-desktop](net-im/signal-desktop)** `*` | Signal Private Messenger for the Desktop
 net-libs/**[nodejs](net-libs/nodejs)** `*` | A JavaScript runtime built on Chrome's V8 JavaScript engine

@@ -23,8 +23,9 @@ RDEPEND="
 	sqlite? ( dev-db/sqlite:3 )
 "
 
-DOCS=( README.md )
 FILECAPS=( cap_net_bind_service+ep usr/bin/acme-dns )
+
+DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/acme-dns"
 
 G="${WORKDIR}/${P}"
@@ -45,8 +46,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w"
 		-tags "${opts/ /}"
 	)

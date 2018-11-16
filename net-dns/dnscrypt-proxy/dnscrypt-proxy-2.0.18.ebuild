@@ -1,17 +1,15 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 EGO_PN="github.com/jedisct1/${PN}"
-EGO_VENDOR=( "github.com/aead/poly1305 3fee0db0b6" )
 
 inherit fcaps golang-vcs-snapshot systemd user
 
 DESCRIPTION="A flexible DNS proxy, with support for modern encrypted DNS protocols"
 HOMEPAGE="https://dnscrypt.info"
-SRC_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+SRC_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="ISC"
@@ -19,8 +17,9 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
 IUSE="pie systemd"
 
-DOCS=( ChangeLog README.md )
 FILECAPS=( cap_net_bind_service+ep usr/bin/dnscrypt-proxy )
+
+DOCS=( ChangeLog README.md )
 QA_PRESTRIPPED="usr/bin/dnscrypt-proxy"
 
 G="${WORKDIR}/${P}"
@@ -56,8 +55,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w"
 		-o bin/dnscrypt-proxy
 	)
@@ -104,12 +103,12 @@ pkg_postinst() {
 
 	local v
 	for v in ${REPLACING_VERSIONS}; do
-		if [[ "${v}" = 1.* ]]; then
+		if [[ "${v}" == 1.* ]]; then
 			elog "Version 2.x.x is a complete rewrite of ${PN}"
 			elog "please clean up old config/log files"
 			elog
 		fi
-		if [[ "${v}" -lt 2.0.12 ]] ; then
+		if [[ "${v}" == 2.* ]] ; then
 			elog "As of version 2.0.12 of ${PN} runs as an 'dnscrypt-proxy' user/group"
 			elog "you can remove obsolete 'dnscrypt' accounts from the system"
 			elog
