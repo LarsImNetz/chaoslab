@@ -56,7 +56,7 @@ RDEPEND="
 	)
 "
 
-PATCHES=( "${FILESDIR}/${P}-setup.patch" )
+PATCHES=( "${FILESDIR}/${PN}-1.10.5-setup.patch" )
 
 pkg_setup() {
 	if use gunicorn; then
