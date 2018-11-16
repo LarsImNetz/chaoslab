@@ -3,11 +3,11 @@
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${APACHE_EXPORTER_LOGIDR}/error.log}"
+error_log="${error_log:-${APACHE_LOGIDR}/error.log}"
 
 name="${name:-Apache Exporter}"
 command="/usr/bin/apache_exporter"
-command_args="${APACHE_EXPORTER_OPTS}"
+command_args="${APACHE_OPTS}"
 command_user="${command_user:-apache_exporter:apache_exporter}"
 command_background=true
 pidfile="/run/${RC_SVCNAME}.pid"
@@ -18,5 +18,5 @@ depend() {
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" "${APACHE_EXPORTER_LOGIDR}"
+	checkpath -d -m 0750 -o "${command_user}" "${APACHE_LOGIDR}"
 }
