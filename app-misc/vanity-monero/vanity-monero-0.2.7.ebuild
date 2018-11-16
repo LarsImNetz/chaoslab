@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -6,9 +6,9 @@ EAPI=6
 EGO_PN="ekyu.moe/${PN}"
 # Note: Keep EGO_VENDOR in sync with go.mod
 EGO_VENDOR=(
-	"github.com/ebfe/keccak 5cc5706"
-	"github.com/paxos-bankchain/moneroutil 33d7e0c"
-	"golang.org/x/crypto c126467 github.com/golang/crypto"
+	"github.com/ebfe/keccak 5cc570678d"
+	"github.com/paxos-bankchain/moneroutil 33d7e0c11a"
+	"golang.org/x/crypto c126467f60 github.com/golang/crypto"
 )
 
 inherit golang-vcs-snapshot
@@ -33,8 +33,8 @@ src_compile() {
 	export GOPATH="${G}"
 	local mygoargs=(
 		-v -work -x
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w"
 	)
 	go build "${mygoargs[@]}" ./cmd/vanity-monero || die
