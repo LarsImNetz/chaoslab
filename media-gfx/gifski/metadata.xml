@@ -15,9 +15,4 @@
 		palettes and temporal dithering. It produces animated
 		GIFs that use thousands of colors per frame.
 	</longdescription>
-	<use>
-		<flag name="video">
-			Enables built-in video support, relies on <pkg>media-video/ffmpeg</pkg> 3.x
-		</flag>
-	</use>
 </pkgmetadata>

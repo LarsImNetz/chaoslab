@@ -1,0 +1,19 @@
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -33,16 +33,10 @@
+ wild = "2.0"
+ natord = "1.0.9"
+ 
+-[dependencies.ffmpeg]
+-optional = true
+-git = "https://github.com/kornelski/rust-ffmpeg.git"
+-features = ["codec", "format", "filter", "software-resampling", "software-scaling", "resampling" ]
+-
+ [features]
+ default-features = []
+ openmp = ["imagequant/openmp"]
+ openmp-static = ["imagequant/openmp-static"]
+-video = ["ffmpeg"]
+ malloc = []
+ 
+ [lib]
