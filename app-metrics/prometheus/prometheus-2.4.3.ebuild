@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="c305ffa" # Change this when you update the ebuild
+GIT_COMMIT="167a4b4e73" # Change this when you update the ebuild
 EGO_PN="github.com/${PN}/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -47,8 +47,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go install "${mygoargs[@]}" ./cmd/{prometheus,promtool} || die
