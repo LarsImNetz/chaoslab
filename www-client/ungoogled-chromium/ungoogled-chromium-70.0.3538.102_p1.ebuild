@@ -12,7 +12,7 @@ CHROMIUM_LANGS="
 
 inherit check-reqs chromium-2 gnome2-utils eapi7-ver flag-o-matic multilib ninja-utils pax-utils portability python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
-UGC_PV="6987eca9ac2d6b7516702f0afcad63b3a16eef84"
+UGC_PV="e933d6c096c2434b32846fd7398471f0e9a2be83"
 UGC_P="ungoogled-chromium-${UGC_PV}"
 UGC_WD="${WORKDIR}/${UGC_P}"
 
@@ -162,7 +162,6 @@ PATCHES=(
 	"${FILESDIR}/chromium-memcpy-r0.patch"
 	"${FILESDIR}/chromium-math.h-r0.patch"
 	"${FILESDIR}/chromium-stdint.patch"
-	"${FILESDIR}/${PN}-libcxx.patch"
 )
 
 S="${WORKDIR}/chromium-${PV/_*}"
@@ -247,11 +246,6 @@ src_prepare() {
 	# The licensing issue only matters to Debian folks, it also
 	# depends on system icu (https://bugs.debian.org/900596)
 	sed -i '/system\/convertutf.patch/d' "${ugc_rooted_dir}/patch_order.list" || die
-
-	# libcxx.patch doesn't work with chromium-70.0.3538.102, we will
-	# temporarily use ungoogled-chromium-libcxx.patch
-	# https://github.com/Eloston/ungoogled-chromium/pull/587
-	sed -i '/gn\/libcxx.patch/d' "${ugc_rooted_dir}/patch_order.list" || die
 
 	if ! use system-icu; then
 		sed -i '/common\/icudtl.dat/d' "${ugc_rooted_dir}/pruning.list" || die

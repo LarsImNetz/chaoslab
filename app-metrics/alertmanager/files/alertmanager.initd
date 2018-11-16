@@ -1,20 +1,24 @@
 #!/sbin/openrc-run
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-/var/log/alertmanager/error.log}"
+error_log="${error_log:-${ALERTMANAGER_LOGDIR}/error.log}"
 
 name="${name:-Prometheus Alertmanager}"
 command="/usr/bin/alertmanager"
 command_args="--config.file=${ALERTMANAGER_CONFIG} ${ALERTMANAGER_OPTS}"
 command_user="${command_user:-alertmanager:alertmanager}"
-command_background=yes
+command_background=true
 pidfile="/run/${RC_SVCNAME}.pid"
 required_files="${ALERTMANAGER_CONFIG}"
-start_stop_daemon_args="${SSD_OPTS}
-	-1 ${output_log} -2 ${error_log}"
+start_stop_daemon_args="${SSD_OPTS}"
 
 depend() {
 	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" \
+		"${ALERTMANAGER_DATADIR}" "${ALERTMANAGER_LOGDIR}"
 }

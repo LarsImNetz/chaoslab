@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-GIT_COMMIT="d19fae3" # Change this when you update the ebuild
+GIT_COMMIT="d4a7697cc9" # Change this when you update the ebuild
 EGO_PN="github.com/prometheus/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -47,8 +47,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go install "${mygoargs[@]}" ./cmd/{alertmanager,amtool} || die
@@ -75,12 +75,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/alertmanager") != "750" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/alertmanager permissions"
-		chown alertmanager:alertmanager "${EROOT%/}/var/lib/alertmanager" || die
-		chmod 0750 "${EROOT%/}/var/lib/alertmanager" || die
-	fi
-
 	if [[ ! -e "${EROOT%/}/etc/alertmanager/alertmanager.yml" ]]; then
 		elog "No alertmanager.yml found, copying the example over"
 		cp "${EROOT%/}"/etc/alertmanager/alertmanager.yml{.example,} || die
