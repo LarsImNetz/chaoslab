@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -9,93 +9,93 @@ EAPI=6
 # github.com/golang/net
 
 CADDY_PLUGINS=(
-	"AUTHZ1 github.com/casbin/caddy-authz e0ddc63" # Apache-2.0 license
-	"AUTHZ2 github.com/casbin/casbin 24e6518" #v1.0.0 Apache-2.0 license
-	"AUTHZ3 github.com/Knetic/govaluate aa73cfd" # MIT license
+	"AUTHZ1 github.com/casbin/caddy-authz e0ddc63c8d" # Apache-2.0 license
+	"AUTHZ2 github.com/casbin/casbin 542e16cac7" #v1.7.0 Apache-2.0 license
+	"AUTHZ3 github.com/Knetic/govaluate 9aa49832a7" # MIT license
 
-	"AWSES1 github.com/miquella/caddy-awses d364e01" # Apache-2.0 license
-	"AWSES2 github.com/aws/aws-sdk-go 7607418" #v1.12.7 Apache-2.0 license
+	"AWSES1 github.com/miquella/caddy-awses d364e0104f" # Apache-2.0 license
+	"AWSES2 github.com/aws/aws-sdk-go 64fc3d5c40" #v1.15.77 Apache-2.0 license
 
-	"AWSLAMBDA github.com/coopernurse/caddy-awslambda 4ba23d3" # MIT license
+	"AWSLAMBDA github.com/coopernurse/caddy-awslambda 761c41e19a" # MIT license
 
-	"CACHE1 github.com/nicolasazrak/caddy-cache a00a842" #v0.2.4 LGPL-3.0 license
-	"CACHE2 github.com/pquerna/cachecontrol 525d0eb" # Apache-2.0 license
+	"CACHE1 github.com/nicolasazrak/caddy-cache 1044b211ef" #v0.3 LGPL-3.0 license
+	"CACHE2 github.com/pquerna/cachecontrol 1555304b9b" # Apache-2.0 license
 
-	"CGI github.com/jung-kurt/caddy-cgi fa58438" #v1.7 MIT license
-	"CORS github.com/captncraig/cors a2bd860" # ??? license
+	"CGI github.com/jung-kurt/caddy-cgi 68f742b741" #v1.8 MIT license
+	"CORS github.com/captncraig/cors 376d45073b" # ??? license
 
-	"DATADOG1 github.com/payintech/caddy-datadog 9e39028" #v18.04 MIT license
-	"DATADOG2 github.com/DataDog/datadog-go e67964b" #v2.1.0 MIT license
+	"DATADOG1 github.com/payintech/caddy-datadog b6bdb365d2" #v18.11 MIT license
+	"DATADOG2 github.com/DataDog/datadog-go e67964b402" #v2.1.0 MIT license
 
-	"EXPIRES github.com/epicagency/caddy-expires bb78f30" # MIT license
-	"FILTER github.com/echocat/caddy-filter 70ca06d" #v0.11 MIT license
-	"FWDPROXY github.com/caddyserver/forwardproxy 6c88222" # Apache-2.0 license
+	"EXPIRES github.com/epicagency/caddy-expires bb78f301f8" # MIT license
+	"FILTER github.com/echocat/caddy-filter 70ca06dc02" #v0.11 MIT license
+	"FWDPROXY github.com/caddyserver/forwardproxy 3dd9971580" # Apache-2.0 license
 
-	"GEOIP1 github.com/kodnaplakal/caddy-geoip 16c5a0d" # MIT license
-	"GEOIP2 github.com/oschwald/maxminddb-golang c5bec84" #v1.3.0 ISC license
+	"GEOIP1 github.com/kodnaplakal/caddy-geoip 41632e6012" # MIT license
+	"GEOIP2 github.com/oschwald/maxminddb-golang c5bec84d19" #v1.3.0 ISC license
 
-	"GIT github.com/abiosoft/caddy-git 3ea4951" # MIT license
+	"GIT github.com/abiosoft/caddy-git 1a565409d3" # MIT license
 
-	"GRPC1 github.com/pieterlouw/caddy-grpc d3d4d7c" #v0.0.4 Apache-2.0 license
-	"GRPC2 github.com/mwitkow/grpc-proxy 67591eb" # Apache-2.0 license
-	"GRPC3 github.com/improbable-eng/grpc-web 9cca7d4" #v0.5.0 Apache-2.0 license
-	"GRPC4 github.com/rs/cors feef513" #v1.3.0 MIT license
-	"GRPC5 github.com/grpc/grpc-go d11072e" #v1.11.3 Apache-2.0 license
-	"GRPC6 github.com/google/go-genproto 73cb5d0" # Apache-2.0 license
-	"GRPC7 github.com/golang/net f5079bd" # BSD license
+	"GRPC1 github.com/pieterlouw/caddy-grpc d3d4d7c931" #v0.0.4 Apache-2.0 license
+	"GRPC2 github.com/mwitkow/grpc-proxy 0f1106ef9c" # Apache-2.0 license
+	"GRPC3 github.com/improbable-eng/grpc-web 16092bd1d5" #v0.7.0 Apache-2.0 license
+	"GRPC4 github.com/rs/cors 9a47f48565" #v1.6.0 MIT license
+	"GRPC5 github.com/grpc/grpc-go 2e463a05d1" #v1.16.0 Apache-2.0 license
+	"GRPC6 github.com/google/go-genproto b5d4398134" # Apache-2.0 license
+	"GRPC7 github.com/golang/net f5079bd7f6" # BSD license
 
 	"IPFILTER github.com/pyed/ipfilter 6b25e48" # Apache-2.0 license
 	"JWT1 github.com/BTBurke/caddy-jwt cdd97b5" #v3.6.1 MIT license
 	"JWT2 github.com/dgrijalva/jwt-go 06ea103" #v3.2.0 MIT license
 
-	"LOCALE github.com/simia-tech/caddy-locale 0bde64a" # ??? license
+	"LOCALE github.com/simia-tech/caddy-locale 0bde64ac62" # ??? license
 
-	"LOGIN1 github.com/tarent/loginsrv bf6909d" #v1.2.4 MIT license
-	"LOGIN2 github.com/abbot/go-http-auth 0ddd408" #v0.4.0 Apache-2.0 license
-	"LOGIN3 github.com/tarent/lib-compose 69430f9" # MIT license
-	"LOGIN4 github.com/tarent/logrus e87ac79" # MIT license
-	"LOGIN5 github.com/golang/crypto 94eea52" # BSD license
+	"LOGIN1 github.com/tarent/loginsrv bf6909d19d" #v1.2.4 MIT license
+	"LOGIN2 github.com/abbot/go-http-auth 860ed7f246" # Apache-2.0 license
+	"LOGIN3 github.com/tarent/lib-compose 69430f91d1" # MIT license
+	"LOGIN4 github.com/tarent/logrus e87ac797d1" # MIT license
+	"LOGIN5 github.com/golang/crypto 94eea52f7b" # BSD license
 
-	"MAILOUT1 github.com/SchumacherFM/mailout 4c599f4" #v1.1.2 Apache-2.0 license
-	"MAILOUT2 github.com/juju/ratelimit 5b9ff86" # LGPL-3 license
-	"MAILOUT3 github.com/go-gomail/gomail 81ebce5" #v2 MIT license
+	"MAILOUT1 github.com/SchumacherFM/mailout 24e8e90ad3" #v1.2.0 Apache-2.0 license
+	"MAILOUT2 github.com/juju/ratelimit 59fac50427" # LGPL-3 license
+	"MAILOUT3 github.com/go-gomail/gomail 81ebce5c23" #v2 MIT license
 
-	"MINIFY1 github.com/hacdias/caddy-minify 45164d3" # Apache-2.0 license
-	"MINIFY2 github.com/tdewolff/minify 2226721" #v2.3.4 MIT license
-	"MINIFY3 github.com/tdewolff/parse 639f627" #v2.3.2 MIT license
+	"MINIFY1 github.com/hacdias/caddy-minify 45164d3fb6" # Apache-2.0 license
+	"MINIFY2 github.com/tdewolff/minify 2d0bbc9948" #v2.3.8 MIT license
+	"MINIFY3 github.com/tdewolff/parse e17a58950f" #v2.3.5 MIT license
 
-	"MULTIPASS1 github.com/namsral/multipass 7312af9" # BSD license
-	"MULTIPASS2 github.com/gorilla/csrf 8aae08f" # BSD license
-	"MULTIPASS3 github.com/gorilla/securecookie e59506c" # BSD license
-	"MULTIPASS4 github.com/pkg/errors 2b3a18b" # BSD-2 license
+	"MULTIPASS1 github.com/namsral/multipass 7312af9036" # BSD license
+	"MULTIPASS2 github.com/gorilla/csrf 05b4a732b9" #v1.5.1 BSD license
+	"MULTIPASS3 github.com/gorilla/securecookie e65cf8c5df" # BSD license
+	"MULTIPASS4 github.com/pkg/errors 059132a15d" # BSD-2 license
 
-	"NOBOTS github.com/Xumeiquer/nobots 9114efc" #v0.1.0 MIT license
+	"NOBOTS github.com/Xumeiquer/nobots 9114efc39d" #v0.1.0 MIT license
 
-	"PROMETHEUS1 github.com/miekg/caddy-prometheus 9329aaa" # Apache-2.0 license
-	"PROMETHEUS2 github.com/prometheus/client_golang 82f5ff1" # Apache-2.0 license
-	"PROMETHEUS3 github.com/beorn7/perks 3a771d9" # MIT license
-	"PROMETHEUS4 github.com/prometheus/client_model 99fa1f4" # Apache-2.0 license
-	"PROMETHEUS5 github.com/prometheus/procfs 8b1c2da" # Apache-2.0 license
-	"PROMETHEUS6 github.com/prometheus/common e5b036c" # Apache-2.0 license
-	"PROMETHEUS7 github.com/matttproud/golang_protobuf_extensions c12348c" # Apache-2.0 license
+	"PROMETHEUS1 github.com/miekg/caddy-prometheus 9329aaa930" # Apache-2.0 license
+	"PROMETHEUS2 github.com/prometheus/client_golang abad2d1bd4" #v0.9.1 Apache-2.0 license
+	"PROMETHEUS3 github.com/beorn7/perks 3a771d9929" # MIT license
+	"PROMETHEUS4 github.com/prometheus/client_model 5c3871d899" # Apache-2.0 license
+	"PROMETHEUS5 github.com/prometheus/procfs 185b428841" # Apache-2.0 license
+	"PROMETHEUS6 github.com/prometheus/common 1f2c4f3cd6" # Apache-2.0 license
+	"PROMETHEUS7 github.com/matttproud/golang_protobuf_extensions c12348ce28" # Apache-2.0 license
 
-	"PROXYPROTO1 github.com/mastercactapus/caddy-proxyprotocol 5af9834" # ??? license
-	"PROXYPROTO2 github.com/armon/go-proxyproto 48572f1" # MIT license
+	"PROXYPROTO1 github.com/mastercactapus/caddy-proxyprotocol 5a97537ed7" # ??? license
+	"PROXYPROTO2 github.com/armon/go-proxyproto 5b7edb60ff" # MIT license
 
-	"RTLIMIT github.com/xuqingfeng/caddy-rate-limit 1035313" #v1.3.1 MIT license
-	"REALIP github.com/captncraig/caddy-realip 5dd1f40" # MIT license
-	"REAUTH github.com/freman/caddy-reauth 839f01f" #v1.0.6 MIT license
+	"RTLIMIT github.com/xuqingfeng/caddy-rate-limit e2ff3bcbd4" #v1.4.0 MIT license
+	"REALIP github.com/captncraig/caddy-realip 5dd1f4047d" # MIT license
+	"REAUTH github.com/freman/caddy-reauth 595cc04cdf" #v1.0.10 MIT license
 
-	"RESTIC1 github.com/restic/caddy 27c8005" #v0.2.0 BSD-2 license
-	"RESTIC2 github.com/restic/rest-server 2209f14" #v0.9.7 BSD-2 license
+	"RESTIC1 github.com/restic/caddy 27c8005c93" #v0.2.0 BSD-2 license
+	"RESTIC2 github.com/restic/rest-server 2209f1437e" #v0.9.7 BSD-2 license
 
-	"TEST github.com/mcuadros/go-syslog 9cf13b7" #v2.2.1 MIT license
+	"TEST github.com/mcuadros/go-syslog a127d826d6" # MIT license
 
-	"UPLOAD1 github.com/wmark/caddy.upload f7f8806" #v1.3.2 BSD license
-	"UPLOAD2 github.com/wmark/go.abs 1ba06a1" # ??? license
+	"UPLOAD1 github.com/wmark/caddy.upload df37404c76" #v1.3.3 BSD license
+	"UPLOAD2 github.com/wmark/go.abs 1ba06a13d0" # ??? license
 
-	"WEBDAV1 github.com/hacdias/caddy-webdav ef12bfa" # MIT license
-	"WEBDAV2 github.com/hacdias/webdav 3d06904" #v1.2.0 MIT license
+	"WEBDAV1 github.com/hacdias/caddy-webdav ef12bfa29f" # MIT license
+	"WEBDAV2 github.com/hacdias/webdav 3d06904d1f" #v1.2.0 MIT license
 )
 
 # shellcheck disable=SC2206
@@ -235,8 +235,8 @@ IUSE="authz awses awslambda cache cgi cors datadog expires filter
 REQUIRED_USE="login? ( jwt )"
 
 FILECAPS=( cap_net_bind_service+ep usr/sbin/caddy )
-DOCS=( dist/CHANGES.txt README.md )
 
+DOCS=( dist/CHANGES.txt README.md )
 QA_PRESTRIPPED="usr/sbin/caddy"
 
 G="${WORKDIR}/${P}"
@@ -549,7 +549,7 @@ src_prepare() {
 	fi
 
 	if ! use telemetry; then
-		sed -i "s:enableTelemetry =.*:enableTelemetry = false:" \
+		sed -i -E 's/(EnableTelemetry = )[a-z]+/\1false/' \
 			${CADDYMAIN}/run.go || die
 	fi
 
@@ -572,8 +572,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w -X ${PKG}.gitTag=${PV}"
 		-o bin/caddy
 	)
