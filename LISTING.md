@@ -127,6 +127,7 @@ dev-util/**[gitlab-runner](dev-util/gitlab-runner)** | The official GitLab Runne
 dev-util/**[node-prune](dev-util/node-prune)** | Remove unnecessary files from node_modules (.md, .ts, ...)
 dev-vcs/**[fac](dev-vcs/fac)** | Easy-to-use CUI for fixing git conflicts
 dev-vcs/**[gitkraken-bin](dev-vcs/gitkraken-bin)** | The intuitive, fast, and beautiful cross-platform Git client
+dev-vcs/**[grv](dev-vcs/grv)** | A terminal based interface for viewing Git repositories
 dev-vcs/**[hub](dev-vcs/hub)** | A command-line wrapper for git that makes you better at GitHub
 dev-vcs/**[lab](dev-vcs/lab)** | Lab wraps Git or Hub to easily interact with repositories on GitLab
 mail-filter/**[rspamd](mail-filter/rspamd)** `*` | Rapid spam filtering system
