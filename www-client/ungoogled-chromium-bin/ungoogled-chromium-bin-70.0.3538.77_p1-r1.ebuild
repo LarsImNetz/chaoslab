@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI=7
 
 CHROMIUM_LANGS="
 	am ar bg bn ca cs da de el en-GB en-US es-419 es et fa fi fil fr gu he hi hr
@@ -9,7 +9,7 @@ CHROMIUM_LANGS="
 	ta te th tr uk vi zh-CN zh-TW
 "
 
-inherit chromium-2 gnome2-utils readme.gentoo-r1 xdg-utils
+inherit chromium-2 desktop readme.gentoo-r1 xdg-utils
 
 MY_PV="${PV/_p/-}"
 MY_PN="${PN/-bin}"
@@ -116,7 +116,7 @@ src_install() {
 
 	newexe "${FILESDIR}/${PN}-launcher-r3.sh" chromium-launcher.sh
 	sed -i "s:/usr/lib/:/usr/$(get_libdir)/:g" \
-		"${ED%/}${CHROMIUM_HOME}/chromium-launcher.sh" || die
+		"${ED}${CHROMIUM_HOME}/chromium-launcher.sh" || die
 
 	# It is important that we name the target "chromium-browser",
 	# xdg-utils expect it (bug #355517)
@@ -157,7 +157,7 @@ src_install() {
 		chromium-browser \
 		"Network;WebBrowser" \
 		"MimeType=${mime_types}\nStartupWMClass=chromium-browser"
-	sed -i "/^Exec/s/$/ %U/" "${ED%/}"/usr/share/applications/*.desktop || die
+	sed -i "/^Exec/s/$/ %U/" "${ED}"/usr/share/applications/*.desktop || die
 
 	# Install GNOME default application entry (bug #303100)
 	insinto /usr/share/gnome-control-center/default-apps
@@ -170,13 +170,20 @@ pkg_preinst() {
 	gnome2_icon_savelist
 }
 
-pkg_postrm() {
-	gnome2_icon_cache_update
+update_caches() {
+	if type gtk-update-icon-cache &>/dev/null; then
+		ebegin "Updating GTK icon cache"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		eend $?
+	fi
 	xdg_desktop_database_update
 }
 
+pkg_postrm() {
+	update_caches
+}
+
 pkg_postinst() {
-	gnome2_icon_cache_update
-	xdg_desktop_database_update
+	update_caches
 	readme.gentoo_print_elog
 }

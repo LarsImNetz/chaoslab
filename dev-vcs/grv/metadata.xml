@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">rgburke/grv</remote-id>
+		<bugs-to>https://github.com/rgburke/grv/issues</bugs-to>
+		<doc>https://github.com/rgburke/grv/blob/master/doc/documentation.md</doc>
+	</upstream>
+	<longdescription lang="en">
+		GRV is a terminal based interface for viewing Git
+		repositories. It allows refs, commits and diffs to
+		be viewed, searched and filtered. The behaviour
+		and style can be customised through configuration.
+	</longdescription>
+</pkgmetadata>
