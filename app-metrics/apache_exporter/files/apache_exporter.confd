@@ -1,9 +1,9 @@
 # config file for /etc/init.d/apache_exporter
 # run /usr/bin/apache_exporter -h to see available options
 
-APACHE_EXPORTER_OPTS=""
-APACHE_EXPORTER_LOGIDR="/var/log/${RC_SVCNAME}"
+APACHE_OPTS=""
+APACHE_LOGIDR="/var/log/${RC_SVCNAME}"
 
 # Logging
-#output_log="${APACHE_EXPORTER_LOGIDR}/apache_exporter.log"
-#error_log="${APACHE_EXPORTER_LOGIDR}/error.log"
+#output_log="${APACHE_LOGIDR}/apache_exporter.log"
+#error_log="${APACHE_LOGIDR}/error.log"
