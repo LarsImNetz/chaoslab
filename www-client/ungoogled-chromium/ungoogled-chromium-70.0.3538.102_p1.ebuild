@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI=7
 PYTHON_COMPAT=( python{2_7,3_{5,6,7}} )
 
 CHROMIUM_LANGS="
@@ -10,7 +10,7 @@ CHROMIUM_LANGS="
 	th tr uk vi zh-CN zh-TW
 "
 
-inherit check-reqs chromium-2 gnome2-utils eapi7-ver flag-o-matic multilib ninja-utils pax-utils portability python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
+inherit check-reqs chromium-2 desktop flag-o-matic multilib ninja-utils pax-utils portability python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
 UGC_PV="e933d6c096c2434b32846fd7398471f0e9a2be83"
 UGC_P="ungoogled-chromium-${UGC_PV}"
@@ -481,12 +481,6 @@ src_configure() {
 	NM=llvm-nm
 	strip-unsupported-flags
 
-	# shellcheck disable=SC2086
-	if has ccache ${FEATURES}; then
-		# Avoid falling back to preprocessor mode when sources contain time macros
-		export CCACHE_SLOPPINESS=time_macros
-	fi
-
 	# Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
 	append-cflags -Wno-builtin-macro-redefined
 	append-cxxflags -Wno-builtin-macro-redefined
@@ -644,6 +638,12 @@ src_compile() {
 	# Calling this here supports resumption via FEATURES=keepwork
 	python_setup 'python2*'
 
+	# shellcheck disable=SC2086
+	if has ccache ${FEATURES}; then
+		# Avoid falling back to preprocessor mode when sources contain time macros
+		export CCACHE_SLOPPINESS=time_macros
+	fi
+
 	# Build mksnapshot and pax-mark it
 	local x
 	for x in mksnapshot v8_context_snapshot_generator; do
@@ -684,7 +684,7 @@ src_install() {
 
 	newexe "${FILESDIR}/${PN}-launcher-r3.sh" chromium-launcher.sh
 	sed -i "s:/usr/lib/:/usr/$(get_libdir)/:g" \
-		"${ED%/}${CHROMIUM_HOME}/chromium-launcher.sh" || die
+		"${ED}${CHROMIUM_HOME}/chromium-launcher.sh" || die
 
 	# It is important that we name the target "chromium-browser",
 	# xdg-utils expect it (Bug #355517)
@@ -733,7 +733,7 @@ src_install() {
 		chromium-browser \
 		"Network;WebBrowser" \
 		"MimeType=${mime_types}\nStartupWMClass=chromium-browser"
-	sed -i "/^Exec/s/$/ %U/" "${ED%/}"/usr/share/applications/*.desktop || die
+	sed -i "/^Exec/s/$/ %U/" "${ED}"/usr/share/applications/*.desktop || die
 
 	# Install GNOME default application entry (Bug #303100)
 	insinto /usr/share/gnome-control-center/default-apps
@@ -747,7 +747,11 @@ pkg_preinst() {
 }
 
 update_caches() {
-	gnome2_icon_cache_update
+	if type gtk-update-icon-cache &>/dev/null; then
+		ebegin "Updating GTK icon cache"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		eend $?
+	fi
 	xdg_desktop_database_update
 }
 
