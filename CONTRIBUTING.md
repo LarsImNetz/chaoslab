@@ -48,7 +48,7 @@ for the following:
    submit a [merge request](https://docs.gitlab.com/ee/gitlab-basics/add-merge-request.html)
    against the **develop** branch.
 
-   > **Note:**  If you get in trouble with _**shellcheck's**_ tests, please see
+   > **Note:** If you get in trouble with _**shellcheck's**_ tests, please see
    their [checks guide](https://github.com/koalaman/shellcheck/wiki/Checks).
 
 7. Squash your commits into a single one with `git rebase -i`. It's okay to
@@ -56,5 +56,5 @@ for the following:
 8. Comment in the merge request when you are ready for the changes to be
    reviewed: `MR ready for review`.
 
-At this point you are waiting for my feedbacks. I look at pull requests within
+At this point you are waiting for my feedback. I look at merge requests within
 few hours. Bear in mind that I may suggest some improvements or alternatives.
