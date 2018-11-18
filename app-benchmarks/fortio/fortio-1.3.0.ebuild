@@ -36,13 +36,6 @@ G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
-	if use daemon; then
-		enewgroup fortio
-		enewuser fortio -1 -1 /var/lib/fortio fortio
-	fi
-}
-
-src_prepare() {
 	if [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
 		if has test && has network-sandbox $FEATURES; then
@@ -52,7 +45,11 @@ src_prepare() {
 			die "[network-sandbox] is enabled in FEATURES"
 		fi
 	fi
-	default
+
+	if use daemon; then
+		enewgroup fortio
+		enewuser fortio -1 -1 /var/lib/fortio fortio
+	fi
 }
 
 src_compile() {
