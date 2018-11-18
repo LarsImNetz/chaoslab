@@ -27,7 +27,7 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="daemon pie test"
+IUSE="daemon pie"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/fortio"
@@ -43,9 +43,9 @@ pkg_setup() {
 }
 
 src_prepare() {
-	if use test; then
+	if [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
-		if has network-sandbox $FEATURES; then
+		if has test && has network-sandbox $FEATURES; then
 			ewarn
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 			ewarn
@@ -67,8 +67,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
