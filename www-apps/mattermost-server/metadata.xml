@@ -5,6 +5,9 @@
 		<email>gentoo@chaoslab.org</email>
 		<name>Ian Moone</name>
 	</maintainer>
+	<maintainer type="person">
+		<email>matoro@airmail.cc</email>
+	</maintainer>
 	<upstream>
 		<remote-id type="github">mattermost/mattermost-server</remote-id>
 		<bugs-to>https://github.com/mattermost/mattermost-server/issues</bugs-to>
