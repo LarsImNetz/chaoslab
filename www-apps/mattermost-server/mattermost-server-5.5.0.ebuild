@@ -29,10 +29,9 @@ DEPEND="
 "
 RDEPEND="!www-apps/mattermost-server-ee"
 
-if [[ "$ARCH" != "x86" && "$ARCH" != "amd64" ]]
-then
-    inherit autotools
-    DEPEND="${DEPEND}
+if [[ "$ARCH" != "x86" && "$ARCH" != "amd64" ]]; then
+	inherit autotools
+	DEPEND="${DEPEND}
 		media-libs/libpng:0"
 fi
 
