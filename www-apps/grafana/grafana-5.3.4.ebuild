@@ -4,7 +4,7 @@
 EAPI=6
 
 EGO_PN="github.com/${PN}/${PN}"
-GIT_COMMIT="0d821d07ad" # Change this when you update the ebuild
+GIT_COMMIT="69630b9bb7" # Change this when you update the ebuild
 MY_PV="${PV/_/-}"
 
 inherit golang-vcs-snapshot systemd user
@@ -27,10 +27,11 @@ DEPEND="
 
 DOCS=( CHANGELOG.md README.md )
 
+QA_EXECSTACK="usr/libexec/grafana/phantomjs"
 QA_PRESTRIPPED="
+	${QA_EXECSTACK}
 	usr/bin/grafana-cli
 	usr/bin/grafana-server
-	usr/libexec/grafana/phantomjs
 "
 
 G="${WORKDIR}/${P}"
@@ -60,8 +61,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	emake deps
@@ -83,7 +84,6 @@ src_install() {
 
 	exeinto /usr/libexec/grafana
 	doexe tools/phantomjs/phantomjs
-	scanelf -Xe "${ED%/}/usr/libexec/grafana/phantomjs" || die
 
 	insinto /etc/grafana
 	newins conf/sample.ini grafana.ini.example

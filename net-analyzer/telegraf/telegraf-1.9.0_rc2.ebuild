@@ -148,7 +148,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="pie test"
+IUSE="pie"
 
 QA_PRESTRIPPED="usr/bin/telegraf"
 
@@ -156,9 +156,9 @@ G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
-	if use test; then
+	if [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
-		if has network-sandbox $FEATURES; then
+		if has test && has network-sandbox $FEATURES; then
 			ewarn
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 			ewarn
@@ -168,16 +168,6 @@ pkg_setup() {
 
 	enewgroup telegraf
 	enewuser telegraf -1 -1 -1 telegraf
-}
-
-src_prepare() {
-	# Remove tests that doesn't work inside portage's sandbox
-	if use test; then
-		rm plugins/inputs/socket_listener/socket_listener_test.go || die
-		rm plugins/outputs/socket_writer/socket_writer_test.go || die
-	fi
-
-	default
 }
 
 src_compile() {
@@ -190,14 +180,18 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" ./cmd/telegraf || die
 }
 
 src_test() {
+	# Remove tests that doesn't work inside portage's sandbox
+	rm plugins/inputs/socket_listener/socket_listener_test.go || die
+	rm plugins/outputs/socket_writer/socket_writer_test.go || die
+
 	go test -short ./... || die
 }
 

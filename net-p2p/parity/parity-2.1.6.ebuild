@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 CRATES="
 aho-corasick-0.6.8
@@ -339,10 +339,10 @@ pkg_setup() {
 src_compile() {
 	export CARGO_HOME="${ECARGO_HOME}"
 
-	cargo build -v $(usex debug '' --release) --features final || die
-	cargo build -v $(usex debug '' --release) -p evmbin || die
-	cargo build -v $(usex debug '' --release) -p ethstore-cli || die
-	cargo build -v $(usex debug '' --release) -p ethkey-cli || die
+	cargo build $(usex debug '' --release) --features final || die
+	cargo build $(usex debug '' --release) -p evmbin || die
+	cargo build $(usex debug '' --release) -p ethstore-cli || die
+	cargo build $(usex debug '' --release) -p ethkey-cli || die
 }
 
 src_install() {
