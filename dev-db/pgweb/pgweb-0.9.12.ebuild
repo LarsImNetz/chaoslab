@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -16,25 +16,28 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="+daemon pie test"
+IUSE="+daemon pie"
 
-DOCS=( {CHANGELOG,README}.md )
+DOCS=( CHANGELOG.md README.md )
 QA_PRESTRIPPED="usr/bin/pgweb"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
-	if use test; then
-		ewarn ""
-		ewarn "The tests requires a local PostgreSQL server running on default port"
-		ewarn ""
+	if [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
-		if has network-sandbox $FEATURES; then
-			ewarn ""
-			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn ""
-			die "[network-sandbox] is enabled in FEATURES"
+		if has test $FEATURES; then
+			ewarn
+			ewarn "The tests requires a local PostgreSQL server running on default port"
+			ewarn
+			sleep 5
+			if has network-sandbox $FEATURES; then
+				ewarn
+				ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
+				ewarn
+				die "[network-sandbox] is enabled in FEATURES"
+			fi
 		fi
 	fi
 
@@ -53,8 +56,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
