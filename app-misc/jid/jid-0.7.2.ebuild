@@ -56,4 +56,3 @@ src_install() {
 	dobin jid
 	einstalldocs
 }
- 
