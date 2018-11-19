@@ -77,6 +77,7 @@ app-misc/**[asciinema-rs](app-misc/asciinema-rs)** | Terminal recording and play
 app-misc/**[bat](app-misc/bat)** | A 'cat' clone with syntax highlighting and Git integration
 app-misc/**[corgi](app-misc/corgi)** | A CLI workflow manager that helps with your repetitive command usages
 app-misc/**[genact](app-misc/genact)** | A nonsense activity generator
+app-misc/**[jid](app-misc/jid)** | JSON incremental digger
 app-misc/**[pet](app-misc/pet)** `*` | Simple command-line snippet manager, written in Go
 app-misc/**[vanity-monero](app-misc/vanity-monero)** | Generate vanity address for CryptoNote currency
 app-misc/**[watchexec](app-misc/watchexec)** | Executes commands in response to file modifications
