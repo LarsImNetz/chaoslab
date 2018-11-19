@@ -1,14 +1,14 @@
 DEFINED_PHASES=compile install prepare setup unpack
-DEPEND=>=dev-lang/go-1.10.1 media-libs/libpng:0 >net-libs/nodejs-6[npm] virtual/pkgconfig
+DEPEND=>=dev-lang/go-1.10.1 >net-libs/nodejs-6[npm] media-libs/libpng:0 virtual/pkgconfig >=app-portage/elt-patches-20170815 !<sys-devel/gettext-0.18.1.1-r3 || ( >=sys-devel/automake-1.16.1:1.16 >=sys-devel/automake-1.15.1:1.15 ) >=sys-devel/autoconf-2.69 >=sys-devel/libtool-2.4
 DESCRIPTION=Open source Slack-alternative in Golang and React (Team Edition)
 EAPI=6
 HOMEPAGE=https://mattermost.com
 IUSE=+audit pie
-KEYWORDS=~amd64
+KEYWORDS=~amd64 ~arm
 LICENSE=AGPL-3
 RDEPEND=!www-apps/mattermost-server-ee
 RESTRICT=mirror test
 SLOT=0
 SRC_URI=https://github.com/mattermost/mattermost-server/archive/v5.5.0.tar.gz -> mattermost-server-5.5.0.tar.gz https://github.com/mattermost/mattermost-webapp/archive/v5.5.0.tar.gz -> mattermost-webapp-5.5.0.tar.gz
-_eclasses_=multilib	b2f01ad412baf81650c23fcf0975fa33	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=de1afc3becc94895525d5ab0d729db9b
+_eclasses_=autotools	1bf086cdd7356f5c9a4acd9727bd2065	libtool	f143db5a74ccd9ca28c1234deffede96	multilib	b2f01ad412baf81650c23fcf0975fa33	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81
+_md5_=b5c1cf856ee0982da5fa7037304b942e
