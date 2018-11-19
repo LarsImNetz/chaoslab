@@ -1,0 +1,21 @@
+From 34b8af7ebfb67485a8166c3672c52d3e794b3333 Mon Sep 17 00:00:00 2001
+From: Pablo Diaz <padilo@gmail.com>
+Date: Tue, 23 Oct 2018 22:36:38 +0200
+Subject: [PATCH] flags usage on -help
+
+---
+ cmd/jid/jid.go | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/cmd/jid/jid.go b/cmd/jid/jid.go
+index 47031f7..1b5429a 100644
+--- a/cmd/jid/jid.go
++++ b/cmd/jid/jid.go
+@@ -27,6 +27,7 @@ func main() {
+ 	flag.Parse()
+ 
+ 	if help {
++		flag.Usage()
+ 		fmt.Println(getHelpString())
+ 		os.Exit(0)
+ 	}
