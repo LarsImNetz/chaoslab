@@ -20,15 +20,20 @@ RESTRICT="mirror test"
 
 LICENSE="AGPL-3"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~arm"
 IUSE="+audit pie"
 
 DEPEND="
 	>=dev-lang/go-1.10.1
-	media-libs/libpng:0
 	>net-libs/nodejs-6[npm]
 "
 RDEPEND="!www-apps/mattermost-server-ee"
+
+if [[ "$ARCH" != "x86" && "$ARCH" != "amd64" ]]; then
+	inherit autotools
+	DEPEND="${DEPEND}
+		media-libs/libpng:0"
+fi
 
 QA_PRESTRIPPED="
 	usr/libexec/mattermost/bin/mattermost
