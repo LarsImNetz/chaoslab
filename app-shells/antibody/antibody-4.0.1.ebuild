@@ -32,7 +32,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="pie test"
+IUSE="pie"
 
 RDEPEND="
 	app-shells/zsh[unicode]
@@ -47,9 +47,9 @@ S="${G}/src/${EGO_PN}"
 QA_PRESTRIPPED="usr/bin/antibody"
 
 pkg_setup() {
-	if use test; then
+	if [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
-		if has network-sandbox $FEATURES; then
+		if has test && has network-sandbox $FEATURES; then
 			ewarn
 			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 			ewarn
@@ -63,8 +63,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w -X main.version=${PV}"
 	)
 	go build "${mygoargs[@]}" || die
