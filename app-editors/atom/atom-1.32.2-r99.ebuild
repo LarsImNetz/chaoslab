@@ -81,9 +81,11 @@ src_prepare() {
 	sed -i 's|node script/bootstrap|node script/bootstrap --no-quiet|g' \
 		./script/build || die
 
-	# Fix path for "View License" in Help menu
+	# Fix path for "View License" in Help menu and active pane
 	sed -i "s|path.join(process.resourcesPath, 'LICENSE.md')|'/usr/share/licenses/atom/LICENSE.md'|g" \
 		./src/main-process/atom-application.js || die
+	sed -i "s|path.join(process.resourcesPath, 'LICENSE.md')|'/usr/share/licenses/atom/LICENSE.md'|g" \
+		./src/workspace.js || die
 
 	sed -i \
 		-e "/ATOM_HOME=/i export PYTHON=${PYTHON}\\n" \
