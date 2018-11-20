@@ -82,9 +82,9 @@ src_prepare() {
 		./script/build || die
 
 	# Fix path for "View License" in Help menu and active pane
-	sed -i "s|path.join(process.resourcesPath, 'LICENSE.md')|'/usr/share/licenses/atom/LICENSE.md'|g" \
+	sed -i "s|path.join(process.resourcesPath, 'LICENSE.md')|'${EPREFIX}/usr/share/licenses/atom/LICENSE.md'|g" \
 		./src/main-process/atom-application.js || die
-	sed -i "s|path.join(process.resourcesPath, 'LICENSE.md')|'/usr/share/licenses/atom/LICENSE.md'|g" \
+	sed -i "s|path.join(process.resourcesPath, 'LICENSE.md')|'${EPREFIX}/usr/share/licenses/atom/LICENSE.md'|g" \
 		./src/workspace.js || die
 
 	sed -i \
