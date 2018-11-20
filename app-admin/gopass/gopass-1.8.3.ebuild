@@ -4,19 +4,13 @@
 EAPI=6
 
 EGO_PN="github.com/gopasspw/${PN}"
-GIT_COMMIT="909c8ac88b" # Change this when you update the ebuild
-# Snapshot taken on 2018.11.14
-EGO_VENDOR=(
-	"golang.org/x/crypto 3d3f9f4138 github.com/golang/crypto"
-	"golang.org/x/sys 66b7b1311a github.com/golang/sys"
-)
+GIT_COMMIT="97ac44d93e" # Change this when you update the ebuild
 
 inherit bash-completion-r1 golang-vcs-snapshot
 
 DESCRIPTION="The slightly more awesome standard unix password manager for teams"
 HOMEPAGE="https://www.gopass.pw"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="MIT"
