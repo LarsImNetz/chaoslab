@@ -1,10 +1,11 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
+
 PYTHON_COMPAT=( python2_7 )
 
-inherit desktop gnome2-utils python-single-r1
+inherit desktop python-single-r1 xdg-utils
 
 ELECTRON_SLOT="2.0"
 ELECTRON_V="2.0.9"
@@ -76,19 +77,21 @@ src_prepare() {
 	sed -i 's|node script/bootstrap|node script/bootstrap --no-quiet|g' \
 		./script/build || die
 
-	# Fix path for "View License" in Help menu
+	# Fix path for "View License" in Help menu and active pane
 	sed -i "s|path.join(process.resourcesPath, 'LICENSE.md')|'/usr/share/licenses/atom/LICENSE.md'|g" \
 		./src/main-process/atom-application.js || die
+	sed -i "s|path.join(process.resourcesPath, 'LICENSE.md')|'/usr/share/licenses/atom/LICENSE.md'|g" \
+		./src/workspace.js || die
 
 	sed -i \
 		-e "/ATOM_HOME=/i export PYTHON=${PYTHON}\\n" \
-		-e "s|{{ATOM_PATH}}|${EPREFIX%/}/opt/electron-${ELECTRON_SLOT}/electron|g" \
-		-e "s|{{ATOM_RESOURCE_PATH}}|${EPREFIX%/}/usr/libexec/atom/resources/app.asar|g" \
-		-e "s|{{ATOM_PREFIX}}|${EPREFIX%/}|g" \
+		-e "s|{{ATOM_PATH}}|${EPREFIX}/opt/electron-${ELECTRON_SLOT}/electron|g" \
+		-e "s|{{ATOM_RESOURCE_PATH}}|${EPREFIX}/usr/libexec/atom/resources/app.asar|g" \
+		-e "s|{{ATOM_PREFIX}}|${EPREFIX}|g" \
 		./atom.sh || die
 
 	sed -i \
-		-e "s|{{ATOM_PREFIX}}|${EPREFIX%/}|g" \
+		-e "s|{{ATOM_PREFIX}}|${EPREFIX}|g" \
 		-e "s|{{ATOM_SUFFIX}}|${suffix}|g" \
 		./src/config-schema.js || die
 }
@@ -127,7 +130,7 @@ src_install() {
 	rm ./${ctags_d}/ctags-{darwin,win32.exe} || die
 	# Replace vendored ctags with a symlink to system ctags
 	rm ./${ctags_d}/ctags-linux || die
-	ln -s "${EPREFIX%/}/usr/bin/ctags" ./${ctags_d}/ctags-linux || die
+	ln -s "${EPREFIX}/usr/bin/ctags" ./${ctags_d}/ctags-linux || die
 
 	# Remove redundant atom.png
 	rm -r ./app.asar.unpacked/resources || die
@@ -146,7 +149,7 @@ src_install() {
 	make_desktop_entry atom Atom atom \
 		"GNOME;GTK;Utility;TextEditor;Development;" \
 		"MimeType=text/plain;\nStartupNotify=true\nStartupWMClass=atom"
-	sed -e "/^Exec/s/$/ %F/" -i "${ED%/}"/usr/share/applications/*.desktop || die
+	sed -e "/^Exec/s/$/ %F/" -i "${ED}"/usr/share/applications/*.desktop || die
 
 	# Fix permissions
 	fperms +x /usr/libexec/atom/resources/app/atom.sh
@@ -175,12 +178,19 @@ get_install_suffix() {
 	echo "${suffix}"
 }
 
-pkg_postinst() {
-	gnome2_icon_cache_update
+update_caches() {
+	if type gtk-update-icon-cache &>/dev/null; then
+		ebegin "Updating GTK icon cache"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		eend $?
+	fi
 	xdg_desktop_database_update
 }
 
 pkg_postrm() {
-	gnome2_icon_cache_update
-	xdg_desktop_database_update
+	update_caches
+}
+
+pkg_postinst() {
+	update_caches
 }

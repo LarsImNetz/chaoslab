@@ -1,11 +1,11 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 PYTHON_COMPAT=( python2_7 )
 
-inherit desktop gnome2-utils python-single-r1
+inherit desktop python-single-r1 xdg-utils
 
 ELECTRON_SLOT="2.0"
 ELECTRON_V="2.0.9"
@@ -81,9 +81,11 @@ src_prepare() {
 	sed -i 's|node script/bootstrap|node script/bootstrap --no-quiet|g' \
 		./script/build || die
 
-	# Fix path for "View License" in Help menu
+	# Fix path for "View License" in Help menu and active pane
 	sed -i "s|path.join(process.resourcesPath, 'LICENSE.md')|'/usr/share/licenses/atom/LICENSE.md'|g" \
 		./src/main-process/atom-application.js || die
+	sed -i "s|path.join(process.resourcesPath, 'LICENSE.md')|'/usr/share/licenses/atom/LICENSE.md'|g" \
+		./src/workspace.js || die
 
 	sed -i \
 		-e "/ATOM_HOME=/i export PYTHON=${PYTHON}\\n" \
@@ -141,7 +143,7 @@ src_install() {
 	make_desktop_entry atom Atom atom \
 		"GNOME;GTK;Utility;TextEditor;Development;" \
 		"MimeType=text/plain;\nStartupNotify=true\nStartupWMClass=atom"
-	sed -e "/^Exec/s/$/ %F/" -i "${ED%/}"/usr/share/applications/*.desktop || die
+	sed -e "/^Exec/s/$/ %F/" -i "${ED}"/usr/share/applications/*.desktop || die
 
 	# Fix permissions
 	fperms +x /usr/libexec/atom/app/atom.sh
@@ -171,7 +173,11 @@ get_install_suffix() {
 }
 
 update_caches() {
-	gnome2_icon_cache_update
+	if type gtk-update-icon-cache &>/dev/null; then
+		ebegin "Updating GTK icon cache"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		eend $?
+	fi
 	xdg_desktop_database_update
 }
 
