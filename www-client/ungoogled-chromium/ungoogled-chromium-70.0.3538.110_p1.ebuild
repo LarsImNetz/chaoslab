@@ -112,7 +112,8 @@ RDEPEND="${COMMON_DEPEND}
 "
 # dev-vcs/git (Bug #593476)
 # sys-apps/sandbox - https://crbug.com/586444
-DEPEND="${COMMON_DEPEND}
+DEPEND="${COMMON_DEPEND}"
+BDEPEND="
 	>=app-arch/gzip-1.7
 	dev-lang/perl
 	dev-lang/yasm
@@ -171,11 +172,9 @@ pre_build_checks() {
 	CHECKREQS_MEMORY="3G"
 	CHECKREQS_DISK_BUILD="5G"
 	if use custom-cflags; then
-		eshopts_push -s extglob
-		if is-flagq '-g?(gdb)?([1-9])'; then
+		if ( shopt -s extglob; is-flagq '-g?(gdb)?([1-9])' ); then
 			CHECKREQS_DISK_BUILD="25G"
 		fi
-		eshopts_pop
 	fi
 	check-reqs_pkg_setup
 }
@@ -635,6 +634,9 @@ src_configure() {
 }
 
 src_compile() {
+	# Final link uses lots of file descriptors.
+	ulimit -n 2048
+
 	# Calling this here supports resumption via FEATURES=keepwork
 	python_setup 'python2*'
 
@@ -740,10 +742,6 @@ src_install() {
 	doins "${FILESDIR}/chromium-browser.xml"
 
 	readme.gentoo_create_doc
-}
-
-pkg_preinst() {
-	gnome2_icon_savelist
 }
 
 update_caches() {
