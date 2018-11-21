@@ -37,16 +37,21 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w"
 		-tags production
 	)
+
 	go install "${mygoargs[@]}" ./{kbfsfuse,kbfstool} || die
 
 	if use git; then
-		go build "${mygoargs[@]}" ./kbfsgit/git-remote-keybase || die
+		go build "${mygoargs[@]}" kbfsgit/git-remote-keybase || die
 	fi
+}
+
+src_test() {
+	go test -v ./test || die
 }
 
 src_install() {
