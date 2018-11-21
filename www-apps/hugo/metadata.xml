@@ -16,4 +16,7 @@
 		Hugo takes a directory with content and templates and
 		renders them into a full HTML website.
 	</longdescription>
+	<use>
+		<flag name="sass">Enable SASS/SCSS support</flag>
+	</use>
 </pkgmetadata>
