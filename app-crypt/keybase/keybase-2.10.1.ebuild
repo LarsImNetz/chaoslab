@@ -28,12 +28,12 @@ S="${G}/src/${EGO_PN}"
 QA_PRESTRIPPED="usr/bin/keybase"
 
 src_compile() {
-	export GOPATH="${G}:${S}/go/vendor"
+	export GOPATH="${G}:${S}/go"
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w"
 		-tags production
 	)
