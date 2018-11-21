@@ -1,9 +1,9 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-inherit desktop gnome2-utils
+inherit desktop xdg-utils
 
 ELECTRON_SLOT="2.0"
 ELECTRON_V="2.0.8"
@@ -83,7 +83,7 @@ src_compile() {
 src_install() {
 	newbin "${FILESDIR}"/signal-launcher.sh "${PN}"
 	sed "s:@@ELECTRON@@:electron-${ELECTRON_SLOT}:" \
-		-i "${ED%/}/usr/bin/${PN}" || die
+		-i "${ED}/usr/bin/${PN}" || die
 
 	insinto /usr/libexec/signal
 	doins -r release/linux-unpacked/resources/*
@@ -107,14 +107,18 @@ src_install() {
 }
 
 update_caches() {
-	gnome2_icon_cache_update
+	if type gtk-update-icon-cache &>/dev/null; then
+		ebegin "Updating GTK icon cache"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		eend $?
+	fi
 	xdg_desktop_database_update
 }
 
-pkg_postrm() {
+pkg_postinst() {
 	update_caches
 }
 
-pkg_postinst() {
+pkg_postrm() {
 	update_caches
 }
