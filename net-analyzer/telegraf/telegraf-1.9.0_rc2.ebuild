@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="dfa67e536a" # Change this when you update the ebuild
+GIT_COMMIT="2bf21c0d43" # Change this when you update the ebuild
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
@@ -68,10 +68,10 @@ EGO_VENDOR=(
 	"github.com/go-redis/redis 83fb42932f"
 	"github.com/go-sql-driver/mysql d523deb1b2"
 	"github.com/gobwas/glob 5ccd90ef52"
-	"github.com/gogo/protobuf 636bf0302b" #tests
+	"github.com/gogo/protobuf 636bf0302b" # tests
 	"github.com/golang/protobuf b4deda0973"
 	"github.com/golang/snappy 2e65f85255"
-	"github.com/google/go-cmp 3af367b6b3" #tests
+	"github.com/google/go-cmp 3af367b6b3" # tests
 	"github.com/googleapis/gax-go 317e000625"
 	"github.com/gorilla/mux e3702bed27"
 	"github.com/hailocab/go-hostpool e80d13ce29"
@@ -93,8 +93,8 @@ EGO_VENDOR=(
 	"github.com/nats-io/go-nats 062418ea1c"
 	"github.com/nats-io/nuid 289cccf02c"
 	"github.com/nsqio/go-nsq eee57a3ac4"
-	"github.com/opentracing-contrib/go-observer a52f234244" #tests
-	"github.com/opentracing/opentracing-go 1949ddbfd1" #tests
+	"github.com/opentracing-contrib/go-observer a52f234244" # tests
+	"github.com/opentracing/opentracing-go 1949ddbfd1" # tests
 	"github.com/openzipkin/zipkin-go-opentracing 26cf970748"
 	"github.com/pierrec/lz4 1958fd8fff"
 	"github.com/pkg/errors 645ef00459"
