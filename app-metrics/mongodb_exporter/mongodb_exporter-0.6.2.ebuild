@@ -3,12 +3,13 @@
 
 EAPI=6
 
-GIT_COMMIT="fbf8e3a" # Change this when you update the ebuild
+GIT_COMMIT="fbf8e3a4d8" # Change this when you update the ebuild
 EGO_PN="github.com/percona/${PN}"
+# Snapshot taken on 2018.11.22
 EGO_VENDOR=(
-	"github.com/AlekSi/gocoverutil c7c9efd"
-	"github.com/stretchr/testify f35b8ab"
-	"golang.org/x/tools 16f8f9b github.com/golang/tools"
+	"github.com/AlekSi/gocoverutil v0.2.0"
+	"github.com/stretchr/testify v1.2.2"
+	"golang.org/x/tools 91f80e683c github.com/golang/tools"
 )
 
 inherit golang-vcs-snapshot systemd user
@@ -60,20 +61,17 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
-
-	if use test; then
-		# Build gocoverutil locally
-		go install ./vendor/github.com/AlekSi/gocoverutil || die
-	fi
 }
 
 src_test() {
 	local PATH="${G}/bin:$PATH"
+	# Build gocoverutil locally
+	go install ./vendor/github.com/AlekSi/gocoverutil || die
 	default
 }
 
