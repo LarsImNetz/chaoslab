@@ -1,13 +1,13 @@
 DEFINED_PHASES=compile install setup test unpack
 DEPEND=>=dev-lang/go-1.9 virtual/pkgconfig
-DESCRIPTION=Elasticsearch stats exporter for Prometheus
+DESCRIPTION=Push acceptor for ephemeral and batch jobs to expose their metrics to Prometheus
 EAPI=6
-HOMEPAGE=https://github.com/justwatchcom/elasticsearch_exporter
-IUSE=examples pie
-KEYWORDS=~amd64 ~x86
+HOMEPAGE=https://prometheus.io
+IUSE=pie
+KEYWORDS=~amd64
 LICENSE=Apache-2.0
 RESTRICT=mirror
 SLOT=0
-SRC_URI=https://github.com/justwatchcom/elasticsearch_exporter/archive/v1.0.3rc1.tar.gz -> elasticsearch_exporter-1.0.3_rc1.tar.gz
+SRC_URI=https://github.com/prometheus/pushgateway/archive/v0.6.0.tar.gz -> pushgateway-0.6.0.tar.gz
 _eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	multilib	b2f01ad412baf81650c23fcf0975fa33	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=820c763347b9a824a4d98c2aa60c2bac
+_md5_=6989badff56e4293770ea96095fb80c2
