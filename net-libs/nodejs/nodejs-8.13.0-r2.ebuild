@@ -1,7 +1,8 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
+RESTRICT="test"
 
 PYTHON_COMPAT=( python2_7 )
 PYTHON_REQ_USE="threads"
@@ -18,30 +19,34 @@ KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~x86 ~amd64-linux ~x64-macos"
 IUSE="bundled-ssl cpu_flags_x86_sse2 debug doc icu inspector libressl +npm +snapshot +ssl systemtap test"
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
-	bundled-ssl? ( ssl )
 	inspector? ( icu ssl )
 	libressl? ( bundled-ssl )
+	bundled-ssl? ( ssl )
 	npm? ( ssl )
 "
 
 RDEPEND="
 	>=dev-libs/libuv-1.23.2:=
-	>=net-dns/c-ares-1.14.0
+	>=net-dns/c-ares-1.10.1
 	>=net-libs/http-parser-2.8.0:=
-	>=net-libs/nghttp2-1.34.0
+	>=net-libs/nghttp2-1.33.0
 	sys-libs/zlib
-	icu? ( >=dev-libs/icu-62.1:= )
-	ssl? ( !bundled-ssl? ( >=dev-libs/openssl-1.1:0= ) )
-"
-DEPEND="
-	${RDEPEND}
+	icu? ( >=dev-libs/icu-60.1:= )
+	npm? ( ${PYTHON_DEPS} )
+	ssl? (
+		!bundled-ssl? (
+			=dev-libs/openssl-1.0.2*:0=[-bindist]
+		)
+	)"
+DEPEND="${RDEPEND}
 	${PYTHON_DEPS}
 	systemtap? ( dev-util/systemtap )
-	test? ( net-misc/curl )
-"
+	test? ( net-misc/curl )"
+
 S="${WORKDIR}/node-v${PV}"
+
 PATCHES=(
-	"${FILESDIR}/${PN}-10.3.0-global-npm-config.patch"
+	"${FILESDIR}"/nodejs-10.3.0-global-npm-config.patch
 )
 
 pkg_pretend() {
@@ -71,8 +76,12 @@ src_prepare() {
 	# proper libdir, hat tip @ryanpcmcquen https://github.com/iojs/io.js/issues/504
 	local LIBDIR
 	LIBDIR=$(get_libdir)
-	sed -i -e "s|lib/|${LIBDIR}/|g" tools/install.py || die
-	sed -i -e "s/'lib'/'${LIBDIR}'/" deps/npm/lib/npm.js || die
+	sed -i \
+		-e "s|lib/|${LIBDIR}/|g" \
+		-e 's|share/doc/node/|share/doc/'"${PF}"'/|g' \
+		tools/install.py || die
+
+	sed -i -e "s/'lib'/'${LIBDIR}'/" lib/module.js deps/npm/lib/npm.js || die
 
 	# Avoid writing a depfile, not useful
 	sed -i -e "/DEPFLAGS =/d" tools/gyp/pylib/gyp/generator/make.py || die
@@ -134,11 +143,16 @@ src_compile() {
 	emake -C out
 }
 
+src_test() {
+	out/${BUILDTYPE}/cctest || die
+	"${PYTHON}" tools/test.py --mode=${BUILDTYPE,,} -J message parallel sequential || die
+}
+
 src_install() {
 	local LIBDIR npm_config tmp_npm_completion_file
-	LIBDIR="${ED%/}/usr/$(get_libdir)"
+	LIBDIR="${ED}/usr/$(get_libdir)"
 	emake install DESTDIR="${D}"
-	pax-mark -m "${ED%/}"/usr/bin/node
+	pax-mark -m "${ED}"usr/bin/node
 
 	# set up a symlink structure that node-gyp expects..
 	dodir /usr/include/node/deps/{v8,uv}
@@ -154,8 +168,8 @@ src_install() {
 			sed -i '/fonts.googleapis.com/ d' "$i";
 		done
 		# Install docs
-		docinto html
-		dodoc -r "${S}"/doc/*
+		HTML_DOCS=( doc/* )
+		einstalldocs
 	fi
 
 	if use npm; then
@@ -165,11 +179,11 @@ src_install() {
 		# We need to temporarily replace default config path since
 		# npm otherwise tries to write outside of the sandbox
 		npm_config="usr/$(get_libdir)/node_modules/npm/lib/config/core.js"
-		sed -i -e "s|'/etc'|'${ED%/}/etc'|g" "${ED%/}/${npm_config}" || die
+		sed -i -e "s|'/etc'|'${ED}/etc'|g" "${ED}/${npm_config}" || die
 		tmp_npm_completion_file="$(emktemp)"
-		"${ED%/}/usr/bin/npm" completion > "${tmp_npm_completion_file}"
+		"${ED}/usr/bin/npm" completion > "${tmp_npm_completion_file}"
 		newbashcomp "${tmp_npm_completion_file}" npm
-		sed -i -e "s|'${ED%/}/etc'|'/etc'|g" "${ED%/}/${npm_config}" || die
+		sed -i -e "s|'${ED}/etc'|'/etc'|g" "${ED}/${npm_config}" || die
 
 		# Move man pages
 		doman "${LIBDIR}"/node_modules/npm/man/man{1,5,7}/*
@@ -184,7 +198,7 @@ src_install() {
 		for match in "AUTHORS*" "CHANGELOG*" "CONTRIBUT*" "README*" \
 			".travis.yml" ".eslint*" ".wercker.yml" ".npmignore" \
 			"*.md" "*.markdown" "*.bat" "*.cmd"; do
-			find_name+=( ${find_exp} ${match} )
+			find_name+=( ${find_exp} "${match}" )
 		done
 
 		# Remove various development and/or inappropriate files and
@@ -195,13 +209,6 @@ src_install() {
 				"${find_name[@]}" \
 			\) \) -exec rm -rf "{}" \;
 	fi
-
-	mv "${D}/usr/share/doc/node" "${D}/usr/share/doc/${PF}" || die
-}
-
-src_test() {
-	out/${BUILDTYPE}/cctest || die
-	"${PYTHON}" tools/test.py --mode=${BUILDTYPE,,} -J message parallel sequential || die
 }
 
 pkg_postinst() {
@@ -211,6 +218,6 @@ pkg_postinst() {
 	einfo
 	einfo "Protip: When using node-gyp to install native modules, you can"
 	einfo "avoid having to download extras by doing the following:"
-	einfo "$ node-gyp --nodedir ${EROOT%/}/usr/include/node <command>"
+	einfo "$ node-gyp --nodedir /usr/include/node <command>"
 	einfo
 }

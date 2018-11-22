@@ -4,21 +4,18 @@
 EAPI=6
 
 EGO_PN="github.com/getantibody/${PN}"
-# Note: Keep EGO_VENDOR in sync with Gopkg.lock
-# Deps that are not needed:
-# github.com/davecgh/go-spew
-# github.com/pmezard/go-difflib
+# Note: Keep EGO_VENDOR in sync with go.mod
 EGO_VENDOR=(
-	"github.com/alecthomas/kingpin a395891"
-	"github.com/alecthomas/template a0175ee"
-	"github.com/alecthomas/units 2efee85"
-	"github.com/caarlos0/gohome c08fdeb"
-	"github.com/getantibody/folder 479aa91"
-	"github.com/stretchr/testify 12b6f73"
-	"golang.org/x/crypto 1a580b3 github.com/golang/crypto"
-	"golang.org/x/net 2491c5d github.com/golang/net"
-	"golang.org/x/sync 1d60e46 github.com/golang/sync"
-	"golang.org/x/sys 7c87d13 github.com/golang/sys"
+	"github.com/alecthomas/kingpin a39589180e"
+	"github.com/alecthomas/template a0175ee3bc"
+	"github.com/alecthomas/units 2efee857e7"
+	"github.com/caarlos0/gohome 75f08ebc60"
+	"github.com/getantibody/folder v1.0.0"
+	"github.com/stretchr/testify v1.2.2"
+	"golang.org/x/crypto 1a580b3eff github.com/golang/crypto"
+	"golang.org/x/net 2491c5de34 github.com/golang/net"
+	"golang.org/x/sync 1d60e4601c github.com/golang/sync"
+	"golang.org/x/sys 7c87d13f8e github.com/golang/sys"
 )
 
 inherit golang-vcs-snapshot
@@ -46,15 +43,11 @@ S="${G}/src/${EGO_PN}"
 
 QA_PRESTRIPPED="usr/bin/antibody"
 
-pkg_setup() {
+pkg_pretend() {
 	if [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
-		if has test && has network-sandbox $FEATURES; then
-			ewarn
-			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn
-			die "[network-sandbox] is enabled in FEATURES"
-		fi
+		(has test ${FEATURES} && has network-sandbox ${FEATURES}) && \
+			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 	fi
 }
 
@@ -68,6 +61,10 @@ src_compile() {
 		-ldflags "-s -w -X main.version=${PV}"
 	)
 	go build "${mygoargs[@]}" || die
+}
+
+src_test() {
+	go test -v -failfast -race ./... || die
 }
 
 src_install() {
