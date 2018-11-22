@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -24,17 +24,15 @@ QA_PRESTRIPPED="usr/bin/memcached_exporter"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-pkg_setup() {
-	if use test; then
+pkg_pretend() {
+	if [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
-		if has network-sandbox $FEATURES; then
-			ewarn ""
-			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn ""
-			die "[network-sandbox] is enabled in FEATURES"
-		fi
+		(has test ${FEATURES} && has network-sandbox ${FEATURES}) && \
+			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 	fi
+}
 
+pkg_setup() {
 	enewgroup memcached_exporter
 	enewuser memcached_exporter -1 -1 -1 memcached_exporter
 }
