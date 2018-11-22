@@ -1,21 +1,24 @@
 #!/sbin/openrc-run
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-/var/log/mongodb_exporter/error.log}"
+error_log="${error_log:-${MONGODB_LOGDIR}/error.log}"
 
 name="${name:-MongoDB Exporter}"
 command="/usr/bin/mongodb_exporter"
-command_args="${MONGODB_EXPORTER_OPTS}"
+command_args="${MONGODB_OPTS}"
 command_user="${command_user:-mongodb_exporter:mongodb_exporter}"
-command_background=yes
+command_background=true
 pidfile="/run/${RC_SVCNAME}.pid"
 start_stop_daemon_args="${SSD_OPTS}
-	-e \"MONGODB_URL=${MONGODB_EXPORTER_URL}\"
-	-e \"HTTP_AUTH=${MONGODB_EXPORTER_AUTH}\"
-	-1 ${output_log} -2 ${error_log}"
+	-e \"MONGODB_URL=${MONGODB_URL}\"
+	-e \"HTTP_AUTH=${MONGODB_AUTH}\""
 
 depend() {
 	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" "${MONGODB_LOGDIR}"
 }
