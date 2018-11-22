@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="a0a3449" # Change this when you update the ebuild
+GIT_COMMIT="241c664fb5" # Change this when you update the ebuild
 EGO_PN="github.com/prometheus/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -16,7 +16,7 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="pie test"
+IUSE="pie"
 
 DOCS=( NOTICE README.md )
 QA_PRESTRIPPED="usr/bin/memcached_exporter"
@@ -50,8 +50,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
