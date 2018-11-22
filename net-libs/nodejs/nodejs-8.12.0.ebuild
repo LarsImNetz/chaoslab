@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -140,9 +140,9 @@ src_compile() {
 
 src_install() {
 	local LIBDIR npm_config tmp_npm_completion_file
-	LIBDIR="${ED%/}/usr/$(get_libdir)"
-	emake install DESTDIR="${D%/}"
-	pax-mark -m "${ED%/}"usr/bin/node
+	LIBDIR="${ED}/usr/$(get_libdir)"
+	emake install DESTDIR="${D}"
+	pax-mark -m "${ED}"usr/bin/node
 
 	# set up a symlink structure that node-gyp expects..
 	dodir /usr/include/node/deps/{v8,uv}
@@ -169,11 +169,11 @@ src_install() {
 		# We need to temporarily replace default config path since
 		# npm otherwise tries to write outside of the sandbox
 		npm_config="usr/$(get_libdir)/node_modules/npm/lib/config/core.js"
-		sed -i -e "s|'/etc'|'${ED%/}/etc'|g" "${ED%/}/${npm_config}" || die
+		sed -i -e "s|'/etc'|'${ED}/etc'|g" "${ED}/${npm_config}" || die
 		tmp_npm_completion_file="$(emktemp)"
-		"${ED%/}/usr/bin/npm" completion > "${tmp_npm_completion_file}"
+		"${ED}/usr/bin/npm" completion > "${tmp_npm_completion_file}"
 		newbashcomp "${tmp_npm_completion_file}" npm
-		sed -i -e "s|'${ED%/}/etc'|'/etc'|g" "${ED%/}/${npm_config}" || die
+		sed -i -e "s|'${ED}/etc'|'/etc'|g" "${ED}/${npm_config}" || die
 
 		# Move man pages
 		doman "${LIBDIR}"/node_modules/npm/man/man{1,5,7}/*
@@ -201,16 +201,13 @@ src_install() {
 	fi
 }
 
-src_test() {
-	out/${BUILDTYPE}/cctest || die
-	"${PYTHON}" tools/test.py --mode=${BUILDTYPE,,} -J message parallel sequential || die
-}
-
 pkg_postinst() {
+	einfo
 	einfo "The global npm config lives in /etc/npm. This deviates slightly"
 	einfo "from upstream which otherwise would have it live in /usr/etc/."
 	einfo
 	einfo "Protip: When using node-gyp to install native modules, you can"
 	einfo "avoid having to download extras by doing the following:"
 	einfo "$ node-gyp --nodedir /usr/include/node <command>"
+	einfo
 }

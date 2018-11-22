@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 PYTHON_COMPAT=( python2_7 )
 PYTHON_REQ_USE="threads"
@@ -136,9 +136,9 @@ src_compile() {
 
 src_install() {
 	local LIBDIR npm_config tmp_npm_completion_file
-	LIBDIR="${ED%/}/usr/$(get_libdir)"
+	LIBDIR="${ED}/usr/$(get_libdir)"
 	emake install DESTDIR="${D}"
-	pax-mark -m "${ED%/}"/usr/bin/node
+	pax-mark -m "${ED}"/usr/bin/node
 
 	# set up a symlink structure that node-gyp expects..
 	dodir /usr/include/node/deps/{v8,uv}
@@ -154,8 +154,8 @@ src_install() {
 			sed -i '/fonts.googleapis.com/ d' "$i";
 		done
 		# Install docs
-		docinto html
-		dodoc -r "${S}"/doc/*
+		HTML_DOCS=( doc/* )
+		einstalldocs
 	fi
 
 	if use npm; then
@@ -165,11 +165,11 @@ src_install() {
 		# We need to temporarily replace default config path since
 		# npm otherwise tries to write outside of the sandbox
 		npm_config="usr/$(get_libdir)/node_modules/npm/lib/config/core.js"
-		sed -i -e "s|'/etc'|'${ED%/}/etc'|g" "${ED%/}/${npm_config}" || die
+		sed -i -e "s|'/etc'|'${ED}/etc'|g" "${ED}/${npm_config}" || die
 		tmp_npm_completion_file="$(emktemp)"
-		"${ED%/}/usr/bin/npm" completion > "${tmp_npm_completion_file}"
+		"${ED}/usr/bin/npm" completion > "${tmp_npm_completion_file}"
 		newbashcomp "${tmp_npm_completion_file}" npm
-		sed -i -e "s|'${ED%/}/etc'|'/etc'|g" "${ED%/}/${npm_config}" || die
+		sed -i -e "s|'${ED}/etc'|'/etc'|g" "${ED}/${npm_config}" || die
 
 		# Move man pages
 		doman "${LIBDIR}"/node_modules/npm/man/man{1,5,7}/*
@@ -211,6 +211,6 @@ pkg_postinst() {
 	einfo
 	einfo "Protip: When using node-gyp to install native modules, you can"
 	einfo "avoid having to download extras by doing the following:"
-	einfo "$ node-gyp --nodedir ${EROOT%/}/usr/include/node <command>"
+	einfo "$ node-gyp --nodedir ${EROOT}/usr/include/node <command>"
 	einfo
 }
