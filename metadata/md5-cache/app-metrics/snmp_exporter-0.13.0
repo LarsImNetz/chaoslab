@@ -1,4 +1,4 @@
-DEFINED_PHASES=compile install postinst setup test unpack
+DEFINED_PHASES=compile install postinst pretend setup test unpack
 DEPEND=test? ( net-analyzer/net-snmp ) >=dev-lang/go-1.9 virtual/pkgconfig
 DESCRIPTION=An exporter that exposes information gathered from SNMP for Prometheus
 EAPI=6
@@ -10,4 +10,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/prometheus/snmp_exporter/archive/v0.13.0.tar.gz -> snmp_exporter-0.13.0.tar.gz
 _eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	multilib	b2f01ad412baf81650c23fcf0975fa33	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=18e9c38ee961acfb5cc1d5ea189e2cd9
+_md5_=1bdfa82338520c652ae3a44eb48e5513
