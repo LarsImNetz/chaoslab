@@ -6,28 +6,28 @@ EAPI=6
 EGO_PN="github.com/bengadbois/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 # Deps that are not needed:
-# github.com/inconshreveable/mousetrap 76626ae
-# github.com/mattn/go-colorable 167de6b
-# github.com/mattn/go-isatty 0360b2a
+# github.com/inconshreveable/mousetrap v1.0
+# github.com/mattn/go-colorable v0.0.9
+# github.com/mattn/go-isatty v0.0.3
 EGO_VENDOR=(
-	"github.com/dustin/go-humanize 9f541cc"
-	"github.com/fatih/color 570b54c"
-	"github.com/fsnotify/fsnotify 629574c"
-	"github.com/hashicorp/hcl 68e816d"
-	"github.com/lucasjones/reggen bed4659"
-	"github.com/magiconair/properties be5ece7"
-	"github.com/mitchellh/mapstructure d0303fe"
-	"github.com/pelletier/go-toml 16398ba"
-	"github.com/spf13/afero 3de492c"
-	"github.com/spf13/cast acbeb36"
-	"github.com/spf13/cobra bc69223"
-	"github.com/spf13/jwalterweatherman 12bd96e"
-	"github.com/spf13/pflag e57e3ee"
-	"github.com/spf13/viper 25b30aa"
-	"golang.org/x/net a04bdac github.com/golang/net"
-	"golang.org/x/sys ebfc5b4 github.com/golang/sys"
-	"golang.org/x/text 825fc78 github.com/golang/text"
-	"gopkg.in/yaml.v2 eb3733d github.com/go-yaml/yaml"
+	"github.com/dustin/go-humanize 9f541cc9db"
+	"github.com/fatih/color v1.5.0"
+	"github.com/fsnotify/fsnotify v1.4.2"
+	"github.com/hashicorp/hcl 68e816d1c7"
+	"github.com/lucasjones/reggen bed4659921"
+	"github.com/magiconair/properties v1.7.3"
+	"github.com/mitchellh/mapstructure d0303fe809"
+	"github.com/pelletier/go-toml v1.0.1"
+	"github.com/spf13/afero 3de492c3cd"
+	"github.com/spf13/cast v1.1.0"
+	"github.com/spf13/cobra bc69223348"
+	"github.com/spf13/jwalterweatherman 12bd96e663"
+	"github.com/spf13/pflag v1.0.0"
+	"github.com/spf13/viper v1.0.0"
+	"golang.org/x/net a04bdaca5b github.com/golang/net"
+	"golang.org/x/sys ebfc5b4631 github.com/golang/sys"
+	"golang.org/x/text 825fc78a2f github.com/golang/text"
+	"gopkg.in/yaml.v2 eb3733d160 github.com/go-yaml/yaml"
 )
 
 inherit golang-vcs-snapshot
