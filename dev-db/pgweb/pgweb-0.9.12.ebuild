@@ -4,7 +4,7 @@
 EAPI=6
 
 EGO_PN="github.com/sosedoff/pgweb"
-GIT_COMMIT="9af7211" # Change this when you update the ebuild
+GIT_COMMIT="9af721176b" # Change this when you update the ebuild
 
 inherit golang-vcs-snapshot systemd user
 
@@ -24,23 +24,20 @@ QA_PRESTRIPPED="usr/bin/pgweb"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-pkg_setup() {
-	if [[ "${MERGE_TYPE}" != binary ]]; then
-		# shellcheck disable=SC2086
-		if has test $FEATURES; then
-			ewarn
-			ewarn "The tests requires a local PostgreSQL server running on default port"
-			ewarn
-			sleep 5
-			if has network-sandbox $FEATURES; then
-				ewarn
-				ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-				ewarn
-				die "[network-sandbox] is enabled in FEATURES"
-			fi
-		fi
-	fi
+pkg_pretend() {
+	# shellcheck disable=SC2086
+	if has test ${FEATURES} && [[ "${MERGE_TYPE}" != binary ]]; then
+		ewarn
+		ewarn "The tests requires a PostgreSQL server running on default port"
+		ewarn
+		sleep 5
 
+		(has network-sandbox ${FEATURES}) && \
+			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
+	fi
+}
+
+pkg_setup() {
 	if use daemon; then
 		enewgroup pgweb
 		enewuser pgweb -1 -1 -1 pgweb
