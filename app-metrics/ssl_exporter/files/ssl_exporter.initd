@@ -1,23 +1,22 @@
 #!/sbin/openrc-run
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${SSL_EXPORTER_LOGDIR}/error.log}"
+error_log="${error_log:-${SSL_LOGDIR}/error.log}"
 
 name="${name:-SSL Exporter}"
 command="/usr/bin/ssl_exporter"
-command_args="${SSL_EXPORTER_OPTS}"
+command_args="${SSL_OPTS}"
 command_user="${command_user:-ssl_exporter:ssl_exporter}"
-command_background=yes
+command_background=true
 pidfile="/run/${RC_SVCNAME}.pid"
-start_stop_daemon_args="${SSD_OPTS}
-	-1 ${output_log} -2 ${error_log}"
+start_stop_daemon_args="${SSD_OPTS}"
 
 depend() {
 	need net
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" "${SSL_EXPORTER_LOGDIR}"
+	checkpath -d -m 0750 -o "${command_user}" "${SSL_LOGDIR}"
 }
