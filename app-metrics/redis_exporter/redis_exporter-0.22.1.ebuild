@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 # Change this when you update the ebuild:
-GIT_COMMIT="8bb0b841e9a70b0348f69483e58fea01d521c47a"
+GIT_COMMIT="77c2c783e074db2b1cc0e3531a55444d5d97a889"
 EGO_PN="github.com/oliver006/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -17,7 +17,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="pie test"
+IUSE="pie"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/redis_exporter"
@@ -25,20 +25,19 @@ QA_PRESTRIPPED="usr/bin/redis_exporter"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-pkg_setup() {
-	if use test; then
+pkg_pretend() {
+	# shellcheck disable=SC2086
+	if has test ${FEATURES} && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
-		ewarn "The test phase requires a local Redis server running on default port"
+		ewarn "The test phase requires a Redis server running on default port"
 		ewarn
-		# shellcheck disable=SC2086
-		if has network-sandbox $FEATURES; then
-			ewarn
-			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn
-			die "[network-sandbox] is enabled in FEATURES"
-		fi
-	fi
 
+		(has network-sandbox ${FEATURES}) && \
+			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
+	fi
+}
+
+pkg_setup() {
 	enewgroup redis_exporter
 	enewuser redis_exporter -1 -1 -1 redis_exporter
 }
@@ -48,13 +47,13 @@ src_compile() {
 	local myldflags=( -s -w
 		-X "main.VERSION=${PV}"
 		-X "main.COMMIT_SHA1=${GIT_COMMIT}"
-		-X "main.BUILD_DATE=$(date +%F-%T)"
+		-X "main.BUILD_DATE=$(date -u +%F-%T)"
 	)
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
