@@ -101,20 +101,6 @@ pkg_postinst() {
 		fi
 	fi
 
-	local v
-	for v in ${REPLACING_VERSIONS}; do
-		if [[ "${v}" == 1.* ]]; then
-			elog "Version 2.x.x is a complete rewrite of ${PN}"
-			elog "please clean up old config/log files"
-			elog
-		fi
-		if [[ "${v}" == 2.* ]] ; then
-			elog "As of version 2.0.12 of ${PN} runs as an 'dnscrypt-proxy' user/group"
-			elog "you can remove obsolete 'dnscrypt' accounts from the system"
-			elog
-		fi
-	done
-
 	if systemd_is_booted || has_version sys-apps/systemd; then
 		elog "Using systemd socket activation may cause issues with speed"
 		elog "latency and reliability of ${PN} and is discouraged by upstream"
