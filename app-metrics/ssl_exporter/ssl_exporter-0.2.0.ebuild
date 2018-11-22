@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-GIT_COMMIT="1fab18a" # Change this when you update the ebuild
+GIT_COMMIT="1fab18aeb0" # Change this when you update the ebuild
 EGO_PN="github.com/ribbybibby/${PN}"
 
 inherit golang-vcs-snapshot systemd user
@@ -16,7 +16,7 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="pie test"
+IUSE="pie"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/ssl_exporter"
@@ -24,17 +24,15 @@ QA_PRESTRIPPED="usr/bin/ssl_exporter"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-pkg_setup() {
-	if use test; then
+pkg_pretend() {
+	if [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
-		if has network-sandbox $FEATURES; then
-			ewarn ""
-			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn ""
-			die "[network-sandbox] is enabled in FEATURES"
-		fi
+		(has test ${FEATURES} && has network-sandbox ${FEATURES}) && \
+			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 	fi
+}
 
+pkg_setup() {
 	enewgroup ssl_exporter
 	enewuser ssl_exporter -1 -1 -1 ssl_exporter
 }
@@ -52,8 +50,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags -ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die

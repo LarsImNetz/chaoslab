@@ -1,14 +1,15 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-GIT_COMMIT="fbf8e3a" # Change this when you update the ebuild
+GIT_COMMIT="fbf8e3a4d8" # Change this when you update the ebuild
 EGO_PN="github.com/percona/${PN}"
+# Snapshot taken on 2018.11.22
 EGO_VENDOR=(
-	"github.com/AlekSi/gocoverutil c7c9efd"
-	"github.com/stretchr/testify f35b8ab"
-	"golang.org/x/tools 16f8f9b github.com/golang/tools"
+	"github.com/AlekSi/gocoverutil v0.2.0"
+	"github.com/stretchr/testify v1.2.2"
+	"golang.org/x/tools 91f80e683c github.com/golang/tools"
 )
 
 inherit golang-vcs-snapshot systemd user
@@ -22,9 +23,7 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="pie test"
-
-DEPEND="test? ( dev-db/mongodb )"
+IUSE="pie"
 
 DOCS=( CHANGELOG.md README.md )
 QA_PRESTRIPPED="usr/bin/mongodb_exporter"
@@ -32,20 +31,19 @@ QA_PRESTRIPPED="usr/bin/mongodb_exporter"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-pkg_setup() {
-	if use test; then
+pkg_pretend() {
+	# shellcheck disable=SC2086
+	if has test ${FEATURES} && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
-		ewarn "The test phase requires a local MongoDB server running on default port"
+		ewarn "The test phase requires a MongoDB server running on default port"
 		ewarn
-		# shellcheck disable=SC2086
-		if has network-sandbox $FEATURES; then
-			ewarn
-			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn
-			die "[network-sandbox] is enabled in FEATURES"
-		fi
-	fi
 
+		(has network-sandbox ${FEATURES}) && \
+			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
+	fi
+}
+
+pkg_setup() {
 	enewgroup mongodb_exporter
 	enewuser mongodb_exporter -1 -1 -1 mongodb_exporter
 }
@@ -63,20 +61,17 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
-
-	if use test; then
-		# Build gocoverutil locally
-		go install ./vendor/github.com/AlekSi/gocoverutil || die
-	fi
 }
 
 src_test() {
 	local PATH="${G}/bin:$PATH"
+	# Build gocoverutil locally
+	go install ./vendor/github.com/AlekSi/gocoverutil || die
 	default
 }
 

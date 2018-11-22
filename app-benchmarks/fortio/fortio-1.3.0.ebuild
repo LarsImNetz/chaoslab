@@ -8,12 +8,12 @@ GIT_COMMIT="bf3f2d9ff07ed03ef16be56af20d58dc0300e60f"
 EGO_PN="fortio.org/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 EGO_VENDOR=(
-	"github.com/golang/protobuf aa810b61a9"
+	"github.com/golang/protobuf v1.2.0"
 	"golang.org/x/net 26e67e76b6 github.com/golang/net"
 	"golang.org/x/sys d0be0721c3 github.com/golang/sys"
-	"golang.org/x/text f21a4dfb5e github.com/golang/text"
+	"golang.org/x/text v0.3.0 github.com/golang/text"
 	"google.golang.org/genproto 36d5787dc5 github.com/google/go-genproto"
-	"google.golang.org/grpc 8dea3dc473 github.com/grpc/grpc-go"
+	"google.golang.org/grpc v1.15.0 github.com/grpc/grpc-go"
 )
 
 inherit golang-vcs-snapshot
@@ -35,17 +35,15 @@ QA_PRESTRIPPED="usr/bin/fortio"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-pkg_setup() {
+pkg_pretend() {
 	if [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
-		if has test && has network-sandbox $FEATURES; then
-			ewarn
-			ewarn "The test phase requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn
-			die "[network-sandbox] is enabled in FEATURES"
-		fi
+		(has test ${FEATURES} && has network-sandbox ${FEATURES}) && \
+			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 	fi
+}
 
+pkg_setup() {
 	if use daemon; then
 		enewgroup fortio
 		enewuser fortio -1 -1 /var/lib/fortio fortio
