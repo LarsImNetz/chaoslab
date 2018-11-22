@@ -1,22 +1,22 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 EGO_PN="github.com/kumina/${PN}"
-# Snapshot taken on 2018.09.13
+# Snapshot taken on 2018.11.22
 EGO_VENDOR=(
-	"github.com/beorn7/perks 3a771d9"
-	"github.com/gogo/protobuf 636bf03"
-	"github.com/golang/protobuf aa810b6"
-	"github.com/matttproud/golang_protobuf_extensions c12348c"
-	"github.com/prometheus/client_golang b5bfa0e"
-	"github.com/prometheus/client_model 5c3871d"
-	"github.com/prometheus/common c7de230"
-	"github.com/prometheus/procfs 05ee40e"
-	"github.com/alecthomas/template a0175ee"
-	"github.com/alecthomas/units 2efee85"
-	"gopkg.in/alecthomas/kingpin.v2 947dcec github.com/alecthomas/kingpin"
+	"github.com/beorn7/perks 3a771d9929"
+	"github.com/gogo/protobuf v1.1.1"
+	"github.com/golang/protobuf v1.2.0"
+	"github.com/matttproud/golang_protobuf_extensions v1.0.1"
+	"github.com/prometheus/client_golang v0.9.1"
+	"github.com/prometheus/client_model 5c3871d899"
+	"github.com/prometheus/common aeab699e26"
+	"github.com/prometheus/procfs 185b428841"
+	"github.com/alecthomas/template a0175ee3bc"
+	"github.com/alecthomas/units 2efee857e7"
+	"gopkg.in/alecthomas/kingpin.v2 v2.2.6 github.com/alecthomas/kingpin"
 )
 
 inherit golang-vcs-snapshot systemd user
@@ -48,8 +48,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w"
 	)
 	go build "${mygoargs[@]}" || die

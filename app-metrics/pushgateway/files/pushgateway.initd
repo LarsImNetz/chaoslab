@@ -1,5 +1,5 @@
 #!/sbin/openrc-run
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 output_log="${output_log:-/dev/null}"
@@ -9,10 +9,9 @@ name="${name:-Pushgateway}"
 command="/usr/bin/pushgateway"
 command_args="${PUSHGATEWAY_OPTS}"
 command_user="${command_user:-pushgateway:pushgateway}"
-command_background=yes
+command_background=true
 pidfile="/run/${RC_SVCNAME}.pid"
-start_stop_daemon_args="${SSD_OPTS}
-	-1 ${output_log} -2 ${error_log}"
+start_stop_daemon_args="${SSD_OPTS}"
 
 depend() {
 	need net
