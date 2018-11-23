@@ -59,7 +59,7 @@ COMMON_DEPEND="
 	>=media-libs/alsa-lib-1.0.19:=
 	media-libs/fontconfig:=
 	media-libs/freetype:=
-	system-harfbuzz? ( >=media-libs/harfbuzz-1.8.8:0=[icu(-)] )
+	system-harfbuzz? ( >=media-libs/harfbuzz-2.0.0:0=[icu(-)] )
 	media-libs/libjpeg-turbo:=
 	media-libs/libpng:=
 	system-libvpx? ( >=media-libs/libvpx-1.7.0:=[postproc,svc] )
@@ -205,11 +205,7 @@ src_prepare() {
 	ln -s "${EPREFIX}/usr/bin/node" third_party/node/linux/node-linux-x64/bin/node || die
 
 	# Fix build with harfbuzz-2 (Bug #669034)
-	if use system-harfbuzz; then
-		if has_version '>=media-libs/harfbuzz-2.0.0'; then
-			eapply "${FILESDIR}/chromium-harfbuzz-r0.patch"
-		fi
-	fi
+	use system-harfbuzz && eapply "${FILESDIR}/chromium-harfbuzz-r0.patch"
 
 	# Apply extra patches (taken from openSUSE)
 	local ep
