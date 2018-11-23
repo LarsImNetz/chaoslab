@@ -15,6 +15,7 @@
 		and enhancing privacy, control, and transparency
 	</longdescription>
 	<use>
+		<flag name="cfi">Build with CFI (Control Flow Integrity) enabled</flag>
 		<flag name="gnome">
 			Improve integration with Gnome by enabling support for GIO (libgio)
 		</flag>

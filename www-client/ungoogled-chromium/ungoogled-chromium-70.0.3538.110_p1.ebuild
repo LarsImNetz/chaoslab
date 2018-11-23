@@ -27,7 +27,7 @@ LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="
-	cups custom-cflags gnome jumbo-build kerberos new-tcmalloc +openh264
+	+cfi cups custom-cflags gnome jumbo-build kerberos new-tcmalloc +openh264
 	optimize-webui +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
 	system-harfbuzz +system-icu +system-libevent +system-libvpx +system-openjpeg
 	+tcmalloc +thinlto vaapi widevine
@@ -35,6 +35,7 @@ IUSE="
 REQUIRED_USE="
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
+	cfi? ( thinlto )
 	new-tcmalloc? ( tcmalloc )
 "
 RESTRICT="mirror
@@ -124,7 +125,7 @@ BDEPEND="
 	sys-apps/hwids[usb(+)]
 	>=sys-devel/bison-2.4.3
 	>=sys-devel/clang-7.0.0
-	>=sys-devel/clang-runtime-7.0.0[sanitize]
+	cfi? ( >=sys-devel/clang-runtime-7.0.0[sanitize] )
 	sys-devel/flex
 	>=sys-devel/lld-7.0.0
 	>=sys-devel/llvm-7.0.0
@@ -563,6 +564,8 @@ src_configure() {
 	myconf_gn+=" clang_use_chrome_plugins=false"
 	myconf_gn+=" use_thin_lto=$(usetf thinlto)"
 	myconf_gn+=" treat_warnings_as_errors=false"
+	myconf_gn+=" is_cfi=$(usetf cfi)"
+	myconf_gn+=" use_cfi_cast=$(usetf cfi)"
 
 	# UGC's "common" GN flags (config_bundles/common/gn_flags.map)
 	myconf_gn+=" blink_symbol_level=0"
@@ -589,7 +592,7 @@ src_configure() {
 	myconf_gn+=" google_default_client_id=\"\""
 	myconf_gn+=" google_default_client_secret=\"\""
 	myconf_gn+=" is_debug=false"
-	myconf_gn+=" is_official_build=true" # Implies is_cfi=true
+	myconf_gn+=" is_official_build=true"
 	myconf_gn+=" optimize_webui=$(usetf optimize-webui)"
 	myconf_gn+=" proprietary_codecs=$(usetf proprietary-codecs)"
 	myconf_gn+=" safe_browsing_mode=0"
