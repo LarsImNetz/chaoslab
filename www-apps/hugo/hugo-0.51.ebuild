@@ -106,10 +106,10 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
-		-tags "$(usex sass 'extended' '')"
+		-tags "$(usex sass 'extended' 'none')"
 	)
 	go build "${mygoargs[@]}" || die
 
@@ -118,12 +118,13 @@ src_compile() {
 }
 
 src_test() {
-	# Remove tests that doesn't play nicely with portage's sandbox
-	rm helpers/*_test.go || die
-	rm hugolib/*_test.go || die
+	# Remove failing tests. If you know how to fix them, then please contribute.
+	rm hugolib/{collections,embedded_shortcodes,page,permalinks,shortcode}_test.go || die
+
+	# git_test.go requires a proper git repository
 	rm releaser/git_test.go || die
 
-	go test -v ./... || die
+	go test -tags none ./... || die
 }
 
 src_install() {

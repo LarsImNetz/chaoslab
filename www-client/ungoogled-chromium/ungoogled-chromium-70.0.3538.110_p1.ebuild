@@ -27,14 +27,15 @@ LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="
-	cups custom-cflags gnome jumbo-build kerberos new-tcmalloc +openh264
+	+cfi cups custom-cflags gnome jumbo-build kerberos new-tcmalloc +openh264
 	optimize-webui +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
-	+system-harfbuzz +system-icu +system-libevent +system-libvpx +system-openjpeg
-	+tcmalloc vaapi widevine
+	system-harfbuzz +system-icu +system-libevent +system-libvpx +system-openjpeg
+	+tcmalloc +thinlto vaapi widevine
 "
 REQUIRED_USE="
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
+	cfi? ( thinlto )
 	new-tcmalloc? ( tcmalloc )
 "
 RESTRICT="mirror
@@ -59,7 +60,7 @@ COMMON_DEPEND="
 	>=media-libs/alsa-lib-1.0.19:=
 	media-libs/fontconfig:=
 	media-libs/freetype:=
-	system-harfbuzz? ( >=media-libs/harfbuzz-1.8.8:0=[icu(-)] )
+	system-harfbuzz? ( >=media-libs/harfbuzz-2.0.0:0=[icu(-)] )
 	media-libs/libjpeg-turbo:=
 	media-libs/libpng:=
 	system-libvpx? ( >=media-libs/libvpx-1.7.0:=[postproc,svc] )
@@ -124,7 +125,7 @@ BDEPEND="
 	sys-apps/hwids[usb(+)]
 	>=sys-devel/bison-2.4.3
 	>=sys-devel/clang-7.0.0
-	>=sys-devel/clang-runtime-7.0.0[sanitize]
+	cfi? ( >=sys-devel/clang-runtime-7.0.0[sanitize] )
 	sys-devel/flex
 	>=sys-devel/lld-7.0.0
 	>=sys-devel/llvm-7.0.0
@@ -180,17 +181,16 @@ pre_build_checks() {
 }
 
 pkg_pretend() {
-	pre_build_checks
-}
-
-pkg_setup() {
 	if use custom-cflags && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
 		ewarn "USE=custom-cflags bypass strip-flags; you are on your own."
 		ewarn "Expect build failures. Don't file bugs using that unsupported USE flag!"
 		ewarn
-		sleep 5
 	fi
+	pre_build_checks
+}
+
+pkg_setup() {
 	pre_build_checks
 	chromium_suid_sandbox_check_kernel_config
 }
@@ -205,11 +205,7 @@ src_prepare() {
 	ln -s "${EPREFIX}/usr/bin/node" third_party/node/linux/node-linux-x64/bin/node || die
 
 	# Fix build with harfbuzz-2 (Bug #669034)
-	if use system-harfbuzz; then
-		if has_version '>=media-libs/harfbuzz-2.0.0'; then
-			eapply "${FILESDIR}/chromium-harfbuzz-r0.patch"
-		fi
-	fi
+	use system-harfbuzz && eapply "${FILESDIR}/chromium-harfbuzz-r0.patch"
 
 	# Apply extra patches (taken from openSUSE)
 	local ep
@@ -466,24 +462,68 @@ src_prepare() {
 	build/linux/unbundle/remove_bundled_libraries.py "${keeplibs[@]}" --do-remove || die
 }
 
+# Handle all CFLAGS/CXXFLAGS/etc... munging here.
+setup_compile_flags() {
+	# Avoid CFLAGS problems (Bug #352457, #390147)
+	if ! use custom-cflags; then
+		replace-flags "-Os" "-O2"
+		strip-flags
+
+		# Filter common/redundant flags. See build/config/compiler/BUILD.gn
+		filter-flags -fomit-frame-pointer -fno-omit-frame-pointer
+		filter-flags '-fstack-protector*' '-fno-stack-protector*'
+		filter-flags '-fuse-ld=*' '-g*' '-Wl,*'
+
+		# Prevent libvpx build failures (Bug #530248, #544702, #546984)
+		if [[ ${myarch} == amd64 || ${myarch} == x86 ]]; then
+			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
+		fi
+	fi
+
+	if use thinlto; then
+		# We need to change the default value of import-instr-limit in
+		# LLVM to limit the text size increase. The default value is
+		# 100, and we change it to 30 to reduce the text size increase
+		# from 25% to 10%. The performance number of page_cycler is the
+		# same on two of the thinLTO configurations, we got 1% slowdown
+		# on speedometer when changing import-instr-limit from 100 to 30.
+		append-ldflags "-Wl,-plugin-opt,-import-instr-limit=30"
+	fi
+
+	# Enable std::vector []-operator bounds checking (https://crbug.com/333391)
+	append-cxxflags -D__google_stl_debug_vector=1
+
+	# Don't complain if Chromium uses a diagnostic option that is not yet
+	# implemented in the compiler version used by the user. This is only
+	# supported by Clang.
+	append-flags -Wno-unknown-warning-option
+
+	# Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
+	append-cflags -Wno-builtin-macro-redefined
+	append-cxxflags -Wno-builtin-macro-redefined
+	append-cppflags "-D__DATE__= -D__TIME__= -D__TIMESTAMP__="
+
+	local flags
+	einfo "Building with the compiler settings:"
+	for flags in {C,CXX,CPP,LD}FLAGS; do
+		einfo "  ${flags} = ${!flags}"
+	done
+}
+
 src_configure() {
 	# Calling this here supports resumption via FEATURES=keepwork
 	python_setup 'python2*'
 
 	# Make sure the build system will use the right tools (Bug #340795)
-	tc-export AR CC CXX NM
+	tc-export AR CC CXX NM RANLIB
 
 	# Force clang
 	CC=${CHOST}-clang
 	CXX=${CHOST}-clang++
 	AR=llvm-ar
 	NM=llvm-nm
+	RANLIB=llvm-ranlib
 	strip-unsupported-flags
-
-	# Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
-	append-cflags -Wno-builtin-macro-redefined
-	append-cxxflags -Wno-builtin-macro-redefined
-	append-cppflags "-D__DATE__= -D__TIME__= -D__TIMESTAMP__="
 
 	# Use system-provided libraries
 	# TODO: freetype -- remove sources (https://crbug.com/pdfium/733)
@@ -519,9 +559,16 @@ src_configure() {
 	build/linux/unbundle/replace_gn_files.py --system-libraries "${gn_system_libraries[@]}" || die
 
 	local myconf_gn=""
+	# Clang features
+	myconf_gn+=" is_clang=true" # Implies use_lld=true
+	myconf_gn+=" clang_use_chrome_plugins=false"
+	myconf_gn+=" use_thin_lto=$(usetf thinlto)"
+	myconf_gn+=" treat_warnings_as_errors=false"
+	myconf_gn+=" is_cfi=$(usetf cfi)"
+	myconf_gn+=" use_cfi_cast=$(usetf cfi)"
+
 	# UGC's "common" GN flags (config_bundles/common/gn_flags.map)
 	myconf_gn+=" blink_symbol_level=0"
-	myconf_gn+=" clang_use_chrome_plugins=false"
 	myconf_gn+=" enable_ac3_eac3_audio_demuxing=true"
 	myconf_gn+=" enable_hangout_services_extension=false"
 	myconf_gn+=" enable_hevc_demuxing=true"
@@ -536,7 +583,7 @@ src_configure() {
 	myconf_gn+=" enable_reporting=false"
 	myconf_gn+=" enable_service_discovery=false"
 	myconf_gn+=" enable_swiftshader=false"
-	myconf_gn+=" enable_widevine=$(usex widevine true false)"
+	myconf_gn+=" enable_widevine=$(usetf widevine)"
 	myconf_gn+=" exclude_unwind_tables=true"
 	myconf_gn+=" fatal_linker_warnings=false"
 	myconf_gn+=" ffmpeg_branding=\"$(usex proprietary-codecs Chrome Chromium)\""
@@ -544,16 +591,14 @@ src_configure() {
 	myconf_gn+=" google_api_key=\"\""
 	myconf_gn+=" google_default_client_id=\"\""
 	myconf_gn+=" google_default_client_secret=\"\""
-	myconf_gn+=" is_clang=true" # Implies use_lld=true
 	myconf_gn+=" is_debug=false"
-	myconf_gn+=" is_official_build=true" # Implies is_cfi=true
-	myconf_gn+=" optimize_webui=$(usex optimize-webui true false)"
-	myconf_gn+=" proprietary_codecs=$(usex proprietary-codecs true false)"
+	myconf_gn+=" is_official_build=true"
+	myconf_gn+=" optimize_webui=$(usetf optimize-webui)"
+	myconf_gn+=" proprietary_codecs=$(usetf proprietary-codecs)"
 	myconf_gn+=" safe_browsing_mode=0"
 	myconf_gn+=" symbol_level=0"
-	myconf_gn+=" treat_warnings_as_errors=false"
 	myconf_gn+=" use_gnome_keyring=false" # Deprecated by libsecret
-	myconf_gn+=" use_jumbo_build=$(usex jumbo-build true false)"
+	myconf_gn+=" use_jumbo_build=$(usetf jumbo-build)"
 	myconf_gn+=" use_official_google_api_keys=false"
 	myconf_gn+=" use_ozone=false"
 	myconf_gn+=" use_sysroot=false"
@@ -570,30 +615,32 @@ src_configure() {
 	else
 		myconf_gn+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
 	fi
-	myconf_gn+=" link_pulseaudio=$(usex pulseaudio true false)"
+	myconf_gn+=" link_pulseaudio=$(usetf pulseaudio)"
 	myconf_gn+=" linux_use_bundled_binutils=false"
 	myconf_gn+=" optimize_for_size=false"
 	myconf_gn+=" use_allocator=\"$(usex tcmalloc tcmalloc none)\""
-	myconf_gn+=" use_cups=$(usex cups true false)"
+	myconf_gn+=" use_cups=$(usetf cups)"
 	myconf_gn+=" use_custom_libcxx=false"
-	myconf_gn+=" use_gio=$(usex gnome true false)"
-	myconf_gn+=" use_kerberos=$(usex kerberos true false)"
-	myconf_gn+=" use_openh264=$(usex !openh264 true false)" # Enable this to
+	myconf_gn+=" use_gio=$(usetf gnome)"
+	myconf_gn+=" use_kerberos=$(usetf kerberos)"
+	myconf_gn+=" use_openh264=$(usetf !openh264)" # Enable this to
 	# build OpenH264 for encoding, hence the restriction: !openh264? ( bindist )
-	myconf_gn+=" use_pulseaudio=$(usex pulseaudio true false)"
-	myconf_gn+=" use_system_freetype=$(usex system-harfbuzz true false)"
-	myconf_gn+=" use_system_harfbuzz=$(usex system-harfbuzz true false)"
+	myconf_gn+=" use_pulseaudio=$(usetf pulseaudio)"
+	# HarfBuzz and FreeType need to be built together in a specific way
+	# to get FreeType autohinting to work properly. Chromium bundles
+	# FreeType and HarfBuzz to meet that need. (https://crbug.com/694137)
+	myconf_gn+=" use_system_freetype=$(usetf system-harfbuzz)"
+	myconf_gn+=" use_system_harfbuzz=$(usetf system-harfbuzz)"
 	myconf_gn+=" use_system_lcms2=true"
 	myconf_gn+=" use_system_libjpeg=true"
 	myconf_gn+=" use_system_zlib=true"
-	myconf_gn+=" use_vaapi=$(usex vaapi true false)"
+	myconf_gn+=" use_vaapi=$(usetf vaapi)"
 
 	# Optionally enable new tcmalloc (https://crbug.com/724399)
-	# It's relevant only when use_allocator == "tcmalloc"
-	myconf_gn+=" use_new_tcmalloc=$(usex new-tcmalloc true false)"
+	# It is relevant only when use_allocator == "tcmalloc"
+	myconf_gn+=" use_new_tcmalloc=$(usetf new-tcmalloc)"
 
-	# SC2155
-	local myarch
+	local myarch # SC2155
 	myarch="$(tc-arch)"
 	if [[ $myarch = amd64 ]]; then
 		myconf_gn+=" target_cpu=\"x64\""
@@ -603,21 +650,7 @@ src_configure() {
 		die "Failed to determine target arch, got '$myarch'."
 	fi
 
-	# Avoid CFLAGS problems (Bug #352457, #390147)
-	if ! use custom-cflags; then
-		replace-flags "-Os" "-O2"
-		strip-flags
-
-		# Filter common/redundant flags. See build/config/compiler/BUILD.gn
-		filter-flags -fomit-frame-pointer -fno-omit-frame-pointer
-		filter-flags '-fstack-protector*' '-fno-stack-protector*'
-		filter-flags '-fuse-ld=*' '-g*' '-Wl,*'
-
-		# Prevent libvpx build failures (Bug #530248, #544702, #546984)
-		if [[ ${myarch} == amd64 || ${myarch} == x86 ]]; then
-			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
-		fi
-	fi
+	setup_compile_flags
 
 	# Bug #491582
 	export TMPDIR="${WORKDIR}/temp"
@@ -634,17 +667,15 @@ src_configure() {
 }
 
 src_compile() {
-	# Final link uses lots of file descriptors.
+	# Final link uses lots of file descriptors
 	ulimit -n 2048
 
 	# Calling this here supports resumption via FEATURES=keepwork
 	python_setup 'python2*'
 
+	# Avoid falling back to preprocessor mode when sources contain time macros
 	# shellcheck disable=SC2086
-	if has ccache ${FEATURES}; then
-		# Avoid falling back to preprocessor mode when sources contain time macros
-		export CCACHE_SLOPPINESS=time_macros
-	fi
+	(has ccache ${FEATURES}) && export CCACHE_SLOPPINESS=time_macros
 
 	# Build mksnapshot and pax-mark it
 	local x
@@ -742,6 +773,10 @@ src_install() {
 	doins "${FILESDIR}/chromium-browser.xml"
 
 	readme.gentoo_create_doc
+}
+
+usetf() {
+	usex "$1" true false
 }
 
 update_caches() {
