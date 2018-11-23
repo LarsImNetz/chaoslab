@@ -491,13 +491,14 @@ src_configure() {
 	python_setup 'python2*'
 
 	# Make sure the build system will use the right tools (Bug #340795)
-	tc-export AR CC CXX NM
+	tc-export AR CC CXX NM RANLIB
 
 	# Force clang
 	CC=${CHOST}-clang
 	CXX=${CHOST}-clang++
 	AR=llvm-ar
 	NM=llvm-nm
+	RANLIB=llvm-ranlib
 	strip-unsupported-flags
 
 	# Use system-provided libraries
