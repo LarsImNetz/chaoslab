@@ -480,6 +480,9 @@ setup_compile_flags() {
 		fi
 	fi
 
+	# Enable std::vector []-operator bounds checking (https://crbug.com/333391)
+	append-cxxflags -D__google_stl_debug_vector=1
+
 	# Don't complain if Chromium uses a diagnostic option that is not yet
 	# implemented in the compiler version used by the user. This is only
 	# supported by Clang.
