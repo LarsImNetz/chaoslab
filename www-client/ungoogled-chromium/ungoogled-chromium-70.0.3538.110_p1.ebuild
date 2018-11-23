@@ -462,6 +462,30 @@ src_prepare() {
 	build/linux/unbundle/remove_bundled_libraries.py "${keeplibs[@]}" --do-remove || die
 }
 
+# Handle all CFLAGS/CXXFLAGS/etc... munging here.
+setup_compile_flags() {
+	# Avoid CFLAGS problems (Bug #352457, #390147)
+	if ! use custom-cflags; then
+		replace-flags "-Os" "-O2"
+		strip-flags
+
+		# Filter common/redundant flags. See build/config/compiler/BUILD.gn
+		filter-flags -fomit-frame-pointer -fno-omit-frame-pointer
+		filter-flags '-fstack-protector*' '-fno-stack-protector*'
+		filter-flags '-fuse-ld=*' '-g*' '-Wl,*'
+
+		# Prevent libvpx build failures (Bug #530248, #544702, #546984)
+		if [[ ${myarch} == amd64 || ${myarch} == x86 ]]; then
+			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
+		fi
+	fi
+
+	# Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
+	append-cflags -Wno-builtin-macro-redefined
+	append-cxxflags -Wno-builtin-macro-redefined
+	append-cppflags "-D__DATE__= -D__TIME__= -D__TIMESTAMP__="
+}
+
 src_configure() {
 	# Calling this here supports resumption via FEATURES=keepwork
 	python_setup 'python2*'
@@ -475,11 +499,6 @@ src_configure() {
 	AR=llvm-ar
 	NM=llvm-nm
 	strip-unsupported-flags
-
-	# Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
-	append-cflags -Wno-builtin-macro-redefined
-	append-cxxflags -Wno-builtin-macro-redefined
-	append-cppflags "-D__DATE__= -D__TIME__= -D__TIMESTAMP__="
 
 	# Use system-provided libraries
 	# TODO: freetype -- remove sources (https://crbug.com/pdfium/733)
@@ -588,8 +607,7 @@ src_configure() {
 	# It is relevant only when use_allocator == "tcmalloc"
 	myconf_gn+=" use_new_tcmalloc=$(usetf new-tcmalloc)"
 
-	# SC2155
-	local myarch
+	export myarch # SC2155
 	myarch="$(tc-arch)"
 	if [[ $myarch = amd64 ]]; then
 		myconf_gn+=" target_cpu=\"x64\""
@@ -599,21 +617,8 @@ src_configure() {
 		die "Failed to determine target arch, got '$myarch'."
 	fi
 
-	# Avoid CFLAGS problems (Bug #352457, #390147)
-	if ! use custom-cflags; then
-		replace-flags "-Os" "-O2"
-		strip-flags
-
-		# Filter common/redundant flags. See build/config/compiler/BUILD.gn
-		filter-flags -fomit-frame-pointer -fno-omit-frame-pointer
-		filter-flags '-fstack-protector*' '-fno-stack-protector*'
-		filter-flags '-fuse-ld=*' '-g*' '-Wl,*'
-
-		# Prevent libvpx build failures (Bug #530248, #544702, #546984)
-		if [[ ${myarch} == amd64 || ${myarch} == x86 ]]; then
-			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
-		fi
-	fi
+	setup_compile_flags
+	unset myarch
 
 	# Bug #491582
 	export TMPDIR="${WORKDIR}/temp"
