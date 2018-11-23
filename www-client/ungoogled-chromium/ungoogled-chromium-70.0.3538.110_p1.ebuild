@@ -484,6 +484,12 @@ setup_compile_flags() {
 	append-cflags -Wno-builtin-macro-redefined
 	append-cxxflags -Wno-builtin-macro-redefined
 	append-cppflags "-D__DATE__= -D__TIME__= -D__TIMESTAMP__="
+
+	local flags
+	einfo "Building with the compiler settings:"
+	for flags in {C,CXX,CPP,LD}FLAGS; do
+		einfo "  ${flags} = ${!flags}"
+	done
 }
 
 src_configure() {
