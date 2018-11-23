@@ -30,7 +30,7 @@ IUSE="
 	cups custom-cflags gnome jumbo-build kerberos new-tcmalloc +openh264
 	optimize-webui +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
 	system-harfbuzz +system-icu +system-libevent +system-libvpx +system-openjpeg
-	+tcmalloc vaapi widevine
+	+tcmalloc +thinlto vaapi widevine
 "
 REQUIRED_USE="
 	|| ( $(python_gen_useflags 'python3*') )
@@ -185,7 +185,6 @@ pkg_pretend() {
 		ewarn "USE=custom-cflags bypass strip-flags; you are on your own."
 		ewarn "Expect build failures. Don't file bugs using that unsupported USE flag!"
 		ewarn
-		sleep 5
 	fi
 	pre_build_checks
 }
@@ -480,6 +479,16 @@ setup_compile_flags() {
 		fi
 	fi
 
+	if use thinlto; then
+		# We need to change the default value of import-instr-limit in
+		# LLVM to limit the text size increase. The default value is
+		# 100, and we change it to 30 to reduce the text size increase
+		# from 25% to 10%. The performance number of page_cycler is the
+		# same on two of the thinLTO configurations, we got 1% slowdown
+		# on speedometer when changing import-instr-limit from 100 to 30.
+		append-ldflags "-Wl,-plugin-opt,-import-instr-limit=30"
+	fi
+
 	# Enable std::vector []-operator bounds checking (https://crbug.com/333391)
 	append-cxxflags -D__google_stl_debug_vector=1
 
@@ -549,9 +558,14 @@ src_configure() {
 	build/linux/unbundle/replace_gn_files.py --system-libraries "${gn_system_libraries[@]}" || die
 
 	local myconf_gn=""
+	# Clang features
+	myconf_gn+=" is_clang=true" # Implies use_lld=true
+	myconf_gn+=" clang_use_chrome_plugins=false"
+	myconf_gn+=" use_thin_lto=$(usetf thinlto)"
+	myconf_gn+=" treat_warnings_as_errors=false"
+
 	# UGC's "common" GN flags (config_bundles/common/gn_flags.map)
 	myconf_gn+=" blink_symbol_level=0"
-	myconf_gn+=" clang_use_chrome_plugins=false"
 	myconf_gn+=" enable_ac3_eac3_audio_demuxing=true"
 	myconf_gn+=" enable_hangout_services_extension=false"
 	myconf_gn+=" enable_hevc_demuxing=true"
@@ -574,14 +588,12 @@ src_configure() {
 	myconf_gn+=" google_api_key=\"\""
 	myconf_gn+=" google_default_client_id=\"\""
 	myconf_gn+=" google_default_client_secret=\"\""
-	myconf_gn+=" is_clang=true" # Implies use_lld=true
 	myconf_gn+=" is_debug=false"
 	myconf_gn+=" is_official_build=true" # Implies is_cfi=true
 	myconf_gn+=" optimize_webui=$(usetf optimize-webui)"
 	myconf_gn+=" proprietary_codecs=$(usetf proprietary-codecs)"
 	myconf_gn+=" safe_browsing_mode=0"
 	myconf_gn+=" symbol_level=0"
-	myconf_gn+=" treat_warnings_as_errors=false"
 	myconf_gn+=" use_gnome_keyring=false" # Deprecated by libsecret
 	myconf_gn+=" use_jumbo_build=$(usetf jumbo-build)"
 	myconf_gn+=" use_official_google_api_keys=false"
@@ -625,7 +637,7 @@ src_configure() {
 	# It is relevant only when use_allocator == "tcmalloc"
 	myconf_gn+=" use_new_tcmalloc=$(usetf new-tcmalloc)"
 
-	export myarch # SC2155
+	local myarch # SC2155
 	myarch="$(tc-arch)"
 	if [[ $myarch = amd64 ]]; then
 		myconf_gn+=" target_cpu=\"x64\""
@@ -636,7 +648,6 @@ src_configure() {
 	fi
 
 	setup_compile_flags
-	unset myarch
 
 	# Bug #491582
 	export TMPDIR="${WORKDIR}/temp"
@@ -653,17 +664,15 @@ src_configure() {
 }
 
 src_compile() {
-	# Final link uses lots of file descriptors.
+	# Final link uses lots of file descriptors
 	ulimit -n 2048
 
 	# Calling this here supports resumption via FEATURES=keepwork
 	python_setup 'python2*'
 
+	# Avoid falling back to preprocessor mode when sources contain time macros
 	# shellcheck disable=SC2086
-	if has ccache ${FEATURES}; then
-		# Avoid falling back to preprocessor mode when sources contain time macros
-		export CCACHE_SLOPPINESS=time_macros
-	fi
+	(has ccache ${FEATURES}) && export CCACHE_SLOPPINESS=time_macros
 
 	# Build mksnapshot and pax-mark it
 	local x

@@ -63,6 +63,7 @@
 		<flag name="tcmalloc">
 			Use bundled tcmalloc instead of system malloc
 		</flag>
+		<flag name="thinlto">Build with ThinLTO support</flag>
 		<flag name="widevine">
 			Unsupported closed-source DRM capability (required by Netflix VOD)
 		</flag>
