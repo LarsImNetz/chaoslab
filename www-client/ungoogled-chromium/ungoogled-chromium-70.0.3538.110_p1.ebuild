@@ -536,7 +536,7 @@ src_configure() {
 	myconf_gn+=" enable_reporting=false"
 	myconf_gn+=" enable_service_discovery=false"
 	myconf_gn+=" enable_swiftshader=false"
-	myconf_gn+=" enable_widevine=$(usex widevine true false)"
+	myconf_gn+=" enable_widevine=$(usetf widevine)"
 	myconf_gn+=" exclude_unwind_tables=true"
 	myconf_gn+=" fatal_linker_warnings=false"
 	myconf_gn+=" ffmpeg_branding=\"$(usex proprietary-codecs Chrome Chromium)\""
@@ -547,13 +547,13 @@ src_configure() {
 	myconf_gn+=" is_clang=true" # Implies use_lld=true
 	myconf_gn+=" is_debug=false"
 	myconf_gn+=" is_official_build=true" # Implies is_cfi=true
-	myconf_gn+=" optimize_webui=$(usex optimize-webui true false)"
-	myconf_gn+=" proprietary_codecs=$(usex proprietary-codecs true false)"
+	myconf_gn+=" optimize_webui=$(usetf optimize-webui)"
+	myconf_gn+=" proprietary_codecs=$(usetf proprietary-codecs)"
 	myconf_gn+=" safe_browsing_mode=0"
 	myconf_gn+=" symbol_level=0"
 	myconf_gn+=" treat_warnings_as_errors=false"
 	myconf_gn+=" use_gnome_keyring=false" # Deprecated by libsecret
-	myconf_gn+=" use_jumbo_build=$(usex jumbo-build true false)"
+	myconf_gn+=" use_jumbo_build=$(usetf jumbo-build)"
 	myconf_gn+=" use_official_google_api_keys=false"
 	myconf_gn+=" use_ozone=false"
 	myconf_gn+=" use_sysroot=false"
@@ -570,27 +570,27 @@ src_configure() {
 	else
 		myconf_gn+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
 	fi
-	myconf_gn+=" link_pulseaudio=$(usex pulseaudio true false)"
+	myconf_gn+=" link_pulseaudio=$(usetf pulseaudio)"
 	myconf_gn+=" linux_use_bundled_binutils=false"
 	myconf_gn+=" optimize_for_size=false"
 	myconf_gn+=" use_allocator=\"$(usex tcmalloc tcmalloc none)\""
-	myconf_gn+=" use_cups=$(usex cups true false)"
+	myconf_gn+=" use_cups=$(usetf cups)"
 	myconf_gn+=" use_custom_libcxx=false"
-	myconf_gn+=" use_gio=$(usex gnome true false)"
-	myconf_gn+=" use_kerberos=$(usex kerberos true false)"
-	myconf_gn+=" use_openh264=$(usex !openh264 true false)" # Enable this to
+	myconf_gn+=" use_gio=$(usetf gnome)"
+	myconf_gn+=" use_kerberos=$(usetf kerberos)"
+	myconf_gn+=" use_openh264=$(usetf !openh264)" # Enable this to
 	# build OpenH264 for encoding, hence the restriction: !openh264? ( bindist )
-	myconf_gn+=" use_pulseaudio=$(usex pulseaudio true false)"
-	myconf_gn+=" use_system_freetype=$(usex system-harfbuzz true false)"
-	myconf_gn+=" use_system_harfbuzz=$(usex system-harfbuzz true false)"
+	myconf_gn+=" use_pulseaudio=$(usetf pulseaudio)"
+	myconf_gn+=" use_system_freetype=$(usetf system-harfbuzz)"
+	myconf_gn+=" use_system_harfbuzz=$(usetf system-harfbuzz)"
 	myconf_gn+=" use_system_lcms2=true"
 	myconf_gn+=" use_system_libjpeg=true"
 	myconf_gn+=" use_system_zlib=true"
-	myconf_gn+=" use_vaapi=$(usex vaapi true false)"
+	myconf_gn+=" use_vaapi=$(usetf vaapi)"
 
 	# Optionally enable new tcmalloc (https://crbug.com/724399)
-	# It's relevant only when use_allocator == "tcmalloc"
-	myconf_gn+=" use_new_tcmalloc=$(usex new-tcmalloc true false)"
+	# It is relevant only when use_allocator == "tcmalloc"
+	myconf_gn+=" use_new_tcmalloc=$(usetf new-tcmalloc)"
 
 	# SC2155
 	local myarch
@@ -742,6 +742,10 @@ src_install() {
 	doins "${FILESDIR}/chromium-browser.xml"
 
 	readme.gentoo_create_doc
+}
+
+usetf() {
+	usex "$1" true false
 }
 
 update_caches() {
