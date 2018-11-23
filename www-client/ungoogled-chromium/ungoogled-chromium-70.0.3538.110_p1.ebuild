@@ -29,7 +29,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="
 	cups custom-cflags gnome jumbo-build kerberos new-tcmalloc +openh264
 	optimize-webui +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
-	+system-harfbuzz +system-icu +system-libevent +system-libvpx +system-openjpeg
+	system-harfbuzz +system-icu +system-libevent +system-libvpx +system-openjpeg
 	+tcmalloc vaapi widevine
 "
 REQUIRED_USE="
@@ -603,6 +603,9 @@ src_configure() {
 	myconf_gn+=" use_openh264=$(usetf !openh264)" # Enable this to
 	# build OpenH264 for encoding, hence the restriction: !openh264? ( bindist )
 	myconf_gn+=" use_pulseaudio=$(usetf pulseaudio)"
+	# HarfBuzz and FreeType need to be built together in a specific way
+	# to get FreeType autohinting to work properly. Chromium bundles
+	# FreeType and HarfBuzz to meet that need. (https://crbug.com/694137)
 	myconf_gn+=" use_system_freetype=$(usetf system-harfbuzz)"
 	myconf_gn+=" use_system_harfbuzz=$(usetf system-harfbuzz)"
 	myconf_gn+=" use_system_lcms2=true"
