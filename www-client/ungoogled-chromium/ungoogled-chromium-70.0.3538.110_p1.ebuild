@@ -180,10 +180,6 @@ pre_build_checks() {
 }
 
 pkg_pretend() {
-	pre_build_checks
-}
-
-pkg_setup() {
 	if use custom-cflags && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
 		ewarn "USE=custom-cflags bypass strip-flags; you are on your own."
@@ -191,6 +187,10 @@ pkg_setup() {
 		ewarn
 		sleep 5
 	fi
+	pre_build_checks
+}
+
+pkg_setup() {
 	pre_build_checks
 	chromium_suid_sandbox_check_kernel_config
 }
