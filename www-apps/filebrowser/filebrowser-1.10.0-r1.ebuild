@@ -25,48 +25,48 @@ EGO_PN="github.com/${PN}/${PN}"
 # golang.org/x/net
 # gopkg.in/square/go-jose.v1
 EGO_VENDOR=(
-	"github.com/BurntSushi/toml a368813"
-	"github.com/GeertJohan/go.rice c02ca9a"
-	"github.com/GeertJohan/go.incremental 1172aab"
-	"github.com/akavel/rsrc f6a15ec"
-	"github.com/asdine/storm 68fc73b"
-	"github.com/chaseadamsio/goorgeous dcf1ef8"
-	"github.com/coreos/bbolt 583e893"
-	"github.com/daaku/go.zipexe a5fe243"
-	"github.com/dgrijalva/jwt-go dbeaa93"
-	"github.com/dsnet/compress cc9eb1d"
-	"github.com/fsnotify/fsnotify c282820"
-	"github.com/gohugoio/hugo 25e88cc"
-	"github.com/golang/snappy 553a641"
-	"github.com/gorilla/websocket ea4d1f6"
-	"github.com/hacdias/fileutils 76b1c6a"
-	"github.com/hacdias/varutils 82d3b57"
-	"github.com/hashicorp/hcl 23c074d"
-	"github.com/jessevdk/go-flags 1c38ed7"
-	"github.com/kardianos/osext ae77be6"
-	"github.com/magiconair/properties c3beff4"
-	"github.com/maruel/natural dbcb3e2"
-	"github.com/mholt/archiver 26cf5b"
-	"github.com/mholt/caddy d3f338d"
-	"github.com/mitchellh/mapstructure 00c29f5"
-	"github.com/nwaples/rardecode e06696f"
-	"github.com/pelletier/go-toml acdc450"
-	"github.com/pierrec/lz4 2fcda4c"
-	"github.com/pierrec/xxHash f051bb7"
-	"github.com/robfig/cron b024fc5"
-	"github.com/russross/blackfriday 4048872"
-	"github.com/shurcooL/sanitized_anchor_name 86672fc"
-	"github.com/spf13/afero bb8f192"
-	"github.com/spf13/cast 8965335"
-	"github.com/spf13/jwalterweatherman 7c0cea3"
-	"github.com/spf13/pflag e57e3ee"
-	"github.com/spf13/viper 25b30aa"
-	"github.com/ulikunitz/xz 0c6b41e"
-	"golang.org/x/crypto 4979611 github.com/golang/crypto"
-	"golang.org/x/sys 88d2dcc github.com/golang/sys"
-	"golang.org/x/text f21a4df github.com/golang/text"
-	"gopkg.in/natefinch/lumberjack.v2 a96e638 github.com/natefinch/lumberjack"
-	"gopkg.in/yaml.v2 7f97868 github.com/go-yaml/yaml"
+	"github.com/BurntSushi/toml a368813c5e"
+	"github.com/GeertJohan/go.rice c02ca9a983"
+	"github.com/GeertJohan/go.incremental 1172aab965"
+	"github.com/akavel/rsrc f6a15ece2c"
+	"github.com/asdine/storm v2.0.2"
+	"github.com/chaseadamsio/goorgeous v1.1.0"
+	"github.com/coreos/bbolt v1.3.0"
+	"github.com/daaku/go.zipexe a5fe2436ff"
+	"github.com/dgrijalva/jwt-go v3.1.0"
+	"github.com/dsnet/compress cc9eb1d7ad"
+	"github.com/fsnotify/fsnotify v1.4.7"
+	"github.com/gohugoio/hugo v0.36.1"
+	"github.com/golang/snappy 553a641470"
+	"github.com/gorilla/websocket v1.2.0"
+	"github.com/hacdias/fileutils 76b1c6ab90"
+	"github.com/hacdias/varutils 82d3b57f66"
+	"github.com/hashicorp/hcl 23c074d0ec"
+	"github.com/jessevdk/go-flags v1.4.0"
+	"github.com/kardianos/osext ae77be60af"
+	"github.com/magiconair/properties v1.7.6"
+	"github.com/maruel/natural dbcb3e2e8c"
+	"github.com/mholt/archiver 26cf5bb32d"
+	"github.com/mholt/caddy v0.10.11"
+	"github.com/mitchellh/mapstructure 00c29f56e2"
+	"github.com/nwaples/rardecode e06696f847"
+	"github.com/pelletier/go-toml v1.1.0"
+	"github.com/pierrec/lz4 v1.1"
+	"github.com/pierrec/xxHash v0.1.1"
+	"github.com/robfig/cron v1"
+	"github.com/russross/blackfriday v1.5"
+	"github.com/shurcooL/sanitized_anchor_name 86672fcb3f"
+	"github.com/spf13/afero v1.0.2"
+	"github.com/spf13/cast v1.2.0"
+	"github.com/spf13/jwalterweatherman 7c0cea34c8"
+	"github.com/spf13/pflag v1.0.0"
+	"github.com/spf13/viper v1.0.0"
+	"github.com/ulikunitz/xz v0.5.4"
+	"golang.org/x/crypto 49796115aa github.com/golang/crypto"
+	"golang.org/x/sys 88d2dcc510 github.com/golang/sys"
+	"golang.org/x/text v0.3.0 github.com/golang/text"
+	"gopkg.in/natefinch/lumberjack.v2 v2.1 github.com/natefinch/lumberjack"
+	"gopkg.in/yaml.v2 v2.1.1 github.com/go-yaml/yaml"
 )
 
 inherit golang-vcs-snapshot systemd user
@@ -92,15 +92,17 @@ QA_PRESTRIPPED="usr/bin/filebrowser"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-pkg_setup() {
+pkg_pretend() {
 	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES && [[ "${MERGE_TYPE}" != binary ]]; then
+	if has network-sandbox ${FEATURES} && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
+}
 
+pkg_setup() {
 	if use daemon; then
 		enewgroup filebrowser
 		enewuser filebrowser -1 -1 -1 filebrowser
@@ -121,8 +123,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w -X filebrowser.Version=${PV}"
 	)
 
