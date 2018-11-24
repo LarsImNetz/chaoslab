@@ -1,8 +1,9 @@
 # config file for /etc/init.d/graphite_exporter
 # run /usr/bin/graphite_exporter -h to see available options
 
-GRAPHITE_EXPORTER_OPTS=""
+GRAPHITE_OPTS=""
+GRAPHITE_LOGIDR="/var/log/${RC_SVCNAME}"
 
 # Logging
-#output_log="/var/log/graphite_exporter/graphite_exporter.log"
-#error_log="/var/log/graphite_exporter/error.log"
+#output_log="${GRAPHITE_LOGIDR}/graphite_exporter.log"
+#error_log="${GRAPHITE_LOGIDR}/error.log"
