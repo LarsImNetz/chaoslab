@@ -3,12 +3,11 @@
 
 EAPI=6
 
-# Snapshot taken on 2018.11.08
+# Snapshot taken on 2018.11.24
 EGO_VENDOR=(
 	"github.com/hanwen/go-fuse c029b69a13"
-	"github.com/mattn/go-sqlite3 1fc3fd346d"
-	"golang.org/x/net 03003ca0c8 github.com/golang/net"
-	"golang.org/x/sys 66b7b1311a github.com/golang/sys"
+	"github.com/mattn/go-sqlite3 v1.10.0"
+	"golang.org/x/sys 62eef0e2fa github.com/golang/sys"
 )
 
 inherit golang-vcs-snapshot
@@ -31,12 +30,10 @@ G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_prepare() {
-	# Move the sources from src/${EGO_PN} into
-	# ${S}, as we will use a vendored setup.
+	# Move the sources from src/${EGO_PN} into ${S}
 	mv src/${EGO_PN}/* ./ || die
 
-	# We will only use make for tests,
-	# so let's silence the "compile".
+	# We will only use make for tests, so let's silence the "compile".
 	sed -i "s/ compile//g" Makefile || die
 
 	default
@@ -47,8 +44,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w"
 		-o ./bin/tmsu
 	)
