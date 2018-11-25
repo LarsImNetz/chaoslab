@@ -1,19 +1,23 @@
 #!/sbin/openrc-run
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-output_log="${output_log:-/dev/null}"
-error_log="${error_log:-/var/log/graphite_exporter/error.log}"
+: "${name:=Graphite Exporter}"
+: "${command_user:=graphite_exporter:graphite_exporter}"
+: "${error_log:=${GRAPHITE_LOGIDR}/error.log}"
+: "${output_log:=/dev/null}"
+: "${retry:=}"
 
-name="${name:-Graphite Exporter}"
 command="/usr/bin/graphite_exporter"
-command_args="${GRAPHITE_EXPORTER_OPTS}"
-command_user="${command_user:-graphite_exporter:graphite_exporter}"
-command_background=yes
+command_args="${GRAPHITE_OPTS}"
+command_background=true
 pidfile="/run/${RC_SVCNAME}.pid"
-start_stop_daemon_args="${SSD_OPTS}
-	-1 ${output_log} -2 ${error_log}"
+start_stop_daemon_args="${SSD_OPTS}"
 
 depend() {
 	need net
+}
+
+start_pre() {
+	checkpath -d -m 0750 -o "${command_user}" "${GRAPHITE_LOGIDR}"
 }

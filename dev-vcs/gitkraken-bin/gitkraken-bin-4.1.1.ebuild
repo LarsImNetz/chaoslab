@@ -1,9 +1,9 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-inherit gnome2-utils
+inherit desktop xdg-utils
 
 ELECTRON_SLOT="2.0"
 ELECTRON_V="2.0.12"
@@ -69,13 +69,13 @@ src_prepare() {
 src_install() {
 	newbin "${FILESDIR}"/gitkraken-launcher.sh gitkraken
 	sed "s:@@ELECTRON@@:electron-${ELECTRON_SLOT}:" \
-		-i "${ED%/}"/usr/bin/gitkraken || die
+		-i "${ED}"/usr/bin/gitkraken || die
 
 	insinto /usr/libexec/gitkraken
 	doins app.asar
 
 	# Note: intentionally not using "doins" so that we preserve +x bits
-	cp -r resources/app.asar.unpacked "${ED%/}"/usr/libexec/gitkraken || die
+	cp -r resources/app.asar.unpacked "${ED}"/usr/libexec/gitkraken || die
 
 	doicon -s 512 "${FILESDIR}"/icon/gitkraken.png
 	make_desktop_entry gitkraken GitKraken gitkraken Development
@@ -89,7 +89,11 @@ easar() {
 }
 
 update_caches() {
-	gnome2_icon_cache_update
+	if type gtk-update-icon-cache &>/dev/null; then
+		ebegin "Updating GTK icon cache"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		eend $?
+	fi
 	xdg_desktop_database_update
 }
 
