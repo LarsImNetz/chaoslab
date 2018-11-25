@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 inherit systemd user
 
@@ -57,7 +57,7 @@ src_install() {
 	default
 
 	if use i2p; then
-		rm "${ED%/}/usr/bin/gcat" || die
+		rm "${ED}/usr/bin/gcat" || die
 		newinitd "${FILESDIR}"/garlicat.initd garlicat
 		newconfd "${FILESDIR}"/garlicat.confd garlicat
 		systemd_dounit "${FILESDIR}"/garlicat.service
