@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 inherit flag-o-matic user
 
@@ -92,8 +92,8 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ ! -e "${EROOT%/}/etc/knot-resolver/config" ]]; then
+	if [[ ! -e "${EROOT}/etc/knot-resolver/config" ]]; then
 		elog "No config found, copying the example over"
-		cp "${EROOT%/}"/etc/knot-resolver/config{.personal,} || die
+		cp "${EROOT}"/etc/knot-resolver/config{.personal,} || die
 	fi
 }
