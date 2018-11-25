@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -24,6 +24,7 @@ RDEPEND="app-admin/pass
 		www-client/google-chrome
 		www-client/chromium
 		www-client/ungoogled-chromium
+		www-client/ungoogled-chromium-bin
 	)"
 
 DOCS=( README.md )
@@ -44,8 +45,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w"
 	)
 	go build "${mygoargs[@]}" ./cmd/browserpass || die
@@ -64,7 +65,8 @@ src_install() {
 
 	if has_version www-client/google-chrome || \
 		has_version www-client/chromium || \
-		has_version www-client/ungoogled-chromium; then
+		has_version www-client/ungoogled-chromium || \
+		has_version www-client/ungoogled-chromium-bin; then
 		insinto /etc/chromium/native-messaging-hosts
 		newins chrome/host.json com.dannyvankooten.browserpass.json
 	fi
@@ -78,7 +80,8 @@ pkg_postinst() {
 	fi
 	if has_version www-client/google-chrome || \
 		has_version www-client/chromium || \
-		has_version www-client/ungoogled-chromium; then
+		has_version www-client/ungoogled-chromium || \
+		has_version www-client/ungoogled-chromium-bin; then
 		elog "- https://chrome.google.com/webstore/detail/browserpass-ce/naepdomgkenhinolocfifgehidddafch"
 	fi
 }
