@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 inherit systemd
 
@@ -18,11 +18,9 @@ RDEPEND="sys-apps/ucspi-tcp"
 
 src_prepare() {
 	# Leave optimization level to user CFLAGS
-	sed -i 's/-O3 -fomit-frame-pointer -funroll-loops//g' \
-		./conf-cc || die "sed fix failed!"
+	sed -i 's/-O3 -fomit-frame-pointer -funroll-loops//g' ./conf-cc || die
 
-	# Use make-tinysshcc.sh script, which has
-	# no tests and doesn't execute binaries
+	# Use make-tinysshcc.sh script, which has no tests and doesn't execute binaries
 	# https://github.com/janmojzis/tinyssh/issues/2
 	sed -i 's/tinyssh/tinysshcc/g' ./Makefile || die
 
