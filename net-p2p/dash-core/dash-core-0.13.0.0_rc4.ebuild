@@ -1,9 +1,9 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-inherit autotools bash-completion-r1 gnome2-utils systemd user xdg-utils
+inherit autotools bash-completion-r1 desktop systemd user xdg-utils
 
 MY_PV="${PV/_/-}"
 MY_P="dash-${MY_PV}"
@@ -193,12 +193,12 @@ src_install() {
 	find "${D}" -name '*.la' -delete || die
 }
 
-pkg_preinst() {
-	use gui && gnome2_icon_savelist
-}
-
 update_caches() {
-	gnome2_icon_cache_update
+	if type gtk-update-icon-cache &>/dev/null; then
+		ebegin "Updating GTK icon cache"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		eend $?
+	fi
 	xdg_desktop_database_update
 }
 
