@@ -1,9 +1,9 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-inherit autotools bash-completion-r1 gnome2-utils systemd user xdg-utils
+inherit autotools bash-completion-r1 desktop systemd user xdg-utils
 
 MY_PV="${PV/\.0k/K}"
 DESCRIPTION="A full node Bitcoin Cash implementation with GUI, daemon and utils"
@@ -159,12 +159,13 @@ src_prepare() {
 src_configure() {
 	# shellcheck disable=SC2207
 	local myeconf=(
-		--without-libs
 		--disable-bench
 		--disable-ccache
+		--disable-gui-tests
 		--disable-maintainer-mode
-		$(usex gui "--with-gui=qt5" --without-gui)
+		--without-libs
 		$(use_with daemon)
+		$(use_with gui)
 		$(use_with qrcode qrencode)
 		$(use_with upnp miniupnpc)
 		$(use_with utils)
@@ -219,12 +220,12 @@ src_install() {
 	fi
 }
 
-pkg_preinst() {
-	use gui && gnome2_icon_savelist
-}
-
 update_caches() {
-	gnome2_icon_cache_update
+	if type gtk-update-icon-cache &>/dev/null; then
+		ebegin "Updating GTK icon cache"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		eend $?
+	fi
 	xdg_desktop_database_update
 }
 

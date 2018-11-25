@@ -31,9 +31,9 @@ DEPEND="
 
 S="${WORKDIR}/${MY_PN}-${PV}"
 
-pkg_setup() {
+pkg_pretend() {
 	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES && [[ "${MERGE_TYPE}" != binary ]]; then
+	if has network-sandbox ${FEATURES} && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn
@@ -46,8 +46,9 @@ src_prepare() {
 	sed -i 's|@journeyapps/sqlcipher": ".*|@journeyapps/sqlcipher": "3.2.1",|' \
 		package.json || die
 
-	# Fix Gruntfile.js to play nicely with source tarball. It's not pretty,
-	# but works for now. (github.com/signalapp/Signal-Desktop/issues/2376)
+	# Fix Gruntfile.js to play nicely without a proper git repository.
+	# It's not pretty, but works for now. If you know a better fix, please contribute.
+	# See https://github.com/signalapp/Signal-Desktop/issues/2376
 	local buildexp
 	buildexp="$(date -Iseconds -u -d '+90 days')"
 	echo "{\"buildExpiration\":$(date -d "${buildexp}" +'%s%3N')}" \

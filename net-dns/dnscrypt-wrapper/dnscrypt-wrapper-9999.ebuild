@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 inherit git-r3 systemd user
 
@@ -14,8 +14,10 @@ SLOT="0"
 KEYWORDS=""
 IUSE="examples"
 
-DEPEND="dev-libs/libsodium[-minimal]
-	>=dev-libs/libevent-2.1.8"
+DEPEND="
+	dev-libs/libsodium[-minimal]
+	>=dev-libs/libevent-2.1.8
+"
 RDEPEND="${DEPEND}"
 
 DOCS=( README.md )
@@ -26,8 +28,7 @@ pkg_setup() {
 }
 
 src_install() {
-	emake PREFIX="${EPREFIX}/usr" \
-		DESTDIR="${D%/}" install
+	emake PREFIX="${EPREFIX}/usr" DESTDIR="${D}" install
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
