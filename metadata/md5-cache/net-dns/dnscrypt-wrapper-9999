@@ -1,11 +1,12 @@
+BDEPEND=>=dev-vcs/git-1.8.2.1[curl] virtual/pkgconfig
 DEFINED_PHASES=install setup unpack
-DEPEND=dev-libs/libsodium[-minimal] >=dev-libs/libevent-2.1.8 >=dev-vcs/git-1.8.2.1[curl] virtual/pkgconfig
+DEPEND=dev-libs/libsodium[-minimal] >=dev-libs/libevent-2.1.8
 DESCRIPTION=A server-side DNSCrypt proxy
-EAPI=6
+EAPI=7
 HOMEPAGE=https://github.com/cofyc/dnscrypt-wrapper
 IUSE=examples
 LICENSE=BSD
 RDEPEND=dev-libs/libsodium[-minimal] >=dev-libs/libevent-2.1.8
 SLOT=0
 _eclasses_=git-r3	0d4635eeb5a96cd5315597a47eba25c9	multilib	b2f01ad412baf81650c23fcf0975fa33	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=fa45b1ac4572697eb22b94753e2f1fc8
+_md5_=6fa25008bf6de1f67719d08e40ea706f

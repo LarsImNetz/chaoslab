@@ -1,7 +1,7 @@
+BDEPEND=virtual/pkgconfig
 DEFINED_PHASES=compile install postinst prepare
-DEPEND=virtual/pkgconfig
 DESCRIPTION=A small SSH server with state-of-the-art cryptography
-EAPI=6
+EAPI=7
 HOMEPAGE=https://tinyssh.org
 KEYWORDS=~amd64 ~x86
 LICENSE=public-domain
@@ -10,4 +10,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/janmojzis/tinyssh/archive/20180201.tar.gz -> tinyssh-20180201.tar.gz
 _eclasses_=multilib	b2f01ad412baf81650c23fcf0975fa33	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	f164325a2cdb5b3ea39311d483988861
-_md5_=6d20979dbeb582bcf29d7bd0d2e5464b
+_md5_=3b1e913eb5fc630798ac19c4ec6ba97c
