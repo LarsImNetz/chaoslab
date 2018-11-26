@@ -5,3 +5,8 @@
 # Following profiles/releases/17.0/package.use.mask:
 # https://bugs.gentoo.org/661880
 >=www-client/ungoogled-chromium-69 system-icu
+
+# Ian Moone <gentoo@chaoslab.org> (26 Nov 2018)
+# Not fully tested yet. If you are feeling adventurous,
+# go ahead and unmask it. Please report your results.
+www-client/ungoogled-chromium gold
