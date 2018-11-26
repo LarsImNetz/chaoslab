@@ -15,7 +15,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="man"
+IUSE="man pie"
 
 DEPEND="man? ( app-text/ronn dev-ruby/bundler )"
 RDEPEND=">=dev-vcs/git-1.7.3"
@@ -26,7 +26,7 @@ QA_PRESTRIPPED="usr/bin/hub"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-src_setup() {
+src_pretend() {
 	if use man && [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
 		if has network-sandbox $FEATURES; then
@@ -42,8 +42,9 @@ src_compile() {
 	export GOPATH="${G}"
 	local mygoargs=(
 		-v -work -x
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-buildmode=$(usex pie pie default)"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w -X ${EGO_PN}/version.Version=${PV}"
 	)
 	go build "${mygoargs[@]}" || die
