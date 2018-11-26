@@ -15,10 +15,14 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="man"
+IUSE="bash-completion fish-completion man pie zsh-completion"
 
 DEPEND="man? ( app-text/ronn dev-ruby/bundler )"
-RDEPEND=">=dev-vcs/git-1.7.3"
+RDEPEND="
+	>=dev-vcs/git-1.7.3
+	fish-completion? ( app-shells/fish )
+	zsh-completion? ( app-shells/zsh )
+"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/hub"
@@ -26,7 +30,7 @@ QA_PRESTRIPPED="usr/bin/hub"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-src_setup() {
+src_pretend() {
 	if use man && [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
 		if has network-sandbox $FEATURES; then
@@ -42,8 +46,9 @@ src_compile() {
 	export GOPATH="${G}"
 	local mygoargs=(
 		-v -work -x
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-buildmode=$(usex pie pie default)"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w -X ${EGO_PN}/version.Version=${PV}"
 	)
 	go build "${mygoargs[@]}" || die
@@ -63,12 +68,15 @@ src_install() {
 	einstalldocs
 
 	use man && doman share/man/man1/*.1
+	use bash-completion && newbashcomp etc/hub.bash_completion.sh hub
 
-	newbashcomp etc/hub.bash_completion.sh hub
+	if use fish-completion; then
+		insinto /usr/share/fish/completions
+		newins etc/hub.fish_completion hub.fish
+	fi
 
-	insinto /usr/share/fish/completions
-	newins etc/hub.fish_completion hub.fish
-
-	insinto /usr/share/zsh/site-functions
-	newins etc/hub.zsh_completion _hub
+	if use zsh-completion; then
+		insinto /usr/share/zsh/site-functions
+		newins etc/hub.zsh_completion _hub
+	fi
 }

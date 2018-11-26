@@ -27,12 +27,13 @@ LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="
-	+cfi cups custom-cflags gnome jumbo-build kerberos new-tcmalloc +openh264
-	optimize-webui +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
-	system-harfbuzz +system-icu +system-libevent +system-libvpx +system-openjpeg
-	+tcmalloc +thinlto vaapi widevine
+	+cfi cups custom-cflags gnome gold jumbo-build kerberos +lld new-tcmalloc
+	+openh264 optimize-webui +proprietary-codecs pulseaudio selinux +suid
+	+system-ffmpeg system-harfbuzz +system-icu +system-libevent +system-libvpx
+	+system-openjpeg +tcmalloc +thinlto vaapi widevine
 "
 REQUIRED_USE="
+	^^ ( gold lld )
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
 	cfi? ( thinlto )
@@ -59,7 +60,7 @@ COMMON_DEPEND="
 	>=dev-libs/re2-0.2016.05.01:=
 	>=media-libs/alsa-lib-1.0.19:=
 	media-libs/fontconfig:=
-	media-libs/freetype:=
+	system-harfbuzz? ( media-libs/freetype:= )
 	system-harfbuzz? ( >=media-libs/harfbuzz-2.0.0:0=[icu(-)] )
 	media-libs/libjpeg-turbo:=
 	media-libs/libpng:=
@@ -127,8 +128,8 @@ BDEPEND="
 	>=sys-devel/clang-7.0.0
 	cfi? ( >=sys-devel/clang-runtime-7.0.0[sanitize] )
 	sys-devel/flex
-	>=sys-devel/lld-7.0.0
-	>=sys-devel/llvm-7.0.0
+	lld? ( >=sys-devel/lld-7.0.0 )
+	>=sys-devel/llvm-7.0.0[gold?]
 	virtual/libusb:1
 	virtual/pkgconfig
 	dev-vcs/git
@@ -164,6 +165,7 @@ PATCHES=(
 	"${FILESDIR}/chromium-memcpy-r0.patch"
 	"${FILESDIR}/chromium-math.h-r0.patch"
 	"${FILESDIR}/chromium-stdint.patch"
+	"${FILESDIR}/${PN}-gold-r0.patch"
 )
 
 S="${WORKDIR}/chromium-${PV/_*}"
@@ -567,12 +569,13 @@ src_configure() {
 
 	local myconf_gn=""
 	# Clang features
-	myconf_gn+=" is_clang=true" # Implies use_lld=true
+	myconf_gn+=" is_clang=true"
 	myconf_gn+=" clang_use_chrome_plugins=false"
 	myconf_gn+=" use_thin_lto=$(usetf thinlto)"
-	myconf_gn+=" treat_warnings_as_errors=false"
+	myconf_gn+=" use_lld=$(usetf lld)"
 	myconf_gn+=" is_cfi=$(usetf cfi)"
 	myconf_gn+=" use_cfi_cast=$(usetf cfi)"
+	myconf_gn+=" treat_warnings_as_errors=false"
 
 	# UGC's "common" GN flags (config_bundles/common/gn_flags.map)
 	myconf_gn+=" blink_symbol_level=0"
