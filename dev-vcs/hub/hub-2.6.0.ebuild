@@ -15,10 +15,14 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="man pie"
+IUSE="bash-completion fish-completion man pie zsh-completion"
 
 DEPEND="man? ( app-text/ronn dev-ruby/bundler )"
-RDEPEND=">=dev-vcs/git-1.7.3"
+RDEPEND="
+	>=dev-vcs/git-1.7.3
+	fish-completion? ( app-shells/fish )
+	zsh-completion? ( app-shells/zsh )
+"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/hub"
@@ -64,12 +68,15 @@ src_install() {
 	einstalldocs
 
 	use man && doman share/man/man1/*.1
+	use bash-completion && newbashcomp etc/hub.bash_completion.sh hub
 
-	newbashcomp etc/hub.bash_completion.sh hub
+	if use fish-completion; then
+		insinto /usr/share/fish/completions
+		newins etc/hub.fish_completion hub.fish
+	fi
 
-	insinto /usr/share/fish/completions
-	newins etc/hub.fish_completion hub.fish
-
-	insinto /usr/share/zsh/site-functions
-	newins etc/hub.zsh_completion _hub
+	if use zsh-completion; then
+		insinto /usr/share/zsh/site-functions
+		newins etc/hub.zsh_completion _hub
+	fi
 }
