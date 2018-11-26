@@ -59,7 +59,7 @@ COMMON_DEPEND="
 	>=dev-libs/re2-0.2016.05.01:=
 	>=media-libs/alsa-lib-1.0.19:=
 	media-libs/fontconfig:=
-	media-libs/freetype:=
+	system-harfbuzz? ( media-libs/freetype:= )
 	system-harfbuzz? ( >=media-libs/harfbuzz-2.0.0:0=[icu(-)] )
 	media-libs/libjpeg-turbo:=
 	media-libs/libpng:=
