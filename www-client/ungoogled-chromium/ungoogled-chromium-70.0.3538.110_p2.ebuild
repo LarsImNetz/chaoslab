@@ -481,6 +481,12 @@ setup_compile_flags() {
 		if [[ ${myarch} == amd64 || ${myarch} == x86 ]]; then
 			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
 		fi
+
+		# 'gcc_s' is required if 'compiler-rt' is Clang's default
+		(has_version 'sys-devel/clang[default-compiler-rt]') && \
+			append-ldflags "-Wl,-lgcc_s"
+
+		# TODO: Fix ldflags if sys-devel/clang[default-libcxx]
 	fi
 
 	# TODO: Build against sys-libs/{libcxx,libcxxabi}
@@ -633,8 +639,8 @@ src_configure() {
 	myconf_gn+=" use_custom_libcxx=false"
 	myconf_gn+=" use_gio=$(usetf gnome)"
 	myconf_gn+=" use_kerberos=$(usetf kerberos)"
-	myconf_gn+=" use_openh264=$(usetf !openh264)" # Enable this to
-	# build OpenH264 for encoding, hence the restriction: !openh264? ( bindist )
+	myconf_gn+=" use_openh264=$(usetf !openh264)" # Enable this to build
+	# OpenH264 for encoding, hence the restriction: !openh264? ( bindist )
 	myconf_gn+=" use_pulseaudio=$(usetf pulseaudio)"
 	# HarfBuzz and FreeType need to be built together in a specific way
 	# to get FreeType autohinting to work properly. Chromium bundles
@@ -700,8 +706,7 @@ src_compile() {
 	done
 
 	# Work around broken deps
-	eninja -C out/Release gen/ui/accessibility/ax_enums.mojom.h
-	eninja -C out/Release gen/ui/accessibility/ax_enums.mojom-shared.h
+	eninja -C out/Release gen/ui/accessibility/ax_enums.mojom{,-shared}.h
 
 	# Even though ninja autodetects number of CPUs, we respect
 	# user's options, for debugging with -j 1 or any other reason
@@ -712,8 +717,7 @@ src_compile() {
 }
 
 src_install() {
-	# SC2155
-	local CHROMIUM_HOME
+	local CHROMIUM_HOME # SC2155
 	CHROMIUM_HOME="/usr/$(get_libdir)/chromium-browser"
 	exeinto "${CHROMIUM_HOME}"
 	doexe out/Release/chrome
