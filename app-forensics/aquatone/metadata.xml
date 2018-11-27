@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">michenriksen/aquatone</remote-id>
+		<bugs-to>https://github.com/michenriksen/aquatone/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		Aquatone is a tool for visual inspection of websites across
+		a large amount of hosts and is convenient for quickly gaining
+		an overview of HTTP-based attack surface.
+	</longdescription>
+</pkgmetadata>
