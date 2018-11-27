@@ -1,8 +1,8 @@
 ChaosLab: Overlay for Gentoo/Funtoo Linux
 -----------------------------------------
 
-[![packages 200](https://img.shields.io/badge/packages-200-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
-[![ebuilds 257](https://img.shields.io/badge/ebuilds-257-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![packages 201](https://img.shields.io/badge/packages-201-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![ebuilds 259](https://img.shields.io/badge/ebuilds-259-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
 

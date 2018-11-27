@@ -37,6 +37,7 @@ app-emulation/**[containerd](app-emulation/containerd)** `*` | A daemon to contr
 app-emulation/**[docker](app-emulation/docker)** `*` `**` | The core functions you need to create Docker images and run Docker containers
 app-emulation/**[docker-proxy](app-emulation/docker-proxy)** `*` | Docker container networking
 app-emulation/**[runc](app-emulation/runc)** `*` | CLI tool for spawning and running containers
+app-forensics/**[amass](app-forensics/amass)** | In-Depth DNS Enumeration and Network Mapping
 app-forensics/**[dirhunt](app-forensics/dirhunt)** | A web crawler optimized for search and analyze directories
 app-forensics/**[gitleaks](app-forensics/gitleaks)** | Audit git repos for secrets
 app-metrics/**[alertmanager](app-metrics/alertmanager)** `*` | Handles alerts sent by client applications such as the Prometheus

@@ -37,6 +37,14 @@ app-emulation/docker
 
 # Ian Moone <gentoo@chaoslab.org> (6 Nov 2018)
 # Although the package works fine for users upgrading from older versions, the
-# welcome screen that shows up for first-time users are "broken". Masking until
+# welcome screen that shows up for first-time users is "broken". Masking until
 # I got the time to properly investigate this.
 net-p2p/monero-gui
+
+# Ian Moone <gentoo@chaoslab.org> (27 Nov 2018)
+# Packages that I no longer use or wish to maintain. Removal in 30 days.
+app-admin/scaleway-cli
+app-metrics/nsq_exporter
+dev-db/tidb
+dev-go/depth
+sys-process/gkill
