@@ -83,8 +83,7 @@ src_compile() {
 
 src_install() {
 	newbin "${FILESDIR}"/signal-launcher.sh "${PN}"
-	sed "s:@@ELECTRON@@:electron-${ELECTRON_SLOT}:" \
-		-i "${ED}/usr/bin/${PN}" || die
+	sed "s:@@ELECTRON@@:electron-${ELECTRON_SLOT}:" -i "${ED}/usr/bin/${PN}" || die
 
 	insinto /usr/libexec/signal
 	doins -r release/linux-unpacked/resources/*
@@ -97,7 +96,7 @@ src_install() {
 	# shellcheck disable=SC1117
 	make_desktop_entry "${PN}" Signal signal \
 		"GTK;Network;Chat;InstantMessaging;" \
-		"StartupNotify=true\nStartupWMClass=Signal"
+		"StartupNotify=true\nStartupWMClass=signal"
 	domenu "${FILESDIR}"/signal-tray.desktop
 
 	# sqlcipher links against libcrypto.so.1.0.0, which does not exist
