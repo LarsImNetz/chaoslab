@@ -19,7 +19,7 @@ EGO_PN="github.com/junegunn/fzf"
 EGO_VENDOR=(
 	"github.com/mattn/go-isatty 66b8e73f3f"
 	"github.com/mattn/go-runewidth 14207d285c"
-	"github.com/mattn/go-shellwords 02e3cf038d"
+	"github.com/mattn/go-shellwords v1.0.3"
 	"golang.org/x/crypto 558b6879de github.com/golang/crypto"
 	"golang.org/x/sys b90f89a1e7 github.com/golang/sys"
 )
@@ -28,8 +28,8 @@ inherit bash-completion-r1 golang-vcs-snapshot
 
 DESCRIPTION="A general-purpose command-line fuzzy finder"
 HOMEPAGE="https://github.com/junegunn/fzf"
-SRC_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+ARCHIVE_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="MIT"
@@ -39,7 +39,7 @@ IUSE="pie tmux"
 
 RDEPEND="tmux? ( app-misc/tmux )"
 
-DOCS=( {CHANGELOG,README}.md )
+DOCS=( CHANGELOG.md README.md )
 QA_PRESTRIPPED="usr/bin/fzf"
 
 G="${WORKDIR}/${P}"
@@ -50,8 +50,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w -X main.revision=${GIT_COMMIT:0:7}"
 	)
 	go build "${mygoargs[@]}" || die

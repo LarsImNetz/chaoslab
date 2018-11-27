@@ -29,7 +29,7 @@ inherit golang-vcs-snapshot
 DESCRIPTION="In-Depth DNS Enumeration and Network Mapping"
 HOMEPAGE="https://www.owasp.org/index.php/OWASP_Amass_Project"
 ARCHIVE_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
-SRC_URI="${ARCHIVE_URI}	${EGO_VENDOR_URI}"
+SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
