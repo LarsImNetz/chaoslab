@@ -5,13 +5,14 @@ EAPI=7
 
 inherit desktop xdg-utils
 
-ELECTRON_SLOT="2.0"
-ELECTRON_V="2.0.8"
+ELECTRON_SLOT="3.0"
+ELECTRON_V="3.0.9"
 MY_PN="Signal-Desktop"
+MY_PV="${PV/_beta/-beta.}"
 
 DESCRIPTION="Signal Private Messenger for the Desktop"
 HOMEPAGE="https://signal.org/"
-SRC_URI="https://github.com/signalapp/${MY_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/signalapp/${MY_PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="GPL-3"
@@ -24,7 +25,7 @@ DEPEND="
 	sys-apps/yarn
 "
 
-S="${WORKDIR}/${MY_PN}-${PV}"
+S="${WORKDIR}/${MY_PN}-${MY_PV}"
 
 pkg_pretend() {
 	# shellcheck disable=SC2086
@@ -37,8 +38,8 @@ pkg_pretend() {
 }
 
 src_prepare() {
-	# Fix Gruntfile.js to play nicely without a proper git repository.
-	# It's not pretty, but works for now. If you know a better fix, please contribute.
+	# Fix Gruntfile.js to play nicely without a proper git repository. It's not
+	# pretty, but works for now. If you know a better fix, please contribute.
 	# See https://github.com/signalapp/Signal-Desktop/issues/2376
 	local buildexp
 	buildexp="$(date -Iseconds -u -d '+90 days')"
@@ -74,8 +75,7 @@ src_compile() {
 
 src_install() {
 	newbin "${FILESDIR}"/signal-launcher.sh "${PN}"
-	sed "s:@@ELECTRON@@:electron-${ELECTRON_SLOT}:" \
-		-i "${ED}/usr/bin/${PN}" || die
+	sed "s:@@ELECTRON@@:electron-${ELECTRON_SLOT}:" -i "${ED}/usr/bin/${PN}" || die
 
 	insinto /usr/libexec/signal
 	doins -r release/linux-unpacked/resources/*
@@ -88,7 +88,7 @@ src_install() {
 	# shellcheck disable=SC1117
 	make_desktop_entry "${PN}" Signal signal \
 		"GTK;Network;Chat;InstantMessaging;" \
-		"StartupNotify=true\nStartupWMClass=Signal"
+		"StartupNotify=true\nStartupWMClass=signal"
 	domenu "${FILESDIR}"/signal-tray.desktop
 }
 

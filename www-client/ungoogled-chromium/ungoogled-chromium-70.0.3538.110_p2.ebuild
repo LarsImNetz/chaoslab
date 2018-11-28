@@ -60,8 +60,10 @@ COMMON_DEPEND="
 	>=dev-libs/re2-0.2016.05.01:=
 	>=media-libs/alsa-lib-1.0.19:=
 	media-libs/fontconfig:=
-	system-harfbuzz? ( media-libs/freetype:= )
-	system-harfbuzz? ( >=media-libs/harfbuzz-2.0.0:0=[icu(-)] )
+	system-harfbuzz? (
+		media-libs/freetype:=
+		>=media-libs/harfbuzz-2.0.0:0=[icu(-)]
+	)
 	media-libs/libjpeg-turbo:=
 	media-libs/libpng:=
 	system-libvpx? ( >=media-libs/libvpx-1.7.0:=[postproc,svc] )
@@ -482,11 +484,15 @@ setup_compile_flags() {
 			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
 		fi
 
-		# 'gcc_s' is required if 'compiler-rt' is Clang's default
-		(has_version 'sys-devel/clang[default-compiler-rt]') && \
-			append-ldflags "-Wl,-lgcc_s"
+		# Building with 'libc++' is not fully supported yet. So far
+		# I haven't successfully built with it. If you have a happy
+		# story to share, please let me know.
+		has_version 'sys-devel/clang[default-libcxx]' && \
+			append-cxxflags "-stdlib=libstdc++"
 
-		# TODO: Fix ldflags if sys-devel/clang[default-libcxx]
+		# 'gcc_s' is required if 'compiler-rt' is Clang's default
+		has_version 'sys-devel/clang[default-compiler-rt]' && \
+			append-ldflags "-Wl,-lgcc_s"
 	fi
 
 	# TODO: Build against sys-libs/{libcxx,libcxxabi}
@@ -581,7 +587,6 @@ src_configure() {
 	myconf_gn+=" use_lld=$(usetf lld)"
 	myconf_gn+=" is_cfi=$(usetf cfi)"
 	myconf_gn+=" use_cfi_cast=$(usetf cfi)"
-	myconf_gn+=" treat_warnings_as_errors=false"
 
 	# UGC's "common" GN flags (config_bundles/common/gn_flags.map)
 	myconf_gn+=" blink_symbol_level=0"
@@ -613,6 +618,7 @@ src_configure() {
 	myconf_gn+=" proprietary_codecs=$(usetf proprietary-codecs)"
 	myconf_gn+=" safe_browsing_mode=0"
 	myconf_gn+=" symbol_level=0"
+	myconf_gn+=" treat_warnings_as_errors=false"
 	myconf_gn+=" use_gnome_keyring=false" # Deprecated by libsecret
 	myconf_gn+=" use_jumbo_build=$(usetf jumbo-build)"
 	myconf_gn+=" use_official_google_api_keys=false"
@@ -691,7 +697,7 @@ src_compile() {
 
 	# Avoid falling back to preprocessor mode when sources contain time macros
 	# shellcheck disable=SC2086
-	(has ccache ${FEATURES}) && export CCACHE_SLOPPINESS=time_macros
+	has ccache ${FEATURES} && export CCACHE_SLOPPINESS=time_macros
 
 	# Build mksnapshot and pax-mark it
 	local x
@@ -773,13 +779,12 @@ src_install() {
 	mime_types+="x-scheme-handler/http;x-scheme-handler/https;" # Bug #360797
 	mime_types+="x-scheme-handler/ftp;" # Bug #412185
 	mime_types+="x-scheme-handler/mailto;x-scheme-handler/webcal;" # Bug #416393
-	# shellcheck disable=SC1117
 	make_desktop_entry \
 		chromium-browser \
 		"Chromium" \
 		chromium-browser \
 		"Network;WebBrowser" \
-		"MimeType=${mime_types}\nStartupWMClass=chromium-browser"
+		"MimeType=${mime_types}\\nStartupWMClass=chromium-browser"
 	sed -i "/^Exec/s/$/ %U/" "${ED}"/usr/share/applications/*.desktop || die
 
 	# Install GNOME default application entry (Bug #303100)
@@ -796,7 +801,7 @@ usetf() {
 update_caches() {
 	if type gtk-update-icon-cache &>/dev/null; then
 		ebegin "Updating GTK icon cache"
-		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor" || die
 		eend $?
 	fi
 	xdg_desktop_database_update
