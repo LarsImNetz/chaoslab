@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-EGO_PN="github.com/KyleBanks/depth"
+EGO_PN="github.com/KyleBanks/${PN}"
 
 inherit golang-vcs-snapshot
 
@@ -14,8 +14,10 @@ RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86"
+IUSE="pie"
 
+DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/depth"
 
 G="${WORKDIR}/${P}"
@@ -25,8 +27,9 @@ src_compile() {
 	export GOPATH="${G}"
 	local mygoargs=(
 		-v -work -x
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-buildmode=$(usex pie pie default)"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "-s -w"
 	)
 	go build "${mygoargs[@]}" ./cmd/depth || die
@@ -38,5 +41,5 @@ src_test() {
 
 src_install() {
 	dobin depth
-	dodoc README.md
+	einstalldocs
 }
