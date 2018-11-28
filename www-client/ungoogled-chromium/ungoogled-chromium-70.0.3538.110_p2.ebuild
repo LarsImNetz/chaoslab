@@ -482,11 +482,15 @@ setup_compile_flags() {
 			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
 		fi
 
-		# 'gcc_s' is required if 'compiler-rt' is Clang's default
-		(has_version 'sys-devel/clang[default-compiler-rt]') && \
-			append-ldflags "-Wl,-lgcc_s"
+		# Building with 'libc++' is not fully supported yet. So far
+		# I haven't successfully built with it. If you have a happy
+		# story to share, please let me know.
+		has_version 'sys-devel/clang[default-libcxx]' && \
+			append-cxxflags "-stdlib=libstdc++"
 
-		# TODO: Fix ldflags if sys-devel/clang[default-libcxx]
+		# 'gcc_s' is required if 'compiler-rt' is Clang's default
+		has_version 'sys-devel/clang[default-compiler-rt]' && \
+			append-ldflags "-Wl,-lgcc_s"
 	fi
 
 	# TODO: Build against sys-libs/{libcxx,libcxxabi}
