@@ -17,13 +17,8 @@ RESTRICT="mirror"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="libressl"
 
-RDEPEND="
-	>=dev-util/electron-bin-${ELECTRON_V}:${ELECTRON_SLOT}
-	!libressl? ( dev-libs/openssl:0 )
-	libressl? ( dev-libs/libressl:0 )
-"
+RDEPEND=">=dev-util/electron-bin-${ELECTRON_V}:${ELECTRON_SLOT}"
 DEPEND="
 	sys-apps/nvm
 	sys-apps/yarn
@@ -42,12 +37,8 @@ pkg_pretend() {
 }
 
 src_prepare() {
-	# Use sqlcipher w/o bundled openssl
-	sed -i 's|@journeyapps/sqlcipher": ".*|@journeyapps/sqlcipher": "3.2.1",|' \
-		package.json || die
-
-	# Fix Gruntfile.js to play nicely without a proper git repository.
-	# It's not pretty, but works for now. If you know a better fix, please contribute.
+	# Fix Gruntfile.js to play nicely without a proper git repository. It's not
+	# pretty, but works for now. If you know a better fix, please contribute.
 	# See https://github.com/signalapp/Signal-Desktop/issues/2376
 	local buildexp
 	buildexp="$(date -Iseconds -u -d '+90 days')"
@@ -98,18 +89,12 @@ src_install() {
 		"GTK;Network;Chat;InstantMessaging;" \
 		"StartupNotify=true\nStartupWMClass=signal"
 	domenu "${FILESDIR}"/signal-tray.desktop
-
-	# sqlcipher links against libcrypto.so.1.0.0, which does not exist
-	# in a LibreSSL environment, and perhaps OpenSSL 1.1.x too
-	if has_version 'dev-libs/libressl' || has_version '>=dev-libs/openssl-1.1.0'; then
-		dosym libcrypto.so "/usr/$(get_libdir)/libcrypto.so.1.0.0"
-	fi
 }
 
 update_caches() {
 	if type gtk-update-icon-cache &>/dev/null; then
 		ebegin "Updating GTK icon cache"
-		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor" || die
 		eend $?
 	fi
 	xdg_desktop_database_update
