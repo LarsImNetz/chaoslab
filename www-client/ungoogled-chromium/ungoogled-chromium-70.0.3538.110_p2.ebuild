@@ -697,7 +697,7 @@ src_compile() {
 
 	# Avoid falling back to preprocessor mode when sources contain time macros
 	# shellcheck disable=SC2086
-	(has ccache ${FEATURES}) && export CCACHE_SLOPPINESS=time_macros
+	has ccache ${FEATURES} && export CCACHE_SLOPPINESS=time_macros
 
 	# Build mksnapshot and pax-mark it
 	local x
@@ -779,13 +779,12 @@ src_install() {
 	mime_types+="x-scheme-handler/http;x-scheme-handler/https;" # Bug #360797
 	mime_types+="x-scheme-handler/ftp;" # Bug #412185
 	mime_types+="x-scheme-handler/mailto;x-scheme-handler/webcal;" # Bug #416393
-	# shellcheck disable=SC1117
 	make_desktop_entry \
 		chromium-browser \
 		"Chromium" \
 		chromium-browser \
 		"Network;WebBrowser" \
-		"MimeType=${mime_types}\nStartupWMClass=chromium-browser"
+		"MimeType=${mime_types}\\nStartupWMClass=chromium-browser"
 	sed -i "/^Exec/s/$/ %U/" "${ED}"/usr/share/applications/*.desktop || die
 
 	# Install GNOME default application entry (Bug #303100)
@@ -802,7 +801,7 @@ usetf() {
 update_caches() {
 	if type gtk-update-icon-cache &>/dev/null; then
 		ebegin "Updating GTK icon cache"
-		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor" || die
 		eend $?
 	fi
 	xdg_desktop_database_update
