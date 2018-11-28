@@ -5,9 +5,9 @@ EAPI=7
 HOMEPAGE=https://signal.org/
 KEYWORDS=~amd64
 LICENSE=GPL-3
-RDEPEND=>=dev-util/electron-bin-2.0.8:2.0
+RDEPEND=>=dev-util/electron-bin-3.0.9:3.0
 RESTRICT=mirror
 SLOT=0
-SRC_URI=https://github.com/signalapp/Signal-Desktop/archive/v1.18.1.tar.gz -> signal-desktop-1.18.1.tar.gz
+SRC_URI=https://github.com/signalapp/Signal-Desktop/archive/v1.19.0-beta.2.tar.gz -> signal-desktop-1.19.0_beta2.tar.gz
 _eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	xdg-utils	93b2dfbb00a09161e1e7f6360c0f7f6b
-_md5_=b069e9bc17f7d54052241599a774eca5
+_md5_=a422e4543e870a335953e7b7b17ee874
