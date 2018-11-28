@@ -28,8 +28,8 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="
 	+cfi cups custom-cflags gnome gold jumbo-build kerberos +lld new-tcmalloc
-	+openh264 optimize-webui +proprietary-codecs pulseaudio selinux +suid
-	+system-ffmpeg system-harfbuzz +system-icu +system-libevent +system-libvpx
+	optimize-webui +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
+	system-harfbuzz +system-icu +system-libevent +system-libvpx +system-openh264
 	+system-openjpeg +tcmalloc +thinlto vaapi widevine
 "
 REQUIRED_USE="
@@ -41,7 +41,7 @@ REQUIRED_USE="
 "
 RESTRICT="mirror
 	!system-ffmpeg? ( proprietary-codecs? ( bindist ) )
-	!openh264? ( bindist )
+	!system-openh264? ( bindist )
 "
 
 COMMON_DEPEND="
@@ -67,7 +67,7 @@ COMMON_DEPEND="
 	media-libs/libjpeg-turbo:=
 	media-libs/libpng:=
 	system-libvpx? ( >=media-libs/libvpx-1.7.0:=[postproc,svc] )
-	openh264? ( >=media-libs/openh264-1.6.0:= )
+	system-openh264? ( >=media-libs/openh264-1.6.0:= )
 	system-openjpeg? ( media-libs/openjpeg:2 )
 	pulseaudio? ( media-sound/pulseaudio:= )
 	system-ffmpeg? (
@@ -447,7 +447,6 @@ src_prepare() {
 		third_party/yasm/run_yasm.py
 	)
 
-	use openh264 || keeplibs+=( third_party/openh264 )
 	use system-ffmpeg || keeplibs+=( third_party/ffmpeg third_party/opus )
 	if ! use system-harfbuzz; then
 		keeplibs+=( third_party/freetype )
@@ -459,6 +458,7 @@ src_prepare() {
 		keeplibs+=( third_party/libvpx )
 		keeplibs+=( third_party/libvpx/source/libvpx/third_party/x86inc )
 	fi
+	use system-openh264 || keeplibs+=( third_party/openh264 )
 	use system-openjpeg || keeplibs+=( third_party/pdfium/third_party/libopenjpeg20 )
 	use tcmalloc && keeplibs+=( third_party/tcmalloc )
 
@@ -484,9 +484,9 @@ setup_compile_flags() {
 			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
 		fi
 
-		# Building with 'libc++' is not fully supported yet. So far
-		# I haven't successfully built with it. If you have a happy
-		# story to share, please let me know.
+		# Building with 'libc++' is not fully supported yet. At least
+		# I haven't been able to successfully build. If you have a happy
+		# story to share, please let me know. (:
 		has_version 'sys-devel/clang[default-libcxx]' && \
 			append-cxxflags "-stdlib=libstdc++"
 
@@ -570,12 +570,12 @@ src_configure() {
 		zlib
 	)
 
-	use openh264 && gn_system_libraries+=( openh264 )
 	use system-ffmpeg && gn_system_libraries+=( ffmpeg opus )
 	use system-harfbuzz && gn_system_libraries+=( freetype harfbuzz-ng )
 	use system-icu && gn_system_libraries+=( icu )
 	use system-libevent && gn_system_libraries+=( libevent )
 	use system-libvpx && gn_system_libraries+=( libvpx )
+	use system-openh264 && gn_system_libraries+=( openh264 )
 
 	build/linux/unbundle/replace_gn_files.py --system-libraries "${gn_system_libraries[@]}" || die
 
@@ -645,8 +645,9 @@ src_configure() {
 	myconf_gn+=" use_custom_libcxx=false"
 	myconf_gn+=" use_gio=$(usetf gnome)"
 	myconf_gn+=" use_kerberos=$(usetf kerberos)"
-	myconf_gn+=" use_openh264=$(usetf !openh264)" # Enable this to build
-	# OpenH264 for encoding, hence the restriction: !openh264? ( bindist )
+	# If enabled, it will build the bundled OpenH264 for encoding,
+	# hence the restriction: !system-openh264? ( bindist )
+	myconf_gn+=" use_openh264=$(usetf !system-openh264)"
 	myconf_gn+=" use_pulseaudio=$(usetf pulseaudio)"
 	# HarfBuzz and FreeType need to be built together in a specific way
 	# to get FreeType autohinting to work properly. Chromium bundles
@@ -658,7 +659,7 @@ src_configure() {
 	myconf_gn+=" use_system_zlib=true"
 	myconf_gn+=" use_vaapi=$(usetf vaapi)"
 
-	# Optionally enable new tcmalloc (https://crbug.com/724399)
+	# Enable the experimental tcmalloc (https://crbug.com/724399)
 	# It is relevant only when use_allocator == "tcmalloc"
 	myconf_gn+=" use_new_tcmalloc=$(usetf new-tcmalloc)"
 
