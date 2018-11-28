@@ -46,5 +46,4 @@ net-p2p/monero-gui
 app-admin/scaleway-cli
 app-metrics/nsq_exporter
 dev-db/tidb
-dev-go/depth
 sys-process/gkill
