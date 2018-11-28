@@ -3,7 +3,7 @@
 
 EAPI=6
 
-GIT_COMMIT="f3d5190793" # Change this when you update the ebuild
+GIT_COMMIT="9433cf5a92" # Change this when you update the ebuild
 EGO_PN="github.com/gohugoio/hugo"
 # Note: Keep EGO_VENDOR in sync with go.mod
 # Deps that are not needed:
@@ -23,8 +23,7 @@ EGO_VENDOR=(
 	"github.com/alecthomas/repr 117648cd98" # tests
 	"github.com/bep/debounce v1.1.0"
 	"github.com/bep/gitmap v1.0.0"
-	"github.com/bep/go-tocss v0.5.0"
-	"github.com/bep/mapstructure bb74f1db06"
+	"github.com/bep/go-tocss v0.6.0"
 	"github.com/chaseadamsio/goorgeous v1.1.0"
 	"github.com/cpuguy83/go-md2man v1.0.8"
 	"github.com/danwakefield/fnmatch cbb64ac3d9"
@@ -66,10 +65,10 @@ EGO_VENDOR=(
 	"github.com/spf13/nitro 24d7ef30a1"
 	"github.com/spf13/pflag v1.0.3"
 	"github.com/spf13/viper v1.2.0"
-	"github.com/stretchr/testify f2347ac6c9" # tests
+	"github.com/stretchr/testify 04af85275a" # tests
 	"github.com/tdewolff/minify/v2 v2.3.7 github.com/tdewolff/minify"
 	"github.com/tdewolff/parse/v2 v2.3.5 github.com/tdewolff/parse" # inderect
-	"github.com/wellington/go-libsass 615eaa47ef" # sass
+	"github.com/wellington/go-libsass c636442067" # sass
 	"github.com/yosssi/ace v0.0.5"
 	"golang.org/x/image c73c2afc3b github.com/golang/image"
 	"golang.org/x/net 161cd47e91 github.com/golang/net" # inderect
