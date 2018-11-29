@@ -1,23 +1,23 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-EGO_PN="code.gitea.io/gitea"
+EGO_PN="code.gitea.io/${PN}"
 EGO_VENDOR=( "github.com/kevinburke/go-bindata v3.11.0" )
 
-inherit fcaps golang-vcs-snapshot systemd user
+inherit fcaps golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="Gitea - Git with a cup of tea"
 HOMEPAGE="https://gitea.io"
-SRC_URI="https://github.com/go-${PN}/${PN}/archive/v${PV/_/-}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+ARCHIVE_URI="https://github.com/go-${PN}/${PN}/archive/v${PV/_/-}.tar.gz -> ${P}.tar.gz"
+SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="memcached mysql openssh pam pie postgres redis sqlite"
+IUSE="debug memcached mysql openssh pam pie postgres redis sqlite"
 
 RDEPEND="
 	dev-vcs/git[curl,threads]
@@ -31,7 +31,7 @@ RDEPEND="
 "
 
 FILECAPS=( cap_net_bind_service+ep usr/bin/gitea )
-QA_PRESTRIPPED="usr/bin/gitea"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -42,8 +42,7 @@ pkg_setup() {
 }
 
 src_prepare() {
-	# The tarball isn't a proper git repository,
-	# so let's silence the "fatal" error message.
+	# Remove the git call, as the tarball isn't a proper git repository
 	sed -i "/GITEA_VERSION :=/d" Makefile || die
 
 	sed -i \
@@ -63,19 +62,19 @@ src_compile() {
 	# Generate embedded data
 	emake generate
 
-	# build up optional flags
+	# Build up optional flags
 	local opts
 	use pam && opts+=" pam"
 	use sqlite && opts+=" sqlite"
 
-	local myldflags=( -s -w
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "main.Version=${PV/_/-}"
 		-X "'main.Tags=${opts/ /}'"
 	)
-
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
@@ -92,6 +91,7 @@ src_test() {
 
 src_install() {
 	dobin gitea
+	use debug && dostrip -x /usr/bin/gitea
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
@@ -116,9 +116,9 @@ src_install() {
 pkg_postinst() {
 	fcaps_pkg_postinst
 
-	if [[ ! -e "${EROOT%/}/var/lib/gitea/conf/app.ini" ]]; then
+	if [[ ! -e "${EROOT}/var/lib/gitea/conf/app.ini" ]]; then
 		elog "No app.ini found, copying the example over"
-		cp "${EROOT%/}"/var/lib/gitea/conf/app.ini{.example,} || die
+		cp "${EROOT}"/var/lib/gitea/conf/app.ini{.example,} || die
 	else
 		elog "app.ini found, please check example file for possible changes"
 	fi

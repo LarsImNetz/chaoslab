@@ -216,7 +216,6 @@ skeptic-0.4.0
 slab-0.2.0
 slab-0.3.0
 slab-0.4.1
-smallvec-0.2.1
 smallvec-0.4.5
 smallvec-0.6.5
 socket2-0.3.8
@@ -226,7 +225,6 @@ strsim-0.7.0
 syn-0.12.15
 syn-0.13.11
 syn-0.15.4
-take-0.1.0
 target_info-0.1.0
 tempdir-0.3.7
 tempfile-2.2.0
@@ -248,7 +246,6 @@ tokio-current-thread-0.1.1
 tokio-executor-0.1.4
 tokio-fs-0.1.3
 tokio-io-0.1.8
-tokio-proto-0.1.1
 tokio-reactor-0.1.5
 tokio-retry-0.1.1
 tokio-rustls-0.4.0
@@ -262,7 +259,7 @@ tokio-uds-0.1.7
 tokio-uds-0.2.1
 toml-0.4.6
 trace-time-0.1.1
-transaction-pool-1.13.2
+transaction-pool-1.13.3
 transient-hashmap-0.4.1
 trie-standardmap-0.1.1
 triehash-0.2.3
@@ -277,7 +274,6 @@ unicode-segmentation-1.2.1
 unicode-width-0.1.5
 unicode-xid-0.1.0
 unreachable-1.0.0
-untrusted-0.5.1
 url-1.7.1
 utf8-ranges-1.0.1
 vec_map-0.8.1
@@ -306,9 +302,9 @@ inherit cargo systemd user
 
 DESCRIPTION="Fast, light, and robust Ethereum client"
 HOMEPAGE="https://parity.io"
+ARCHIVE_URI="https://github.com/paritytech/${PN}-ethereum/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 # shellcheck disable=SC2086
-SRC_URI="https://github.com/paritytech/${PN}-ethereum/archive/v${PV/_*}.tar.gz -> ${P}.tar.gz
-	$(cargo_crate_uris ${CRATES})"
+SRC_URI="${ARCHIVE_URI} $(cargo_crate_uris ${CRATES})"
 RESTRICT="mirror"
 
 LICENSE="GPL-3+"
@@ -318,17 +314,19 @@ IUSE="+daemon"
 
 DOCS=( {CHANGELOG,README,SECURITY}.md )
 
-S="${WORKDIR}/parity-ethereum-${PV/_*}"
+S="${WORKDIR}/parity-ethereum-${PV}"
 
-pkg_setup() {
+pkg_pretend() {
 	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES && [[ "${MERGE_TYPE}" != binary ]]; then
+	if has network-sandbox ${FEATURES} && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
+}
 
+pkg_setup() {
 	if use daemon; then
 		enewgroup parity
 		enewuser parity -1 -1 /var/lib/parity parity

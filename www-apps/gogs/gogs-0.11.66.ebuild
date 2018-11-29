@@ -1,12 +1,12 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 GIT_COMMIT="3a4c981" # Change this when you update the ebuild
-EGO_PN="github.com/gogs/gogs"
+EGO_PN="github.com/${PN}/${PN}"
 
-inherit fcaps golang-vcs-snapshot systemd user
+inherit fcaps golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="A painless self-hosted Git service"
 HOMEPAGE="https://gogs.io"
@@ -16,7 +16,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="cert memcached mysql openssh pam pie postgres redis sqlite tidb"
+IUSE="cert memcached mysql openssh pam pie postgres redis sqlite"
 
 RDEPEND="
 	dev-vcs/git[curl,threads]
@@ -27,11 +27,10 @@ RDEPEND="
 	postgres? ( dev-db/postgresql )
 	redis? ( dev-db/redis )
 	sqlite? ( dev-db/sqlite )
-	tidb? ( dev-db/tidb )
 "
 
 FILECAPS=( cap_net_bind_service+ep usr/bin/gogs )
-QA_PRESTRIPPED="usr/bin/gogs"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -53,21 +52,21 @@ src_prepare() {
 
 src_compile() {
 	export GOPATH="${G}"
-	# build up optional flags
+
+	# Build up optional flags
 	local opts
 	use cert && opts+=" cert"
 	use pam && opts+=" pam"
 	use sqlite && opts+=" sqlite"
-	use tidb && opts+=" tidb"
 
-	local myldflags=( -s -w
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "'${EGO_PN}/pkg/setting.BuildTime=$(date -u '+%Y-%m-%d %I:%M:%S %Z')'"
 		-X "${EGO_PN}/pkg/setting.BuildGitHash=${GIT_COMMIT}"
 	)
-
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
@@ -82,6 +81,7 @@ src_test() {
 
 src_install() {
 	dobin gogs
+	use debug && dostrip -x /usr/bin/gogs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
@@ -105,9 +105,9 @@ src_install() {
 pkg_postinst() {
 	fcaps_pkg_postinst
 
-	if [[ ! -e "${EROOT%/}/var/lib/gogs/conf/app.ini" ]]; then
+	if [[ ! -e "${EROOT}/var/lib/gogs/conf/app.ini" ]]; then
 		elog "No app.ini found, copying the example over"
-		cp "${EROOT%/}"/var/lib/gogs/conf/app.ini{.example,} || die
+		cp "${EROOT}"/var/lib/gogs/conf/app.ini{.example,} || die
 	else
 		elog "app.ini found, please check example file for possible changes"
 	fi
