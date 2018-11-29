@@ -2,9 +2,6 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-output_log="${output_log:-/dev/null}"
-error_log="${error_log:-${KAPACITOR_LOGDIR}/error.log}"
-
 command="/usr/bin/kapacitord"
 command_args="-config ${KAPACITOR_CONFIG} ${KAPACITOR_OPTS}"
 command_background=true
@@ -19,6 +16,5 @@ depend() {
 }
 
 start_pre() {
-	checkpath -d -m 0750 -o "${command_user}" \
-		"${KAPACITOR_DATADIR}" "${KAPACITOR_LOGDIR}"
+	checkpath -d -m 0750 -o "${command_user}" "${KAPACITOR_DATADIR}"
 }
