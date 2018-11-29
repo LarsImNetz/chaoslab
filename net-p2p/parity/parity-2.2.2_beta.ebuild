@@ -51,6 +51,7 @@ docopt-0.8.3
 edit-distance-2.0.1
 either-1.5.0
 elastic-array-0.10.0
+env_logger-0.4.3
 env_logger-0.5.13
 error-chain-0.12.0
 ethabi-6.1.0
@@ -220,7 +221,6 @@ semver-0.9.0
 semver-parser-0.7.0
 serde-1.0.80
 serde_derive-1.0.80
-serde_ignored-0.0.4
 serde_json-1.0.32
 sha1-0.2.0
 sha1-0.5.0
@@ -323,9 +323,9 @@ inherit cargo systemd user
 
 DESCRIPTION="Fast, light, and robust Ethereum client"
 HOMEPAGE="https://parity.io"
+ARCHIVE_URI="https://github.com/paritytech/${PN}-ethereum/archive/v${PV/_*}.tar.gz -> ${P}.tar.gz"
 # shellcheck disable=SC2086
-SRC_URI="https://github.com/paritytech/${PN}-ethereum/archive/v${PV/_*}.tar.gz -> ${P}.tar.gz
-	$(cargo_crate_uris ${CRATES})"
+SRC_URI="${ARCHIVE_URI} $(cargo_crate_uris ${CRATES})"
 RESTRICT="mirror"
 
 LICENSE="GPL-3+"
@@ -339,15 +339,17 @@ DOCS=( {CHANGELOG,README,SECURITY}.md )
 
 S="${WORKDIR}/parity-ethereum-${PV/_*}"
 
-pkg_setup() {
+pkg_pretend() {
 	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES && [[ "${MERGE_TYPE}" != binary ]]; then
+	if has network-sandbox ${FEATURES} && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
+}
 
+pkg_setup() {
 	if use daemon; then
 		enewgroup parity
 		enewuser parity -1 -1 /var/lib/parity parity
