@@ -14,6 +14,5 @@
 		<flag name="cert">Generate self-signed certificate</flag>
 		<flag name="openssh">Use OpenSSH instead of the builtin SSH server</flag>
 		<flag name="redis">Add support for redis sessions</flag>
-		<flag name="tidb">Enable TiDB database support</flag>
 	</use>
 </pkgmetadata>
