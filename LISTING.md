@@ -150,6 +150,7 @@ net-im/**[dino](net-im/dino)** `*` | A modern Jabber/XMPP Client using GTK+/Vala
 net-im/**[matterircd](net-im/matterircd)** | Connect to your Mattermost or Slack using your IRC-client of choice
 net-im/**[profanity](net-im/profanity)** | A console based XMPP client inspired by Irssi
 net-im/**[signal-desktop](net-im/signal-desktop)** `*` | Signal Private Messenger for the Desktop
+net-im/**[slack-term](net-im/slack-term)** `*` | A Slack client for your terminal
 net-libs/**[nodejs](net-libs/nodejs)** `*` | A JavaScript runtime built on Chrome's V8 JavaScript engine
 net-misc/**[cointop](net-misc/cointop)** | A terminal based UI application for tracking cryptocurrencies
 net-misc/**[curlie](net-misc/curlie)** | The power of curl, the ease of use of HTTPie
