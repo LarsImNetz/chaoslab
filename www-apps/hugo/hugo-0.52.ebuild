@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 GIT_COMMIT="9433cf5a92" # Change this when you update the ebuild
 EGO_PN="github.com/gohugoio/hugo"
@@ -78,33 +78,34 @@ EGO_VENDOR=(
 	"gopkg.in/yaml.v2 v2.2.1 github.com/go-yaml/yaml"
 )
 
-inherit bash-completion-r1 golang-vcs-snapshot
+inherit bash-completion-r1 golang-vcs-snapshot-r1
 
 DESCRIPTION="A static HTML and CSS website generator written in Go"
 HOMEPAGE="https://gohugo.io"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+ARCHIVE_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="pie +sass"
+IUSE="debug pie +sass"
 
-QA_PRESTRIPPED="usr/bin/hugo"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
-	local myldflags=( -s -w
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "${EGO_PN}/hugolib.CommitHash=${GIT_COMMIT}"
 		-X "${EGO_PN}/hugolib.BuildDate=$(date -u '+%FT%T%z')"
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
@@ -128,6 +129,8 @@ src_test() {
 
 src_install() {
 	dobin hugo
+	use debug && dostrip -x /usr/bin/hugo
+
 	doman "${T}"/man/*
 	dobashcomp "${T}"/hugo
 }
