@@ -8,7 +8,7 @@ PYTHON_COMPAT=( python2_7 )
 inherit desktop python-single-r1 xdg-utils
 
 ELECTRON_SLOT="2.0"
-ELECTRON_V="2.0.9"
+ELECTRON_V="2.0.11"
 MY_PV="${PV/_/-}"
 RSRC_DIR="out/${PN}-${MY_PV}-amd64/resources"
 
@@ -79,25 +79,24 @@ src_prepare() {
 
 	# Make bootstrap process more verbose
 	sed -i 's|node script/bootstrap|node script/bootstrap --no-quiet|g' \
-		./script/build || die
+		script/build || die
 
 	# Fix path for "View License" in Help menu and active pane
-	sed -i "s|path.join(process.resourcesPath, 'LICENSE.md')|'${EPREFIX}/usr/share/licenses/atom/LICENSE.md'|g" \
-		./src/main-process/atom-application.js || die
-	sed -i "s|path.join(process.resourcesPath, 'LICENSE.md')|'${EPREFIX}/usr/share/licenses/atom/LICENSE.md'|g" \
-		./src/workspace.js || die
+	sed "s|path.join(process.resourcesPath, 'LICENSE.md')|'${EPREFIX}/usr/share/licenses/atom/LICENSE.md'|g" \
+		-i src/main-process/atom-application.js \
+		-i src/workspace.js || die
 
 	sed -i \
 		-e "/ATOM_HOME=/i export PYTHON=${PYTHON}\\n" \
 		-e "s|{{ATOM_PATH}}|${EPREFIX}/opt/electron-${ELECTRON_SLOT}/electron|g" \
 		-e "s|{{ATOM_RESOURCE_PATH}}|${EPREFIX}/usr/libexec/atom/app.asar|g" \
 		-e "s|{{ATOM_PREFIX}}|${EPREFIX}|g" \
-		./atom.sh || die
+		atom.sh || die
 
 	sed -i \
 		-e "s|{{ATOM_PREFIX}}|${EPREFIX}|g" \
 		-e "s|{{ATOM_SUFFIX}}|${suffix}|g" \
-		./src/config-schema.js || die
+		src/config-schema.js || die
 }
 
 src_compile() {
@@ -154,7 +153,7 @@ src_install() {
 	# Symlink to /usr/bin
 	dosym ../libexec/atom/app/atom.sh /usr/bin/atom
 	dosym ../libexec/atom/app/apm/bin/apm /usr/bin/apm
-	# Symlink LICENSE.md to work with "View License" in Help menu
+	# Symlink LICENSE.md for "View License" in Help menu and About page
 	dosym ../../../libexec/atom/LICENSE.md /usr/share/licenses/atom/LICENSE.md
 }
 
@@ -175,7 +174,7 @@ get_install_suffix() {
 update_caches() {
 	if type gtk-update-icon-cache &>/dev/null; then
 		ebegin "Updating GTK icon cache"
-		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor" || die
 		eend $?
 	fi
 	xdg_desktop_database_update
