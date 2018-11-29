@@ -152,6 +152,7 @@ net-im/**[profanity](net-im/profanity)** | A console based XMPP client inspired 
 net-im/**[signal-desktop](net-im/signal-desktop)** `*` | Signal Private Messenger for the Desktop
 net-libs/**[nodejs](net-libs/nodejs)** `*` | A JavaScript runtime built on Chrome's V8 JavaScript engine
 net-misc/**[cointop](net-misc/cointop)** | A terminal based UI application for tracking cryptocurrencies
+net-misc/**[curlie](net-misc/curlie)** | The power of curl, the ease of use of HTTPie
 net-misc/**[electron-cash](net-misc/electron-cash)** `*` | Lightweight Bitcoin Cash client
 net-misc/**[gotty-client](net-misc/gotty-client)** | A terminal client for GoTTY
 net-misc/**[piknik](net-misc/piknik)** | Copy/paste anything over the network
