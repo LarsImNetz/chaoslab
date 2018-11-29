@@ -1,0 +1,13 @@
+BDEPEND=>=dev-lang/go-1.10.1 virtual/pkgconfig
+DEFINED_PHASES=compile install postinst setup test unpack
+DESCRIPTION=A framework for processing, monitoring, and alerting on time series data
+EAPI=7
+HOMEPAGE=https://influxdata.com
+IUSE=debug examples pie
+KEYWORDS=~amd64 ~x86
+LICENSE=MIT
+RESTRICT=mirror test
+SLOT=0
+SRC_URI=https://github.com/influxdata/kapacitor/archive/v1.5.2-rc1.tar.gz -> kapacitor-1.5.2_rc1.tar.gz
+_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f	multilib	b2f01ad412baf81650c23fcf0975fa33	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81
+_md5_=efbacfa4149403fc9de6372444073a87
