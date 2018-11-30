@@ -15,6 +15,7 @@
 		that makes it lightweight and efficient.
 	</longdescription>
 	<use>
+		<flag name="clang">Improve Clang compatibility</flag>
 		<flag name="inspector">Enable V8 inspector</flag>
 		<flag name="npm">Enable NPM package manager</flag>
 		<flag name="bundled-ssl">Use bundled OpenSSL instead of system-wide (EXPERIMENTAL)</flag>
