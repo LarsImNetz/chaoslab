@@ -4,7 +4,7 @@ DEPEND=dev-libs/boost:0=[threads(+)] ~dev-libs/bls-signatures-0_p20181101 dev-li
 DESCRIPTION=A peer-to-peer privacy-centric digital currency
 EAPI=7
 HOMEPAGE=https://www.dash.org
-IUSE=daemon dbus +gui hardened libressl +qrcode +reduce-exports system-univalue test upnp utils +wallet zeromq l10n_ru l10n_de l10n_es l10n_zh-TW l10n_en l10n_ko l10n_bg l10n_pt l10n_vi l10n_pl l10n_ja l10n_it l10n_ar l10n_nl l10n_zh-CN l10n_fr l10n_sk l10n_tr l10n_th l10n_fi l10n_sv
+IUSE=daemon dbus +gui hardened libressl +qrcode +reduce-exports system-univalue test upnp utils +wallet zeromq
 KEYWORDS=~amd64 ~arm ~arm64 ~x86
 LICENSE=MIT
 RDEPEND=dev-libs/boost:0=[threads(+)] ~dev-libs/bls-signatures-0_p20181101 dev-libs/libevent gui? ( dev-libs/protobuf dev-qt/qtgui:5 dev-qt/qtnetwork:5 dev-qt/qtwidgets:5 dbus? ( dev-qt/qtdbus:5 ) qrcode? ( media-gfx/qrencode ) ) !libressl? ( dev-libs/openssl:0=[-bindist] ) libressl? ( dev-libs/libressl:0= ) system-univalue? ( dev-libs/univalue ) upnp? ( net-libs/miniupnpc ) wallet? ( sys-libs/db:4.8[cxx] ) zeromq? ( net-libs/zeromq )
@@ -13,4 +13,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/dashpay/dash/archive/v0.13.0.0-rc5.tar.gz -> dash-core-0.13.0.0_rc5.tar.gz
 _eclasses_=autotools	1bf086cdd7356f5c9a4acd9727bd2065	bash-completion-r1	47a7402d95930413ce25ba8d857339bb	desktop	b1d22ac8bdd4679ab79c71aca235009d	libtool	f143db5a74ccd9ca28c1234deffede96	multilib	b2f01ad412baf81650c23fcf0975fa33	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81	xdg-utils	93b2dfbb00a09161e1e7f6360c0f7f6b
-_md5_=1cfbc682df0054c39b7631700f5cee77
+_md5_=1d20323564cf4d8267372395619999f8
