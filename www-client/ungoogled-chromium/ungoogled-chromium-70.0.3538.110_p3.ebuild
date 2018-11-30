@@ -2,6 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
+
 PYTHON_COMPAT=( python{2_7,3_{5,6,7}} )
 
 CHROMIUM_LANGS="
@@ -27,18 +28,19 @@ LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="
-	+cfi cups custom-cflags gnome jumbo-build kerberos new-tcmalloc optimize-webui
-	+proprietary-codecs pulseaudio selinux +suid +system-ffmpeg system-harfbuzz
-	+system-icu +system-libevent +system-libvpx +system-openh264 +system-openjpeg
-	+tcmalloc +thinlto vaapi widevine
+	+cfi cups custom-cflags gnome gold jumbo-build kerberos +lld new-tcmalloc
+	optimize-webui +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
+	system-harfbuzz +system-icu +system-libevent +system-libvpx +system-openh264
+	+system-openjpeg +tcmalloc +thinlto vaapi widevine
 "
 REQUIRED_USE="
+	^^ ( gold lld )
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
-	cfi? ( thinlto )
+	cfi? ( lld thinlto )
 	new-tcmalloc? ( tcmalloc )
 "
-RESTRICT="mirror
+RESTRICT="
 	!system-ffmpeg? ( proprietary-codecs? ( bindist ) )
 	!system-openh264? ( bindist )
 "
@@ -59,8 +61,10 @@ COMMON_DEPEND="
 	>=dev-libs/re2-0.2016.05.01:=
 	>=media-libs/alsa-lib-1.0.19:=
 	media-libs/fontconfig:=
-	system-harfbuzz? ( media-libs/freetype:= )
-	system-harfbuzz? ( >=media-libs/harfbuzz-2.0.0:0=[icu(-)] )
+	system-harfbuzz? (
+		media-libs/freetype:=
+		>=media-libs/harfbuzz-2.0.0:0=[icu(-)]
+	)
 	media-libs/libjpeg-turbo:=
 	media-libs/libpng:=
 	system-libvpx? ( >=media-libs/libvpx-1.7.0:=[postproc,svc] )
@@ -127,8 +131,8 @@ BDEPEND="
 	>=sys-devel/clang-7.0.0
 	cfi? ( >=sys-devel/clang-runtime-7.0.0[sanitize] )
 	sys-devel/flex
-	>=sys-devel/lld-7.0.0
-	>=sys-devel/llvm-7.0.0
+	lld? ( >=sys-devel/lld-7.0.0 )
+	>=sys-devel/llvm-7.0.0[gold?]
 	virtual/libusb:1
 	virtual/pkgconfig
 	dev-vcs/git
@@ -164,6 +168,7 @@ PATCHES=(
 	"${FILESDIR}/chromium-memcpy-r0.patch"
 	"${FILESDIR}/chromium-math.h-r0.patch"
 	"${FILESDIR}/chromium-stdint.patch"
+	"${FILESDIR}/${PN}-gold-r0.patch"
 )
 
 S="${WORKDIR}/chromium-${PV/_*}"
@@ -224,7 +229,8 @@ src_prepare() {
 	local ugc_common_dir="${UGC_WD}/config_bundles/common"
 	local ugc_rooted_dir="${UGC_WD}/config_bundles/linux_rooted"
 
-	# Remove ARM and GCC related patches
+	# Remove unneeded ARM & GCC patches. Also, as we will use
+	# dev-util/gn, remove redundant patches related to GN bootstrap
 	sed -i \
 		-e '/arm\/skia.patch/d' \
 		-e '/arm\/gcc_skcms_ice.patch/d' \
@@ -236,11 +242,11 @@ src_prepare() {
 		-e '/warnings\/enum-compare.patch/d' \
 		-e '/warnings\/multichar.patch/d' \
 		-e '/warnings\/null-destination.patch/d' \
+		-e '/gn\/parallel.patch/d' \
+		-e '/gn-bootstrap-remove-gn-gen.patch/d' \
+		-e '/no-such-option-no-sysroot.patch/d' \
 		"${ugc_common_dir}/patch_order.list" || die
-
-	# The licensing issue only matters to Debian folks, it also
-	# depends on system icu (https://bugs.debian.org/900596)
-	sed -i '/system\/convertutf.patch/d' "${ugc_rooted_dir}/patch_order.list" || die
+	sed -i '/gn\/libcxx.patch/d' "${ugc_rooted_dir}/patch_order.list" || die
 
 	if ! use system-icu; then
 		sed -i '/common\/icudtl.dat/d' "${ugc_rooted_dir}/pruning.list" || die
@@ -255,7 +261,7 @@ src_prepare() {
 	fi
 
 	if use system-openjpeg; then
-		sed -i '/system\/nspr.patch/a debian/system/openjpeg.patch' \
+		sed -i '/system\/nspr.patch/a debian_buster/system/openjpeg.patch' \
 			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
@@ -289,8 +295,6 @@ src_prepare() {
 		base/third_party/valgrind
 		base/third_party/xdg_mime
 		base/third_party/xdg_user_dirs
-		buildtools/third_party/libc++
-		buildtools/third_party/libc++abi
 		chrome/third_party/mozilla_security_manager
 		courgette/third_party
 		net/third_party/http2
@@ -478,7 +482,23 @@ setup_compile_flags() {
 		if [[ ${myarch} == amd64 || ${myarch} == x86 ]]; then
 			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
 		fi
+
+		# Building with 'libc++' is not fully supported yet. At least
+		# I haven't been able to successfully build. If you have a happy
+		# story to share, please let me know. (:
+		has_version 'sys-devel/clang[default-libcxx]' && \
+			append-cxxflags "-stdlib=libstdc++"
+
+		# 'gcc_s' is required if 'compiler-rt' is Clang's default
+		has_version 'sys-devel/clang[default-compiler-rt]' && \
+			append-ldflags "-Wl,-lgcc_s"
 	fi
+
+	# TODO: Build against sys-libs/{libcxx,libcxxabi}
+	#if use libcxx; then
+	#	append-cxxflags "-stdlib=libc++"
+	#	append-ldflags "-stdlib=libc++ -Wl,-lc++abi"
+	#fi
 
 	if use thinlto; then
 		# We need to change the default value of import-instr-limit in
@@ -560,10 +580,10 @@ src_configure() {
 
 	local myconf_gn=""
 	# Clang features
-	myconf_gn+=" is_clang=true" # Implies use_lld=true
+	myconf_gn+=" is_clang=true"
 	myconf_gn+=" clang_use_chrome_plugins=false"
 	myconf_gn+=" use_thin_lto=$(usetf thinlto)"
-	myconf_gn+=" treat_warnings_as_errors=false"
+	myconf_gn+=" use_lld=$(usetf lld)"
 	myconf_gn+=" is_cfi=$(usetf cfi)"
 	myconf_gn+=" use_cfi_cast=$(usetf cfi)"
 
@@ -597,6 +617,7 @@ src_configure() {
 	myconf_gn+=" proprietary_codecs=$(usetf proprietary-codecs)"
 	myconf_gn+=" safe_browsing_mode=0"
 	myconf_gn+=" symbol_level=0"
+	myconf_gn+=" treat_warnings_as_errors=false"
 	myconf_gn+=" use_gnome_keyring=false" # Deprecated by libsecret
 	myconf_gn+=" use_jumbo_build=$(usetf jumbo-build)"
 	myconf_gn+=" use_official_google_api_keys=false"
@@ -623,8 +644,9 @@ src_configure() {
 	myconf_gn+=" use_custom_libcxx=false"
 	myconf_gn+=" use_gio=$(usetf gnome)"
 	myconf_gn+=" use_kerberos=$(usetf kerberos)"
-	myconf_gn+=" use_openh264=$(usetf !system-openh264)" # Enable this to
-	# build OpenH264 for encoding, hence the restriction: !system-openh264? ( bindist )
+	# If enabled, it will build the bundled OpenH264 for encoding,
+	# hence the restriction: !system-openh264? ( bindist )
+	myconf_gn+=" use_openh264=$(usetf !system-openh264)"
 	myconf_gn+=" use_pulseaudio=$(usetf pulseaudio)"
 	# HarfBuzz and FreeType need to be built together in a specific way
 	# to get FreeType autohinting to work properly. Chromium bundles
@@ -636,7 +658,7 @@ src_configure() {
 	myconf_gn+=" use_system_zlib=true"
 	myconf_gn+=" use_vaapi=$(usetf vaapi)"
 
-	# Optionally enable new tcmalloc (https://crbug.com/724399)
+	# Enable the experimental tcmalloc (https://crbug.com/724399)
 	# It is relevant only when use_allocator == "tcmalloc"
 	myconf_gn+=" use_new_tcmalloc=$(usetf new-tcmalloc)"
 
@@ -675,7 +697,7 @@ src_compile() {
 
 	# Avoid falling back to preprocessor mode when sources contain time macros
 	# shellcheck disable=SC2086
-	(has ccache ${FEATURES}) && export CCACHE_SLOPPINESS=time_macros
+	has ccache ${FEATURES} && export CCACHE_SLOPPINESS=time_macros
 
 	# Build mksnapshot and pax-mark it
 	local x
@@ -690,8 +712,7 @@ src_compile() {
 	done
 
 	# Work around broken deps
-	eninja -C out/Release gen/ui/accessibility/ax_enums.mojom.h
-	eninja -C out/Release gen/ui/accessibility/ax_enums.mojom-shared.h
+	eninja -C out/Release gen/ui/accessibility/ax_enums.mojom{,-shared}.h
 
 	# Even though ninja autodetects number of CPUs, we respect
 	# user's options, for debugging with -j 1 or any other reason
@@ -702,8 +723,7 @@ src_compile() {
 }
 
 src_install() {
-	# SC2155
-	local CHROMIUM_HOME
+	local CHROMIUM_HOME # SC2155
 	CHROMIUM_HOME="/usr/$(get_libdir)/chromium-browser"
 	exeinto "${CHROMIUM_HOME}"
 	doexe out/Release/chrome
@@ -759,13 +779,12 @@ src_install() {
 	mime_types+="x-scheme-handler/http;x-scheme-handler/https;" # Bug #360797
 	mime_types+="x-scheme-handler/ftp;" # Bug #412185
 	mime_types+="x-scheme-handler/mailto;x-scheme-handler/webcal;" # Bug #416393
-	# shellcheck disable=SC1117
 	make_desktop_entry \
 		chromium-browser \
 		"Chromium" \
 		chromium-browser \
 		"Network;WebBrowser" \
-		"MimeType=${mime_types}\nStartupWMClass=chromium-browser"
+		"MimeType=${mime_types}\\nStartupWMClass=chromium-browser"
 	sed -i "/^Exec/s/$/ %U/" "${ED}"/usr/share/applications/*.desktop || die
 
 	# Install GNOME default application entry (Bug #303100)
@@ -782,7 +801,7 @@ usetf() {
 update_caches() {
 	if type gtk-update-icon-cache &>/dev/null; then
 		ebegin "Updating GTK icon cache"
-		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor" || die
 		eend $?
 	fi
 	xdg_desktop_database_update
