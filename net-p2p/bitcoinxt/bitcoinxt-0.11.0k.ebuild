@@ -77,6 +77,10 @@ src_prepare() {
 	use utils || sed -i 's/have bitcoind &&//;s/^\(complete -F _bitcoind bitcoind\) bitcoin-cli$/\1/' \
 		contrib/bitcoind.bash-completion || die
 
+	echo '#!/bin/true' >share/genbuild.sh || die
+	mkdir -p src/obj || die
+	echo "#define BUILD_SUFFIX gentoo${PVR#${PV}}" >src/obj/build.h || die
+
 	default
 	eautoreconf
 }
