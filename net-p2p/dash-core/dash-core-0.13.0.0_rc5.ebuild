@@ -54,6 +54,10 @@ pkg_setup() {
 }
 
 src_prepare() {
+	echo '#!/bin/true' >share/genbuild.sh || die
+	mkdir -p src/obj || die
+	echo "#define BUILD_SUFFIX gentoo${PVR#${PV}}" >src/obj/build.h || die
+
 	default
 	eautoreconf
 }
