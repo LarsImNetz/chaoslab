@@ -1,0 +1,10 @@
+--- a/common.gypi
++++ b/common.gypi
+@@ -180,6 +180,7 @@
+             'cflags': [ '-fno-omit-frame-pointer' ],
+           }],
+           ['OS=="linux"', {
++            'ldflags': ['-Wl,-lgcc_s'],
+             'variables': {
+               'pgo_generate': ' -fprofile-generate ',
+               'pgo_use': ' -fprofile-use -fprofile-correction ',

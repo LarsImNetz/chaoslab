@@ -1,0 +1,12 @@
+--- a/common.gypi
++++ b/common.gypi
+@@ -143,6 +143,9 @@
+           ['OS!="mac" and OS!="win"', {
+             'cflags': [ '-fno-omit-frame-pointer' ],
+           }],
++          ['OS=="linux"', {
++            'ldflags': ['-Wl,-lgcc_s']
++          }],
+           ['OS == "android"', {
+             'cflags': [ '-fPIE' ],
+             'ldflags': [ '-fPIE', '-pie' ]
