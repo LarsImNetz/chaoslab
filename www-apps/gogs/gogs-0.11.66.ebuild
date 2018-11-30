@@ -16,7 +16,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="cert memcached mysql openssh pam pie postgres redis sqlite"
+IUSE="debug cert memcached mysql openssh pam pie postgres redis sqlite"
 
 RDEPEND="
 	dev-vcs/git[curl,threads]
