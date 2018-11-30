@@ -11,6 +11,7 @@ inherit bash-completion-r1 eutils flag-o-matic pax-utils python-single-r1 toolch
 DESCRIPTION="A JavaScript runtime built on Chrome's V8 JavaScript engine"
 HOMEPAGE="https://nodejs.org/"
 SRC_URI="https://nodejs.org/dist/v${PV}/node-v${PV}.tar.xz"
+RESTRICT="mirror"
 
 LICENSE="Apache-1.1 Apache-2.0 BSD BSD-2 MIT"
 SLOT="0"
@@ -39,10 +40,10 @@ DEPEND="
 	systemtap? ( dev-util/systemtap )
 	test? ( net-misc/curl )
 "
+
+PATCHES=( "${FILESDIR}/${PN}-10.3.0-global-npm-config.patch" )
+
 S="${WORKDIR}/node-v${PV}"
-PATCHES=(
-	"${FILESDIR}/${PN}-10.3.0-global-npm-config.patch"
-)
 
 pkg_pretend() {
 	(use x86 && ! use cpu_flags_x86_sse2) && \

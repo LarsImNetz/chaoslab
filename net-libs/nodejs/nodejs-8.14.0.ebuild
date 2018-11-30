@@ -32,22 +32,17 @@ RDEPEND="
 	>=net-libs/nghttp2-1.33.0
 	sys-libs/zlib
 	icu? ( >=dev-libs/icu-60.1:= )
-	npm? ( ${PYTHON_DEPS} )
-	ssl? (
-		!bundled-ssl? (
-			=dev-libs/openssl-1.0.2*:0=[-bindist]
-		)
-	)"
+	ssl? ( !bundled-ssl? ( =dev-libs/openssl-1.0.2*:0=[-bindist] ) )
+"
 DEPEND="${RDEPEND}
 	${PYTHON_DEPS}
 	systemtap? ( dev-util/systemtap )
-	test? ( net-misc/curl )"
+	test? ( net-misc/curl )
+"
+
+PATCHES=( "${FILESDIR}/nodejs-10.3.0-global-npm-config.patch" )
 
 S="${WORKDIR}/node-v${PV}"
-
-PATCHES=(
-	"${FILESDIR}"/nodejs-10.3.0-global-npm-config.patch
-)
 
 pkg_pretend() {
 	(use x86 && ! use cpu_flags_x86_sse2) && \
@@ -152,7 +147,7 @@ src_install() {
 	local LIBDIR npm_config tmp_npm_completion_file
 	LIBDIR="${ED}/usr/$(get_libdir)"
 	emake install DESTDIR="${D}"
-	pax-mark -m "${ED}"usr/bin/node
+	pax-mark -m "${ED}"/usr/bin/node
 
 	# set up a symlink structure that node-gyp expects..
 	dodir /usr/include/node/deps/{v8,uv}
@@ -218,6 +213,6 @@ pkg_postinst() {
 	einfo
 	einfo "Protip: When using node-gyp to install native modules, you can"
 	einfo "avoid having to download extras by doing the following:"
-	einfo "$ node-gyp --nodedir /usr/include/node <command>"
+	einfo "$ node-gyp --nodedir ${EROOT}/usr/include/node <command>"
 	einfo
 }
