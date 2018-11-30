@@ -18,7 +18,6 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 IUSE="daemon dbus +gui hardened libressl +qrcode reduce-exports system-univalue test upnp utils +wallet zeromq"
 REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
-LANGS="bg de en es fi fr it ja nl pl pt pt_BR ru sk sv vi zh_CN zh_TW"
 
 CDEPEND="dev-libs/boost:0=[threads(+)]
 	dev-libs/libevent
@@ -40,43 +39,6 @@ DEPEND="${CDEPEND}
 	gui? ( dev-qt/linguist-tools )"
 RDEPEND="${CDEPEND}"
 
-declare -A LANG2USE USE2LANGS
-dash_langs_prep() {
-	local lang l10n
-	for lang in ${LANGS}; do
-		l10n="${lang/:*/}"
-		l10n="${l10n/[@_]/-}"
-		lang="${lang/*:/}"
-		LANG2USE["${lang}"]="${l10n}"
-		USE2LANGS["${l10n}"]+=" ${lang}"
-	done
-}
-dash_langs_prep
-
-dash_lang2use() {
-	local l
-	# shellcheck disable=SC2086
-	for l; do
-		echo l10n_${LANG2USE["${l}"]}
-	done
-}
-
-# shellcheck disable=SC2068
-IUSE+=" $(dash_lang2use ${!LANG2USE[@]})"
-
-dash_lang_requireduse() {
-	local lang l10n
-	# shellcheck disable=SC2068
-	for l10n in ${!USE2LANGS[@]}; do
-		for lang in ${USE2LANGS["${l10n}"]}; do
-			continue 2
-		done
-		echo "l10n_${l10n}?"
-	done
-}
-
-REQUIRED_USE+=" $(dash_lang_requireduse)"
-
 S="${WORKDIR}/${MY_P}"
 
 pkg_setup() {
@@ -87,38 +49,6 @@ pkg_setup() {
 }
 
 src_prepare() {
-	if use gui; then
-		local filt yeslang nolang lan ts x
-
-		for lan in $LANGS; do
-			lan="${lan/*:/}"
-			# shellcheck disable=SC2086
-			if [ ! -e src/qt/locale/dash_$lan.ts ]; then
-				continue
-				die "Language '$lan' no longer supported. Ebuild needs update."
-			fi
-		done
-
-		for ts in src/qt/locale/*.ts; do
-			x="${ts/*dash_/}"
-			x="${x/.ts/}"
-			if ! use "$(dash_lang2use "$x")"; then
-				nolang="$nolang $x"
-				rm "$ts" || die
-				filt="$filt\\|$x"
-			else
-				yeslang="$yeslang $x"
-			fi
-		done
-
-		# shellcheck disable=SC1117
-		filt="dash_\\(${filt:2}\\)\\.\(qm\|ts\)"
-		sed "/${filt}/d" -i 'src/qt/dash_locale.qrc' || die
-		# shellcheck disable=SC1117
-		sed "s/locale\/${filt}/dash.qrc/" -i 'src/Makefile.qt.include' || die
-		einfo "Languages -- Enabled:$yeslang -- Disabled:$nolang"
-	fi
-
 	default
 	eautoreconf
 }
