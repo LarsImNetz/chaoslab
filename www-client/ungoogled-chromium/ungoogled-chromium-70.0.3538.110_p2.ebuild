@@ -695,7 +695,8 @@ src_compile() {
 
 	# Avoid falling back to preprocessor mode when sources contain time macros
 	# shellcheck disable=SC2086
-	has ccache ${FEATURES} && export CCACHE_SLOPPINESS=time_macros
+	has ccache ${FEATURES} && \
+		export CCACHE_SLOPPINESS="${CCACHE_SLOPPINESS:-time_macros}"
 
 	# Build mksnapshot and pax-mark it
 	local x
