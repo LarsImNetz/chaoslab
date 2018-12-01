@@ -36,7 +36,7 @@ REQUIRED_USE="
 	^^ ( gold lld )
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
-	cfi? ( lld thinlto )
+	cfi? ( thinlto )
 	new-tcmalloc? ( tcmalloc )
 "
 RESTRICT="
@@ -584,7 +584,6 @@ src_configure() {
 	myconf_gn+=" use_thin_lto=$(usetf thinlto)"
 	myconf_gn+=" use_lld=$(usetf lld)"
 	myconf_gn+=" is_cfi=$(usetf cfi)"
-	myconf_gn+=" use_cfi_cast=$(usetf cfi)"
 
 	# UGC's "common" GN flags (config_bundles/common/gn_flags.map)
 	myconf_gn+=" blink_symbol_level=0"
