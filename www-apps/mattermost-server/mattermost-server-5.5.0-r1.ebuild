@@ -1,47 +1,49 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-inherit systemd user
-
-GIT_COMMIT="d5b613cb1b" # Change this when you update the ebuild
+# Change this when you update the ebuild
+GIT_COMMIT="826252252404c13bf564a8c4fd51616fc2cc4df9"
+WEBAPP_COMMIT="86bcb560c7dbd31967a28bf3b9da746da1a6947c"
 EGO_PN="github.com/mattermost/${PN}"
-MMWAPP_PN="mattermost-webapp"
-MMWAPP_P="${MMWAPP_PN}-${PV}"
+WEBAPP_P="mattermost-webapp-${PV}"
+MY_PV="${PV/_/-}"
+
+if [[ "$ARCH" != "x86" && "$ARCH" != "amd64" ]]; then
+	inherit autotools
+	DEPEND="media-libs/libpng:0"
+fi
+
+inherit golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="Open source Slack-alternative in Golang and React (Team Edition)"
 HOMEPAGE="https://mattermost.com"
 SRC_URI="
-	https://github.com/mattermost/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	https://github.com/mattermost/${MMWAPP_PN}/archive/v${PV}.tar.gz -> ${MMWAPP_P}.tar.gz
+	https://${EGO_PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz
+	https://${EGO_PN/server/webapp}/archive/v${MY_PV}.tar.gz -> ${WEBAPP_P}.tar.gz
 "
 RESTRICT="mirror test"
 
 LICENSE="AGPL-3"
 SLOT="0"
-KEYWORDS="~amd64"
-IUSE="+audit pie"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: ~arm64 ~x86
+IUSE="+audit debug pie"
 
-DEPEND="
-	>=dev-lang/go-1.10.1
-	media-libs/libpng:0
+DEPEND="${DEPEND}
 	>net-libs/nodejs-6[npm]
 "
 RDEPEND="!www-apps/mattermost-server-ee"
 
-QA_PRESTRIPPED="
-	usr/libexec/mattermost/bin/mattermost
-	usr/libexec/mattermost/bin/platform
-"
+QA_PRESTRIPPED="usr/libexec/.*"
 
-G="${WORKDIR}"
+G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-pkg_setup() {
+pkg_pretend() {
 	if [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
-		if has network-sandbox $FEATURES; then
+		if has network-sandbox ${FEATURES}; then
 			ewarn
 			ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 			ewarn
@@ -55,23 +57,24 @@ pkg_setup() {
 			ewarn
 		fi
 	fi
+}
 
+pkg_setup() {
 	enewgroup mattermost
 	enewuser mattermost -1 -1 -1 mattermost
 }
 
 src_unpack() {
-	default
-
-	mkdir -p "${G}/src/${EGO_PN/$PN}" || die
-	mv "${WORKDIR}/${P}" "${S}" || die
-	mv "${WORKDIR}/${MMWAPP_P}" "${S}"/client || die
+	golang-vcs-snapshot-r1_src_unpack
+	cd "${S}" || die
+	unpack "${WEBAPP_P}.tar.gz"
+	mv "${WEBAPP_P/_/-}" client || die
 }
 
 src_prepare() {
 	# shellcheck disable=SC2086
-	# Disable developer settings, fix path, set to listen localhost and disable
-	# diagnostics (call home) by default.
+	# Disable developer settings, fix path, set to listen localhost
+	# and disable diagnostics (call home) by default.
 	sed -i \
 		-e 's|"ListenAddress": ":8065"|"ListenAddress": "127.0.0.1:8065"|g' \
 		-e 's|"ListenAddress": ":8067"|"ListenAddress": "127.0.0.1:8067"|g' \
@@ -91,13 +94,20 @@ src_prepare() {
 		-e 's|"SMTPPort": "2500",|"SMTPPort": "",|g' \
 		config/default.json || die
 
+	# shellcheck disable=SC1117
+	# Remove the git call, as the tarball isn't a proper git repository
+	sed -i \
+		-E "s/^(\s*)COMMIT_HASH:(.*),$/\1COMMIT_HASH: JSON.stringify\(\"${WEBAPP_COMMIT}\)\"\),/" \
+		client/webpack.config.js || die
+
 	default
 }
 
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
-	local myldflags=( -s -w
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "${EGO_PN}/model.BuildNumber=${PV}"
 		-X "'${EGO_PN}/model.BuildDate=$(date -u)'"
 		-X "${EGO_PN}/model.BuildHash=${GIT_COMMIT}"
@@ -106,9 +116,9 @@ src_compile() {
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-buildmode=$(usex pie pie exe)"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 
@@ -126,7 +136,8 @@ src_compile() {
 
 src_install() {
 	exeinto /usr/libexec/mattermost/bin
-	doexe mattermost platform
+	doexe {mattermost,platform}
+	use debug && dostrip -x /usr/libexec/mattermost/bin/{mattermost,platform}
 
 	newinitd "${FILESDIR}/${PN}.initd-r2" "${PN}"
 	systemd_newunit "${FILESDIR}/${PN}.service-r1" "${PN}.service"
