@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 # Keep this in sync with frontend/
 FRONTEND_COMMIT="99740e3eabf437d3d6f4893870f66c3653d48e3b"
@@ -69,7 +69,7 @@ EGO_VENDOR=(
 	"gopkg.in/yaml.v2 v2.1.1 github.com/go-yaml/yaml"
 )
 
-inherit golang-vcs-snapshot systemd user
+inherit golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="A stylish web file manager"
 HOMEPAGE="https://filebrowser.github.io"
@@ -83,11 +83,11 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+daemon pie"
+IUSE="+daemon debug pie"
 
 DEPEND="sys-apps/yarn"
 
-QA_PRESTRIPPED="usr/bin/filebrowser"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -110,7 +110,7 @@ pkg_setup() {
 }
 
 src_unpack() {
-	golang-vcs-snapshot_src_unpack
+	golang-vcs-snapshot-r1_src_unpack
 	cd "${S}" || die
 	unpack "${FRONTEND_P}.tar.gz"
 	rmdir frontend || die
@@ -120,12 +120,16 @@ src_unpack() {
 src_compile() {
 	export GOPATH="${G}"
 	local PATH="${G}/bin:$PATH"
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
+		-X "filebrowser.Version=${PV}"
+	)
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie default)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
-		-ldflags "-s -w -X filebrowser.Version=${PV}"
+		-ldflags "${myldflags[*]}"
 	)
 
 	pushd frontend || die
@@ -143,6 +147,7 @@ src_compile() {
 
 src_install() {
 	dobin filebrowser
+	use debug && dostrip -x /usr/bin/filebrowser
 
 	if use daemon; then
 		newinitd "${FILESDIR}/${PN}.initd" "${PN}"
@@ -162,9 +167,9 @@ src_test() {
 
 pkg_postinst() {
 	if use daemon; then
-		if [[ ! -e "${EROOT%/}/etc/filebrowser/filebrowser.yaml" ]]; then
+		if [[ ! -e "${EROOT}/etc/filebrowser/filebrowser.yaml" ]]; then
 			elog "No filebrowser.yaml found, copying the example over"
-			cp "${EROOT%/}"/etc/filebrowser/filebrowser.yaml{.example,} || die
+			cp "${EROOT}"/etc/filebrowser/filebrowser.yaml{.example,} || die
 		else
 			elog "filebrowser.yaml found, please check example file for possible changes"
 		fi
