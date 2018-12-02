@@ -1,30 +1,30 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
-
-# Snapshot taken on 2018.11.24
-EGO_VENDOR=(
-	"github.com/hanwen/go-fuse c029b69a13"
-	"github.com/mattn/go-sqlite3 v1.10.0"
-	"golang.org/x/sys 62eef0e2fa github.com/golang/sys"
-)
-
-inherit golang-vcs-snapshot
+EAPI=7
 
 EGO_PN="github.com/oniony/TMSU"
+EGO_VENDOR=(
+	# Snapshot taken on 2018.12.2
+	"github.com/hanwen/go-fuse c029b69a13a7"
+	"github.com/mattn/go-sqlite3 v1.10.0"
+	"golang.org/x/sys 4ed8d59d0b35 github.com/golang/sys"
+)
+
+inherit golang-vcs-snapshot-r1
+
 DESCRIPTION="Files tagger and virtual tag-based filesystem"
 HOMEPAGE="https://github.com/oniony/TMSU"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+ARCHIVE_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="GPL-3+"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="pie"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64
+IUSE="debug pie"
 
-QA_PRESTRIPPED="usr/bin/tmsu"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -41,12 +41,14 @@ src_prepare() {
 
 src_compile() {
 	export GOPATH="${G}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
-		-ldflags "-s -w"
+		-ldflags "$(usex !debug '-s -w' '')"
 		-o ./bin/tmsu
 	)
 	go build "${mygoargs[@]}" || die
@@ -58,9 +60,11 @@ src_test() {
 }
 
 src_install() {
+	dobin bin/tmsu
+	use debug && dostrip -x /usr/bin/tmsu
+
 	dosbin misc/bin/mount.tmsu
 	dobin misc/bin/tmsu-*
-	dobin bin/tmsu
 
 	doman misc/man/tmsu.1
 
