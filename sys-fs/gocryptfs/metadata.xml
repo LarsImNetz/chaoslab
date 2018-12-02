@@ -14,4 +14,7 @@
 		a mountable FUSE filesystem. Each file in gocryptfs is stored
 		one corresponding encrypted file on the hard disk.
 	</longdescription>
+	<use>
+		<flag name="man">Build and install man pages</flag>
+	</use>
 </pkgmetadata>
