@@ -1,1 +1,2 @@
 move app-forensics/amass net-analyzer/amass
+move app-forensics/aquatone net-analyzer/aquatone
