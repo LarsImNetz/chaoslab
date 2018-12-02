@@ -1,0 +1,13 @@
+BDEPEND=>=dev-lang/go-1.10.1
+DEFINED_PHASES=compile install unpack
+DESCRIPTION=A terminal based graphical activity monitor inspired by gtop and vtop
+EAPI=7
+HOMEPAGE=https://github.com/cjbassi/gotop
+IUSE=debug pie
+KEYWORDS=~amd64 ~arm ~arm64 ~x86
+LICENSE=AGPL-3
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/cjbassi/gotop/archive/1.6.0.tar.gz -> gotop-1.6.0.tar.gz https://github.com/cjbassi/termui/archive/3a3db079d9dd.tar.gz -> github.com-cjbassi-termui-3a3db079d9dd.tar.gz https://github.com/docopt/docopt-go/archive/ee0de3bc6815.tar.gz -> github.com-docopt-docopt-go-ee0de3bc6815.tar.gz https://github.com/shirou/gopsutil/archive/68ff0e299699.tar.gz -> github.com-shirou-gopsutil-68ff0e299699.tar.gz https://github.com/golang/sys/archive/3b87a42e500a.tar.gz -> github.com-golang-sys-3b87a42e500a.tar.gz
+_eclasses_=golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f
+_md5_=29e3ac9eda783fc4fa7240847e8c9769

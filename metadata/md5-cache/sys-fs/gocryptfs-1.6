@@ -1,14 +1,15 @@
+BDEPEND=>=dev-lang/go-1.10.1
 DEFINED_PHASES=compile install unpack
-DEPEND=>=dev-lang/go-1.9
+DEPEND=man? ( >=dev-go/go-md2man-1.0.8 )
 DESCRIPTION=Encrypted overlay filesystem written in Go
-EAPI=6
+EAPI=7
 HOMEPAGE=https://nuetzlich.net/gocryptfs
-IUSE=libressl pie +ssl
-KEYWORDS=~amd64 ~x86
+IUSE=debug libressl +man pie +ssl
+KEYWORDS=~amd64 ~arm ~arm64 ~x86
 LICENSE=MIT
 RDEPEND=sys-fs/fuse:0 ssl? ( !libressl? ( dev-libs/openssl:0= ) libressl? ( dev-libs/libressl:0= ) )
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/rfjakob/gocryptfs/releases/download/v1.6/gocryptfs_v1.6_src-deps.tar.gz -> gocryptfs-1.6.tar.gz
-_eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc
-_md5_=0929727fa24eb6af216832af850e6d8d
+_eclasses_=golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f
+_md5_=835e8eb0c64d2c6a9f8a6c27859155b4
