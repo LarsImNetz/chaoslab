@@ -5,14 +5,8 @@ EAPI=7
 
 GIT_COMMIT="9433cf5a92" # Change this when you update the ebuild
 EGO_PN="github.com/gohugoio/hugo"
-# Note: Keep EGO_VENDOR in sync with go.mod
-# Deps that are not needed:
-# github.com/inconshreveable/mousetrap v1.0.0
-# github.com/kr/pretty v0.1.0
-# github.com/magefile/mage v1.4.0
-# github.com/nfnt/resize 83c6a99326
-# gopkg.in/check.v1 788fd78401
 EGO_VENDOR=(
+	# Note: Keep EGO_VENDOR in sync with go.mod
 	"github.com/BurntSushi/locker a6e239ea1c"
 	"github.com/BurntSushi/toml a368813c5e"
 	"github.com/PuerkitoBio/purell v1.1.0"
@@ -38,9 +32,12 @@ EGO_VENDOR=(
 	"github.com/hashicorp/go-immutable-radix v1.0.0"
 	"github.com/hashicorp/golang-lru v0.5.0" # inderect
 	"github.com/hashicorp/hcl v1.0.0" # inderect
+	#"github.com/inconshreveable/mousetrap v1.0.0"
 	"github.com/jdkato/prose v1.1.0"
 	"github.com/joho/godotenv v1.3.0" # inderect
+	#"github.com/kr/pretty v0.1.0"
 	"github.com/kyokomi/emoji v1.5.1"
+	#"github.com/magefile/mage v1.4.0"
 	"github.com/magiconair/properties v1.8.0" # inderect
 	"github.com/markbates/inflect v1.0.0"
 	"github.com/mattn/go-isatty v0.0.4"
@@ -49,6 +46,7 @@ EGO_VENDOR=(
 	"github.com/mitchellh/hashstructure v1.0.0"
 	"github.com/mitchellh/mapstructure v1.0.0"
 	"github.com/muesli/smartcrop f6ebaa786a"
+	#"github.com/nfnt/resize 83c6a99326"
 	"github.com/nicksnyder/go-i18n v1.10.0"
 	"github.com/olekukonko/tablewriter d4647c9c7a"
 	"github.com/pelletier/go-toml v1.2.0" # inderect
@@ -75,6 +73,7 @@ EGO_VENDOR=(
 	"golang.org/x/sync 1d60e4601c github.com/golang/sync"
 	"golang.org/x/sys 90868a75fe github.com/golang/sys" # inderect
 	"golang.org/x/text v0.3.0 github.com/golang/text"
+	#"gopkg.in/check.v1 788fd78401 github.com/go-check/check"
 	"gopkg.in/yaml.v2 v2.2.1 github.com/go-yaml/yaml"
 )
 
@@ -98,6 +97,9 @@ S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_CXXFLAGS="${CXXFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "${EGO_PN}/hugolib.CommitHash=${GIT_COMMIT}"
