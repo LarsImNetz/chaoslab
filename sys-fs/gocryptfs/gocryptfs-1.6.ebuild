@@ -1,13 +1,13 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 # Note: Keep FUSE_COMMIT in sync with Gopkg.lock
-FUSE_COMMIT="95c6370"
+FUSE_COMMIT="95c6370914ac"
 EGO_PN="github.com/rfjakob/${PN}"
 
-inherit golang-vcs-snapshot
+inherit golang-vcs-snapshot-r1
 
 DESCRIPTION="Encrypted overlay filesystem written in Go"
 HOMEPAGE="https://nuetzlich.net/gocryptfs"
@@ -16,39 +16,47 @@ RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="libressl pie +ssl"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86"
+IUSE="debug libressl +man pie +ssl"
 
-RDEPEND="sys-fs/fuse:0
+DEPEND="man? ( >=dev-go/go-md2man-1.0.8 )"
+RDEPEND="
+	sys-fs/fuse:0
 	ssl? (
 		!libressl? ( dev-libs/openssl:0= )
 		libressl? ( dev-libs/libressl:0= )
-	)"
+	)
+"
 
-QA_PRESTRIPPED="usr/bin/gocryptfs"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
-	local myldflags=( -s -w
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "main.GitVersion=${PV}"
 		-X "main.GitVersionFuse=${FUSE_COMMIT}"
-		-X "main.BuildDate=$(date '+%Y-%m-%d')"
+		-X "main.BuildDate=$(date -u '+%Y-%m-%d')"
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-buildmode=$(usex pie pie exe)"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
-		-tags "$(usex !ssl 'without_openssl' '')"
+		-tags "$(usex !ssl 'without_openssl' 'none')"
 	)
 	go build "${mygoargs[@]}" || die
+	use man && go-md2man -in Documentation/MANPAGE.md -out gocryptfs.1
 }
 
 src_install() {
 	dobin gocryptfs
-	newman "${FILESDIR}/${P}" gocryptfs.1
+	use debug && dostrip -x /usr/bin/gocryptfs
+	use man && doman gocryptfs.1
 }

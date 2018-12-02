@@ -33,6 +33,7 @@ app-crypt/**[minisign](app-crypt/minisign)** | A dead simple tool to sign files 
 app-crypt/**[ssh-vault](app-crypt/ssh-vault)** | Encrypt/Decrypt using SSH private keys
 app-editors/**[atom](app-editors/atom)** `*` | A hackable text editor for the 21st Century
 app-editors/**[micro](app-editors/micro)** | A modern and intuitive terminal-based text editor
+app-editors/**[oni](app-editors/oni)** | Code editor with a modern twist on modal editing, powered by Neovim
 app-emulation/**[containerd](app-emulation/containerd)** `*` | A daemon to control runC
 app-emulation/**[docker](app-emulation/docker)** `*` `**` | The core functions you need to create Docker images and run Docker containers
 app-emulation/**[docker-proxy](app-emulation/docker-proxy)** `*` | Docker container networking

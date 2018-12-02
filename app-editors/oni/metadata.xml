@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">onivim/oni</remote-id>
+		<bugs-to>https://github.com/onivim/oni/issues</bugs-to>
+		<doc>https://onivim.github.io/oni-docs/#/</doc>
+	</upstream>
+	<longdescription lang="en">
+		Oni is a new kind of text editor - combining the
+		editing efficiency of modal editors like Vim with
+		the conveniences of the modern generation of code
+		editors like VSCode and Atom.
+	</longdescription>
+</pkgmetadata>
