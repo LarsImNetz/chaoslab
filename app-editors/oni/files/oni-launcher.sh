@@ -1,3 +1,4 @@
 #!/bin/sh
+
 export NODE_ENV=production
-@@ELECTRON@@ --app=/usr/libexec/oni/app $@
+@@ELECTRON@@ @@EPREFIX@@/usr/libexec/oni/app "$@"

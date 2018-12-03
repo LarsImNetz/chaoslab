@@ -65,15 +65,18 @@ src_compile() {
 }
 
 src_install() {
-	newbin "${FILESDIR}"/oni-launcher.sh "${PN}"
-	sed "s:@@ELECTRON@@:electron-${ELECTRON_SLOT}:" -i "${ED}/usr/bin/${PN}" || die
+	newbin "${FILESDIR}/${PN}-launcher.sh" "${PN}"
+	sed -i \
+		-e "s:@@ELECTRON@@:electron-${ELECTRON_SLOT}:" \
+		-e "s:@@EPREFIX@@:${EPREFIX}:" \
+		"${ED}/usr/bin/${PN}" || die
 
 	insinto /usr/libexec/oni
 	doins -r dist/linux-unpacked/resources/app
 
 	# Install icons and desktop entry
-	newicon -s 256 images/256x256.png oni.png
-	make_desktop_entry "${PN}" Oni oni \
+	newicon -s scalable images/oni-icon-no-border.svg oni.svg
+	make_desktop_entry oni Oni oni \
 		"GNOME;GTK;Utility;TextEditor;Development;" \
 		"MimeType=text/plain;\\nStartupNotify=true\\nStartupWMClass=oni"
 }
@@ -81,8 +84,8 @@ src_install() {
 update_caches() {
 	if type gtk-update-icon-cache &>/dev/null; then
 		ebegin "Updating GTK icon cache"
-		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor" || die
-		eend $?
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		eend $? || die
 	fi
 	xdg_desktop_database_update
 }
