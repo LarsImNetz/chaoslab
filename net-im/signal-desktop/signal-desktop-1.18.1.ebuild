@@ -73,8 +73,11 @@ src_compile() {
 }
 
 src_install() {
-	newbin "${FILESDIR}"/signal-launcher.sh "${PN}"
-	sed "s:@@ELECTRON@@:electron-${ELECTRON_SLOT}:" -i "${ED}/usr/bin/${PN}" || die
+	newbin "${FILESDIR}/${PN}-launcher.sh" "${PN}"
+	sed -i \
+		-e "s:@@ELECTRON@@:electron-${ELECTRON_SLOT}:" \
+		-e "s:@@EPREFIX@@:${EPREFIX}:" \
+		"${ED}/usr/bin/${PN}" || die
 
 	insinto /usr/libexec/signal
 	doins -r release/linux-unpacked/resources/*
@@ -84,11 +87,10 @@ src_install() {
 	for size in 16 24 32 48 64 128 256 512; do
 		newicon -s ${size} "build/icons/png/${size}x${size}.png" signal.png
 	done
-	# shellcheck disable=SC1117
 	make_desktop_entry "${PN}" Signal signal \
 		"GTK;Network;Chat;InstantMessaging;" \
-		"StartupNotify=true\nStartupWMClass=signal"
-	domenu "${FILESDIR}"/signal-tray.desktop
+		"StartupNotify=true\\nStartupWMClass=signal-desktop"
+	domenu "${FILESDIR}"/signal-desktop-tray.desktop
 }
 
 update_caches() {
