@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install postinst postrm prepare pretend
+DEPEND=net-libs/nodejs[npm]
+DESCRIPTION=Native desktop application for Mattermost
+EAPI=7
+HOMEPAGE=https://mattermost.com/
+KEYWORDS=~amd64 ~x86
+LICENSE=Apache-2.0
+RDEPEND=>=dev-util/electron-bin-2.0.14:2.0
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/mattermost/desktop/archive/v4.2.0.tar.gz -> mattermost-desktop-4.2.0.tar.gz
+_eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	xdg-utils	93b2dfbb00a09161e1e7f6360c0f7f6b
+_md5_=70c4e4922038b8f543126f8a1a162e41

@@ -10,4 +10,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/signalapp/Signal-Desktop/archive/v1.19.0-beta.3.tar.gz -> signal-desktop-1.19.0_beta3.tar.gz
 _eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	xdg-utils	93b2dfbb00a09161e1e7f6360c0f7f6b
-_md5_=a422e4543e870a335953e7b7b17ee874
+_md5_=2d38ca82068b280661f7a7f134a1994d

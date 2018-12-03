@@ -10,4 +10,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/onivim/oni/archive/v0.3.7-beta3.tar.gz -> oni-0.3.7_beta3.tar.gz
 _eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	xdg-utils	93b2dfbb00a09161e1e7f6360c0f7f6b
-_md5_=7caaf045c6aa83abc16b0e118830d50e
+_md5_=773428412d03632ef3e25820126a2ad8
