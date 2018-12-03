@@ -8,3 +8,4 @@ Exec=signal-desktop --start-in-tray
 Icon=signal
 Categories=GTK;Network;Chat;InstantMessaging;
 StartupNotify=false
+StartupWMClass=signal-desktop

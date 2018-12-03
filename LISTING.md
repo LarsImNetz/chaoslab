@@ -149,6 +149,7 @@ net-dns/**[unbound](net-dns/unbound)** `*` | A validating, recursive and caching
 net-firewall/**[firehol](net-firewall/firehol)** `*` | A firewall for humans...
 net-im/**[dino](net-im/dino)** `*` | A modern Jabber/XMPP Client using GTK+/Vala
 net-im/**[matterircd](net-im/matterircd)** | Connect to your Mattermost or Slack using your IRC-client of choice
+net-im/**[mattermost-desktop](net-im/mattermost-desktop)** `*` | Native desktop application for Mattermost
 net-im/**[profanity](net-im/profanity)** | A console based XMPP client inspired by Irssi
 net-im/**[signal-desktop](net-im/signal-desktop)** `*` | Signal Private Messenger for the Desktop
 net-im/**[slack-term](net-im/slack-term)** `*` | A Slack client for your terminal

@@ -478,7 +478,7 @@ setup_compile_flags() {
 		filter-flags '-fuse-ld=*' '-g*' '-Wl,*'
 
 		# Prevent libvpx build failures (Bug #530248, #544702, #546984)
-		if [[ ${myarch} == amd64 || ${myarch} == x86 ]]; then
+		if [[ "${ARCH}" == amd64 ]] || [[ "${ARCH}" == x86 ]]; then
 			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
 		fi
 
@@ -660,14 +660,12 @@ src_configure() {
 	# It is relevant only when use_allocator == "tcmalloc"
 	myconf_gn+=" use_new_tcmalloc=$(usetf new-tcmalloc)"
 
-	local myarch # SC2155
-	myarch="$(tc-arch)"
-	if [[ $myarch = amd64 ]]; then
+	if [[ "${ARCH}" = amd64 ]]; then
 		myconf_gn+=" target_cpu=\"x64\""
-	elif [[ $myarch = x86 ]]; then
+	elif [[ "${ARCH}" = x86 ]]; then
 		myconf_gn+=" target_cpu=\"x86\""
 	else
-		die "Failed to determine target arch, got '$myarch'."
+		die "Failed to determine target arch, got '${ARCH}'."
 	fi
 
 	setup_compile_flags
