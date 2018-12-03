@@ -1,13 +1,13 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 # Change this when you update the ebuild:
-GIT_COMMIT="77c2c783e074db2b1cc0e3531a55444d5d97a889"
+GIT_COMMIT="10045b85b5aaa1c5fa35ba38e3a1aee14f772b31"
 EGO_PN="github.com/oliver006/${PN}"
 
-inherit golang-vcs-snapshot systemd user
+inherit golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="A server that export Redis metrics for Prometheus consumption"
 HOMEPAGE="https://github.com/oliver006/redis_exporter"
@@ -17,10 +17,10 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="pie"
+IUSE="debug pie"
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/redis_exporter"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -32,7 +32,7 @@ pkg_pretend() {
 		ewarn "The test phase requires a Redis server running on default port"
 		ewarn
 
-		(has network-sandbox ${FEATURES}) && \
+		has network-sandbox ${FEATURES} && \
 			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 	fi
 }
@@ -44,14 +44,15 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-	local myldflags=( -s -w
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "main.VERSION=${PV}"
 		-X "main.COMMIT_SHA1=${GIT_COMMIT}"
 		-X "main.BUILD_DATE=$(date -u +%F-%T)"
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
@@ -65,7 +66,7 @@ src_test() {
 
 src_install() {
 	dobin redis_exporter
-	einstalldocs
+	use debug && dostrip -x /usr/bin/redis_exporter
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
@@ -77,4 +78,6 @@ src_install() {
 
 	diropts -o redis_exporter -g redis_exporter -m 0750
 	keepdir /var/log/redis_exporter
+
+	einstalldocs
 }
