@@ -1,0 +1,13 @@
+BDEPEND=>=dev-lang/go-1.10.1 virtual/pkgconfig
+DEFINED_PHASES=compile install pretend setup test unpack
+DESCRIPTION=A server that export Redis metrics for Prometheus consumption
+EAPI=7
+HOMEPAGE=https://github.com/oliver006/redis_exporter
+IUSE=debug pie
+KEYWORDS=~amd64
+LICENSE=MIT
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/oliver006/redis_exporter/archive/v0.23.0.tar.gz -> redis_exporter-0.23.0.tar.gz
+_eclasses_=golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f	multilib	b2f01ad412baf81650c23fcf0975fa33	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81
+_md5_=7c9cbfe0eb0d32e8bf14a9382b878f15
