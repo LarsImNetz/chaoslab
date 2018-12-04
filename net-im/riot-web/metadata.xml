@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">vector-im/riot-web</remote-id>
+		<bugs-to>https://github.com/vector-im/riot-web/issues</bugs-to>
+	</upstream>
+</pkgmetadata>
