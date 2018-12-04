@@ -81,7 +81,7 @@ src_install() {
 	make_desktop_entry gitkraken GitKraken gitkraken Development
 }
 
-# asar wrapper (taken from atom-overlay)
+# asar wrapper, hat tip @elprans (taken from https://github.com/elprans/atom-overlay)
 easar() {
 	local asar="${WORKDIR}/asar-${ASAR_V}/node_modules/asar/bin/asar"
 	echo "asar" "${@}"
