@@ -180,7 +180,6 @@ net-proxy/**[toxiproxy](net-proxy/toxiproxy)** | A TCP proxy to simulate network
 net-proxy/**[traefik](net-proxy/traefik)** | A modern HTTP reverse proxy and load balancer made to deploy microservices
 net-vpn/**[onioncat](net-vpn/onioncat)** | An IP-Transparent Tor Hidden Service Connector
 sys-apps/**[bane](sys-apps/bane)** | AppArmor profile generator for docker containers
-sys-apps/**[exa](sys-apps/exa)** `*` | A replacement for 'ls' written in Rust
 sys-apps/**[nvm](sys-apps/nvm)** | A simple bash script to manage multiple active node.js versions
 sys-apps/**[yarn](sys-apps/yarn)** `*` | Fast, reliable, and secure node dependency management
 sys-auth/**[yubikey-touch-detector](sys-auth/yubikey-touch-detector)** | A tool that can detect when your YubiKey is waiting for a touch
