@@ -48,12 +48,12 @@ src_prepare() {
 	fi
 
 	# Reduce build time by removing the creation of a .deb and AppImage
-	sed -i -e '/"deb",/d' electron-builder.json
-	sed -i -e '/"appimage"/d' electron-builder.json
+	sed -i '/"deb",/d' electron-builder.json || die
+	sed -i '/"appimage"/d' electron-builder.json || die
 
 	# No need to compress the package. Pay attention at the trailing comma:
 	# We are removing it from the JSON to make it valid again.
-	sed -i 's/"tar.gz",/"dir"/' electron-builder.json
+	sed -i 's/"tar.gz",/"dir"/' electron-builder.json || die
 }
 
 src_compile() {
