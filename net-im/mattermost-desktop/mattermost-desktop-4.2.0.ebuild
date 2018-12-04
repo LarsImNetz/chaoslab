@@ -40,9 +40,9 @@ src_prepare() {
 	# Depending on the architecture, in order to accelerate the build process,
 	# removes the compilation of ia32 or x64 build.
 	if [[ "${ARCH}" == amd64 ]]; then
-		sed -i 's/--ia32//g' package.json || die
+		sed -i 's| --ia32||g' package.json || die
 	elif [[ "${ARCH}" == x86 ]]; then
-		sed -i 's/--x64//g' package.json || die
+		sed -i 's| --x64||g' package.json || die
 	else
 		die "This ebuild doesn't support ${ARCH}"
 	fi
@@ -53,13 +53,13 @@ src_prepare() {
 
 	# No need to compress the package. Pay attention at the trailing comma:
 	# We are removing it from the JSON to make it valid again.
-	sed -i 's/"tar.gz",/"dir"/' electron-builder.json || die
+	sed -i 's|"tar.gz",|"dir"|' electron-builder.json || die
 }
 
 src_compile() {
-	npm install --cache "${WORKDIR}/npm-cache" || die
-	npm run build --cache "${WORKDIR}/npm-cache" || die
-	npm run package:linux --cache "${WORKDIR}/npm-cache" || die
+	npm install || die
+	npm run build || die
+	npm run package:linux || die
 }
 
 src_install() {
