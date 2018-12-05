@@ -52,7 +52,7 @@ src_prepare() {
 
 	sed -i \
 		-e "s|{{ATOM_PATH}}|${EPREFIX}/usr/libexec/atom|" \
-		-e "s|{{ELECTRON_PATH}}|/opt/electron-${ELECTRON_SLOT}|" \
+		-e "s|{{ELECTRON_PATH}}|${EPREFIX}/opt/electron-${ELECTRON_SLOT}|" \
 		bin/apm || die
 
 	# Don't download binary Node
@@ -73,7 +73,7 @@ src_compile() {
 
 src_install() {
 	local install_dir
-	install_dir="/usr/$(get_libdir)/node_modules/atom-package-manager"
+	install_dir="${EPREFIX}/usr/$(get_libdir)/node_modules/atom-package-manager"
 	einstalldocs
 
 	cp -r "${WORKDIR}"/apm-build/* "${ED}" || die
