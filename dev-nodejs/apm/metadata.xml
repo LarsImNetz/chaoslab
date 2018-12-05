@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>gentoo@chaoslab.org</email>
+		<name>Ian Moone</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">atom/apm</remote-id>
+		<bugs-to>https://github.com/atom/apm/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		apm is a simple npm wrapper that builds on top of the
+		many strengths of npm but is customized and optimized
+		to be used for Atom packages.
+	</longdescription>
+</pkgmetadata>
