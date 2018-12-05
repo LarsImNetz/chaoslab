@@ -13,7 +13,7 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="cpu_flags_x86_ssse3 fann gd jemalloc +jit libressl pcre2 +torch"
+IUSE="cpu_flags_x86_ssse3 gd jemalloc +jit libressl pcre2 +torch"
 REQUIRED_USE="torch? ( jit )"
 
 DEPEND="
@@ -25,7 +25,6 @@ DEPEND="
 	sys-apps/file
 	cpu_flags_x86_ssse3? ( dev-libs/hyperscan )
 	elibc_glibc? ( net-libs/libnsl:0= )
-	fann? ( sci-mathematics/fann )
 	gd? ( media-libs/gd[jpeg] )
 	jemalloc? ( dev-libs/jemalloc )
 	jit? ( dev-lang/luajit:2 )
@@ -49,7 +48,6 @@ src_configure() {
 		-DDBDIR=/var/lib/rspamd
 		-DLOGDIR=/var/log/rspamd
 		-DENABLE_LUAJIT=$(usex jit ON OFF)
-		-DENABLE_FANN=$(usex fann ON OFF)
 		-DENABLE_GD=$(usex gd ON OFF)
 		-DENABLE_PCRE2=$(usex pcre2 ON OFF)
 		-DENABLE_JEMALLOC=$(usex jemalloc ON OFF)
@@ -75,12 +73,4 @@ src_install() {
 
 	diropts -o rspamd -g rspamd -m 0700
 	keepdir /var/log/rspamd
-}
-
-pkg_postinst() {
-	if [[ $(stat -c %a "${EROOT%/}/var/lib/rspamd") != "700" ]]; then
-		einfo "Fixing ${EROOT%/}/var/lib/rspamd permissions"
-		chown -R rspamd:rspamd "${EROOT%/}/var/lib/rspamd" || die
-		chmod 0700 "${EROOT%/}/var/lib/rspamd" || die
-	fi
 }

@@ -5,12 +5,12 @@ EAPI=7
 
 inherit desktop xdg-utils
 
-ELECTRON_SLOT="2.0"
-ELECTRON_V="2.0.14"
+ELECTRON_SLOT="3.0"
+ELECTRON_V="3.0.10"
 
-DESCRIPTION="Native desktop application for Mattermost"
-HOMEPAGE="https://mattermost.com/"
-SRC_URI="https://github.com/${PN/-//}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+DESCRIPTION="A glossy Matrix collaboration client for the web"
+HOMEPAGE="https://about.riot.im/"
+SRC_URI="https://github.com/vector-im/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
@@ -19,10 +19,6 @@ KEYWORDS="~amd64 ~x86"
 
 RDEPEND=">=dev-util/electron-bin-${ELECTRON_V}:${ELECTRON_SLOT}"
 DEPEND="net-libs/nodejs[npm]"
-
-PATCHES=( "${FILESDIR}/${P}-package-json.patch" )
-
-S="${WORKDIR}/desktop-${PV}"
 
 pkg_pretend() {
 	# shellcheck disable=SC2086
@@ -48,18 +44,17 @@ src_prepare() {
 	fi
 
 	# Reduce build time by removing the creation of a .deb and AppImage
-	sed -i '/"deb",/d' electron-builder.json || die
-	sed -i '/"appimage"/d' electron-builder.json || die
-
-	# No need to compress the package. Pay attention at the trailing comma:
-	# We are removing it from the JSON to make it valid again.
-	sed -i 's|"tar.gz",|"dir"|' electron-builder.json || die
+	# Don't waste time trying to package for other OSes
+	sed -i \
+		-e 's|"deb"|"dir"|g' \
+		-e 's|-wml|--linux|g' \
+		-e '/electronVersion/d' \
+		package.json || die
 }
 
 src_compile() {
 	npm install || die
-	npm run build || die
-	npm run package:linux || die
+	npm run build:electron || die
 }
 
 src_install() {
@@ -69,14 +64,17 @@ src_install() {
 		-e "s:@@EPREFIX@@:${EPREFIX}:" \
 		"${ED}/usr/bin/${PN}" || die
 
-	insinto /usr/libexec/mattermost-desktop
-	doins -r release/linux*unpacked/resources/*
+	insinto /usr/libexec/riot-web
+	doins -r electron_app/dist/linux*unpacked/resources/*
 
 	# Install icons and desktop entry
-	newicon -s scalable resources/linux/icon.svg mattermost.svg
-	make_desktop_entry "${PN}" Mattermost mattermost \
+	local size
+	for size in 16 24 48 64 96 128 256 512; do
+		newicon -s ${size} "electron_app/build/icons/${size}x${size}.png" riot.png
+	done
+	make_desktop_entry "${PN}" Riot riot \
 		"GTK;Network;Chat;InstantMessaging;" \
-		"StartupNotify=true\\nStartupWMClass=mattermost-desktop"
+		"StartupNotify=true\\nStartupWMClass=riot-web"
 }
 
 update_caches() {

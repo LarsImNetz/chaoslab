@@ -122,14 +122,14 @@ src_compile() {
 		-ldflags "${myldflags[*]}"
 	)
 
-	pushd client || die
+	pushd client > /dev/null || die
 	emake build
 	if use audit && [[ $(npm --version) =~ 6.* ]]; then
 		ebegin "Attempting to fix potential vulnerabilities"
 		npm audit fix --force || die
 		eend $?
 	fi
-	popd || die
+	popd > /dev/null || die
 
 	go install "${mygoargs[@]}" ./cmd/{mattermost,platform} || die
 }
