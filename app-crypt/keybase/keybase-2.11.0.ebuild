@@ -1,11 +1,11 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-EGO_PN="github.com/keybase/client"
+EGO_PN="github.com/${PN}/client"
 
-inherit golang-vcs-snapshot systemd
+inherit golang-vcs-snapshot-r1 systemd
 
 DESCRIPTION="Client for Keybase"
 HOMEPAGE="https://keybase.io"
@@ -15,7 +15,7 @@ RESTRICT="mirror"
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="pie"
+IUSE="debug pie"
 
 RDEPEND="
 	app-crypt/kbfs
@@ -25,16 +25,16 @@ RDEPEND="
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-QA_PRESTRIPPED="usr/bin/keybase"
+QA_PRESTRIPPED="usr/bin/.*"
 
 src_compile() {
-	export GOPATH="${G}:${S}/go/vendor"
+	export GOPATH="${G}:${S}/go"
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w"
+		"-buildmode=$(usex pie pie exe)"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
+		-ldflags "$(usex !debug '-s -w' '')"
 		-tags production
 	)
 	go build "${mygoargs[@]}" ./go/keybase || die
@@ -42,6 +42,7 @@ src_compile() {
 
 src_install() {
 	dobin keybase
+	use debug && dostrip -x /usr/bin/keybase
 	dobin packaging/linux/run_keybase
 	systemd_douserunit packaging/linux/systemd/keybase.service
 }

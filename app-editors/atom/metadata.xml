@@ -11,6 +11,10 @@
 		<doc>https://atom.io/docs</doc>
 	</upstream>
 	<use>
+		<flag name="audit">
+			Run 'npm audit' to perform security reports and try to fix
+			known vulnerabilities (requires npm v6)
+		</flag>
 		<flag name="node-prune">
 			Use <pkg>dev-util/node-prune</pkg> to remove unnecessary
 			files from node_modules

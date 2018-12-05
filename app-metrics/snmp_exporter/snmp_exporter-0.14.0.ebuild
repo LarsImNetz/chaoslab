@@ -1,12 +1,12 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-GIT_COMMIT="84cab6d72f"
+GIT_COMMIT="da73490e0510"
 EGO_PN="github.com/prometheus/${PN}"
 
-inherit golang-vcs-snapshot systemd user
+inherit golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="An exporter that exposes information gathered from SNMP for Prometheus"
 HOMEPAGE="https://prometheus.io"
@@ -16,12 +16,12 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="pie test"
+IUSE="debug pie test"
 
 DEPEND="test? ( net-analyzer/net-snmp )"
 
 DOCS=( NOTICE README.md )
-QA_PRESTRIPPED="usr/bin/snmp_exporter"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -42,7 +42,8 @@ pkg_setup() {
 src_compile() {
 	export GOPATH="${G}"
 	local PROMU="${EGO_PN}/vendor/${EGO_PN%/*}/common/version"
-	local myldflags=( -s -w
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "${PROMU}.Version=${PV}"
 		-X "${PROMU}.Revision=${GIT_COMMIT}"
 		-X "${PROMU}.Branch=non-git"
@@ -51,7 +52,7 @@ src_compile() {
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
@@ -65,7 +66,7 @@ src_test() {
 
 src_install() {
 	dobin snmp_exporter
-	einstalldocs
+	use debug && dostrip -x /usr/bin/snmp_exporter
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
@@ -76,12 +77,14 @@ src_install() {
 
 	diropts -o snmp_exporter -g snmp_exporter -m 0750
 	keepdir /var/log/snmp_exporter
+
+	einstalldocs
 }
 
 pkg_postinst() {
-	if [[ ! -e "${EROOT%/}/etc/snmp_exporter/snmp.yml" ]]; then
+	if [[ ! -e "${EROOT}/etc/snmp_exporter/snmp.yml" ]]; then
 		elog "No snmp.yml found, copying the example over"
-		cp "${EROOT%/}"/etc/snmp_exporter/snmp.yml{.example,} || die
+		cp "${EROOT}"/etc/snmp_exporter/snmp.yml{.example,} || die
 	else
 		elog "snmp.yml found, please check example file for possible changes"
 	fi
