@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile install pretend unpack
+DEPEND=net-libs/nodejs[npm]
+DESCRIPTION=The semantic version parser used by npm
+EAPI=7
+HOMEPAGE=https://github.com/npm/node-semver
+KEYWORDS=~amd64
+LICENSE=ISC
+RDEPEND=net-libs/nodejs[npm]
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://registry.npmjs.org/semver/-/semver-5.6.0.tgz
+_md5_=3457e558bff498ea4b71f7a6b4d49b8e

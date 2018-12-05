@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile install pretend unpack
+DEPEND=net-libs/nodejs[npm]
+DESCRIPTION=Node.js native addon build tool
+EAPI=7
+HOMEPAGE=https://github.com/nodejs/node-gyp
+KEYWORDS=~amd64
+LICENSE=MIT
+RDEPEND=net-libs/nodejs[npm] dev-nodejs/semver
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://registry.npmjs.org/node-gyp/-/node-gyp-3.8.0.tgz
+_md5_=073b489df725533057290425b102f9a4
