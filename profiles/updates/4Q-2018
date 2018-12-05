@@ -1,3 +1,4 @@
 move app-forensics/amass net-analyzer/amass
 move app-forensics/aquatone net-analyzer/aquatone
 move app-forensics/dirhunt net-analyzer/dirhunt
+move net-im/riot-web net-im/riot-desktop

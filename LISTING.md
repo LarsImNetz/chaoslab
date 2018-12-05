@@ -151,6 +151,7 @@ net-im/**[dino](net-im/dino)** `*` | A modern Jabber/XMPP Client using GTK+/Vala
 net-im/**[matterircd](net-im/matterircd)** | Connect to your Mattermost or Slack using your IRC-client of choice
 net-im/**[mattermost-desktop](net-im/mattermost-desktop)** `*` | Native desktop application for Mattermost
 net-im/**[profanity](net-im/profanity)** | A console based XMPP client inspired by Irssi
+net-im/**[riot-desktop](net-im/riot-desktop)** | A glossy Matrix collaboration client for the web
 net-im/**[signal-desktop](net-im/signal-desktop)** `*` | Signal Private Messenger for the Desktop
 net-im/**[slack-term](net-im/slack-term)** `*` | A Slack client for your terminal
 net-libs/**[nodejs](net-libs/nodejs)** `*` | A JavaScript runtime built on Chrome's V8 JavaScript engine
