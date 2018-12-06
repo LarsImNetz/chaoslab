@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -14,19 +14,22 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="gnome-shell keybinder open-filemanager test"
 
-RDEPEND="dev-libs/glib
+RDEPEND="
+	dev-libs/glib:2
 	media-gfx/gifski
-	virtual/ffmpeg[encode,X]
-	>=x11-libs/gtk+-3.22:3
+	media-video/ffmpeg[X,encode,vpx]
+	x11-libs/gtk+:3
 	gnome-shell? (
 		media-libs/gst-plugins-good:1.0
 		media-libs/gst-plugins-ugly:1.0
 	)
-	keybinder? ( dev-libs/keybinder:3 )"
+	keybinder? ( dev-libs/keybinder:3 )
+"
 DEPEND="${RDEPEND}
 	$(vala_depend)
 	app-text/txt2man
-	sys-devel/gettext"
+	sys-devel/gettext
+"
 
 src_prepare() {
 	cmake-utils_src_prepare
