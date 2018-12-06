@@ -87,7 +87,7 @@ src_compile() {
 	eaudit
 
 	ATOM_RESOURCE_PATH="${PWD}" \
-		npm_config_target=$(tail -c +2 "${EPREFIX}/opt/electron-${ELECTRON_SLOT}/version") \
+		npm_config_target=$(tail -c +2 "${EROOT}/opt/electron-${ELECTRON_SLOT}/version") \
 		apm install || die
 
 	# Use system ctags
