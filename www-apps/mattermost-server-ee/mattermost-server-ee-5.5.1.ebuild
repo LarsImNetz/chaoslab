@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 inherit systemd user
 
@@ -17,7 +17,6 @@ KEYWORDS="-* ~amd64"
 RDEPEND="!www-apps/mattermost-server"
 
 DOCS=( NOTICE.txt README.md )
-
 S="${WORKDIR}/mattermost"
 
 pkg_pretend() {
@@ -32,8 +31,8 @@ pkg_setup() {
 
 src_prepare() {
 	# shellcheck disable=SC2086
-	# Disable developer settings, fix path, set to listen localhost and disable
-	# diagnostics (call home) by default.
+	# Disable developer settings, fix path, set to listen localhost
+	# and disable diagnostics (call home) by default.
 	sed -i \
 		-e 's|"ListenAddress": ":8065"|"ListenAddress": "127.0.0.1:8065"|g' \
 		-e 's|"ListenAddress": ":8067"|"ListenAddress": "127.0.0.1:8067"|g' \
