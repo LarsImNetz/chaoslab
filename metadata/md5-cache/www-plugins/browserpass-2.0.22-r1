@@ -1,14 +1,14 @@
+BDEPEND=>=dev-lang/go-1.10.1
 DEFINED_PHASES=compile install postinst prepare unpack
-DEPEND=>=dev-lang/go-1.9
 DESCRIPTION=WebExtension host binary for app-admin/pass, a UNIX password manager
-EAPI=6
+EAPI=7
 HOMEPAGE=https://www.passwordstore.org
-IUSE=pie
+IUSE=debug pie
 KEYWORDS=~amd64
 LICENSE=MIT
 RDEPEND=app-admin/pass || ( www-client/firefox www-client/firefox-bin www-client/google-chrome www-client/chromium www-client/ungoogled-chromium www-client/ungoogled-chromium-bin )
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/dannyvankooten/browserpass/releases/download/2.0.22/browserpass-src.tar.gz -> browserpass-2.0.22.tar.gz
-_eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc
-_md5_=1d9d0907f42aed93eadce84361d0d76b
+_eclasses_=golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f
+_md5_=a17a4c7232254d469bbcf6c957c3d1ac

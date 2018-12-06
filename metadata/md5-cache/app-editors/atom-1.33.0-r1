@@ -11,4 +11,4 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/atom/atom/archive/v1.33.0.tar.gz -> atom-1.33.0.tar.gz
 _eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	xdg-utils	93b2dfbb00a09161e1e7f6360c0f7f6b
-_md5_=d593542c85a0f3b1dfe6daa8fa29aa22
+_md5_=0428977d0c14d7e1f7325cfb2e896bc5
