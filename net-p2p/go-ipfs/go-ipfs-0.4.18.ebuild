@@ -1,13 +1,13 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-MY_PV="${PV/_/-}"
 GIT_COMMIT="aefc746f34" # Change this when you update the ebuild
 EGO_PN="github.com/ipfs/${PN}"
+MY_PV="${PV/_/-}"
 
-inherit bash-completion-r1 golang-vcs-snapshot systemd user
+inherit bash-completion-r1 golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="IPFS implementation written in Go"
 HOMEPAGE="https://ipfs.io"
@@ -17,7 +17,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE="fuse test"
+IUSE="debug fuse test"
 
 RDEPEND="fuse? ( sys-fs/fuse:0 )"
 DEPEND="
@@ -26,17 +26,17 @@ DEPEND="
 "
 
 DOCS=( CHANGELOG.md README.md )
-QA_PRESTRIPPED="usr/bin/ipfs"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
 	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES && [[ "${MERGE_TYPE}" != binary ]]; then
-		ewarn ""
+	if has network-sandbox ${FEATURES} && [[ "${MERGE_TYPE}" != binary ]]; then
+		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
-		ewarn ""
+		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
 }
@@ -44,8 +44,8 @@ pkg_setup() {
 src_prepare() {
 	# shellcheck disable=SC2016
 	sed -i \
-		-e "s:-X :-s -w -X :" \
-		-e 's:$(git-hash):'${GIT_COMMIT}':' \
+		-e "s|-X |$(usex !debug '-s -w' '') -X |" \
+		-e "s|\$(git-hash)|${GIT_COMMIT}|" \
 		cmd/ipfs/Rules.mk || die
 
 	default
@@ -62,13 +62,14 @@ src_test() {
 
 src_install() {
 	dobin cmd/ipfs/ipfs
-	einstalldocs
+	use debug && dostrip -x /usr/bin/ipfs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
 	newbashcomp misc/completion/ipfs-completion.bash ipfs
+	einstalldocs
 }
 
 pkg_preinst() {
@@ -80,6 +81,6 @@ pkg_postinst() {
 	einfo
 	elog "To be able to use the ipfs service you will need to create the ipfs repository"
 	elog "(e.g. su -s /bin/sh -c \"ipfs init -e\" go-ipfs)"
-	elog "or change IPFS_PATH of ${EROOT%/}/etc/conf.d/go-ipfs with another permissions."
+	elog "or change IPFS_PATH of ${EROOT}/etc/conf.d/go-ipfs with another permissions."
 	einfo
 }
