@@ -45,6 +45,7 @@ crossbeam-utils-0.5.0
 crunchy-0.1.6
 crunchy-0.2.1
 ct-logs-0.4.0
+daemonize-0.3.0
 difference-1.0.0
 digest-0.7.6
 docopt-0.8.3

@@ -43,6 +43,7 @@ crossbeam-utils-0.5.0
 crunchy-0.1.6
 crunchy-0.2.1
 ct-logs-0.2.0
+daemonize-0.3.0
 difference-1.0.0
 docopt-0.8.3
 edit-distance-2.0.1
