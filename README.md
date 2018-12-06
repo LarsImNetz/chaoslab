@@ -2,7 +2,7 @@ ChaosLab: Overlay for Gentoo/Funtoo Linux
 -----------------------------------------
 
 [![packages 208](https://img.shields.io/badge/packages-208-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
-[![ebuilds 273](https://img.shields.io/badge/ebuilds-273-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![ebuilds 275](https://img.shields.io/badge/ebuilds-275-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
 
@@ -18,7 +18,7 @@ would like to improve it, please [contribute](CONTRIBUTING.md).
 
 **DISCLAIMER:** As I don't have the resources, nor the time to make stable
 ebuilds in the same way Gentoo developers do, all ebuilds are permanently kept
-in the _testing branch¹_. Thus, you should probably consider it to be _unsafe_
+in the _testing branch_ ¹. Thus, you should probably consider it to be _unsafe_
 and treat it as such. Nevertheless, I try my best to follow Gentoo's QA
 standards and keep everything up to date, as I use many of these packages in a
 production environment.

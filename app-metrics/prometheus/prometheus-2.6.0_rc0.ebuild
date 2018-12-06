@@ -1,32 +1,30 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-GIT_COMMIT="167a4b4e73" # Change this when you update the ebuild
+GIT_COMMIT="40f0b4a9f649" # Change this when you update the ebuild
 EGO_PN="github.com/${PN}/${PN}"
+MY_PV="${PV/_rc/-rc.}"
 
-inherit golang-vcs-snapshot systemd user
+inherit golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="The Prometheus monitoring system and time series database"
 HOMEPAGE="https://prometheus.io"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://${EGO_PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="examples pie"
+IUSE="debug examples pie"
 
 DOCS=( {README,CHANGELOG,CONTRIBUTING}.md )
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-QA_PRESTRIPPED="
-	usr/bin/prometheus
-	usr/bin/promtool
-"
+QA_PRESTRIPPED="usr/bin/.*"
 
 pkg_setup() {
 	enewgroup prometheus
@@ -37,8 +35,9 @@ src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
 	local PROMU="${EGO_PN}/vendor/${EGO_PN%/*}/common/version"
-	local myldflags=( -s -w
-		-X "${PROMU}.Version=${PV}"
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
+		-X "${PROMU}.Version=${MY_PV}"
 		-X "${PROMU}.Revision=${GIT_COMMIT}"
 		-X "${PROMU}.Branch=non-git"
 		-X "${PROMU}.BuildUser=$(id -un)@$(hostname -f)"
@@ -46,7 +45,7 @@ src_compile() {
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
@@ -60,8 +59,8 @@ src_test() {
 }
 
 src_install() {
-	dobin prometheus promtool
-	einstalldocs
+	dobin {prometheus,promtool}
+	use debug && dostrip -x /usr/bin/{prometheus,promtool}
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
@@ -85,12 +84,14 @@ src_install() {
 
 	diropts -o prometheus -g prometheus -m 0750
 	keepdir /var/log/prometheus
+
+	einstalldocs
 }
 
 pkg_postinst() {
-	if [[ ! -e "${EROOT%/}/etc/prometheus/prometheus.yml" ]]; then
+	if [[ ! -e "${EROOT}/etc/prometheus/prometheus.yml" ]]; then
 		elog "No prometheus.yml found, copying the example over"
-		cp "${EROOT%/}"/etc/prometheus/prometheus.yml{.example,} || die
+		cp "${EROOT}"/etc/prometheus/prometheus.yml{.example,} || die
 	else
 		elog "prometheus.yml found, please check example file for possible changes"
 	fi

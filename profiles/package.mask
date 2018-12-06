@@ -45,6 +45,8 @@ net-p2p/monero-gui
 # Packages that I no longer use or wish to maintain. Removal in 30 days.
 app-admin/scaleway-cli
 app-metrics/nsq_exporter
+app-metrics/snmp_exporter
 dev-db/tidb
-net-analyzer/goaccess
+dev-go/depth
+dev-python/pycryptodomex
 sys-process/gkill
