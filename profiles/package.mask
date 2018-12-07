@@ -50,3 +50,8 @@ dev-db/tidb
 dev-go/depth
 dev-python/pycryptodomex
 sys-process/gkill
+
+# Ian Moone <gentoo@chaoslab.org> (7 Dec 2018)
+# Although it builds fine for me, this version haven't been blessed by
+# upstream yet. Use at your own risk!
+=www-client/ungoogled-chromium-71.0.3578.80_pre
