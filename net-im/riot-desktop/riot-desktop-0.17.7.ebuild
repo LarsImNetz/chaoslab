@@ -8,7 +8,7 @@ inherit desktop xdg-utils
 ELECTRON_SLOT="3.0"
 ELECTRON_V="3.0.10"
 
-DESCRIPTION="A glossy Matrix collaboration client for the web"
+DESCRIPTION="A glossy Matrix collaboration client for desktop"
 HOMEPAGE="https://about.riot.im/"
 SRC_URI="https://github.com/vector-im/riot-web/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"

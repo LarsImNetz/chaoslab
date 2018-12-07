@@ -9,7 +9,7 @@ ELECTRON_SLOT="3.0"
 ELECTRON_V="3.0.10"
 MY_PV="${PV/_rc/-rc.}"
 
-DESCRIPTION="A glossy Matrix collaboration client for the web"
+DESCRIPTION="A glossy Matrix collaboration client for desktop"
 HOMEPAGE="https://about.riot.im/"
 SRC_URI="https://github.com/vector-im/riot-web/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
