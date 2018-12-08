@@ -33,7 +33,7 @@ src_compile() {
 	export GOPATH="${G}"
 	local PROMU="${EGO_PN}/vendor/${EGO_PN%/*}/common/version"
 	local myldflags=(
-		"-buildmode=$(usex pie pie exe)"
+		"$(usex !debug '-s -w' '')"
 		-X "${PROMU}.Version=${PV}"
 		-X "${PROMU}.Revision=${GIT_COMMIT}"
 		-X "${PROMU}.Branch=non-git"

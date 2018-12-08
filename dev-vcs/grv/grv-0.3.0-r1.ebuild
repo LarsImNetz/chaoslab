@@ -1,29 +1,29 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 EGO_PN="github.com/rgburke/${PN}"
-# Snapshot taken on 2018.11.17
 EGO_VENDOR=(
-	"github.com/google/go-querystring 44c6ddd0a2" # tests
-	"github.com/google/go-github f55b50f381" # tests
-	"golang.org/x/oauth2 f42d051822 github.com/golang/oauth2" # tests
-	"golang.org/x/net adae6a3d11 github.com/golang/net" # tests
+	# Snapshot taken on 2018.12.08
+	"github.com/google/go-querystring 44c6ddd0a234" # tests
+	"github.com/google/go-github v19.1.0" # tests
+	"golang.org/x/oauth2 d668ce993890 github.com/golang/oauth2" # tests
+	"golang.org/x/net 610586996380 github.com/golang/net" # tests
 )
 
-inherit golang-vcs-snapshot
+inherit golang-vcs-snapshot-r1
 
 DESCRIPTION="A terminal based interface for viewing Git repositories"
 HOMEPAGE="https://github.com/rgburke/grv"
-SRC_URI="https://${EGO_PN}/releases/download/v${PV}/${P}-src.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+ARCHIVE_URI="https://${EGO_PN}/releases/download/v${PV}/${P}-src.tar.gz -> ${P}.tar.gz"
+SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="pie"
+IUSE="debug pie"
 
 RDEPEND="
 	>=dev-libs/libgit2-0.27
@@ -34,20 +34,24 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/grv"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}:${S}/cmd/grv"
-	local myldflags=( -s -w
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_CXXFLAGS="${CXXFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "'main.version=v${PV}'"
 		-X "'main.buildDateTime=$(date -u '+%Y-%m-%d %H:%M:%S %Z')'"
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
@@ -61,5 +65,6 @@ src_test() {
 
 src_install() {
 	dobin grv
+	use debug && dostrip -x /usr/bin/grv
 	einstalldocs
 }
