@@ -16,7 +16,7 @@ IUSE="examples"
 
 DEPEND="
 	dev-libs/libsodium[-minimal]
-	>=dev-libs/libevent-2.1.8
+	dev-libs/libevent
 "
 RDEPEND="${DEPEND}"
 
