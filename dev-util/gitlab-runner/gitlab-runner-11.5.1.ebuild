@@ -3,7 +3,7 @@
 
 EAPI=7
 
-GIT_COMMIT="3afdaba6" # Change this when you update the ebuild
+GIT_COMMIT="7f00c780" # Change this when you update the ebuild
 EGO_PN="gitlab.com/gitlab-org/${PN}"
 EGO_VENDOR=( "github.com/mitchellh/gox 9cc4875981" )
 
