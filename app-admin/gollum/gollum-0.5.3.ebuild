@@ -1,11 +1,11 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 EGO_PN="github.com/trivago/${PN}"
 
-inherit golang-vcs-snapshot systemd user
+inherit golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="An n:m message multiplexer written in Go"
 HOMEPAGE="https://github.com/trivago/gollum"
@@ -15,10 +15,10 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="examples pie"
+IUSE="debug examples pie"
 
 DOCS=( CHANGELOG.md README.md )
-QA_PRESTRIPPED="usr/bin/gollum"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -38,12 +38,16 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
+		-X "${EGO_PN}/core.versionString=${PV}"
+	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
-		-ldflags "-s -w -X ${EGO_PN}/core.versionString=${PV}"
+		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
 }
@@ -59,7 +63,7 @@ src_test(){
 
 src_install() {
 	dobin gollum
-	einstalldocs
+	use debug && dostrip -x /usr/bin/gollum
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
@@ -75,4 +79,6 @@ src_install() {
 
 	diropts -o gollum -g gollum -m 0750
 	keepdir /var/log/gollum
+
+	einstalldocs
 }
