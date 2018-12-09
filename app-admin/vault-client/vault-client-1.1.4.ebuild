@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 EGO_PN="github.com/adfinis-sygroup/${PN}"
-# Snapshot taken on 2018.06.22
 EGO_VENDOR=(
+	# Snapshot taken on 2018.06.22
 	"github.com/armon/go-radix 1fca145"
 	"github.com/bgentry/speakeasy 4aabc24"
 	"github.com/fatih/color 2d68451"
@@ -17,23 +17,23 @@ EGO_VENDOR=(
 	"gopkg.in/yaml.v2 5420a8b github.com/go-yaml/yaml"
 )
 
-inherit bash-completion-r1 golang-vcs-snapshot
+inherit bash-completion-r1 golang-vcs-snapshot-r1
 
 DESCRIPTION="A CLI to HashiCorp's Vault inspired by pass"
 HOMEPAGE="https://github.com/adfinis-sygroup/vault-client"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+ARCHIVE_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="GPL-3+"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="bash-completion pie zsh-completion"
+IUSE="debug bash-completion pie zsh-completion"
 
 RDEPEND="zsh-completion? ( app-shells/zsh )"
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/vc"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -42,10 +42,10 @@ src_compile() {
 	export GOPATH="${G}"
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		-asmflags "-trimpath=${S}"
 		-gcflags "-trimpath=${S}"
-		-ldflags "-s -w"
+		-ldflags "$(usex !debug '-s -w' '')"
 		-o ./vc
 	)
 	go build "${mygoargs[@]}" ./src || die
@@ -53,7 +53,7 @@ src_compile() {
 
 src_install() {
 	dobin vc
-	einstalldocs
+	use debug && dostrip -x /usr/bin/vc
 
 	if use bash-completion; then
 		newbashcomp sample/vc-completion.bash vc
@@ -63,4 +63,6 @@ src_install() {
 		insinto /usr/share/zsh/site-functions
 		newins sample/vc-completion.zsh _vc
 	fi
+
+	einstalldocs
 }
