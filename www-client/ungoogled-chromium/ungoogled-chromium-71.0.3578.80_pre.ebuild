@@ -13,7 +13,7 @@ CHROMIUM_LANGS="
 
 inherit check-reqs chromium-2 desktop flag-o-matic multilib ninja-utils pax-utils portability python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
-UGC_PV="797be6e147352d9ff3b7b2c33f7decc4d5213c84"
+UGC_PV="907d2a3f55c02f566d317f2ce817615ad2350f75"
 UGC_P="ungoogled-chromium-${UGC_PV}"
 UGC_WD="${WORKDIR}/${UGC_P}"
 
@@ -165,10 +165,10 @@ GTK+ icon theme.
 
 PATCHES=(
 	"${FILESDIR}/${PN}-compiler-r4.patch"
-	"${FILESDIR}/chromium-webrtc-r0.patch"
-	"${FILESDIR}/chromium-memcpy-r0.patch"
-	"${FILESDIR}/chromium-math.h-r0.patch"
-	"${FILESDIR}/chromium-stdint.patch"
+	#"${FILESDIR}/chromium-webrtc-r0.patch"
+	#"${FILESDIR}/chromium-memcpy-r0.patch"
+	#"${FILESDIR}/chromium-math.h-r0.patch"
+	#"${FILESDIR}/chromium-stdint.patch"
 	"${FILESDIR}/${PN}-gold-r0.patch"
 )
 
@@ -215,9 +215,9 @@ src_prepare() {
 	use system-harfbuzz && eapply "${FILESDIR}/chromium-harfbuzz-r0.patch"
 
 	# Apply extra patches (taken from openSUSE)
-	local ep
-	for ep in "${FILESDIR}/extra-70"/*.patch; do
-		eapply "${ep}"
+	local p
+	for p in "${FILESDIR}/extra-70"/*.patch; do
+		eapply "${p}"
 	done
 
 	# Hack for libusb stuff (taken from openSUSE)
@@ -231,36 +231,49 @@ src_prepare() {
 	local ugc_common_dir="${UGC_WD}/config_bundles/common"
 	local ugc_rooted_dir="${UGC_WD}/config_bundles/linux_rooted"
 
-	# Remove unneeded ARM & GCC patches. Also, as we will use
-	# dev-util/gn, remove redundant patches related to GN bootstrap
-	sed -i \
-		-e '/arm\/skia.patch/d' \
-		-e '/arm\/gcc_skcms_ice.patch/d' \
-		-e '/fixes\/alignof.patch/d' \
-		-e '/fixes\/as-needed.patch/d' \
-		-e '/fixes\/member-assignment.patch/d' \
-		-e '/fixes\/sizet.patch/d' \
-		-e '/warnings\/attribute.patch/d' \
-		-e '/warnings\/enum-compare.patch/d' \
-		-e '/warnings\/multichar.patch/d' \
-		-e '/warnings\/null-destination.patch/d' \
-		-e '/gn\/parallel.patch/d' \
-		-e '/gn-bootstrap-remove-gn-gen.patch/d' \
-		-e '/no-such-option-no-sysroot.patch/d' \
-		"${ugc_common_dir}/patch_order.list" || die
+	local ugc_unneeded=(
+		# ARM related patch
+		common:gcc_skcms_ice
+		# GCC fixes/warnings
+		common:alignof
+		common:as-needed
+		common:enum-compare
+		common:int-in-bool-context
+		common:multichar
+		common:null-destination
+		common:sizet
+		rooted:attribute
+		# We already have "-Wno-unknown-warning-option" defined below
+		common:clang-compiler-flags
+		# GN bootstrap
+		common:no-such-option-no-sysroot
+		common:parallel
+		rooted:libcxx
+	)
 
-	sed -i '/gn\/libcxx.patch/d' "${ugc_rooted_dir}/patch_order.list" || die
+	local ugc_use=(
+		system-libevent:event
+		system-libvpx:vpx
+		vaapi:chromium-vaapi-r18
+	)
+
+	local ugc_p ugc_dir
+	for p in "${ugc_unneeded[@]}"; do
+		ugc_p="${p#*:}"
+		ugc_dir="ugc_${p%:*}_dir"
+		einfo "Removing ${ugc_p}.patch"
+		sed -i "/${ugc_p}.patch/d" "${!ugc_dir}/patch_order.list" || die
+	done
+
+	for p in "${ugc_use[@]}"; do
+		ugc_p="${p#*:}"
+		use "${p%:*}" && break
+		einfo "Removing ${ugc_p}.patch"
+		sed -i "/${ugc_p}.patch/d" "${ugc_rooted_dir}/patch_order.list" || die
+	done
 
 	if ! use system-icu; then
 		sed -i '/common\/icudtl.dat/d' "${ugc_rooted_dir}/pruning.list" || die
-	fi
-
-	if ! use system-libevent; then
-		sed -i '/system\/event.patch/d' "${ugc_rooted_dir}/patch_order.list" || die
-	fi
-
-	if ! use system-libvpx; then
-		sed -i '/system\/vpx.patch/d' "${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
 	if use system-openjpeg; then
@@ -268,13 +281,9 @@ src_prepare() {
 			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
-	if ! use vaapi; then
-		sed -i '/chromium-vaapi-r18.patch/d' "${ugc_rooted_dir}/patch_order.list" || die
-	else
-		if has_version '<x11-libs/libva-2.0.0'; then
-			sed -i "/build.patch/i ${PN}/linux/fix-libva1-compatibility.patch" \
-				"${ugc_rooted_dir}/patch_order.list" || die
-		fi
+	if use vaapi && has_version '<x11-libs/libva-2.0.0'; then
+		sed -i "/build.patch/i ${PN}/linux/fix-libva1-compatibility.patch" \
+			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
 	ebegin "Pruning binaries"
