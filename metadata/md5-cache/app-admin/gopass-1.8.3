@@ -1,14 +1,14 @@
+BDEPEND=>=dev-lang/go-1.10.1
 DEFINED_PHASES=compile install unpack
-DEPEND=>=dev-lang/go-1.9
 DESCRIPTION=The slightly more awesome standard unix password manager for teams
-EAPI=6
+EAPI=7
 HOMEPAGE=https://www.gopass.pw
-IUSE=+pie
+IUSE=debug +pie
 KEYWORDS=~amd64 ~x86
 LICENSE=MIT
 RDEPEND=app-crypt/gpgme:1 dev-vcs/git[threads,gpg,curl]
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/gopasspw/gopass/archive/v1.8.3.tar.gz -> gopass-1.8.3.tar.gz
-_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	multilib	b2f01ad412baf81650c23fcf0975fa33	toolchain-funcs	f164325a2cdb5b3ea39311d483988861
-_md5_=fb2bd9d6bfc49355a70d8f1cbb2e7756
+_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f	multilib	b2f01ad412baf81650c23fcf0975fa33	toolchain-funcs	f164325a2cdb5b3ea39311d483988861
+_md5_=4f730474e3728d6e4fc013083403a7c0

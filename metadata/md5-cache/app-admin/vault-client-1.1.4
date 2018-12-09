@@ -1,14 +1,14 @@
+BDEPEND=>=dev-lang/go-1.10.1
 DEFINED_PHASES=compile install unpack
-DEPEND=>=dev-lang/go-1.9
 DESCRIPTION=A CLI to HashiCorp's Vault inspired by pass
-EAPI=6
+EAPI=7
 HOMEPAGE=https://github.com/adfinis-sygroup/vault-client
-IUSE=bash-completion pie zsh-completion
+IUSE=debug bash-completion pie zsh-completion
 KEYWORDS=~amd64
 LICENSE=GPL-3+
 RDEPEND=zsh-completion? ( app-shells/zsh )
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/adfinis-sygroup/vault-client/archive/v1.1.4.tar.gz -> vault-client-1.1.4.tar.gz https://github.com/armon/go-radix/archive/1fca145.tar.gz -> github.com-armon-go-radix-1fca145.tar.gz https://github.com/bgentry/speakeasy/archive/4aabc24.tar.gz -> github.com-bgentry-speakeasy-4aabc24.tar.gz https://github.com/fatih/color/archive/2d68451.tar.gz -> github.com-fatih-color-2d68451.tar.gz https://github.com/hashicorp/go-multierror/archive/b7773ae.tar.gz -> github.com-hashicorp-go-multierror-b7773ae.tar.gz https://github.com/hashicorp/vault/archive/ae72826.tar.gz -> github.com-hashicorp-vault-ae72826.tar.gz https://github.com/mattn/go-isatty/archive/6ca4dbf.tar.gz -> github.com-mattn-go-isatty-6ca4dbf.tar.gz https://github.com/mitchellh/cli/archive/c48282d.tar.gz -> github.com-mitchellh-cli-c48282d.tar.gz https://github.com/posener/complete/archive/e037c22.tar.gz -> github.com-posener-complete-e037c22.tar.gz https://github.com/go-yaml/yaml/archive/5420a8b.tar.gz -> github.com-go-yaml-yaml-5420a8b.tar.gz
-_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	multilib	b2f01ad412baf81650c23fcf0975fa33	toolchain-funcs	f164325a2cdb5b3ea39311d483988861
-_md5_=0d6a987be9271295d4e6dfa235aa04ff
+_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f	multilib	b2f01ad412baf81650c23fcf0975fa33	toolchain-funcs	f164325a2cdb5b3ea39311d483988861
+_md5_=99d499fe3c9308e528a688852cdff31f

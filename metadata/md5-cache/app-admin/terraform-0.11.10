@@ -1,14 +1,14 @@
+BDEPEND=>=dev-lang/go-1.10.1
 DEFINED_PHASES=compile install unpack
-DEPEND=>=dev-lang/go-1.9
 DESCRIPTION=A tool for building, changing, and combining infrastructure safely/efficiently
-EAPI=6
+EAPI=7
 HOMEPAGE=https://www.terraform.io
-IUSE=examples fish-completion pie terraform-bundle
+IUSE=debug examples fish-completion pie terraform-bundle
 KEYWORDS=~amd64 ~arm ~arm64 ~x86
 LICENSE=MPL-2.0
 RDEPEND=fish-completion? ( app-shells/fish )
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/hashicorp/terraform/archive/v0.11.10.tar.gz -> terraform-0.11.10.tar.gz https://github.com/golang/tools/archive/40a48ad93f.tar.gz -> github.com-golang-tools-40a48ad93f.tar.gz
-_eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc
-_md5_=403005462ed2001cd8c98130fe4fc224
+_eclasses_=golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f
+_md5_=c27655ab375d74d019187154bfd6d878
