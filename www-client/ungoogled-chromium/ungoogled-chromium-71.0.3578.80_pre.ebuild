@@ -30,8 +30,8 @@ KEYWORDS="~amd64 ~x86"
 IUSE="
 	+cfi cups custom-cflags gnome gold jumbo-build kerberos +lld new-tcmalloc
 	optimize-webui +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
-	system-harfbuzz +system-icu +system-libevent +system-libvpx +system-openh264
-	+system-openjpeg +tcmalloc +thinlto vaapi widevine
+	system-harfbuzz +system-icu +system-jsoncpp +system-libevent +system-libvpx
+	+system-openh264 +system-openjpeg +tcmalloc +thinlto vaapi widevine
 "
 REQUIRED_USE="
 	^^ ( gold lld )
@@ -51,7 +51,7 @@ COMMON_DEPEND="
 	cups? ( >=net-print/cups-1.3.11:= )
 	>=dev-libs/atk-2.26
 	dev-libs/expat:=
-	dev-libs/jsoncpp
+	system-jsoncpp? ( dev-libs/jsoncpp )
 	dev-libs/glib:2
 	system-icu? ( >=dev-libs/icu-58.2:= )
 	system-libevent? ( dev-libs/libevent )
@@ -252,6 +252,7 @@ src_prepare() {
 	)
 
 	local ugc_use=(
+		system-jsoncpp:jsoncpp
 		system-libevent:event
 		system-libvpx:vpx
 		vaapi:chromium-vaapi-r18
@@ -428,7 +429,6 @@ src_prepare() {
 		third_party/spirv-tools-angle
 		third_party/sqlite
 		third_party/ungoogled
-		third_party/unrar
 		third_party/usrsctp
 		third_party/vulkan
 		third_party/vulkan-validation-layers
@@ -465,6 +465,7 @@ src_prepare() {
 		keeplibs+=( third_party/harfbuzz-ng )
 	fi
 	use system-icu || keeplibs+=( third_party/icu )
+	use system-jsoncpp || keeplibs+=( third_party/jsoncpp )
 	use system-libevent || keeplibs+=( base/third_party/libevent )
 	if ! use system-libvpx; then
 		keeplibs+=( third_party/libvpx )
