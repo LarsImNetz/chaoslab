@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 # Generated with:
 # curl -s https://gitlab.com/jD91mZM2/powerline-rs/raw/0.1.9/Cargo.lock | sed 's/^"checksum \([[:graph:]]\+\) \([[:graph:]]\+\) (.*$/\1-\2/'
@@ -41,6 +41,7 @@ num-integer-0.1.39
 num-traits-0.2.6
 openssl-probe-0.1.2
 openssl-sys-0.9.38
+openssl-sys-0.9.39
 percent-encoding-1.0.1
 pkg-config-0.3.14
 proc-macro2-0.4.20
@@ -80,9 +81,9 @@ inherit cargo
 
 DESCRIPTION="A powerline-shell rewritten in Rust, inspired by powerline-go"
 HOMEPAGE="https://gitlab.com/jD91mZM2/powerline-rs"
+ARCHIVE_URI="https://gitlab.com/jD91mZM2/${PN}/-/archive/${PV}/${P}.tar.gz"
 # shellcheck disable=SC2086
-SRC_URI="https://gitlab.com/jD91mZM2/${PN}/-/archive/${PV}/${P}.tar.gz
-	$(cargo_crate_uris ${CRATES})"
+SRC_URI="${ARCHIVE_URI} $(cargo_crate_uris ${CRATES})"
 RESTRICT="mirror"
 
 LICENSE="MIT"
@@ -102,6 +103,13 @@ RDEPEND="${DEPEND}
 "
 
 DOCS=( README.md )
+
+src_prepare() {
+	has_version '>=dev-libs/libressl-2.8.0' && \
+		eapply "${FILESDIR}/${P}-libressl-2.8.patch"
+
+	default
+}
 
 src_compile() {
 	# shellcheck disable=SC2153
