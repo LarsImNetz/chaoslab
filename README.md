@@ -7,14 +7,15 @@ ChaosLab: Overlay for Gentoo/Funtoo Linux
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
 
 The scope of this overlay is to maintain ebuilds for packages related to secure
-communication, cryptography, cryptocurrency, server-side applications, and other
-things that I'm interested in. You may check [LISTING.md](LISTING.md) to see a
-list of available packages and their associated description.
+communication, cryptocurrency, server-side applications, and other things that
+I'm interested in. Also, it includes full support for `libressl` USE flag and
+**OpenRC**, but unfortunately the support for **systemd** has been _less than
+stellar_, as I don't have any machines to test its _unit_ files.
 
-This overlay also includes full support for `libressl` USE flag and **OpenRC**,
-but unfortunately the support for **systemd** has been less than stellar because
-I don't have any machines to test its _unit_ files. If you have spare time and
-would like to improve it, please [contribute](CONTRIBUTING.md).
+You may check [LISTING.md](LISTING.md) to see a list of supported packages and
+their associated description. If you have spare time and would like to improve,
+please take a moment to review the [contribution guidelines](CONTRIBUTING.md).
+Also, don’t forget to ★ if the overlay is somewhat useful to you.
 
 **DISCLAIMER:** As I don't have the resources, nor the time to make stable
 ebuilds in the same way Gentoo developers do, all ebuilds are permanently kept
@@ -76,16 +77,16 @@ repository.
 Here is a complete example of creating minimal local repository:
 
 ```shell
-MY_REPO="/path/to/local/repository"
+REPO_NAME="localrepo"
+REPO_PATH="/path/to/local/repository"
 
-mkdir -p "${MY_REPO}"/{metadata,profiles}
-echo "localrepo" > "${MY_REPO}"/profiles/repo_name
-printf "masters = gentoo\nauto-sync = false\n" > "${MY_REPO}"/metadata/layout.conf
+mkdir -p "${REPO_PATH}"/{metadata,profiles}
+echo "${REPO_NAME}" > "${REPO_PATH}"/profiles/repo_name
+printf "masters = gentoo\nauto-sync = false\n" > "${REPO_PATH}"/metadata/layout.conf
 # Register your local overlay in /etc/portage/repos.conf:
-printf "[localrepo]\nlocation = ${MY_REPO}\n" > /etc/portage/repos.conf/localrepo.conf
-
-# Now copy the desired directories (category/package-name) into your ${MY_REPO}
+printf "[${REPO_NAME}]\nlocation = ${REPO_PATH}\n" > /etc/portage/repos.conf/localrepo.conf
 ```
+Now copy the desired directories (category/package-name) into your `${REPO_PATH}`.
 
 ## Signature
 
@@ -98,10 +99,5 @@ Also, you can easily do full-tree verification
 [app-portage/gemato](https://packages.gentoo.org/packages/app-portage/gemato):
 
 ```shell
-find */* -maxdepth 2 -type d ! -path 'profiles*' -exec gemato verify -k -s {} +
+find */* -maxdepth 2 -type d ! -path 'profiles*' -exec gemato verify -k -s '{}' +;
 ```
-
-## Contributing
-
-Anyone and everyone is welcome to contribute. Please take a moment to review the
-[contribution guidelines](CONTRIBUTING.md).
