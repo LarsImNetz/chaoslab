@@ -11,8 +11,10 @@ MO_P="monero-${MO_PV}"
 # Keep this in sync with ../monero/external/{miniupnp,rapidjson}
 MINIUPNP_COMMIT="6a63f9954959119568fbc4af57d7b491b9428d87"
 RAPIDJSON_COMMIT="129d19ba7f496df5e33658527a7158c79b99c21c"
+UNBOUND_COMMIT="7f23967954736dcaa366806b9eaba7e2bdfede11"
 MINIUPNP_P="miniupnp-${MINIUPNP_COMMIT}"
 RAPIDJSON_P="rapidjson-${RAPIDJSON_COMMIT}"
+UNBOUND_P="unbound-${UNBOUND_COMMIT}"
 
 DESCRIPTION="The secure, private and untraceable cryptocurrency (with GUI wallet)"
 HOMEPAGE="https://getmonero.org"
@@ -21,6 +23,7 @@ SRC_URI="
 	https://github.com/monero-project/monero/archive/${MO_PV}.tar.gz -> ${MO_P}.tar.gz
 	https://github.com/monero-project/miniupnp/archive/${MINIUPNP_COMMIT}.tar.gz -> ${MINIUPNP_P}.tar.gz
 	https://github.com/Tencent/rapidjson/archive/${RAPIDJSON_COMMIT}.tar.gz -> ${RAPIDJSON_P}.tar.gz
+	https://github.com/monero-project/unbound/archive/${UNBOUND_COMMIT}.tar.gz -> ${UNBOUND_P}.tar.gz
 "
 RESTRICT="mirror"
 
@@ -34,10 +37,9 @@ CDEPEND="
 	dev-libs/boost:0=[nls,threads(+)]
 	dev-libs/hidapi
 	dev-libs/libsodium
-	dev-qt/qtdeclarative:5[xml]
-	dev-qt/qtquickcontrols:5
-	dev-qt/qtquickcontrols2:5
-	dev-qt/qtwidgets:5
+	dev-qt/qtdeclarative:5[widgets,xml]
+	dev-qt/qtquickcontrols:5[widgets]
+	dev-qt/qtquickcontrols2:5[widgets]
 	net-dns/unbound:=[threads]
 	net-libs/cppzmq
 	!libressl? ( dev-libs/openssl:0=[-bindist] )
@@ -63,6 +65,7 @@ RDEPEND="${CDEPEND}
 	utils? ( !net-p2p/monero[utils] )
 "
 
+CMAKE_BUILD_TYPE="Release"
 CMAKE_USE_DIR="${S}/monero"
 BUILD_DIR="${CMAKE_USE_DIR}/build/release"
 
@@ -79,6 +82,7 @@ src_unpack() {
 	unpack "${MO_P}.tar.gz"
 	unpack "${MINIUPNP_P}.tar.gz"
 	unpack "${RAPIDJSON_P}.tar.gz"
+	unpack "${UNBOUND_P}.tar.gz"
 }
 
 src_prepare() {
@@ -87,9 +91,10 @@ src_prepare() {
 
 	mkdir -p "${S}/build" "${BUILD_DIR}" || die
 
-	rmdir monero/external/{miniupnp,rapidjson} || die
+	rmdir monero/external/{miniupnp,rapidjson,unbound} || die
 	mv "${MINIUPNP_P}" monero/external/miniupnp || die
 	mv "${RAPIDJSON_P}" monero/external/rapidjson || die
+	mv "${UNBOUND_P}" monero/external/unbound || die
 
 	# Fix hardcoded translations path
 	#sed -i "s|/translations\"|/../share/${PN}/translations\"|" \
@@ -105,9 +110,11 @@ src_configure() {
 
 	# shellcheck disable=SC2191,SC2207
 	local mycmakeargs=(
+		-DINSTALL_VENDORED_LIBUNBOUND=ON
 		-DCMAKE_INSTALL_PREFIX="${CMAKE_USE_DIR}"
 		-DBUILD_DOCUMENTATION=$(usex doc ON OFF)
 		-DBUILD_GUI_DEPS=ON
+		-DMANUAL_SUBMODULES=ON
 		-DSTACK_TRACE=$(usex unwind ON OFF)
 		-DUSE_READLINE=$(usex readline ON OFF)
 	)
