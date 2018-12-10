@@ -10,6 +10,7 @@ EGO_VENDOR=(
 	"github.com/PuerkitoBio/goquery v1.4.1"
 	"github.com/andybalholm/cascadia v1.0.0"
 	#"github.com/asaskevich/EventBus d46933a94f"
+	"github.com/go-ini/ini v1.39.2"
 	"github.com/irfansharif/cfilter d07d951ff2" # inderect
 	"github.com/fatih/color v1.7.0" # inderect
 	"github.com/johnnadratowski/golang-neo4j-bolt-driver c68f22031e"
