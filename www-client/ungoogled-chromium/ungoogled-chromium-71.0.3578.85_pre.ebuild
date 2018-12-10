@@ -285,8 +285,7 @@ src_prepare() {
 	fi
 
 	if use vaapi && has_version '<x11-libs/libva-2.0.0'; then
-		sed -i "/build.patch/i ${PN}/linux/fix-libva1-compatibility.patch" \
-			"${ugc_rooted_dir}/patch_order.list" || die
+		eapply "${FILESDIR}/fix-libva1-compatibility.patch"
 	fi
 
 	ebegin "Pruning binaries"
