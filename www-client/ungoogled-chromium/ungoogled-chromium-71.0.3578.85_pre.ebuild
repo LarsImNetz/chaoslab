@@ -40,7 +40,7 @@ REQUIRED_USE="
 	cfi? ( thinlto )
 	new-tcmalloc? ( tcmalloc )
 "
-RESTRICT="
+RESTRICT="mirror
 	!system-ffmpeg? ( proprietary-codecs? ( bindist ) )
 	!system-openh264? ( bindist )
 "
