@@ -28,6 +28,10 @@
 			is not automatically tested by Chromium developers, so it may not
 			work all the time.
 		</flag>
+		<flag name="libcxx">
+			Build against <pkg>sys-devel/libcxx</pkg>. This requires that all
+			C++ dependencies must be built with '-stdlib=libc++'. (EXPERIMENTAL)
+		</flag>
 		<flag name="lld">
 			Use LLVM's linker, depend on <pkg>sys-devel/lld</pkg> (recommended)
 		</flag>

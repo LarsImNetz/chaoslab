@@ -28,7 +28,7 @@ LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="
-	+cfi cups custom-cflags gnome gold jumbo-build kerberos +lld new-tcmalloc
+	+cfi cups custom-cflags gnome gold jumbo-build kerberos libcxx +lld new-tcmalloc
 	optimize-webui +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
 	system-harfbuzz +system-icu +system-jsoncpp +system-libevent +system-libvpx
 	+system-openh264 +system-openjpeg +tcmalloc +thinlto vaapi widevine
@@ -82,6 +82,10 @@ COMMON_DEPEND="
 	)
 	sys-apps/dbus:=
 	sys-apps/pciutils:=
+	libcxx? (
+		sys-libs/libcxx
+		sys-libs/libcxxabi
+	)
 	virtual/udev
 	x11-libs/cairo:=
 	x11-libs/gdk-pixbuf:2
@@ -190,6 +194,7 @@ pkg_pretend() {
 		ewarn "USE=custom-cflags bypass strip-flags; you are on your own."
 		ewarn "Expect build failures. Don't file bugs using that unsupported USE flag!"
 		ewarn
+		use libcxx && ewarn "USE=libcxx has no effect with 'custom-cflags'."
 	fi
 	pre_build_checks
 }
@@ -494,22 +499,18 @@ setup_compile_flags() {
 			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
 		fi
 
-		# Building with 'libc++' is not fully supported yet. At least
-		# I haven't been able to successfully build. If you have a happy
-		# story to share, please let me know. (:
-		has_version 'sys-devel/clang[default-libcxx]' && \
-			append-cxxflags "-stdlib=libstdc++"
+		if use libcxx; then
+			append-cxxflags "-stdlib=libc++"
+			append-ldflags "-stdlib=libc++ -Wl,-lc++abi"
+		else
+			has_version 'sys-devel/clang[default-libcxx]' && \
+				append-cxxflags "-stdlib=libstdc++"
+		fi
 
-		# 'gcc_s' is required if 'compiler-rt' is Clang's default
+		# 'gcc_s' is still required if 'compiler-rt' is Clang's default rtlib
 		has_version 'sys-devel/clang[default-compiler-rt]' && \
 			append-ldflags "-Wl,-lgcc_s"
 	fi
-
-	# TODO: Build against sys-libs/{libcxx,libcxxabi}
-	#if use libcxx; then
-	#	append-cxxflags "-stdlib=libc++"
-	#	append-ldflags "-stdlib=libc++ -Wl,-lc++abi"
-	#fi
 
 	if use thinlto; then
 		# We need to change the default value of import-instr-limit in
