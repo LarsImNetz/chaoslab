@@ -4,8 +4,8 @@
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="16191ecefb22a9c5b389b94bffb67ace5dd45d62"
-WEBAPP_COMMIT="4dc67e0a8406972e992027ecb2efae48d6bb6a93"
+GIT_COMMIT="299d9e4d26547ff5d0401e780a59b7d807e5b3f6"
+WEBAPP_COMMIT="f79a5820017ef26d1608cd125f4e241fa1785580"
 EGO_PN="github.com/mattermost/${PN}"
 WEBAPP_P="mattermost-webapp-${PV}"
 MY_PV="${PV/_/-}"
