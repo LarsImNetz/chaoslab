@@ -3,7 +3,8 @@
 
 EAPI=7
 
-GIT_COMMIT="69c519192657" # Change this when you update the ebuild
+# Change this when you update the ebuild
+GIT_COMMIT="308c818cd737ac7820d4ff32603007f398635cca"
 EGO_PN="github.com/${PN}/${PN}"
 MY_PV="${PV/_/-}"
 
@@ -53,8 +54,9 @@ src_compile() {
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "main.version=${MY_PV}"
-		-X "main.commit=${GIT_COMMIT}"
+		-X "main.commit=${GIT_COMMIT:0:7}"
 		-X "main.buildstamp=$(date -u '+%s')"
+		-X "main.buildBranch=non-git"
 	)
 	local mygoargs=(
 		-v -work -x
