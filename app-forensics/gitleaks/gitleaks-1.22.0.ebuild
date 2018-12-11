@@ -1,11 +1,11 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 EGO_PN="github.com/zricethezav/${PN}"
 
-inherit golang-vcs-snapshot
+inherit golang-vcs-snapshot-r1
 
 DESCRIPTION="Audit git repos for secrets"
 HOMEPAGE="https://github.com/zricethezav/gitleaks"
@@ -15,10 +15,10 @@ RESTRICT="mirror test" # test requires a GITHUB_TOKEN
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE="pie"
+IUSE="debug pie"
 
 DOCS=( CHANGELOG.md README.md )
-QA_PRESTRIPPED="usr/bin/gitleaks"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -27,15 +27,16 @@ src_compile() {
 	export GOPATH="${G}"
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
-		-ldflags "-s -w"
+		-ldflags "$(usex !debug '-s -w' '')"
 	)
 	go build "${mygoargs[@]}" || die
 }
 
 src_install() {
 	dobin gitleaks
+	use debug && dostrip -x /usr/bin/gitleaks
 	einstalldocs
 }

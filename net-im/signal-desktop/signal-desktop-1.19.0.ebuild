@@ -90,15 +90,15 @@ src_install() {
 	done
 	make_desktop_entry "${PN}" Signal signal \
 		"GTK;Network;Chat;InstantMessaging;" \
-		"StartupNotify=true\\nStartupWMClass=signal-desktop"
+		"StartupNotify=true\\nStartupWMClass=Signal"
 	domenu "${FILESDIR}"/signal-desktop-tray.desktop
 }
 
 update_caches() {
 	if type gtk-update-icon-cache &>/dev/null; then
 		ebegin "Updating GTK icon cache"
-		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor" || die
-		eend $?
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		eend $? || die
 	fi
 	xdg_desktop_database_update
 }
