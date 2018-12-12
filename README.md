@@ -2,15 +2,16 @@ ChaosLab: Overlay for Gentoo/Funtoo Linux
 -----------------------------------------
 
 [![packages 208](https://img.shields.io/badge/packages-208-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
-[![ebuilds 270](https://img.shields.io/badge/ebuilds-270-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![ebuilds 268](https://img.shields.io/badge/ebuilds-268-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
 
 The scope of this overlay is to maintain ebuilds for packages related to secure
 communication, cryptocurrency, server-side applications, and other things that
-I am interested in. Also, it includes full support for `libressl` USE flag and
-**OpenRC**, but the support for **systemd** has been less than stellar, because
-I do _not_ have any machines/desire to test its _unit_ files.
+I am interested in. It also includes full support for `libressl` USE flag and
+**OpenRC**, and somewhat initial LLVM/Clang support. _Sadly_, **systemd** support
+has been poorly maintained because I do _not_ have any machines to test its unit
+files.
 
 If you have spare time and would like to improve the overlay, please take a
 moment to review the [contribution guidelines](CONTRIBUTING.md). You may check 

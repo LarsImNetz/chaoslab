@@ -3,7 +3,8 @@
 
 EAPI=7
 
-GIT_COMMIT="0bddfa23a2" # Change this when you update the ebuild
+# Change this when you update the ebuild
+GIT_COMMIT="0bddfa23a2ebe3c0773d917fc104f53d74f7a5ec"
 EGO_PN="github.com/hashicorp/${PN}"
 
 inherit golang-vcs-snapshot-r1 systemd user
@@ -33,7 +34,7 @@ src_compile() {
 	export GOPATH="${G}"
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
-		-X "${EGO_PN}/version.GitCommit=${GIT_COMMIT}"
+		-X "${EGO_PN}/version.GitCommit=${GIT_COMMIT:0:7}"
 		-X "${EGO_PN}/version.GitDescribe=v${PV/_*}"
 	)
 	local mygoargs=(
