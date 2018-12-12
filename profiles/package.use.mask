@@ -1,7 +1,2 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-
-# Ian Moone <gentoo@chaoslab.org> (26 Nov 2018)
-# Not fully tested yet. If you are feeling adventurous,
-# go ahead and unmask it. Please report your results.
-www-client/ungoogled-chromium gold
