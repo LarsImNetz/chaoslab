@@ -3,7 +3,8 @@
 
 EAPI=7
 
-GIT_COMMIT="97ac44d93e" # Change this when you update the ebuild
+# Change this when you update the ebuild
+GIT_COMMIT="97ac44d93e48d378bfbb80180c54f76a8b1a5cef"
 EGO_PN="github.com/gopasspw/${PN}"
 
 inherit bash-completion-r1 golang-vcs-snapshot-r1
@@ -34,7 +35,7 @@ src_compile() {
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "main.version=${PV}"
-		-X "main.commit=${GIT_COMMIT}"
+		-X "main.commit=${GIT_COMMIT:0:8}"
 		-X "main.date=$(date -u '+%FT%T%z')"
 	)
 	local mygoargs=(
