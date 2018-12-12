@@ -32,7 +32,7 @@ pkg_setup() {
 src_compile() {
 	export GOPATH="${G}"
 	local myldflags=( -s -w
-		-X "${EGO_PN}/version.GitCommit=${GIT_COMMIT}"
+		-X "${EGO_PN}/version.GitCommit=${GIT_COMMIT:0:7}"
 		-X "${EGO_PN}/version.GitDescribe=v${PV/_*}"
 	)
 	local mygoargs=(
