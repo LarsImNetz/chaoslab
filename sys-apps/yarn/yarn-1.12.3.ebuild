@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 MY_P="${PN}-v${PV}"
 DESCRIPTION="Fast, reliable, and secure node dependency management"
@@ -19,6 +19,11 @@ RDEPEND="
 "
 
 S="${WORKDIR}/${MY_P}"
+
+src_prepare() {
+	rm bin/*.cmd || die
+	default
+}
 
 src_install() {
 	local install_dir path shebang
