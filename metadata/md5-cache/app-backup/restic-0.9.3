@@ -1,14 +1,15 @@
+BDEPEND=>=dev-lang/go-1.10.1
 DEFINED_PHASES=compile install test unpack
-DEPEND=doc? ( dev-python/sphinx ) >=dev-lang/go-1.9
+DEPEND=doc? ( dev-python/sphinx )
 DESCRIPTION=A backup program that is fast, efficient and secure
-EAPI=6
+EAPI=7
 HOMEPAGE=https://restic.github.io
-IUSE=doc pie
+IUSE=debug doc pie
 KEYWORDS=~amd64 ~x86
 LICENSE=BSD-2
 RDEPEND=sys-fs/fuse:0
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/restic/restic/releases/download/v0.9.3/restic-0.9.3.tar.gz
-_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	multilib	b2f01ad412baf81650c23fcf0975fa33	toolchain-funcs	f164325a2cdb5b3ea39311d483988861
-_md5_=cf29adcec60a4ce30676244de0511b4b
+_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f	multilib	b2f01ad412baf81650c23fcf0975fa33	toolchain-funcs	f164325a2cdb5b3ea39311d483988861
+_md5_=797cfcffade5b3a4257d16f51de244c7
