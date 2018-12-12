@@ -1,11 +1,11 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 EGO_PN="github.com/github/${PN}"
 
-inherit bash-completion-r1 golang-vcs-snapshot
+inherit bash-completion-r1 golang-vcs-snapshot-r1
 
 DESCRIPTION="A command-line wrapper for git that makes you better at GitHub"
 HOMEPAGE="https://hub.github.com/"
@@ -14,8 +14,8 @@ RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="bash-completion fish-completion man pie zsh-completion"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
+IUSE="bash-completion debug fish-completion man pie zsh-completion"
 
 DEPEND="man? ( app-text/ronn dev-ruby/bundler )"
 RDEPEND="
@@ -25,7 +25,7 @@ RDEPEND="
 "
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/hub"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -33,7 +33,7 @@ S="${G}/src/${EGO_PN}"
 src_pretend() {
 	if use man && [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
-		if has network-sandbox $FEATURES; then
+		if has network-sandbox ${FEATURES}; then
 			ewarn
 			ewarn "${CATEGORY}/${PN}[man] requires 'network-sandbox' to be disabled in FEATURES"
 			ewarn
@@ -44,12 +44,16 @@ src_pretend() {
 
 src_compile() {
 	export GOPATH="${G}"
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
+		-X "${EGO_PN}/version.Version=${PV}"
+	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
-		-ldflags "-s -w -X ${EGO_PN}/version.Version=${PV}"
+		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
 
@@ -65,7 +69,7 @@ src_test() {
 
 src_install() {
 	dobin hub
-	einstalldocs
+	use debug && dostrip -x /usr/bin/hub
 
 	use man && doman share/man/man1/*.1
 	use bash-completion && newbashcomp etc/hub.bash_completion.sh hub
@@ -79,4 +83,6 @@ src_install() {
 		insinto /usr/share/zsh/site-functions
 		newins etc/hub.zsh_completion _hub
 	fi
+
+	einstalldocs
 }

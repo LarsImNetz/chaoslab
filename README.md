@@ -2,20 +2,20 @@ ChaosLab: Overlay for Gentoo/Funtoo Linux
 -----------------------------------------
 
 [![packages 208](https://img.shields.io/badge/packages-208-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
-[![ebuilds 272](https://img.shields.io/badge/ebuilds-272-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![ebuilds 270](https://img.shields.io/badge/ebuilds-270-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
 
 The scope of this overlay is to maintain ebuilds for packages related to secure
 communication, cryptocurrency, server-side applications, and other things that
-I'm interested in. Also, it includes full support for `libressl` USE flag and
-**OpenRC**, but unfortunately the support for **systemd** has been _less than
-stellar_, as I don't have any machines to test its _unit_ files.
+I am interested in. Also, it includes full support for `libressl` USE flag and
+**OpenRC**, but the support for **systemd** has been less than stellar, because
+I do _not_ have any machines/desire to test its _unit_ files.
 
-You may check [LISTING.md](LISTING.md) to see a list of supported packages and
-their associated description. If you have spare time and would like to improve,
-please take a moment to review the [contribution guidelines](CONTRIBUTING.md).
-Also, don’t forget to ★ if the overlay is somewhat useful to you.
+If you have spare time and would like to improve the overlay, please take a
+moment to review the [contribution guidelines](CONTRIBUTING.md). You may check 
+[LISTING.md](LISTING.md) to see a list of supported packages and their associated
+description. Don’t forget to ★ if the overlay is somewhat useful to you.
 
 **DISCLAIMER:** As I don't have the resources, nor the time to make stable
 ebuilds in the same way Gentoo developers do, all ebuilds are permanently kept
