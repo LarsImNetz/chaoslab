@@ -38,6 +38,7 @@ REQUIRED_USE="
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
 	cfi? ( thinlto )
+	libcxx? ( new-tcmalloc )
 	new-tcmalloc? ( tcmalloc )
 "
 RESTRICT="mirror
