@@ -8,9 +8,10 @@ ChaosLab: Overlay for Gentoo/Funtoo Linux
 
 The scope of this overlay is to maintain ebuilds for packages related to secure
 communication, cryptocurrency, server-side applications, and other things that
-I am interested in. Also, it includes full support for `libressl` USE flag and
-**OpenRC**, but the support for **systemd** has been less than stellar, because
-I do _not_ have any machines/desire to test its _unit_ files.
+I am interested in. It also includes full support for `libressl` USE flag and
+**OpenRC**, and somewhat initial LLVM/Clang support. _Sadly_, **systemd** support
+has been poorly maintained because I do _not_ have any machines to test its unit
+files.
 
 If you have spare time and would like to improve the overlay, please take a
 moment to review the [contribution guidelines](CONTRIBUTING.md). You may check 
