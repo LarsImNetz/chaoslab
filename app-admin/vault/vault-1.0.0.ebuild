@@ -3,8 +3,9 @@
 
 EAPI=7
 
+# Change this when you update the ebuild
+GIT_COMMIT="c19cef14891751a23eaa9b41fd456d1f99e7e856"
 EGO_PN="github.com/hashicorp/${PN}"
-GIT_COMMIT="c19cef148917" # Change this when you update the ebuild
 
 inherit fcaps golang-vcs-snapshot-r1 systemd user
 
