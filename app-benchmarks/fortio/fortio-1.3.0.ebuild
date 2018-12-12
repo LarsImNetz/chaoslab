@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 # Change this when you update the ebuild:
 GIT_COMMIT="bf3f2d9ff07ed03ef16be56af20d58dc0300e60f"
@@ -16,21 +16,21 @@ EGO_VENDOR=(
 	"google.golang.org/grpc v1.15.0 github.com/grpc/grpc-go"
 )
 
-inherit golang-vcs-snapshot
+inherit golang-vcs-snapshot-r1
 
 DESCRIPTION="A load testing CLI, advanced echo server, and web UI in Go"
 HOMEPAGE="https://fortio.org/"
-SRC_URI="https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+ARCHIVE_URI="https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="daemon pie"
+IUSE="daemon debug pie"
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/fortio"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -52,7 +52,8 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-	local myldflags=( -s -w
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "main.defaultDataDir=."
 		-X "${EGO_PN}/ui.resourcesDir=${EPREFIX}/usr/share/fortio"
 		-X "'${EGO_PN}/version.buildInfo=$(date -u +'%Y-%m-%d %H:%M') ${GIT_COMMIT}'"
@@ -61,7 +62,7 @@ src_compile() {
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
@@ -76,8 +77,7 @@ src_test() {
 
 src_install() {
 	dobin fortio
-	einstalldocs
-	doman docs/fortio.1
+	use debug && dostrip -x /usr/bin/fortio
 
 	insinto /usr/share/fortio
 	doins -r ui/{static,templates}
@@ -90,4 +90,7 @@ src_install() {
 		diropts -o fortio -g fortio -m 0750
 		keepdir /var/log/fortio
 	fi
+
+	einstalldocs
+	doman docs/fortio.1
 }
