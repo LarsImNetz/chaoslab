@@ -1,13 +1,10 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 EGO_PN="github.com/gilbertchen/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
-# Deps that are not needed:
-# github.com/gilbertchen/go-ole 0e87ea779d
-# google.golang.org/appengine 150dc57a1b
 EGO_VENDOR=(
 	"cloud.google.com/go 2d3a6656c1 github.com/GoogleCloudPlatform/gcloud-golang"
 	"github.com/Azure/azure-sdk-for-go b7fadebe0e"
@@ -19,6 +16,7 @@ EGO_VENDOR=(
 	"github.com/gilbertchen/azure-sdk-for-go bbf89bd4d7"
 	"github.com/gilbertchen/cli 1de0a1836c"
 	"github.com/gilbertchen/go-dropbox 90711b6033"
+	#"github.com/gilbertchen/go-ole 0e87ea779d"
 	"github.com/gilbertchen/go.dbus 9e442e6378"
 	"github.com/gilbertchen/goamz eada9f4e8c"
 	"github.com/gilbertchen/gopass bf9dde6d0d"
@@ -42,25 +40,26 @@ EGO_VENDOR=(
 	"golang.org/x/sys 82aafbf43b github.com/golang/sys"
 	"golang.org/x/text 88f656faf3 github.com/golang/text"
 	"google.golang.org/api 17b5f22a24 github.com/google/google-api-go-client"
+	#"google.golang.org/appengine 150dc57a1b github.com/golang/appengine"
 	"google.golang.org/genproto 891aceb7c2 github.com/google/go-genproto"
 	"google.golang.org/grpc 5a9f7b402f github.com/grpc/grpc-go"
 )
 
-inherit golang-vcs-snapshot
+inherit golang-vcs-snapshot-r1
 
 DESCRIPTION="A new generation cloud backup tool"
 HOMEPAGE="https://duplicacy.com"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+ARCHIVE_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="duplicacy"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="pie"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
+IUSE="debug pie"
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/duplicacy"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -69,24 +68,24 @@ src_compile() {
 	export GOPATH="${G}"
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
-		-ldflags "-s -w"
+		-ldflags "$(usex !debug '-s -w' '')"
 		-o bin/duplicacy
 	)
 	go build "${mygoargs[@]}" ./duplicacy || die
 }
 
 src_test() {
-	local PATH="${S}/bin:$PATH"
 	pushd integration_tests > /dev/null || die
-	sed -i "s:DUPLICACY=.*:DUPLICACY=duplicacy:" test_functions.sh || die
+	sed -i "s|duplicacy_main|bin/duplicacy|" test_functions.sh || die
 	./test.sh || die
 	popd > /dev/null || die
 }
 
 src_install() {
 	dobin bin/duplicacy
+	use debug && dostrip -x /usr/bin/duplicacy
 	einstalldocs
 }
