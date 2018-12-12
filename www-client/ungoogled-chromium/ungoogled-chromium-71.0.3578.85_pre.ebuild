@@ -91,7 +91,7 @@ COMMON_DEPEND="
 	x11-libs/cairo:=
 	x11-libs/gdk-pixbuf:2
 	x11-libs/gtk+:3[X]
-	vaapi? ( x11-libs/libva:= )
+	vaapi? ( >=x11-libs/libva-2.0.0:= )
 	x11-libs/libX11:=
 	x11-libs/libXcomposite:=
 	x11-libs/libXcursor:=
@@ -285,9 +285,9 @@ src_prepare() {
 			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
-	if use vaapi && has_version '<x11-libs/libva-2.0.0'; then
-		eapply "${FILESDIR}/fix-libva1-compatibility.patch"
-	fi
+	#if use vaapi && has_version '<x11-libs/libva-2.0.0'; then
+	#	eapply "${FILESDIR}/fix-libva1-compatibility.patch"
+	#fi
 
 	ebegin "Pruning binaries"
 	"${ugc_cli}" prune -b "${ugc_config}" ./
