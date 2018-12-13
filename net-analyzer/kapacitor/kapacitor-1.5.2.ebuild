@@ -3,12 +3,13 @@
 
 EAPI=7
 
-MY_PV="${PV/_/-}"
-GIT_COMMIT="a06351a5de" # Change this when you update the ebuild
+# Change this when you update the ebuild
+GIT_COMMIT="3086452d00830e01d932838d8c6d1df818648ad3"
 EGO_PN="github.com/influxdata/${PN}"
 
 inherit bash-completion-r1 golang-vcs-snapshot-r1 systemd user
 
+MY_PV="${PV/_/-}"
 DESCRIPTION="A framework for processing, monitoring, and alerting on time series data"
 HOMEPAGE="https://influxdata.com"
 SRC_URI="https://${EGO_PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
@@ -35,8 +36,8 @@ src_compile() {
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "main.version=${MY_PV}"
-		-X "main.branch=${MY_PV}"
-		-X "main.commit=${GIT_COMMIT}"
+		-X "main.branch=non-git"
+		-X "main.commit=${GIT_COMMIT:0:7}"
 	)
 	local mygoargs=(
 		-v -work -x
