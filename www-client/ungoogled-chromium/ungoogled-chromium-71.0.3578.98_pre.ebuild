@@ -170,10 +170,6 @@ GTK+ icon theme.
 
 PATCHES=(
 	"${FILESDIR}/${PN}-compiler-r4.patch"
-	#"${FILESDIR}/chromium-webrtc-r0.patch"
-	#"${FILESDIR}/chromium-memcpy-r0.patch"
-	#"${FILESDIR}/chromium-math.h-r0.patch"
-	#"${FILESDIR}/chromium-stdint.patch"
 	"${FILESDIR}/${PN}-gold-r0.patch"
 )
 
@@ -224,7 +220,7 @@ src_prepare() {
 
 	# Apply extra patches (taken from openSUSE)
 	local p
-	for p in "${FILESDIR}/extra-70"/*.patch; do
+	for p in "${FILESDIR}/extra-$(ver_cut 1-1)"/*.patch; do
 		eapply "${p}"
 	done
 
