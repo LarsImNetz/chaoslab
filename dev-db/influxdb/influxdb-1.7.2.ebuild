@@ -3,8 +3,8 @@
 
 EAPI=7
 
-MY_PV="${PV/_/}"
-GIT_COMMIT="383b5a350fee" # Change this when you update the ebuild
+# Change this when you update the ebuild
+GIT_COMMIT="76f907b0fada2f16931e37471da695349fcdf8c6"
 EGO_PN="github.com/influxdata/${PN}"
 EGO_VENDOR=(
 	# Note: Keep EGO_VENDOR in sync with Gopkg.lock
@@ -28,7 +28,7 @@ EGO_VENDOR=(
 	#"github.com/davecgh/go-spew v1.1.0"
 	"github.com/dgrijalva/jwt-go v3.2.0"
 	"github.com/dgryski/go-bitstream 3522498ce2c8"
-		"github.com/fatih/color v1.5.0"
+	"github.com/fatih/color v1.5.0"
 	"github.com/glycerine/go-unsnap-stream 9f0cb55181dd"
 	#"github.com/go-ini/ini v1.38.3"
 	"github.com/go-sql-driver/mysql v1.4.0"
@@ -103,6 +103,7 @@ EGO_VENDOR=(
 
 inherit golang-vcs-snapshot-r1 systemd user
 
+MY_PV="${PV/_/}"
 DESCRIPTION="Scalable datastore for metrics, events, and real-time analytics"
 HOMEPAGE="https://influxdata.com"
 ARCHIVE_URI="https://${EGO_PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
@@ -141,7 +142,7 @@ src_compile() {
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "main.branch=non-git"
-		-X "main.commit=${GIT_COMMIT}"
+		-X "main.commit=${GIT_COMMIT:0:7}"
 		-X "main.version=${MY_PV}"
 	)
 	local mygoargs=(
