@@ -1,0 +1,14 @@
+BDEPEND=>=dev-lang/go-1.10.1 virtual/pkgconfig
+DEFINED_PHASES=compile install prepare pretend setup unpack
+DEPEND=<=net-libs/nodejs-11 >net-libs/nodejs-6 sys-apps/yarn
+DESCRIPTION=Open source monitoring and visualization UI for the TICK stack
+EAPI=7
+HOMEPAGE=https://www.influxdata.com
+IUSE=debug pie
+KEYWORDS=~amd64
+LICENSE=AGPL-3+
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/influxdata/chronograf/archive/1.7.4.tar.gz -> chronograf-1.7.4.tar.gz https://github.com/kevinburke/go-bindata/archive/v3.12.0.tar.gz -> github.com-kevinburke-go-bindata-v3.12.0.tar.gz
+_eclasses_=golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f	multilib	b2f01ad412baf81650c23fcf0975fa33	systemd	47c677ae1d7b69031f11f630ac09f0d1	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81
+_md5_=de2b070bba703a4944f5499baeb85e67
