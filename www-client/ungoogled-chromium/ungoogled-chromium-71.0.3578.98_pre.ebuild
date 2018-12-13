@@ -191,7 +191,6 @@ pkg_pretend() {
 		ewarn "USE=custom-cflags bypass strip-flags; you are on your own."
 		ewarn "Expect build failures. Don't file bugs using that unsupported USE flag!"
 		ewarn
-		use libcxx && ewarn "USE=libcxx has no effect with 'custom-cflags'."
 	fi
 	pre_build_checks
 }
@@ -501,19 +500,19 @@ setup_compile_flags() {
 		if [[ "${ARCH}" == amd64 ]] || [[ "${ARCH}" == x86 ]]; then
 			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
 		fi
-
-		if use libcxx; then
-			append-cxxflags "-stdlib=libc++"
-			append-ldflags "-stdlib=libc++ -Wl,-lc++abi"
-		else
-			has_version 'sys-devel/clang[default-libcxx]' && \
-				append-cxxflags "-stdlib=libstdc++"
-		fi
-
-		# 'gcc_s' is still required if 'compiler-rt' is Clang's default rtlib
-		has_version 'sys-devel/clang[default-compiler-rt]' && \
-			append-ldflags "-Wl,-lgcc_s"
 	fi
+
+	if use libcxx; then
+		append-cxxflags "-stdlib=libc++"
+		append-ldflags "-stdlib=libc++ -Wl,-lc++abi"
+	else
+		has_version 'sys-devel/clang[default-libcxx]' && \
+			append-cxxflags "-stdlib=libstdc++"
+	fi
+
+	# 'gcc_s' is still required if 'compiler-rt' is Clang's default rtlib
+	has_version 'sys-devel/clang[default-compiler-rt]' && \
+		append-ldflags "-Wl,-lgcc_s"
 
 	if use thinlto; then
 		# We need to change the default value of import-instr-limit in
