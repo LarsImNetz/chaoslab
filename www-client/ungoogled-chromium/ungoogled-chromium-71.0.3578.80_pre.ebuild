@@ -14,7 +14,7 @@ CHROMIUM_LANGS="
 inherit check-reqs chromium-2 desktop flag-o-matic multilib ninja-utils pax-utils portability python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
 UGC_PV="e7414d0b603cffdcc16192201f7d8518aa3f30f0"
-UGC_P="ungoogled-chromium-${UGC_PV}"
+UGC_P="${PN}-${UGC_PV}"
 UGC_WD="${WORKDIR}/${UGC_P}"
 
 DESCRIPTION="Modifications to Chromium for removing Google integration and enhancing privacy"
@@ -211,6 +211,11 @@ src_prepare() {
 
 	default
 
+	# Fix typo
+	# https://github.com/Eloston/ungoogled-chromium/commit/4a0af9e309f5bea9282e773722e4ae6b467dc9f0#commitcomment-31664028
+	sed -i "s|command_line|command_line_|" \
+		"${UGC_WD}/patches/${PN}/add-flag-to-hide-crashed-bubble.patch" || die
+
 	mkdir -p third_party/node/linux/node-linux-x64/bin || die
 	ln -s "${EPREFIX}/usr/bin/node" third_party/node/linux/node-linux-x64/bin/node || die
 
@@ -271,8 +276,8 @@ src_prepare() {
 	done
 
 	for p in "${ugc_use[@]}"; do
-		ugc_p="${p#*:}"
 		use "${p%:*}" && break
+		ugc_p="${p#*:}"
 		einfo "Removing ${ugc_p}.patch"
 		sed -i "/${ugc_p}.patch/d" "${ugc_rooted_dir}/patch_order.list" || die
 	done
