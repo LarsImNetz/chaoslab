@@ -4,7 +4,7 @@
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="308c818cd737ac7820d4ff32603007f398635cca"
+GIT_COMMIT="d812109ebf3b904c9fcd8bc17f6d9b246232743b"
 EGO_PN="github.com/${PN}/${PN}"
 MY_PV="${PV/_/-}"
 

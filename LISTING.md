@@ -17,7 +17,7 @@ This is a list of supported packages and their associated description:
 app-admin/**[consul](app-admin/consul)** 🔂 | A tool for service discovery, monitoring and configuration
 app-admin/**[doctl](app-admin/doctl)** | A command line tool for DigitalOcean services
 app-admin/**[gollum](app-admin/gollum)** | An n:m message multiplexer written in Go
-app-admin/**[gopass](app-admin/gopass)** | The slightly more awesome standard unix password manager for teams
+app-admin/**[gopass](app-admin/gopass)** 🔂 | The slightly more awesome standard unix password manager for teams
 app-admin/**[pick](app-admin/pick)** | A minimal password manager written in Go
 app-admin/**[terraform](app-admin/terraform)** 🔂 | A tool for building, changing, and combining infrastructure safely/efficiently
 app-admin/**[vault](app-admin/vault)** 🔂 | A tool for managing secrets
@@ -27,7 +27,7 @@ app-backup/**[restic](app-backup/restic)** 🔂 | A backup program that is fast,
 app-benchmarks/**[bombardier](app-benchmarks/bombardier)** | Fast cross-platform HTTP benchmarking tool written in Go
 app-benchmarks/**[dnsperfbench](app-benchmarks/dnsperfbench)** | A command line tool to compare performance of DNS resolvers
 app-benchmarks/**[fortio](app-benchmarks/fortio)** | A load testing CLI, advanced echo server, and web UI in Go
-app-benchmarks/**[hey](app-benchmarks/hey)** | HTTP load generator, ApacheBench (ab) replacement
+app-benchmarks/**[hey](app-benchmarks/hey)** 🔂 | HTTP load generator, ApacheBench (ab) replacement
 app-benchmarks/**[pewpew](app-benchmarks/pewpew)** | Flexible HTTP command line stress tester for websites and web services
 app-benchmarks/**[vegeta](app-benchmarks/vegeta)** | HTTP load testing tool and library. It's over 9000!
 app-crypt/**[certspotter](app-crypt/certspotter)** | A Certificate Transparency log monitor from SSLMate

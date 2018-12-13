@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 inherit systemd user
 
@@ -19,15 +19,17 @@ RDEPEND="${DEPEND}"
 
 DOCS=( docs/{ARCHITECTURE.md,cryptpad-docker.md,example.nginx.conf} )
 
-pkg_setup() {
+pkg_pretend() {
 	# shellcheck disable=SC2086
-	if has network-sandbox $FEATURES && [[ "${MERGE_TYPE}" != binary ]]; then
+	if has network-sandbox ${FEATURES} && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
 		ewarn "${CATEGORY}/${PN} requires 'network-sandbox' to be disabled in FEATURES"
 		ewarn
 		die "[network-sandbox] is enabled in FEATURES"
 	fi
+}
 
+pkg_setup() {
 	enewgroup cryptpad
 	enewuser cryptpad -1 -1 -1 cryptpad
 }
