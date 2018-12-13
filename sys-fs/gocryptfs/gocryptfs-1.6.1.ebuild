@@ -3,8 +3,6 @@
 
 EAPI=7
 
-# Note: Keep FUSE_COMMIT in sync with Gopkg.lock
-FUSE_COMMIT="95c6370914ac"
 EGO_PN="github.com/rfjakob/${PN}"
 
 inherit golang-vcs-snapshot-r1
@@ -16,7 +14,7 @@ RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~arm64 ~x86"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
 IUSE="debug libressl +man pie +ssl"
 
 DEPEND="man? ( >=dev-go/go-md2man-1.0.8 )"
@@ -39,8 +37,8 @@ src_compile() {
 	export CGO_LDFLAGS="${LDFLAGS}"
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
-		-X "main.GitVersion=${PV}"
-		-X "main.GitVersionFuse=${FUSE_COMMIT}"
+		-X "main.GitVersion=v${PV}"
+		-X "'main.GitVersionFuse=[vendored]'"
 		-X "main.BuildDate=$(date -u '+%Y-%m-%d')"
 	)
 	local mygoargs=(
