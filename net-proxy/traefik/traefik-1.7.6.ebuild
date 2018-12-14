@@ -1,28 +1,28 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 MY_PV="${PV/_/-}"
 CODENAME="maroilles"
 EGO_PN="github.com/containous/${PN}"
-EGO_VENDOR=( "github.com/containous/go-bindata e237f24c9f" )
+EGO_VENDOR=( "github.com/containous/go-bindata e237f24c9fab" )
 
-inherit golang-vcs-snapshot systemd user
+inherit golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="A modern HTTP reverse proxy and load balancer made to deploy microservices"
 HOMEPAGE="https://traefik.io"
-SRC_URI="https://${EGO_PN}/releases/download/v${MY_PV}/${PN}-v${MY_PV}.src.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+ARCHIVE_URI="https://${EGO_PN}/releases/download/v${MY_PV}/${PN}-v${MY_PV}.src.tar.gz -> ${P}.tar.gz"
+SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="examples pie"
+IUSE="debug examples pie"
 
 DOCS=( {CHANGELOG,CONTRIBUTING,README}.md )
-QA_PRESTRIPPED="usr/bin/traefik"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -43,14 +43,15 @@ pkg_setup() {
 src_compile() {
 	export GOPATH="${G}"
 	local PATH="${G}/bin:$PATH"
-	local myldflags=( -s -w
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "${EGO_PN}/version.Version=${MY_PV}"
 		-X "${EGO_PN}/version.Codename=${CODENAME}"
 		-X "'${EGO_PN}/version.BuildDate=$(date -u '+%Y-%m-%d_%I:%M:%S%p')'"
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
@@ -69,6 +70,7 @@ src_test() {
 
 src_install() {
 	dobin traefik
+	use debug && dostrip -x /usr/bin/traefik
 	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
@@ -89,9 +91,9 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ ! -e "${EROOT%/}/etc/traefik/traefik.toml" ]]; then
+	if [[ ! -e "${EROOT}/etc/traefik/traefik.toml" ]]; then
 		elog "No traefik.toml found, copying the example over"
-		cp "${EROOT%/}"/etc/traefik/traefik.toml{.example,} || die
+		cp "${EROOT}"/etc/traefik/traefik.toml{.example,} || die
 	else
 		elog "traefik.toml found, please check example file for possible changes"
 	fi
