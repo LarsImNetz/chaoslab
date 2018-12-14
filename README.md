@@ -1,29 +1,29 @@
-ChaosLab: Overlay for Gentoo/Funtoo Linux
------------------------------------------
+ChaosLab Overlay for Gentoo Linux
+---------------------------------
 
-[![packages 208](https://img.shields.io/badge/packages-208-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
-[![ebuilds 267](https://img.shields.io/badge/ebuilds-267-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![packages 209](https://img.shields.io/badge/packages-209-4472c0.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
+[![ebuilds 268](https://img.shields.io/badge/ebuilds-268-8c71cc.svg)](https://gitlab.com/chaoslab/chaoslab-overlay)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/master/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/master)
 [![pipeline status](https://gitlab.com/chaoslab/chaoslab-overlay/badges/develop/pipeline.svg)](https://gitlab.com/chaoslab/chaoslab-overlay/commits/develop)
 
 The scope of this overlay is to maintain ebuilds for packages related to secure
-communication, cryptocurrency, server-side applications, and other things that
-I am interested in. It also includes full support for `libressl` USE flag and
-**OpenRC**, and somewhat initial LLVM/Clang support. _Sadly_, **systemd** support
-has been poorly maintained because I do _not_ have any machines to test its unit
-files.
+communication, cryptocurrency, server-side applications and other things that
+I am interested in. It includes full support for **LibreSSL** and **OpenRC**, but
+_unfortunately_ the support for **systemd** has been poorly maintained because I
+do _not_ have any machines to test its unit files. For now, cross-compilation
+are not supported; the support for non-native targets increases the complexity of
+ebuilds by an order of magnitude.
 
 If you have spare time and would like to improve the overlay, please take a
-moment to review the [contribution guidelines](CONTRIBUTING.md). You may check 
+moment to review the [contribution guidelines](CONTRIBUTING.md). You may visit
 [LISTING.md](LISTING.md) to see a list of supported packages and their associated
 description. Don’t forget to ★ if the overlay is somewhat useful to you.
 
-**DISCLAIMER:** As I don't have the resources, nor the time to make stable
-ebuilds in the same way Gentoo developers do, all ebuilds are permanently kept
-in the _testing branch_ ¹. Thus, you should probably consider it to be _unsafe_
-and treat it as such. Nevertheless, I try my best to follow Gentoo's QA
-standards and keep everything up to date, as I use many of these packages in a
-production environment.
+**DISCLAIMER:**  This repository is an unofficial Gentoo overlay, by the
+_[rules](overlay.xml#L4)_, it always will be experimental. Thus, all ebuilds are
+permanently kept in the _testing branch_ ¹. Although I try to follow Gentoo's QA
+standards as much as possible, and keep everything up to date, you should review
+every ebuild before emerging a package.
 
 > ¹ *If a package is in testing, it means that the developers feel that it is
 functional, but has not been thoroughly tested. Users using the testing branch

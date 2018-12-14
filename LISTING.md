@@ -3,7 +3,7 @@
 **Symbol** | **Legend**
 :-: | ---
 🔂 |  Packages that have similar ebuild in main tree, but for personal reasons, we maintain our own versions.
-⚠ | [Masked packages](profiles/package.mask), probably insecure/unstable/experimental.
+🆖 | [Masked packages](profiles/package.mask), probably insecure/unstable/experimental.
 
 This is a list of supported packages and their associated description:
 
@@ -40,7 +40,7 @@ app-crypt/**[ssh-vault](app-crypt/ssh-vault)** | Encrypt/Decrypt using SSH priva
 app-editors/**[atom](app-editors/atom)** 🔂 | A hackable text editor for the 21st Century
 app-editors/**[micro](app-editors/micro)** | A modern and intuitive terminal-based text editor
 app-editors/**[oni](app-editors/oni)** | Code editor with a modern twist on modal editing, powered by Neovim
-app-emulation/**[docker](app-emulation/docker)** 🔂 ⚠ | The core functions you need to create Docker images and run Docker containers
+app-emulation/**[docker](app-emulation/docker)** 🔂 🆖 | The core functions you need to create Docker images and run Docker containers
 app-forensics/**[gitleaks](app-forensics/gitleaks)** | Audit git repos for secrets
 app-metrics/**[alertmanager](app-metrics/alertmanager)** 🔂 | Handles alerts sent by client applications such as the Prometheus
 app-metrics/**[apache_exporter](app-metrics/apache_exporter)** | Exports apache mod_status statistics via HTTP for Prometheus consumption
@@ -137,7 +137,7 @@ net-p2p/**[bitcoinxt](net-p2p/bitcoinxt)** | A full node Bitcoin Cash implementa
 net-p2p/**[dash-core](net-p2p/dash-core)** | A peer-to-peer privacy-centric digital currency
 net-p2p/**[go-ipfs](net-p2p/go-ipfs)** | IPFS implementation written in Go
 net-p2p/**[monero](net-p2p/monero)** | The secure, private and untraceable cryptocurrency
-net-p2p/**[monero-gui](net-p2p/monero-gui)** ⚠ | The secure, private and untraceable cryptocurrency (with GUI wallet)
+net-p2p/**[monero-gui](net-p2p/monero-gui)** 🆖 | The secure, private and untraceable cryptocurrency (with GUI wallet)
 net-p2p/**[parity](net-p2p/parity)** | Fast, light, and robust Ethereum client
 net-p2p/**[zcash](net-p2p/zcash)** | Cryptocurrency that offers privacy of transactions
 net-proxy/**[ergo](net-proxy/ergo)** | The reverse proxy agent for local domain management
@@ -168,7 +168,7 @@ www-apps/**[mattermost-server-ee](www-apps/mattermost-server-ee)** | Open source
 www-apps/**[modoboa](www-apps/modoboa)** | A mail hosting and management platform with a modern and simplified Web UI
 www-apps/**[modoboa-dmarc](www-apps/modoboa-dmarc)** | A set of tools to use DMARC through Modoboa
 www-client/**[ungoogled-chromium](www-client/ungoogled-chromium)** | Modifications to Chromium for removing Google integration and enhancing privacy
-www-client/**[ungoogled-chromium-bin](www-client/ungoogled-chromium-bin)** | Modifications to Chromium for removing Google integration and enhancing privacy
+www-client/**[ungoogled-chromium-bin](www-client/ungoogled-chromium-bin)** 🆖 | Modifications to Chromium for removing Google integration and enhancing privacy
 www-misc/**[httplab](www-misc/httplab)** | An interactive web server that let you inspect HTTP requests and forge responses
 www-misc/**[wuzz](www-misc/wuzz)** | Interactive cli tool for HTTP inspection
 www-plugins/**[browserpass](www-plugins/browserpass)** 🔂 | WebExtension host binary for app-admin/pass, a UNIX password manager

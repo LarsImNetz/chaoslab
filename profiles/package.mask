@@ -50,3 +50,10 @@ dev-db/tidb
 dev-go/depth
 dev-python/pycryptodomex
 sys-process/gkill
+
+# Ian Moone <gentoo@chaoslab.org> (14 Dec 2018)
+# See https://github.com/ungoogled-software/ungoogled-chromium-binaries
+# Upstream note: These binaries are provided by anyone who are willing to build
+# and submit them. Because these binaries are not necessarily reproducible,
+# authenticity cannot be guaranteed.
+www-client/ungoogled-chromium-bin

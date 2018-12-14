@@ -11,7 +11,7 @@ CHROMIUM_LANGS="
 	th tr uk vi zh-CN zh-TW
 "
 
-inherit check-reqs chromium-2 desktop flag-o-matic multilib ninja-utils pax-utils portability python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
+inherit check-reqs chromium-2 desktop flag-o-matic ninja-utils pax-utils python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
 UGC_PV="${PV/80_p/98-}"
 UGC_P="${PN}-${UGC_PV}"
@@ -492,9 +492,7 @@ setup_compile_flags() {
 		filter-flags '-fuse-ld=*' '-g*' '-Wl,*'
 
 		# Prevent libvpx build failures (Bug #530248, #544702, #546984)
-		if [[ "${ARCH}" == amd64 ]] || [[ "${ARCH}" == x86 ]]; then
-			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
-		fi
+		filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
 	fi
 
 	if use libcxx; then
@@ -637,13 +635,7 @@ src_configure() {
 	myconf_gn+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
 	myconf_gn+=" gold_path=\"\""
 	myconf_gn+=" goma_dir=\"\""
-	if tc-is-cross-compiler; then
-		tc-export BUILD_{AR,CC,CXX,NM}
-		myconf_gn+=" host_toolchain=\"//build/toolchain/linux/unbundle:host\""
-		myconf_gn+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:host\""
-	else
-		myconf_gn+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
-	fi
+	myconf_gn+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
 	myconf_gn+=" link_pulseaudio=$(usetf pulseaudio)"
 	myconf_gn+=" linux_use_bundled_binutils=false"
 	myconf_gn+=" optimize_for_size=false"
@@ -669,14 +661,6 @@ src_configure() {
 	# Enables the experimental tcmalloc (https://crbug.com/724399)
 	# It is relevant only when use_allocator == "tcmalloc"
 	myconf_gn+=" use_new_tcmalloc=$(usetf new-tcmalloc)"
-
-	if [[ "${ARCH}" = amd64 ]]; then
-		myconf_gn+=" target_cpu=\"x64\""
-	elif [[ "${ARCH}" = x86 ]]; then
-		myconf_gn+=" target_cpu=\"x86\""
-	else
-		die "Failed to determine target arch, got '${ARCH}'."
-	fi
 
 	setup_compile_flags
 
@@ -709,13 +693,8 @@ src_compile() {
 	# Build mksnapshot and pax-mark it
 	local x
 	for x in mksnapshot v8_context_snapshot_generator; do
-		if tc-is-cross-compiler; then
-			eninja -C out/Release "host/${x}"
-			pax-mark m "out/Release/host/${x}"
-		else
-			eninja -C out/Release "${x}"
-			pax-mark m "out/Release/${x}"
-		fi
+		eninja -C out/Release "${x}"
+		pax-mark m "out/Release/${x}"
 	done
 
 	# Work around broken deps
