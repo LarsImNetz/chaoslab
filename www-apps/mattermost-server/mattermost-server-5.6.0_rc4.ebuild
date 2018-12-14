@@ -4,8 +4,8 @@
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="b2ebc4d856608b1b02e1cc70dc5996850192a1f2"
-WEBAPP_COMMIT="8942b0707c5342ce16b936f20c1e1b3c557853d1"
+GIT_COMMIT="8671cea44aba7744bd529fbecfc4c27b0a43358e"
+WEBAPP_COMMIT="871ec294944517b9b03741893dceb3ff24360a67"
 EGO_PN="github.com/mattermost/${PN}"
 WEBAPP_P="mattermost-webapp-${PV}"
 MY_PV="${PV/_/-}"
@@ -72,17 +72,18 @@ src_unpack() {
 }
 
 src_prepare() {
-	# shellcheck disable=SC2086
+	local datadir="${EPREFIX}/var/lib/mattermost"
 	# Disable developer settings, fix path, set to listen localhost
 	# and disable diagnostics (call home) by default.
+	# shellcheck disable=SC2086
 	sed -i \
 		-e 's|"ListenAddress": ":8065"|"ListenAddress": "127.0.0.1:8065"|g' \
 		-e 's|"ListenAddress": ":8067"|"ListenAddress": "127.0.0.1:8067"|g' \
 		-e 's|"ConsoleLevel": "DEBUG"|"ConsoleLevel": "INFO"|g' \
 		-e 's|"EnableDiagnostics":.*|"EnableDiagnostics": false|' \
-		-e 's|"Directory": "./data/"|"Directory": "'${EPREFIX}'/var/lib/mattermost/data/"|g' \
-		-e 's|"Directory": "./plugins"|"Directory": "'${EPREFIX}'/var/lib/mattermost/plugins"|g' \
-		-e 's|"ClientDirectory": "./client/plugins"|"ClientDirectory": "'${EPREFIX}'/var/lib/mattermost/client/plugins"|g' \
+		-e 's|"Directory": "./data/"|"Directory": "'${datadir}'/data/"|g' \
+		-e 's|"Directory": "./plugins"|"Directory": "'${datadir}'/plugins"|g' \
+		-e 's|"ClientDirectory": "./client/plugins"|"ClientDirectory": "'${datadir}'/client/plugins"|g' \
 		-e 's|tcp(dockerhost:3306)|unix(/run/mysqld/mysqld.sock)|g' \
 		config/default.json || die
 
