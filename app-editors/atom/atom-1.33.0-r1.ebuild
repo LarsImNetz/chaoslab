@@ -112,6 +112,9 @@ src_compile() {
 	eapply "${FILESDIR}/${PN}-marker-layer-r1.patch" || die
 	popd > /dev/null || die
 
+	# Compile LICENSE.md
+	node -e "require('./script/lib/get-license-text')().then((licenseText) => require('fs').writeFileSync('${T}/LICENSE.md', licenseText))" || die
+
 	# Remove useless stuff
 	find out/app/node_modules \
 		-name "*.a" -exec rm '{}' \; \
@@ -157,8 +160,8 @@ src_install() {
 		"MimeType=text/plain;\nStartupNotify=true\nStartupWMClass=atom"
 	sed -e "/^Exec/s/$/ %F/" -i "${ED}"/usr/share/applications/*.desktop || die
 
-	dodir /usr/share/licenses/atom
-	node -e "require('./script/lib/get-license-text')().then((licenseText) => require('fs').writeFileSync('${ED}/usr/share/licenses/atom/LICENSE.md', licenseText))" || die
+	insinto /usr/share/licenses/atom
+	doins "${T}"/LICENSE.md
 }
 
 eaudit() {
