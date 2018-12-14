@@ -71,7 +71,7 @@ gcc-0.3.54
 getopts-0.2.18
 globset-0.2.1
 hamming-0.1.3
-hashdb-0.2.1
+hashdb-0.3.0
 heapsize-0.4.2
 heck-0.3.0
 hex-0.2.0
@@ -113,7 +113,7 @@ memchr-2.0.2
 memmap-0.6.2
 memoffset-0.2.1
 memory_units-0.3.0
-memorydb-0.2.1
+memorydb-0.3.0
 mime-0.3.9
 mime_guess-2.0.0-alpha.6
 mio-0.6.16
@@ -149,7 +149,7 @@ parity-wasm-0.31.3
 parity-wordlist-1.2.0
 parking_lot-0.6.4
 parking_lot_core-0.3.1
-patricia-trie-0.2.2
+patricia-trie-0.3.0
 percent-encoding-1.0.1
 petgraph-0.4.13
 phf-0.7.23
@@ -188,6 +188,7 @@ regex-syntax-0.6.2
 relay-0.1.1
 remove_dir_all-0.5.1
 rlp-0.2.4
+rlp-0.3.0
 rpassword-1.0.2
 rprompt-1.0.3
 rust-crypto-0.2.36
@@ -263,7 +264,7 @@ trace-time-0.1.1
 transaction-pool-1.13.3
 transient-hashmap-0.4.1
 trie-standardmap-0.1.1
-triehash-0.2.3
+triehash-0.3.0
 try-lock-0.1.0
 ucd-util-0.1.1
 uint-0.4.1
