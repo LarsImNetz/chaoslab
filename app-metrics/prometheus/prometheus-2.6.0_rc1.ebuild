@@ -3,7 +3,6 @@
 
 EAPI=7
 
-GIT_COMMIT="40f0b4a9f649" # Change this when you update the ebuild
 EGO_PN="github.com/${PN}/${PN}"
 MY_PV="${PV/_rc/-rc.}"
 
@@ -37,11 +36,11 @@ src_compile() {
 	local PROMU="${EGO_PN}/vendor/${EGO_PN%/*}/common/version"
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
-		-X "${PROMU}.Version=${MY_PV}"
-		-X "${PROMU}.Revision=${GIT_COMMIT}"
 		-X "${PROMU}.Branch=non-git"
-		-X "${PROMU}.BuildUser=$(id -un)@$(hostname -f)"
 		-X "${PROMU}.BuildDate=$(date -u '+%Y%m%d-%I:%M:%S')"
+		-X "${PROMU}.BuildUser=$(id -un)@$(hostname -f)"
+		-X "${PROMU}.Revision=non-git"
+		-X "${PROMU}.Version=${MY_PV}"
 	)
 	local mygoargs=(
 		-v -work -x
