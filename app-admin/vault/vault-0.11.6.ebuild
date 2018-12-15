@@ -1,12 +1,13 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
+# Change this when you update the ebuild
+GIT_COMMIT="dad2b6048153fea5efbc0c06a5f35c06c767b308"
 EGO_PN="github.com/hashicorp/${PN}"
-GIT_COMMIT="a59ffa4a0f" # Change this when you update the ebuild
 
-inherit fcaps golang-vcs-snapshot systemd user
+inherit fcaps golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="A tool for managing secrets"
 HOMEPAGE="https://vaultproject.io"
@@ -16,12 +17,12 @@ RESTRICT="mirror test" # Test requires docker
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="pie"
+IUSE="debug pie"
 
 FILECAPS=( -m 755 'cap_ipc_lock=+ep' usr/bin/vault )
 
 DOCS=( CHANGELOG.md README.md )
-QA_PRESTRIPPED="usr/bin/vault"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -33,14 +34,15 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-	local myldflags=( -s -w
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "${EGO_PN}/version.GitCommit=${GIT_COMMIT}"
 		-X "${EGO_PN}/version.Version=${PV}"
 		-X "${EGO_PN}/version.VersionPrerelease="
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
@@ -52,6 +54,7 @@ src_compile() {
 
 src_install() {
 	dobin bin/vault
+	use debug && dostrip -x /usr/bin/vault
 	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"

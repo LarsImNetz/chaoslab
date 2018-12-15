@@ -4,7 +4,7 @@
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="c19cef14891751a23eaa9b41fd456d1f99e7e856"
+GIT_COMMIT="08df121c8b9adcc2b8fd55fc8506c3f9714c7e61"
 EGO_PN="github.com/hashicorp/${PN}"
 
 inherit fcaps golang-vcs-snapshot-r1 systemd user
@@ -55,6 +55,7 @@ src_compile() {
 src_install() {
 	dobin bin/vault
 	use debug && dostrip -x /usr/bin/vault
+	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
@@ -68,6 +69,4 @@ src_install() {
 
 	diropts  -o vault -g vault -m 0750
 	keepdir /var/log/vault
-
-	einstalldocs
 }
