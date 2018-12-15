@@ -43,13 +43,9 @@ RDEPEND="
 DEPEND="app-arch/unzip"
 
 S="${WORKDIR}"
-OPTPATH="opt/${MY_PN}-${SLOT}"
 
-QA_PRESTRIPPED="
-	${OPTPATH}/libffmpeg.so
-	${OPTPATH}/libnode.so
-	${OPTPATH}/electron
-"
+OPTPATH="opt/${MY_PN}-${SLOT}"
+QA_PRESTRIPPED="${OPTPATH}/.*"
 
 src_install() {
 	dodir "/${OPTPATH}"
