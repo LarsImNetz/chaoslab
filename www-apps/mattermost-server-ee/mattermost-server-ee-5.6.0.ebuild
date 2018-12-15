@@ -1,7 +1,7 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 inherit systemd user
 
@@ -17,7 +17,6 @@ KEYWORDS="-* ~amd64"
 RDEPEND="!www-apps/mattermost-server"
 
 DOCS=( NOTICE.txt README.md )
-
 S="${WORKDIR}/mattermost"
 
 pkg_pretend() {
@@ -31,16 +30,17 @@ pkg_setup() {
 }
 
 src_prepare() {
+	local datadir="${EPREFIX}/var/lib/mattermost"
+	# Disable developer settings, fix path, set to listen localhost
+	# and disable diagnostics (call home) by default.
 	# shellcheck disable=SC2086
-	# Disable developer settings, fix path, set to listen localhost and disable
-	# diagnostics (call home) by default.
 	sed -i \
 		-e 's|"ListenAddress": ":8065"|"ListenAddress": "127.0.0.1:8065"|g' \
 		-e 's|"ListenAddress": ":8067"|"ListenAddress": "127.0.0.1:8067"|g' \
 		-e 's|"EnableDiagnostics":.*|"EnableDiagnostics": false|' \
-		-e 's|"Directory": "./data/"|"Directory": "'${EPREFIX}'/var/lib/mattermost/data/"|g' \
-		-e 's|"Directory": "./plugins"|"Directory": "'${EPREFIX}'/var/lib/mattermost/plugins"|g' \
-		-e 's|"ClientDirectory": "./client/plugins"|"ClientDirectory": "'${EPREFIX}'/var/lib/mattermost/client/plugins"|g' \
+		-e 's|"Directory": "./data/"|"Directory": "'${datadir}'/data/"|g' \
+		-e 's|"Directory": "./plugins"|"Directory": "'${datadir}'/plugins"|g' \
+		-e 's|"ClientDirectory": "./client/plugins"|"ClientDirectory": "'${datadir}'/client/plugins"|g' \
 		-e 's|tcp(dockerhost:3306)|unix(/run/mysqld/mysqld.sock)|g' \
 		config/default.json || die
 

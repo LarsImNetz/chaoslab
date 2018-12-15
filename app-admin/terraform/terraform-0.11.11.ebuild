@@ -4,7 +4,7 @@
 EAPI=7
 
 # Change this when you update the ebuild:
-GIT_COMMIT="17850e9a55d33c43d7c31fd6ac122ba97a51d899"
+GIT_COMMIT="ac4fff416318bf0915a0ab80e062a99ef3724334"
 EGO_PN="github.com/hashicorp/terraform"
 EGO_VENDOR=( "golang.org/x/tools 40a48ad93f github.com/golang/tools" )
 
@@ -66,6 +66,7 @@ src_compile() {
 src_install() {
 	dobin bin/terraform
 	use debug && dostrip -x /usr/bin/terraform
+	einstalldocs
 
 	if use terraform-bundle; then
 		dobin terraform-bundle
@@ -83,6 +84,4 @@ src_install() {
 		insinto /usr/share/fish/functions/
 		doins contrib/fish-completion/terraform.fish
 	fi
-
-	einstalldocs
 }

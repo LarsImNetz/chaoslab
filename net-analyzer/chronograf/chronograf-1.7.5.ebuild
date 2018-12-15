@@ -4,7 +4,7 @@
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="49fd1ec13ca31a79ed17580491ab66ea0506e0da"
+GIT_COMMIT="8e0bb396f056ac1700964ce6464c3f0ad0300974"
 EGO_PN="github.com/influxdata/${PN}"
 EGO_VENDOR=( "github.com/kevinburke/go-bindata v3.12.0" )
 
@@ -88,6 +88,7 @@ src_compile() {
 src_install() {
 	dobin bin/{chronoctl,chronograf}
 	use debug && dostrip -x /usr/bin/{chronoctl,chronograf}
+	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
@@ -105,6 +106,4 @@ src_install() {
 
 	diropts -o chronograf -g chronograf -m 0750
 	keepdir /var/log/chronograf
-
-	einstalldocs
 }
