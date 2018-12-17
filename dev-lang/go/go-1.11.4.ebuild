@@ -65,8 +65,8 @@ src_compile() {
 	pushd src > /dev/null || die
 	./make.bash --no-clean -v || die "build failed"
 
-    PATH="${GOBIN}:${PATH}" go install -v -buildmode=shared std || die
-    PATH="${GOBIN}:${PATH}" go install -v -race std || die
+	PATH="${GOBIN}:${PATH}" go install -v -buildmode=shared std || die
+	PATH="${GOBIN}:${PATH}" go install -v -race std || die
 	popd > /dev/null || die
 }
 
