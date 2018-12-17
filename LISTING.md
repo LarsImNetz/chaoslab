@@ -90,6 +90,7 @@ app-shells/**[powerline-rs](app-shells/powerline-rs)** | A powerline-shell rewri
 app-vim/**[vim-go](app-vim/vim-go)** 🔂 | vim plugin: Go development plugin for Vim
 dev-db/**[influxdb](dev-db/influxdb)** 🔂 | Scalable datastore for metrics, events, and real-time analytics
 dev-db/**[pgweb](dev-db/pgweb)** | Web-based PostgreSQL database browser written in Go
+dev-lang/**[go](dev-lang/go)** 🔂 🆖 | A concurrent garbage collected and typesafe programming language
 dev-util/**[drone](dev-util/drone)** 🔂 | Drone is a Continuous Delivery platform built on Docker
 dev-util/**[drone-cli](dev-util/drone-cli)** 🔂 | Command line client for the Drone continuous integration server
 dev-util/**[electron-bin](dev-util/electron-bin)** 🔂 | Cross platform application development framework based on web technologies
