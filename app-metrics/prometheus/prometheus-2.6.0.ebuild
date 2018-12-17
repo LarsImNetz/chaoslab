@@ -60,6 +60,7 @@ src_test() {
 src_install() {
 	dobin {prometheus,promtool}
 	use debug && dostrip -x /usr/bin/{prometheus,promtool}
+	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
@@ -83,8 +84,6 @@ src_install() {
 
 	diropts -o prometheus -g prometheus -m 0750
 	keepdir /var/log/prometheus
-
-	einstalldocs
 }
 
 pkg_postinst() {
