@@ -57,3 +57,8 @@ sys-process/gkill
 # and submit them. Because these binaries are not necessarily reproducible,
 # authenticity cannot be guaranteed.
 www-client/ungoogled-chromium-bin
+
+# Ian Moone <gentoo@chaoslab.org> (17 Dec 2018)
+# The package it is still in its infancy, but it is working well on my boxes.
+# If you are feeling adventurous, go ahead and unmask it.
+dev-lang/go
