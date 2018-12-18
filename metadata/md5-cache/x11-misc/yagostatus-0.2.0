@@ -9,5 +9,5 @@ LICENSE=GPL-3
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/burik666/yagostatus/archive/0.2.0.tar.gz -> yagostatus-0.2.0.tar.gz https://github.com/golang/net/archive/88d92db4c5.tar.gz -> github.com-golang-net-88d92db4c5.tar.gz https://github.com/go-yaml/yaml/archive/5420a8b674.tar.gz -> github.com-go-yaml-yaml-5420a8b674.tar.gz
-_eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc
+_eclasses_=golang-base	e764075c9bbce927b424f8e9b7a25dfe	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc
 _md5_=14c6f21b638436edf75c0932a34f4bd5
