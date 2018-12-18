@@ -50,11 +50,10 @@ src_test() {
 src_install() {
 	dobin bombardier
 	use debug && dostrip -x /usr/bin/bombardier
+	einstalldocs
 
 	if use simplebenchserver; then
 		dobin simplebenchserver
 		use debug && dostrip -x /usr/bin/simplebenchserver
 	fi
-
-	einstalldocs
 }

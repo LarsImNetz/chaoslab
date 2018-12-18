@@ -21,6 +21,9 @@
 		Chromium.
 	</longdescription>
 	<use>
+		<flag name="atk">
+			Whether to use ATK, the Accessibility ToolKit library.
+		</flag>
 		<flag name="cfi">
 			Build with CFI (Control Flow Integrity) enabled (recommended).
 		</flag>

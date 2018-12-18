@@ -209,9 +209,6 @@ src_prepare() {
 	mkdir -p third_party/node/linux/node-linux-x64/bin || die
 	ln -s "${EPREFIX}/usr/bin/node" third_party/node/linux/node-linux-x64/bin/node || die
 
-	# Fix build with harfbuzz-2 (Bug #669034)
-	use system-harfbuzz && eapply "${FILESDIR}/chromium-harfbuzz-r0.patch"
-
 	# Apply extra patches (taken from openSUSE)
 	local p
 	for p in "${FILESDIR}/extra-$(ver_cut 1-1)"/*.patch; do
@@ -274,6 +271,12 @@ src_prepare() {
 
 	if ! use system-icu; then
 		sed -i '/common\/icudtl.dat/d' "${ugc_rooted_dir}/pruning.list" || die
+	fi
+
+	# Fix build with harfbuzz-2 (Bug #669034)
+	if use system-harfbuzz; then
+		sed -i '/system\/jpeg.patch/i debian_buster/system/harfbuzz.patch' \
+			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
 	if use system-openjpeg; then
