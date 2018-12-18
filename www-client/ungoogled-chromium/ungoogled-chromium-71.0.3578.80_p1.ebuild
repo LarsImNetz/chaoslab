@@ -28,7 +28,7 @@ LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="
-	+cfi cups custom-cflags gnome gold jumbo-build kerberos libcxx +lld new-tcmalloc
+	cfi cups custom-cflags gnome gold jumbo-build kerberos libcxx +lld new-tcmalloc
 	optimize-webui +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
 	system-harfbuzz +system-icu +system-jsoncpp +system-libevent +system-libvpx
 	+system-openh264 +system-openjpeg +tcmalloc +thinlto vaapi widevine
@@ -37,7 +37,7 @@ REQUIRED_USE="
 	^^ ( gold lld )
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
-	cfi? ( thinlto )
+	cfi? ( amd64 thinlto )
 	libcxx? ( new-tcmalloc )
 	new-tcmalloc? ( tcmalloc )
 "
