@@ -28,10 +28,11 @@ LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="
-	cfi cups custom-cflags gnome gold jumbo-build kerberos libcxx +lld new-tcmalloc
-	optimize-webui +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg
-	system-harfbuzz +system-icu +system-jsoncpp +system-libevent +system-libvpx
-	+system-openh264 +system-openjpeg +tcmalloc +thinlto vaapi widevine
+	+atk cfi cups custom-cflags gnome gold jumbo-build kerberos libcxx +lld
+	new-tcmalloc optimize-webui +proprietary-codecs pulseaudio selinux +suid
+	+system-ffmpeg system-harfbuzz +system-icu +system-jsoncpp +system-libevent
+	+system-libvpx +system-openh264 +system-openjpeg +tcmalloc +thinlto vaapi
+	widevine
 "
 REQUIRED_USE="
 	^^ ( gold lld )
@@ -47,10 +48,12 @@ RESTRICT="
 "
 
 COMMON_DEPEND="
-	>=app-accessibility/at-spi2-atk-2.26:2
+	atk? (
+		>=app-accessibility/at-spi2-atk-2.26:2
+		>=dev-libs/atk-2.26
+	)
 	app-arch/bzip2:=
 	cups? ( >=net-print/cups-1.3.11:= )
-	>=dev-libs/atk-2.26
 	dev-libs/expat:=
 	system-jsoncpp? ( dev-libs/jsoncpp )
 	dev-libs/glib:2
@@ -169,6 +172,7 @@ GTK+ icon theme.
 "
 
 PATCHES=(
+	"${FILESDIR}/${PN}-atk-r0.patch"
 	"${FILESDIR}/${PN}-compiler-r4.patch"
 	"${FILESDIR}/${PN}-gold-r0.patch"
 )
@@ -624,6 +628,7 @@ src_configure() {
 	myconf_gn+=" safe_browsing_mode=0"
 	myconf_gn+=" symbol_level=0"
 	myconf_gn+=" treat_warnings_as_errors=false"
+	myconf_gn+=" use_atk=$(usetf atk)"
 	myconf_gn+=" use_gnome_keyring=false" # Deprecated by libsecret
 	myconf_gn+=" use_jumbo_build=$(usetf jumbo-build)"
 	myconf_gn+=" use_official_google_api_keys=false"
