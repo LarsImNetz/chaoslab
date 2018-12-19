@@ -10,9 +10,9 @@ The scope of this overlay is to maintain ebuilds for packages related to secure
 communication, cryptocurrency, server-side applications and other things that
 I am interested in. It includes full support for **LibreSSL** and **OpenRC**, but
 _unfortunately_ the support for **systemd** has been poorly maintained because I
-do _not_ have any machines to test its unit files. For now, cross-compilation
-are not supported; the support for non-native targets increases the complexity of
-ebuilds by an order of magnitude.
+do _not_ have any machines to test its unit files. Also, cross-compilation is not
+supported; the support for non-native targets increases the complexity of ebuilds
+by an order of magnitude.
 
 If you have spare time and would like to improve the overlay, please take a
 moment to review the [contribution guidelines](CONTRIBUTING.md). You may visit
@@ -85,7 +85,7 @@ mkdir -p "${REPO_PATH}"/{metadata,profiles}
 echo "${REPO_NAME}" > "${REPO_PATH}"/profiles/repo_name
 printf "masters = gentoo\nauto-sync = false\n" > "${REPO_PATH}"/metadata/layout.conf
 # Register your local overlay in /etc/portage/repos.conf:
-printf "[${REPO_NAME}]\nlocation = ${REPO_PATH}\n" > /etc/portage/repos.conf/localrepo.conf
+printf "[${REPO_NAME}]\nlocation = ${REPO_PATH}\n" > /etc/portage/repos.conf/${REPO_NAME}.conf
 ```
 Now copy the desired directories (category/package-name) into your `${REPO_PATH}`.
 
