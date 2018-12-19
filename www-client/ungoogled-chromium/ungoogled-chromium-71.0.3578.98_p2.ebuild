@@ -237,9 +237,12 @@ src_prepare() {
 		common:alignof
 		common:as-needed
 		common:enum-compare
+		common:explicit-constructor
+		common:initialization
 		common:int-in-bool-context
 		common:multichar
 		common:null-destination
+		common:printf
 		common:sizet
 		rooted:attribute
 		# We already have "-Wno-unknown-warning-option" defined below
