@@ -234,7 +234,7 @@ src_prepare() {
 		# ARM related patch
 		common:gcc_skcms_ice
 		# GCC fixes/warnings
-		common:alignof
+		#common:alignof
 		common:as-needed
 		common:enum-compare
 		common:explicit-constructor
