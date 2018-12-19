@@ -234,12 +234,15 @@ src_prepare() {
 		# ARM related patch
 		common:gcc_skcms_ice
 		# GCC fixes/warnings
-		common:alignof
+		#common:alignof
 		common:as-needed
 		common:enum-compare
+		common:explicit-constructor
+		common:initialization
 		common:int-in-bool-context
 		common:multichar
 		common:null-destination
+		common:printf
 		common:sizet
 		rooted:attribute
 		# We already have "-Wno-unknown-warning-option" defined below
@@ -252,6 +255,7 @@ src_prepare() {
 
 	local ugc_use=(
 		system-icu:convertutf
+		system-icu:icu
 		system-jsoncpp:jsoncpp
 		system-libevent:event
 		system-libvpx:vpx
