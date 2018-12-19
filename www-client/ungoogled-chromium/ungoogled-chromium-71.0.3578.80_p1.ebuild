@@ -248,6 +248,7 @@ src_prepare() {
 
 	local ugc_use=(
 		system-icu:convertutf
+		system-icu:icu
 		system-jsoncpp:jsoncpp
 		system-libevent:event
 		system-libvpx:vpx
