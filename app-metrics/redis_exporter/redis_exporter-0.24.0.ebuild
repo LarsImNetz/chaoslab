@@ -4,7 +4,7 @@
 EAPI=7
 
 # Change this when you update the ebuild:
-GIT_COMMIT="10045b85b5aaa1c5fa35ba38e3a1aee14f772b31"
+GIT_COMMIT="e77a1bdda22a137ed36f2422e08f2392c1ddd963"
 EGO_PN="github.com/oliver006/${PN}"
 
 inherit golang-vcs-snapshot-r1 systemd user
@@ -67,6 +67,7 @@ src_test() {
 src_install() {
 	dobin redis_exporter
 	use debug && dostrip -x /usr/bin/redis_exporter
+	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
@@ -78,6 +79,4 @@ src_install() {
 
 	diropts -o redis_exporter -g redis_exporter -m 0750
 	keepdir /var/log/redis_exporter
-
-	einstalldocs
 }
