@@ -9,5 +9,5 @@ LICENSE=Apache-2.0
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/shadowsocks/shadowsocks-go/archive/1.2.1.tar.gz -> shadowsocks-go-1.2.1.tar.gz https://github.com/Yawning/chacha20/archive/e3b1f96.tar.gz -> github.com-Yawning-chacha20-e3b1f96.tar.gz https://github.com/golang/crypto/archive/9f005a0.tar.gz -> github.com-golang-crypto-9f005a0.tar.gz
-_eclasses_=golang-base	e764075c9bbce927b424f8e9b7a25dfe	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	user	8bc2845510e2109af75e3eeac607ec81
+_eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc	user	8bc2845510e2109af75e3eeac607ec81
 _md5_=3ff3c59fcb3357a42b229f9c9e264365
