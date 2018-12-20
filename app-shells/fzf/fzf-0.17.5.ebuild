@@ -1,30 +1,30 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-GIT_COMMIT="b46227dcb6" # Change this when you update the ebuild
-EGO_PN="github.com/junegunn/fzf"
+# Change this when you update the ebuild
+GIT_COMMIT="b46227dcb6f1718d66ad828443d9f03a4bd58c4c"
+EGO_PN="github.com/junegunn/${PN}"
 # Note: Keep EGO_VENDOR in sync with glide.lock
-# Deps that are not needed:
-# github.com/codegangsta/cli c6af8847eb
-# github.com/gdamore/encoding b23993cbb6
-# github.com/gdamore/tcell 0a0db94084
-# github.com/lucasb-eyer/go-colorful c900de9dbb
-# github.com/Masterminds/semver 15d8430ab8
-# github.com/Masterminds/vcs 6f1c6d1505
-# github.com/mitchellh/go-homedir b8bc1bf767
-# golang.org/x/text 4ee4af5665
-# gopkg.in/yaml.v2 287cf08546
 EGO_VENDOR=(
-	"github.com/mattn/go-isatty 66b8e73f3f"
-	"github.com/mattn/go-runewidth 14207d285c"
+	#"github.com/codegangsta/cli c6af8847eb2b"
+	#"github.com/gdamore/encoding b23993cbb635"
+	#"github.com/gdamore/tcell 0a0db94084df"
+	#"github.com/lucasb-eyer/go-colorful c900de9dbbc7"
+	#"github.com/Masterminds/semver 15d8430ab864"
+	#"github.com/Masterminds/vcs 6f1c6d150500"
+	"github.com/mattn/go-isatty 66b8e73f3f5c"
+	"github.com/mattn/go-runewidth 14207d285c6c"
 	"github.com/mattn/go-shellwords v1.0.3"
-	"golang.org/x/crypto 558b6879de github.com/golang/crypto"
-	"golang.org/x/sys b90f89a1e7 github.com/golang/sys"
+	#"github.com/mitchellh/go-homedir b8bc1bf76747"
+	"golang.org/x/crypto 558b6879de74 github.com/golang/crypto"
+	"golang.org/x/sys b90f89a1e7a9 github.com/golang/sys"
+	#"golang.org/x/text 4ee4af566555 github.com/golang/text"
+	#"gopkg.in/yaml.v2 287cf08546ab github.com/go-yaml/yaml"
 )
 
-inherit bash-completion-r1 golang-vcs-snapshot
+inherit bash-completion-r1 golang-vcs-snapshot-r1
 
 DESCRIPTION="A general-purpose command-line fuzzy finder"
 HOMEPAGE="https://github.com/junegunn/fzf"
@@ -34,25 +34,29 @@ RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="pie tmux"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
+IUSE="debug pie tmux"
 
 RDEPEND="tmux? ( app-misc/tmux )"
 
 DOCS=( CHANGELOG.md README.md )
-QA_PRESTRIPPED="usr/bin/fzf"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
+		-X "main.revision=${GIT_COMMIT:0:7}"
+	)
 	local mygoargs=(
-		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		-v
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
-		-ldflags "-s -w -X main.revision=${GIT_COMMIT:0:7}"
+		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
 }
@@ -63,8 +67,10 @@ src_test() {
 
 src_install() {
 	dobin fzf
-	doman man/man1/fzf.1
+	use debug && dostrip -x /usr/bin/fzf
 	einstalldocs
+
+	doman man/man1/fzf.1
 
 	newbashcomp shell/completion.bash fzf
 
