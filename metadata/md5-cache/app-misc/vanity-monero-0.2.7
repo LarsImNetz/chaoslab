@@ -1,12 +1,13 @@
+BDEPEND=>=dev-lang/go-1.10.1
 DEFINED_PHASES=compile install unpack
-DEPEND=>=dev-lang/go-1.9
 DESCRIPTION=Generate vanity address for CryptoNote currency
-EAPI=6
+EAPI=7
 HOMEPAGE=https://github.com/Equim-chan/vanity-monero
-KEYWORDS=~amd64
+IUSE=debug pie
+KEYWORDS=~amd64 ~arm ~arm64 ~x86
 LICENSE=MIT
 RESTRICT=mirror
 SLOT=0
-SRC_URI=https://github.com/Equim-chan/vanity-monero/archive/v0.2.7.tar.gz -> vanity-monero-0.2.7.tar.gz https://github.com/ebfe/keccak/archive/5cc570678d.tar.gz -> github.com-ebfe-keccak-5cc570678d.tar.gz https://github.com/paxos-bankchain/moneroutil/archive/33d7e0c11a.tar.gz -> github.com-paxos-bankchain-moneroutil-33d7e0c11a.tar.gz https://github.com/golang/crypto/archive/c126467f60.tar.gz -> github.com-golang-crypto-c126467f60.tar.gz
-_eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc
-_md5_=3e114629aab3808be7cad79954dd009a
+SRC_URI=https://github.com/Equim-chan/vanity-monero/archive/v0.2.7.tar.gz -> vanity-monero-0.2.7.tar.gz https://github.com/ebfe/keccak/archive/5cc570678d1b.tar.gz -> github.com-ebfe-keccak-5cc570678d1b.tar.gz https://github.com/paxos-bankchain/moneroutil/archive/33d7e0c11a62.tar.gz -> github.com-paxos-bankchain-moneroutil-33d7e0c11a62.tar.gz https://github.com/golang/crypto/archive/c126467f60eb.tar.gz -> github.com-golang-crypto-c126467f60eb.tar.gz
+_eclasses_=golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f
+_md5_=03a942d6ae5707fe6ac1c15d9f777381
