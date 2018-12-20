@@ -13,8 +13,13 @@ RESTRICT="mirror"
 LICENSE="public-domain"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
+IUSE="+sodium"
 
-RDEPEND="sys-apps/ucspi-tcp"
+DEPEND="sodium? ( dev-libs/libsodium:0=[-minimal] )"
+RDEPEND="
+	${DEPEND}
+	sys-apps/ucspi-tcp
+"
 
 src_prepare() {
 	# Leave optimization level to user CFLAGS
@@ -28,7 +33,7 @@ src_prepare() {
 }
 
 src_compile() {
-	emake compile
+	emake LIBS="$(usex sodium '-lsodium' '')"
 }
 
 src_install() {
@@ -45,8 +50,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	einfo
 	einfo "TinySSH is in beta stage, and ready for production use."
 	einfo "See https://tinyssh.org for more information."
-	einfo
 }
