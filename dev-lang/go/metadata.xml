@@ -10,4 +10,9 @@
 		Rob Pike. It has garbage collection, coroutines, communication
 		channels and a clean syntax.
 	</longdescription>
+	<use>
+		<flag name="default-buildmode-pie">
+			Use pie as the default '-buildmode' for Go
+		</flag>
+	</use>
 </pkgmetadata>

@@ -16,7 +16,7 @@ RESTRICT="mirror"
 LICENSE="Apache-1.1 Apache-2.0 BSD BSD-2 MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~x86 ~amd64-linux ~x64-macos"
-IUSE="bundled-ssl clang cpu_flags_x86_sse2 debug doc icu inspector libressl +npm +snapshot +ssl systemtap test"
+IUSE="bundled-ssl cpu_flags_x86_sse2 debug doc icu inspector libressl +npm +snapshot +ssl systemtap test"
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
 	bundled-ssl? ( ssl )
@@ -87,10 +87,9 @@ src_prepare() {
 	# with more gentoo-knowledge than me (jbergstroem) figures it out.
 	rm test/parallel/test-stdout-close-unref.js || die
 
-	if use clang; then
-		# 'gcc_s' is required if 'compiler-rt' is Clang's default
-		has_version 'sys-devel/clang[default-compiler-rt]' && \
-			eapply "${FILESDIR}/${PN}-10.13.0-clang-compat.patch"
+	# 'gcc_s' is required if 'compiler-rt' is Clang's default
+	if tc-is-clang && has_version 'sys-devel/clang[default-compiler-rt]'; then
+		eapply "${FILESDIR}/${PN}-10.13.0-clang-compat.patch"
 	fi
 
 	# debug builds. change install path, remove optimisations and override buildtype

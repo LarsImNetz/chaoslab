@@ -26,6 +26,7 @@ RESTRICT="mirror strip test"
 LICENSE="BSD"
 SLOT="0/${PV}"
 KEYWORDS="-* ~amd64 ~x86"
+IUSE="default-buildmode-pie"
 
 # These test data objects have writable/executable stacks
 QA_EXECSTACK="
@@ -46,6 +47,11 @@ QA_MULTILIB_PATHS="usr/lib/go/pkg/tool/.*/.*"
 DOCS=( AUTHORS CONTRIBUTORS PATENTS README.md )
 
 S="${WORKDIR}"/go
+
+src_prepare() {
+	use default-buildmode-pie && eapply "${FILESDIR}/${PN}-buildmode-pie.patch"
+	default
+}
 
 src_compile() {
 	case "$(tc-arch)" in
