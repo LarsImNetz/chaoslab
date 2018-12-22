@@ -4,7 +4,7 @@
 EAPI=7
 
 EGO_PN="code.gitea.io/${PN}"
-EGO_VENDOR=( "github.com/kevinburke/go-bindata v3.11.0" )
+EGO_VENDOR=( "github.com/kevinburke/go-bindata v3.13.0" )
 
 inherit fcaps golang-vcs-snapshot-r1 systemd user
 
@@ -17,7 +17,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="debug memcached mysql openssh pam pie postgres redis sqlite"
+IUSE="bindata debug memcached mysql openssh pam pie postgres redis sqlite"
 
 RDEPEND="
 	dev-vcs/git[curl,threads]
@@ -41,14 +41,18 @@ pkg_setup() {
 	enewuser git -1 /bin/bash /var/lib/gitea git
 }
 
+# shellcheck disable=SC1117
 src_prepare() {
 	# Remove the git call, as the tarball isn't a proper git repository
 	sed -i "/GITEA_VERSION :=/d" Makefile || die
 
-	sed -i \
-		-e "s:^STATIC_ROOT_PATH =:STATIC_ROOT_PATH = ${EPREFIX}/usr/share/gitea:" \
-		-e "s:^ROOT_PATH =:ROOT_PATH = ${EPREFIX}/var/log/gitea:" \
+	sed -i "s|^\(ROOT_PATH =\).*|\1 ${EPREFIX}/var/log/gitea|" \
 		custom/conf/app.ini.sample || die
+
+	if ! use bindata; then
+		sed -i "s|^\(STATIC_ROOT_PATH =\).*|\1 ${EPREFIX}/usr/share/gitea|" \
+			custom/conf/app.ini.sample || die
+	fi
 
 	default
 }
@@ -59,11 +63,13 @@ src_compile() {
 
 	# Build go-bindata locally
 	go install ./vendor/github.com/kevinburke/go-bindata/go-bindata || die
+
 	# Generate embedded data
 	emake generate
 
 	# Build up optional flags
-	local opts
+	local opts=""
+	use bindata && opts+=" bindata"
 	use pam && opts+=" pam"
 	use sqlite && opts+=" sqlite"
 
@@ -96,15 +102,18 @@ src_install() {
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
-	insinto /var/lib/gitea/custom
-	doins -r options
-
 	insinto /var/lib/gitea/conf
 	newins custom/conf/app.ini.sample app.ini.example
-	dosym ../custom/options/locale /var/lib/gitea/conf/locale
 
-	insinto /usr/share/gitea
-	doins -r public templates
+	if ! use bindata; then
+		insinto /var/lib/gitea/custom
+		doins -r options
+
+		dosym ../custom/options/locale /var/lib/gitea/conf/locale
+
+		insinto /usr/share/gitea
+		doins -r public templates
+	fi
 
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}/${PN}.logrotate" "${PN}"
@@ -125,8 +134,7 @@ pkg_postinst() {
 
 	if ! use filecaps; then
 		ewarn
-		ewarn "'filecaps' USE flag is disabled"
-		ewarn "${PN} will fail to listen on port < 1024"
+		ewarn "USE=filecaps is disabled, ${PN} will fail to listen on port < 1024"
 		ewarn "please either change port to > 1024 or re-enable 'filecaps'"
 		ewarn
 	fi
