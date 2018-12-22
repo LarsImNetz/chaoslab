@@ -5,13 +5,15 @@ EAPI=7
 
 # Change this when you update the ebuild
 GIT_COMMIT="f43d21d0aff791780aaca5770e0bc92c39c803d3"
+EGO_VENDOR=( "github.com/kevinburke/go-bindata v3.13.0" )
 EGO_PN="github.com/${PN}/${PN}"
 
 inherit fcaps golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="A painless self-hosted Git service"
 HOMEPAGE="https://gogs.io"
-SRC_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+ARCHIVE_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="MIT"
@@ -42,20 +44,34 @@ pkg_setup() {
 }
 
 src_prepare() {
+	# shellcheck disable=SC1117
 	sed -i \
-		-e "s:^RUN_USER =.*:RUN_USER = gogs:" \
-		-e "s:^STATIC_ROOT_PATH =:STATIC_ROOT_PATH = ${EPREFIX}/usr/share/gogs:" \
-		-e "s:^ROOT_PATH =:ROOT_PATH = ${EPREFIX}/var/log/gogs:" \
+		-e "s|^\(RUN_USER =\).*|\1 gogs|" \
+		-e "s|^\(STATIC_ROOT_PATH =\).*|\1 ${EPREFIX}/usr/share/gogs|" \
+		-e "s|^\(ROOT_PATH =\).*|\1 ${EPREFIX}/var/log/gogs|" \
 		conf/app.ini || die
+
+	# Remove bundled binary, we will rebuild it ourselves
+	rm pkg/bindata/bindata.go || die
 
 	default
 }
 
 src_compile() {
 	export GOPATH="${G}"
+	local PATH="${G}/bin:$PATH"
+
+	# Build go-bindata locally
+	go install ./vendor/github.com/kevinburke/go-bindata/go-bindata || die
+
+	# Generate embedded data
+	go-bindata \
+		-o=pkg/bindata/bindata.go \
+		-ignore="\\.DS_Store|README.md|TRANSLATORS|auth.d" \
+		-pkg=bindata conf/... || die
 
 	# Build up optional flags
-	local opts
+	local opts=""
 	use cert && opts+=" cert"
 	use pam && opts+=" pam"
 	use sqlite && opts+=" sqlite"
@@ -115,8 +131,7 @@ pkg_postinst() {
 
 	if ! use filecaps; then
 		ewarn
-		ewarn "'filecaps' USE flag is disabled"
-		ewarn "${PN} will fail to listen on port < 1024"
+		ewarn "USE=filecaps is disabled, ${PN} will fail to listen on port < 1024"
 		ewarn "please either change port to > 1024 or re-enable 'filecaps'"
 		ewarn
 	fi

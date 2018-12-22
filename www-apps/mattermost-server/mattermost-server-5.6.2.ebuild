@@ -4,8 +4,8 @@
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="0c1207215852a8726c3f09dea157d597fec368df"
-WEBAPP_COMMIT="71d31890dcfaebbce350b5a93cccb44094d74a5d"
+GIT_COMMIT="3aed6efc6bb5a67fdb8237aac38d46fab3266e8d"
+WEBAPP_COMMIT="52bc19c3b17fc3b0f88bc8ffe869f2c11781a713"
 EGO_PN="github.com/mattermost/${PN}"
 WEBAPP_P="mattermost-webapp-${PV}"
 MY_PV="${PV/_/-}"
@@ -77,22 +77,22 @@ src_prepare() {
 	# and disable diagnostics (call home) by default.
 	# shellcheck disable=SC2086
 	sed -i \
-		-e 's|"ListenAddress": ":8065"|"ListenAddress": "127.0.0.1:8065"|g' \
-		-e 's|"ListenAddress": ":8067"|"ListenAddress": "127.0.0.1:8067"|g' \
-		-e 's|"ConsoleLevel": "DEBUG"|"ConsoleLevel": "INFO"|g' \
-		-e 's|"EnableDiagnostics":.*|"EnableDiagnostics": false|' \
-		-e 's|"Directory": "./data/"|"Directory": "'${datadir}'/data/"|g' \
-		-e 's|"Directory": "./plugins"|"Directory": "'${datadir}'/plugins"|g' \
-		-e 's|"ClientDirectory": "./client/plugins"|"ClientDirectory": "'${datadir}'/client/plugins"|g' \
-		-e 's|tcp(dockerhost:3306)|unix(/run/mysqld/mysqld.sock)|g' \
+		-e 's|\("ListenAddress":\).*\(8065\).*|\1 "127.0.0.1:\2",|' \
+		-e 's|\("ListenAddress":\).*\(8067\).*|\1 "127.0.0.1:\2"|' \
+		-e 's|\("ConsoleLevel":\).*|\1 "INFO",|' \
+		-e 's|\("EnableDiagnostics":\).*|\1 false|' \
+		-e 's|\("Directory":\).*\(/data/\).*|\1 "'${datadir}'\2",|g' \
+		-e 's|\("Directory":\).*\(/plugins\).*|\1 "'${datadir}'\2",|' \
+		-e 's|\("ClientDirectory":\).*\(/client/plugins\)|\1 "'${datadir}'\2",|' \
+		-e 's|tcp(dockerhost:3306)|unix(/run/mysqld/mysqld.sock)|' \
 		config/default.json || die
 
 	# Reset email sending to original configuration
 	sed -i \
-		-e 's|"SendEmailNotifications": true,|"SendEmailNotifications": false,|g' \
-		-e 's|"FeedbackEmail": "test@example.com",|"FeedbackEmail": "",|g' \
-		-e 's|"SMTPServer": "dockerhost",|"SMTPServer": "",|g' \
-		-e 's|"SMTPPort": "2500",|"SMTPPort": "",|g' \
+		-e 's|\("SendEmailNotifications":\).*|\1 false,|' \
+		-e 's|\("FeedbackEmail":\).*|\1 "",|' \
+		-e 's|\("SMTPServer":\).*|\1 "",|' \
+		-e 's|\("SMTPPort":\).*|\1 "",|' \
 		config/default.json || die
 
 	# shellcheck disable=SC1117

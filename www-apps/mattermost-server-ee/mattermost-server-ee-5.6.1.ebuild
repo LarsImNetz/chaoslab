@@ -35,13 +35,13 @@ src_prepare() {
 	# and disable diagnostics (call home) by default.
 	# shellcheck disable=SC2086
 	sed -i \
-		-e 's|"ListenAddress": ":8065"|"ListenAddress": "127.0.0.1:8065"|g' \
-		-e 's|"ListenAddress": ":8067"|"ListenAddress": "127.0.0.1:8067"|g' \
-		-e 's|"EnableDiagnostics":.*|"EnableDiagnostics": false|' \
-		-e 's|"Directory": "./data/"|"Directory": "'${datadir}'/data/"|g' \
-		-e 's|"Directory": "./plugins"|"Directory": "'${datadir}'/plugins"|g' \
-		-e 's|"ClientDirectory": "./client/plugins"|"ClientDirectory": "'${datadir}'/client/plugins"|g' \
-		-e 's|tcp(dockerhost:3306)|unix(/run/mysqld/mysqld.sock)|g' \
+		-e 's|\("ListenAddress":\).*\(8065\).*|\1 "127.0.0.1:\2",|' \
+		-e 's|\("ListenAddress":\).*\(8067\).*|\1 "127.0.0.1:\2"|' \
+		-e 's|\("EnableDiagnostics":\).*|\1 false|' \
+		-e 's|\("Directory":\).*\(/data/\).*|\1 "'${datadir}'\2",|g' \
+		-e 's|\("Directory":\).*\(/plugins\).*|\1 "'${datadir}'\2",|' \
+		-e 's|\("ClientDirectory":\).*\(/client/plugins\)|\1 "'${datadir}'\2",|' \
+		-e 's|tcp(dockerhost:3306)|unix(/run/mysqld/mysqld.sock)|' \
 		config/default.json || die
 
 	default

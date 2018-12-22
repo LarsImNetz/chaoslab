@@ -17,6 +17,9 @@
 		but we have forked it and named it Gitea.
 	</longdescription>
 	<use>
+		<flag name="bindata">
+			Build a single monolithic binary, with all assets included
+		</flag>
 		<flag name="openssh">Use OpenSSH instead of the builtin SSH server</flag>
 		<flag name="redis">Add support for redis sessions</flag>
 	</use>
