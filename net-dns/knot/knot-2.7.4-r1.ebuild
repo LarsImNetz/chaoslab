@@ -119,10 +119,11 @@ src_install() {
 		systemd_dounit "${FILESDIR}/${PN}.service"
 		newtmpfiles "${FILESDIR}/${PN}.tmpfilesd" "${PN}.conf"
 
-		rmdir "${D%/}"/var/run/knot "${D%/}"/var/run || die
-		find "${D%/}" -name '*.la' -delete || die
-		einfo "${D} - ${D%/}"
+		# Remove empty directories
+		rmdir "${D%/}"/var/{run/knot,run} "${D%/}"/var/{lib/knot,lib} || die
 	fi
+
+	find "${D%/}" -name '*.la' -delete || die
 }
 
 pkg_postinst() {
