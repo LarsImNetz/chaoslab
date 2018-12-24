@@ -235,13 +235,14 @@ src_prepare() {
 	local ugc_unneeded=(
 		# ARM related patch
 		common:gcc_skcms_ice
-		# GCC fixes/warnings
-		#common:alignof
+		# GCC specific fixes/warnings
+		common:alignof
 		common:as-needed
 		common:enum-compare
 		common:explicit-constructor
 		common:initialization
 		common:int-in-bool-context
+		common:member-assignment
 		common:multichar
 		common:null-destination
 		common:printf
@@ -460,7 +461,6 @@ src_prepare() {
 		url/third_party/mozilla
 		v8/src/third_party/valgrind
 		v8/src/third_party/utf8-decoder
-		v8/third_party/inspector_protocol
 		v8/third_party/v8
 
 		# gyp -> gn leftovers
