@@ -1,12 +1,12 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 PYTHON_COMPAT=( python3_{5,6} )
 PYTHON_REQ_USE="ncurses?"
 
-inherit distutils-r1 gnome2-utils xdg-utils
+inherit distutils-r1 xdg-utils
 
 DESCRIPTION="Lightweight Bitcoin Cash client"
 HOMEPAGE="https://electroncash.org"
@@ -16,17 +16,8 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="audio_modem cli cosign digitalbitbox email ncurses qrcode +qt5 sync vkb l10n_es l10n_ja l10n_pt l10n_zh-CN"
-REQUIRED_USE="
-	|| ( cli ncurses qt5 )
-	audio_modem? ( qt5 )
-	cosign? ( qt5 )
-	digitalbitbox? ( qt5 )
-	email? ( qt5 )
-	qrcode? ( qt5 )
-	sync? ( qt5 )
-	vkb? ( qt5 )
-"
+IUSE="audio_modem cli cosign digitalbitbox email ncurses qrcode sync vkb l10n_es l10n_ja l10n_pt l10n_zh-CN"
+REQUIRED_USE="|| ( cli ncurses )"
 
 RDEPEND="
 	dev-python/ecdsa[${PYTHON_USEDEP}]
@@ -46,7 +37,7 @@ RDEPEND="
 	virtual/python-dnspython[${PYTHON_USEDEP}]
 	qrcode? ( media-gfx/zbar[v4l] )
 	audio_modem? ( dev-python/amodem[${PYTHON_USEDEP}] )
-	qt5? ( dev-python/PyQt5[gui,widgets,${PYTHON_USEDEP}] )
+	dev-python/PyQt5[gui,widgets,${PYTHON_USEDEP}]
 "
 DEPEND="${RDEPEND}
 	dev-python/setuptools[${PYTHON_USEDEP}]
@@ -58,10 +49,6 @@ S="${WORKDIR}/Electron-Cash-${PV}"
 
 src_prepare() {
 	eapply "${FILESDIR}/${PN}-3.3-no_user_root.patch"
-
-	if use !qt5; then
-		sed "s|'electroncash_gui.qt',||" -i setup.py || die
-	fi
 
 	local wordlist=
 	for wordlist in \
@@ -79,30 +66,10 @@ src_prepare() {
 	for gui in \
 		$(usex cli '' stdio) \
 		kivy \
-		$(usex qt5 '' qt ) \
 		$(usex ncurses '' text ) \
 	; do
 		rm gui/"${gui}"* -r || die
 	done
-
-	# And install requested ones...
-	for gui in \
-		$(usex qt5 qt '') \
-	; do
-		setup_py_gui="${setup_py_gui}'electrum_gui.${gui}',"
-	done
-
-	sed -i "s/'electrum_gui\\.qt',/${setup_py_gui}/" setup.py || die
-
-	local bestgui
-	if use qt5; then
-		bestgui=qt
-	elif use ncurses; then
-		bestgui=text
-	else
-		bestgui=stdio
-	fi
-	sed -i 's/^\([[:space:]]*\)\(config_options\['\''cwd'\''\] = .*\)$/\1\2\n\1config_options.setdefault("gui", "'"${bestgui}"'")\n/' "${PN}" || die
 
 	local plugin
 	# trezor requires python trezorlib module
@@ -127,9 +94,7 @@ src_prepare() {
 }
 
 src_compile() {
-	if use qt5; then
-		pyrcc5 icons.qrc -o gui/qt/icons_rc.py || die
-	fi
+	pyrcc5 icons.qrc -o gui/qt/icons_rc.py || die
 
 	# Compile the protobuf description file:
 	protoc --proto_path=lib/ --python_out=lib/ lib/paymentrequest.proto || die
@@ -137,12 +102,12 @@ src_compile() {
 	distutils-r1_src_compile
 }
 
-pkg_preinst() {
-	gnome2_icon_savelist
-}
-
 update_caches() {
-	gnome2_icon_cache_update
+	if type gtk-update-icon-cache &>/dev/null; then
+		ebegin "Updating GTK icon cache"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		eend $? || die
+	fi
 	xdg_desktop_database_update
 }
 
