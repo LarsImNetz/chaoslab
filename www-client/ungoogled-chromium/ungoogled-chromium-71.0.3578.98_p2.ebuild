@@ -688,6 +688,9 @@ src_configure() {
 		"use_new_tcmalloc=$(usetf new-tcmalloc)"
 	)
 
+	# use_cfi_icall only works with LLD
+	use cfi && myconf_gn+=( "use_cfi_icall=$(usetf lld)" )
+
 	setup_compile_flags
 
 	# Bug #491582
