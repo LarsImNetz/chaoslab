@@ -29,19 +29,21 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="
 	+atk cfi cups custom-cflags gnome gold jumbo-build kerberos libcxx +lld
-	new-tcmalloc optimize-thinlto optimize-webui +proprietary-codecs pulseaudio
-	selinux +suid +system-ffmpeg system-harfbuzz +system-icu +system-jsoncpp
-	+system-libevent +system-libvpx +system-openh264 +system-openjpeg +tcmalloc
-	+thinlto vaapi widevine
+	new-tcmalloc optimize-thinlto optimize-webui +pdf +proprietary-codecs
+	pulseaudio selinux +suid +system-ffmpeg system-harfbuzz +system-icu
+	+system-jsoncpp +system-libevent +system-libvpx +system-openh264
+	+system-openjpeg +tcmalloc +thinlto vaapi widevine
 "
 REQUIRED_USE="
 	^^ ( gold lld )
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
 	cfi? ( amd64 thinlto )
+	cups? ( pdf )
 	libcxx? ( new-tcmalloc )
 	new-tcmalloc? ( tcmalloc )
 	optimize-thinlto? ( thinlto )
+	system-openjpeg? ( pdf )
 "
 RESTRICT="
 	!system-ffmpeg? ( proprietary-codecs? ( bindist ) )
@@ -413,15 +415,6 @@ src_prepare() {
 		third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2
 		third_party/openmax_dl
 		third_party/ots
-		third_party/pdfium
-		third_party/pdfium/third_party/agg23
-		third_party/pdfium/third_party/base
-		third_party/pdfium/third_party/bigint
-		third_party/pdfium/third_party/freetype
-		third_party/pdfium/third_party/lcms
-		third_party/pdfium/third_party/libpng16
-		third_party/pdfium/third_party/libtiff
-		third_party/pdfium/third_party/skia_shared
 		third_party/ply
 		third_party/polymer
 		third_party/protobuf
@@ -471,20 +464,36 @@ src_prepare() {
 		third_party/yasm/run_yasm.py
 	)
 
-	use system-ffmpeg || keeplibs+=( third_party/ffmpeg third_party/opus )
-	if ! use system-harfbuzz; then
-		keeplibs+=( third_party/freetype )
-		keeplibs+=( third_party/harfbuzz-ng )
+	if use pdf; then
+		keeplibs+=(
+			third_party/pdfium
+			third_party/pdfium/third_party/agg23
+			third_party/pdfium/third_party/base
+			third_party/pdfium/third_party/bigint
+			third_party/pdfium/third_party/freetype
+			third_party/pdfium/third_party/lcms
+			third_party/pdfium/third_party/libpng16
+			third_party/pdfium/third_party/libtiff
+			third_party/pdfium/third_party/skia_shared
+		)
+		use system-openjpeg || keeplibs+=(
+			third_party/pdfium/third_party/libopenjpeg20
+		)
 	fi
+
+	use system-ffmpeg || keeplibs+=( third_party/ffmpeg third_party/opus )
+	use system-harfbuzz || keeplibs+=(
+		third_party/freetype
+		third_party/harfbuzz-ng
+	)
 	use system-icu || keeplibs+=( third_party/icu )
 	use system-jsoncpp || keeplibs+=( third_party/jsoncpp )
 	use system-libevent || keeplibs+=( base/third_party/libevent )
-	if ! use system-libvpx; then
-		keeplibs+=( third_party/libvpx )
-		keeplibs+=( third_party/libvpx/source/libvpx/third_party/x86inc )
-	fi
+	use system-libvpx || keeplibs+=(
+		third_party/libvpx
+		third_party/libvpx/source/libvpx/third_party/x86inc
+	)
 	use system-openh264 || keeplibs+=( third_party/openh264 )
-	use system-openjpeg || keeplibs+=( third_party/pdfium/third_party/libopenjpeg20 )
 	use tcmalloc && keeplibs+=( third_party/tcmalloc )
 
 	# Remove most bundled libraries, some are still needed
@@ -617,6 +626,8 @@ src_configure() {
 		"enable_nacl=false"
 		"enable_nacl_nonsfi=false"
 		"enable_one_click_signin=false"
+		"enable_pdf=$(usetf pdf)"
+		"enable_print_preview=$(usetf pdf)"
 		"enable_reading_list=false"
 		"enable_remoting=false"
 		"enable_reporting=false"
