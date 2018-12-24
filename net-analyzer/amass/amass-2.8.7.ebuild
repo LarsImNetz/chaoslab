@@ -9,19 +9,27 @@ EGO_VENDOR=(
 	"github.com/PuerkitoBio/fetchbot v1.1.2"
 	"github.com/PuerkitoBio/goquery v1.4.1"
 	"github.com/andybalholm/cascadia v1.0.0"
-	#"github.com/asaskevich/EventBus d46933a94f"
+	#"github.com/asaskevich/EventBus d46933a94f05"
+	"github.com/caffix/cloudflare-roundtripper 4c29d231c9cb"
+	"github.com/cenkalti/backoff v2.1.0"
+	"github.com/dghubble/go-twitter 7ecc41c771b6"
+	"github.com/dghubble/sling v1.2.0"
 	"github.com/go-ini/ini v1.39.2"
-	"github.com/irfansharif/cfilter d07d951ff2" # inderect
+	"github.com/google/go-querystring 44c6ddd0a234"
+	"github.com/irfansharif/cfilter d07d951ff29d" # inderect
 	"github.com/fatih/color v1.7.0" # inderect
-	"github.com/johnnadratowski/golang-neo4j-bolt-driver c68f22031e"
+	"github.com/johnnadratowski/golang-neo4j-bolt-driver c68f22031e42"
 	"github.com/miekg/dns v1.0.8"
-	#"github.com/temoto/robotstxt 9e4646fa70"
-	"github.com/temoto/robotstxt-go 9e4646fa70"
-	#"golang.org/x/crypto c126467f60 github.com/golang/crypto"
-	"golang.org/x/net 3673e40ba2 github.com/golang/net"
-	"golang.org/x/sys e072cadbbd github.com/golang/sys"
+	"github.com/robertkrimen/otto 15f95af6e78d"
+	#"github.com/temoto/robotstxt 9e4646fa7053"
+	"github.com/temoto/robotstxt-go 9e4646fa7053"
+	"golang.org/x/oauth2 d668ce993890 github.com/golang/oauth2"
+	#"golang.org/x/crypto c126467f60eb github.com/golang/crypto"
+	"golang.org/x/net 3673e40ba225 github.com/golang/net"
+	"golang.org/x/sys e072cadbbdc8 github.com/golang/sys"
 	#"golang.org/x/text v0.3.0 github.com/golang/text"
-	#"golang.org/x/tools 4d8a0ac9f6 github.com/golang/tools"
+	#"golang.org/x/tools 4d8a0ac9f66c github.com/golang/tools"
+	"gopkg.in/sourcemap.v1 v1.0.5 github.com/go-sourcemap/sourcemap"
 )
 
 inherit golang-vcs-snapshot-r1
