@@ -1,12 +1,13 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-EGO_PN="github.com/sosedoff/pgweb"
-GIT_COMMIT="9af721176b" # Change this when you update the ebuild
+# Change this when you update the ebuild
+GIT_COMMIT="53c02d8914861835762d08c1547f2ac2dfe9fb9c"
+EGO_PN="github.com/sosedoff/${PN}"
 
-inherit golang-vcs-snapshot systemd user
+inherit golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="Web-based PostgreSQL database browser written in Go"
 HOMEPAGE="https://sosedoff.github.io/pgweb/"
@@ -16,10 +17,10 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="+daemon pie"
+IUSE="debug +daemon pie"
 
 DOCS=( CHANGELOG.md README.md )
-QA_PRESTRIPPED="usr/bin/pgweb"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -27,13 +28,13 @@ S="${G}/src/${EGO_PN}"
 pkg_pretend() {
 	# shellcheck disable=SC2086
 	if has test ${FEATURES} && [[ "${MERGE_TYPE}" != binary ]]; then
+		has network-sandbox ${FEATURES} && \
+			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
+
 		ewarn
 		ewarn "The tests requires a PostgreSQL server running on default port"
 		ewarn
 		sleep 5
-
-		(has network-sandbox ${FEATURES}) && \
-			die "The test phase requires 'network-sandbox' to be disabled in FEATURES"
 	fi
 }
 
@@ -46,13 +47,14 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
-	local myldflags=( -s -w
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "'${EGO_PN}/pkg/command.BuildTime=$(date -u +'%Y-%m-%dT%H:%M:%SZ')'"
 		-X "${EGO_PN}/pkg/command.GitCommit=${GIT_COMMIT}"
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
@@ -66,6 +68,7 @@ src_test() {
 
 src_install() {
 	dobin pgweb
+	use debug && dostrip -x /usr/bin/pgweb
 	einstalldocs
 
 	if use daemon; then
