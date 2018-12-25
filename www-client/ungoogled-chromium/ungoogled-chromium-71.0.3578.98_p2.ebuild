@@ -11,7 +11,7 @@ CHROMIUM_LANGS="
 	th tr uk vi zh-CN zh-TW
 "
 
-inherit check-reqs chromium-2 desktop flag-o-matic ninja-utils pax-utils python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
+inherit check-reqs chromium-2 desktop flag-o-matic multiprocessing ninja-utils pax-utils python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
 UGC_PV="${PV/_p/-}"
 UGC_P="${PN}-${UGC_PV}"
@@ -178,7 +178,7 @@ GTK+ icon theme.
 PATCHES=(
 	"${FILESDIR}/${PN}-atk-r0.patch"
 	"${FILESDIR}/${PN}-compiler-r5.patch"
-	"${FILESDIR}/${PN}-gold-r0.patch"
+	"${FILESDIR}/${PN}-gold-r1.patch"
 )
 
 S="${WORKDIR}/chromium-${PV/_*}"
@@ -536,7 +536,16 @@ setup_compile_flags() {
 		# from 25% to 10%. The performance number of page_cycler is the
 		# same on two of the thinLTO configurations, we got 1% slowdown
 		# on speedometer when changing import-instr-limit from 100 to 30.
-		append-ldflags "-Wl,-plugin-opt,-import-instr-limit=30"
+		local thinlto_ldflag=( "-Wl,-plugin-opt,-import-instr-limit=30" )
+
+		use gold && thinlto_ldflag+=(
+			"-Wl,-plugin-opt=thinlto"
+			"-Wl,-plugin-opt,jobs=$(makeopts_jobs)"
+		)
+
+		use lld && thinlto_ldflag+=( "-Wl,--thinlto-jobs=$(makeopts_jobs)" )
+
+		append-ldflags "${thinlto_ldflag[*]}"
 	fi
 
 	# Enable std::vector []-operator bounds checking (https://crbug.com/333391)
