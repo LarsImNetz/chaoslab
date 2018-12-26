@@ -39,7 +39,6 @@ REQUIRED_USE="
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
 	cfi? ( amd64 thinlto )
-	cups? ( pdf )
 	libcxx? ( new-tcmalloc )
 	new-tcmalloc? ( tcmalloc )
 	optimize-thinlto? ( thinlto )
