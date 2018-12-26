@@ -50,54 +50,29 @@ RESTRICT="
 	!system-openh264? ( bindist )
 "
 
-COMMON_DEPEND="
-	atk? (
-		>=app-accessibility/at-spi2-atk-2.26:2
-		>=dev-libs/atk-2.26
-	)
+CDEPEND="
 	app-arch/bzip2:=
-	cups? ( >=net-print/cups-1.3.11:= )
+	app-arch/snappy:=
 	dev-libs/expat:=
-	system-jsoncpp? ( dev-libs/jsoncpp )
 	dev-libs/glib:2
-	system-icu? ( >=dev-libs/icu-58.2:= )
-	system-libevent? ( dev-libs/libevent )
 	>=dev-libs/libxml2-2.9.4-r3:=[icu]
 	dev-libs/libxslt:=
 	dev-libs/nspr:=
 	>=dev-libs/nss-3.26:=
 	>=dev-libs/re2-0.2016.11.01:=
 	>=media-libs/alsa-lib-1.0.19:=
+	media-libs/flac:=
 	media-libs/fontconfig:=
-	system-harfbuzz? (
-		media-libs/freetype:=
-		>=media-libs/harfbuzz-2.0.0:0=[icu(-)]
-	)
 	media-libs/libjpeg-turbo:=
 	media-libs/libpng:=
-	system-libvpx? ( >=media-libs/libvpx-1.7.0:=[postproc,svc] )
-	system-openh264? ( >=media-libs/openh264-1.6.0:= )
-	system-openjpeg? ( media-libs/openjpeg:2 )
-	pulseaudio? ( media-sound/pulseaudio:= )
-	system-ffmpeg? (
-		>=media-video/ffmpeg-4:=
-		|| (
-			media-video/ffmpeg[-samba]
-			>=net-fs/samba-4.5.16[-debug(-)]
-		)
-		media-libs/opus:=
-	)
+	>=media-libs/libwebp-0.4.0:=
 	sys-apps/dbus:=
 	sys-apps/pciutils:=
-	libcxx? (
-		sys-libs/libcxx
-		sys-libs/libcxxabi
-	)
+	sys-libs/zlib:=[minizip]
 	virtual/udev
 	x11-libs/cairo:=
 	x11-libs/gdk-pixbuf:2
 	x11-libs/gtk+:3[X]
-	vaapi? ( x11-libs/libva:= )
 	x11-libs/libX11:=
 	x11-libs/libXcomposite:=
 	x11-libs/libXcursor:=
@@ -110,26 +85,47 @@ COMMON_DEPEND="
 	x11-libs/libXScrnSaver:=
 	x11-libs/libXtst:=
 	x11-libs/pango:=
-	app-arch/snappy:=
-	media-libs/flac:=
-	>=media-libs/libwebp-0.4.0:=
-	sys-libs/zlib:=[minizip]
+	atk? (
+		>=app-accessibility/at-spi2-atk-2.26:2
+		>=dev-libs/atk-2.26
+	)
+	cups? ( >=net-print/cups-1.3.11:= )
 	kerberos? ( virtual/krb5 )
+	pulseaudio? ( media-sound/pulseaudio:= )
+	system-ffmpeg? (
+		>=media-video/ffmpeg-4:=
+		|| (
+			media-video/ffmpeg[-samba]
+			>=net-fs/samba-4.5.16[-debug(-)]
+		)
+		media-libs/opus:=
+	)
+	system-harfbuzz? (
+		media-libs/freetype:=
+		>=media-libs/harfbuzz-2.0.0:0=[icu(-)]
+	)
+	system-icu? ( >=dev-libs/icu-58.2:= )
+	system-jsoncpp? ( dev-libs/jsoncpp )
+	system-libevent? ( dev-libs/libevent )
+	system-libvpx? ( >=media-libs/libvpx-1.7.0:=[postproc,svc] )
+	system-openh264? ( >=media-libs/openh264-1.6.0:= )
+	system-openjpeg? ( media-libs/openjpeg:2= )
+	vaapi? ( x11-libs/libva:= )
 "
 # For nvidia-drivers blocker (Bug #413637)
-RDEPEND="${COMMON_DEPEND}
-	x11-misc/xdg-utils
+RDEPEND="${CDEPEND}
 	virtual/opengl
 	virtual/ttf-fonts
+	x11-misc/xdg-utils
 	selinux? ( sec-policy/selinux-chromium )
 	tcmalloc? ( !<x11-drivers/nvidia-drivers-331.20 )
-	!x86? ( widevine? ( www-plugins/chrome-binary-plugins[widevine(-)] ) )
 	!www-client/chromium
 	!www-client/ungoogled-chromium-bin
+	!x86? ( widevine? ( www-plugins/chrome-binary-plugins[widevine(-)] ) )
 "
 # dev-vcs/git (Bug #593476)
 # sys-apps/sandbox - https://crbug.com/586444
-DEPEND="${COMMON_DEPEND}"
+DEPEND="${CDEPEND}"
 BDEPEND="
 	>=app-arch/gzip-1.7
 	dev-lang/perl
@@ -137,17 +133,21 @@ BDEPEND="
 	dev-util/gn
 	>=dev-util/gperf-3.0.3
 	>=dev-util/ninja-1.7.2
-	optimize-webui? ( >=net-libs/nodejs-7.6.0[inspector] )
+	dev-vcs/git
 	sys-apps/hwids[usb(+)]
 	>=sys-devel/bison-2.4.3
 	>=sys-devel/clang-7.0.0
-	cfi? ( >=sys-devel/clang-runtime-7.0.0[sanitize] )
 	sys-devel/flex
-	lld? ( >=sys-devel/lld-7.0.0 )
 	>=sys-devel/llvm-7.0.0[gold?]
 	virtual/libusb:1
 	virtual/pkgconfig
-	dev-vcs/git
+	cfi? ( >=sys-devel/clang-runtime-7.0.0[sanitize] )
+	libcxx? (
+		sys-libs/libcxx
+		sys-libs/libcxxabi
+	)
+	lld? ( >=sys-devel/lld-7.0.0 )
+	optimize-webui? ( >=net-libs/nodejs-7.6.0[inspector] )
 "
 
 # shellcheck disable=SC2086
