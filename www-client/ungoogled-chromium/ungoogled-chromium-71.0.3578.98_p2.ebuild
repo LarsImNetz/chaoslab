@@ -635,8 +635,6 @@ src_configure() {
 		"enable_nacl=false"
 		"enable_nacl_nonsfi=false"
 		"enable_one_click_signin=false"
-		"enable_pdf=$(usetf pdf)"
-		"enable_print_preview=$(usetf pdf)"
 		"enable_reading_list=false"
 		"enable_remoting=false"
 		"enable_reporting=false"
@@ -657,7 +655,6 @@ src_configure() {
 		"safe_browsing_mode=0"
 		"symbol_level=0"
 		"treat_warnings_as_errors=false"
-		"use_atk=$(usetf atk)"
 		"use_gnome_keyring=false" # Deprecated by libsecret
 		"use_jumbo_build=$(usetf jumbo-build)"
 		"use_official_google_api_keys=false"
@@ -692,6 +689,10 @@ src_configure() {
 		"use_system_zlib=true"
 		"use_vaapi=$(usetf vaapi)"
 
+		# Additional flags
+		"enable_pdf=$(usetf pdf)"
+		"enable_print_preview=$(usetf pdf)"
+		"use_atk=$(usetf atk)"
 		# Enables the soon-to-be default tcmalloc (https://crbug.com/724399)
 		# It is relevant only when use_allocator == "tcmalloc"
 		"use_new_tcmalloc=$(usetf new-tcmalloc)"
