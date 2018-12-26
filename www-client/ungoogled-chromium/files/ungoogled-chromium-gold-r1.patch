@@ -20,7 +20,7 @@
  
      cflags += [ "-flto=thin" ]
  
-@@ -651,19 +651,25 @@ config("compiler") {
+@@ -651,19 +651,24 @@ config("compiler") {
        # Limit the parallelism to avoid too aggressive competition between
        # linker jobs. This is still suboptimal to a potential dynamic
        # resource allocation scheme, but should be good enough.
@@ -44,8 +44,7 @@
 +                rebase_path("$root_out_dir/thinlto-cache", root_build_dir),
 +            "-Wl,--thinlto-cache-policy,$cache_policy",
 +          ]
-+        }
-+        if (use_gold) {
++        } else {
 +          ldflags += [
 +            "-Wl,-plugin-opt,cache-dir=" +
 +                rebase_path("$root_out_dir/thinlto-cache", root_build_dir),
