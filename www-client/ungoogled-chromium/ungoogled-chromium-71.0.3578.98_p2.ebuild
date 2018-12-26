@@ -693,6 +693,7 @@ src_configure() {
 		"enable_pdf=$(usetf pdf)"
 		"enable_print_preview=$(usetf pdf)"
 		"use_atk=$(usetf atk)"
+		"use_icf=true"
 		# Enables the soon-to-be default tcmalloc (https://crbug.com/724399)
 		# It is relevant only when use_allocator == "tcmalloc"
 		"use_new_tcmalloc=$(usetf new-tcmalloc)"
