@@ -137,7 +137,7 @@ BDEPEND="
 	dev-util/gn
 	>=dev-util/gperf-3.0.3
 	>=dev-util/ninja-1.7.2
-	>net-libs/nodejs-6[inspector]
+	optimize-webui? ( >=net-libs/nodejs-7.6.0[inspector] )
 	sys-apps/hwids[usb(+)]
 	>=sys-devel/bison-2.4.3
 	>=sys-devel/clang-7.0.0
@@ -214,8 +214,11 @@ src_prepare() {
 
 	default
 
-	mkdir -p third_party/node/linux/node-linux-x64/bin || die
-	ln -s "${EPREFIX}/usr/bin/node" third_party/node/linux/node-linux-x64/bin/node || die
+	if use optimize-webui; then
+		mkdir -p third_party/node/linux/node-linux-x64/bin || die
+		ln -s "${EPREFIX}/usr/bin/node" \
+			third_party/node/linux/node-linux-x64/bin/node || die
+	fi
 
 	# Apply extra patches (taken from openSUSE)
 	local p
@@ -411,8 +414,6 @@ src_prepare() {
 		third_party/mesa
 		third_party/metrics_proto
 		third_party/modp_b64
-		third_party/node
-		third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2
 		third_party/openmax_dl
 		third_party/ots
 		third_party/ply
@@ -464,23 +465,24 @@ src_prepare() {
 		third_party/yasm/run_yasm.py
 	)
 
-	if use pdf; then
-		keeplibs+=(
-			third_party/pdfium
-			third_party/pdfium/third_party/agg23
-			third_party/pdfium/third_party/base
-			third_party/pdfium/third_party/bigint
-			third_party/pdfium/third_party/freetype
-			third_party/pdfium/third_party/lcms
-			third_party/pdfium/third_party/libpng16
-			third_party/pdfium/third_party/libtiff
-			third_party/pdfium/third_party/skia_shared
-		)
-		use system-openjpeg || keeplibs+=(
-			third_party/pdfium/third_party/libopenjpeg20
-		)
-	fi
-
+	use optimize-webui && keeplibs+=(
+		third_party/node
+		third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2
+	)
+	use pdf && keeplibs+=(
+		third_party/pdfium
+		third_party/pdfium/third_party/agg23
+		third_party/pdfium/third_party/base
+		third_party/pdfium/third_party/bigint
+		third_party/pdfium/third_party/freetype
+		third_party/pdfium/third_party/lcms
+		third_party/pdfium/third_party/libpng16
+		third_party/pdfium/third_party/libtiff
+		third_party/pdfium/third_party/skia_shared
+	)
+	use pdf && use system-openjpeg || keeplibs+=(
+		third_party/pdfium/third_party/libopenjpeg20
+	)
 	use system-ffmpeg || keeplibs+=( third_party/ffmpeg third_party/opus )
 	use system-harfbuzz || keeplibs+=(
 		third_party/freetype
