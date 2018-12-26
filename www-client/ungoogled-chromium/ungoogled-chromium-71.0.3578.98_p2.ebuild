@@ -39,7 +39,6 @@ REQUIRED_USE="
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
 	cfi? ( amd64 thinlto )
-	cups? ( pdf )
 	libcxx? ( new-tcmalloc )
 	new-tcmalloc? ( tcmalloc )
 	optimize-thinlto? ( thinlto )
@@ -548,6 +547,8 @@ setup_compile_flags() {
 		use lld && thinlto_ldflag+=( "-Wl,--thinlto-jobs=$(makeopts_jobs)" )
 
 		append-ldflags "${thinlto_ldflag[*]}"
+	else
+		use gold && append-ldflags "-Wl,--threads -Wl,--thread-count=$(makeopts_jobs)"
 	fi
 
 	# Enable std::vector []-operator bounds checking (https://crbug.com/333391)
