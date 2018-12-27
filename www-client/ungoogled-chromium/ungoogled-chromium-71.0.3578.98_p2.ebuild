@@ -11,7 +11,7 @@ CHROMIUM_LANGS="
 	th tr uk vi zh-CN zh-TW
 "
 
-inherit check-reqs chromium-2 desktop flag-o-matic multiprocessing ninja-utils pax-utils python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
+inherit check-reqs chromium-2 desktop flag-o-matic ninja-utils pax-utils python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
 UGC_PV="${PV/_p/-}"
 UGC_P="${PN}-${UGC_PV}"
@@ -335,6 +335,7 @@ src_prepare() {
 		net/third_party/uri_template
 		third_party/WebKit
 		third_party/abseil-cpp
+		third_party/adobe
 		third_party/angle
 		third_party/angle/src/common/third_party/base
 		third_party/angle/src/common/third_party/smhasher
@@ -430,11 +431,13 @@ src_prepare() {
 		third_party/skia/third_party/skcms
 		third_party/skia/third_party/vulkan
 		third_party/smhasher
+		third_party/speech-dispatcher
 		third_party/spirv-headers
 		third_party/SPIRV-Tools
 		third_party/spirv-tools-angle
 		third_party/sqlite
 		third_party/ungoogled
+		third_party/usb_ids
 		third_party/usrsctp
 		third_party/vulkan
 		third_party/vulkan-validation-layers
@@ -450,18 +453,13 @@ src_prepare() {
 		third_party/webrtc/rtc_base/third_party/sigslot
 		third_party/widevine
 		third_party/woff2
+		third_party/xdg-utils
+		third_party/yasm/run_yasm.py
 		third_party/zlib/google
 		url/third_party/mozilla
 		v8/src/third_party/valgrind
 		v8/src/third_party/utf8-decoder
 		v8/third_party/v8
-
-		# gyp -> gn leftovers
-		third_party/adobe
-		third_party/speech-dispatcher
-		third_party/usb_ids
-		third_party/xdg-utils
-		third_party/yasm/run_yasm.py
 	)
 
 	use optimize-webui && keeplibs+=(
@@ -585,14 +583,6 @@ src_configure() {
 	NM=llvm-nm
 	strip-unsupported-flags
 
-	# Use system-provided libraries
-	# TODO: freetype -- remove sources (https://crbug.com/pdfium/733)
-	# TODO: use_system_hunspell (upstream changes needed)
-	# TODO: use_system_libsrtp (Bug #459932)
-	# TODO: use_system_protobuf (Bug #525560)
-	# TODO: use_system_ssl (https://crbug.com/58087)
-	# TODO: use_system_sqlite (https://crbug.com/22208)
-
 	local gn_system_libraries=(
 		flac
 		fontconfig
@@ -712,7 +702,7 @@ src_configure() {
 	# shellcheck disable=SC2174
 	mkdir -p -m 755 "${TMPDIR}" || die
 
-	# But #654216
+	# Bug #654216
 	addpredict /dev/dri/ #nowarn
 
 	einfo "Configuring Chromium..."

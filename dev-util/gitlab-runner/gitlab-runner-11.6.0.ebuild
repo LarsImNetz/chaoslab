@@ -1,36 +1,33 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-GIT_COMMIT="96b1bb13" # Change this when you update the ebuild
+GIT_COMMIT="f100a208" # Change this when you update the ebuild
 EGO_PN="gitlab.com/gitlab-org/${PN}"
 EGO_VENDOR=( "github.com/mitchellh/gox 9cc4875981" )
 
-inherit golang-vcs-snapshot linux-info systemd user
+inherit golang-vcs-snapshot-r1 linux-info systemd user
 
 DESCRIPTION="The official GitLab Runner, written in Go"
 HOMEPAGE="https://gitlab.com/gitlab-org/gitlab-runner"
-SRC_URI="https://${EGO_PN}/repository/v${PV}/archive.tar.gz -> ${P}.tar.gz
-	${EGO_VENDOR_URI}"
+ARCHIVE_URI="https://${EGO_PN}/repository/v${PV}/archive.tar.gz -> ${P}.tar.gz"
+SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror test"
 # test requires tons of stuff, doesn't work with portage
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="+build-images pie"
+IUSE="+build-images debug pie"
 
-RDEPEND="
-	app-arch/xz-utils
-	app-emulation/docker
-"
+RDEPEND="app-emulation/docker"
 DEPEND="${RDEPEND}
 	build-images? ( app-emulation/qemu )
 "
 
 DOCS=( CHANGELOG.md README.md )
-QA_PRESTRIPPED="usr/libexec/gitlab-runner/gitlab-runner"
+QA_PRESTRIPPED="usr/libexec/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -38,16 +35,14 @@ S="${G}/src/${EGO_PN}"
 CONFIG_CHECK="~BINFMT_MISC"
 ERROR_BINFMT_MISC="CONFIG_BINFMT_MISC: is required to build ARM images"
 
-pkg_setup() {
-	if use build-images && [ "${MERGE_TYPE}" != binary ]; then
-		linux-info_pkg_setup
-
+pkg_pretend() {
+	if use build-images && [[ "${MERGE_TYPE}" != binary ]]; then
 		# shellcheck disable=SC2086
-		if has network-sandbox $FEATURES; then
+		if has network-sandbox ${FEATURES}; then
 			ewarn
 			ewarn "${CATEGORY}/${PN} requires internet access during"
 			ewarn "compile phase, you must disable 'network-sandbox'"
-			ewarn "in FEATURES (${EROOT%/}/etc/portage/make.conf)."
+			ewarn "in FEATURES (${EROOT}/etc/portage/make.conf)."
 			ewarn
 			die "[network-sandbox] is enabled in FEATURES"
 		fi
@@ -88,6 +83,11 @@ pkg_setup() {
 	fi
 }
 
+pkg_setup() {
+	(use build-images && [[ "${MERGE_TYPE}" != binary ]]) && \
+		linux-info_pkg_setup
+}
+
 src_prepare() {
 	mkdir -p out/helper-images || die
 	default
@@ -97,7 +97,8 @@ src_compile() {
 	export GOPATH="${G}"
 	local PATH="${G}/bin:$PATH" BUILT
 	BUILT="$(date -u '+%Y-%m-%dT%H:%M:%S%:z')"
-	local myldflags=( -s -w
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "${EGO_PN}/common.NAME=${PN}"
 		-X "${EGO_PN}/common.VERSION=${PV}"
 		-X "${EGO_PN}/common.REVISION=${GIT_COMMIT}"
@@ -106,9 +107,9 @@ src_compile() {
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		"-buildmode=$(usex pie pie exe)"
+		"-asmflags=all=-trimpath=${S}"
+		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 
@@ -148,7 +149,7 @@ src_install() {
 	exeinto /usr/libexec/gitlab-runner
 	doexe gitlab-runner
 	dosym ../libexec/gitlab-runner/gitlab-runner /usr/bin/gitlab-runner
-	einstalldocs
+	use debug && dostrip -x /usr/libexec/gitlab-runner/gitlab-runner
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
@@ -165,6 +166,8 @@ src_install() {
 
 	insinto /etc/gitlab-runner
 	doins config.toml.example
+
+	einstalldocs
 }
 
 pkg_preinst() {
@@ -173,7 +176,7 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	if use build-images && [ "${MERGE_TYPE}" != binary ]; then
+	if use build-images && [[ "${MERGE_TYPE}" != binary ]]; then
 		ewarn
 		ewarn "As a security measure, you should remove portage from"
 		ewarn "the 'docker' group (e.g. gpasswd -d portage docker)."
