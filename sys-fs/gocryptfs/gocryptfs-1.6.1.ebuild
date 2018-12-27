@@ -17,7 +17,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
 IUSE="debug libressl +man pie +ssl"
 
-DEPEND="man? ( >=dev-go/go-md2man-1.0.8 )"
+DEPEND="man? ( dev-util/go-md2man )"
 RDEPEND="
 	sys-fs/fuse:0
 	ssl? (
