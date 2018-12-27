@@ -11,7 +11,7 @@ CHROMIUM_LANGS="
 	th tr uk vi zh-CN zh-TW
 "
 
-inherit check-reqs chromium-2 desktop flag-o-matic multiprocessing ninja-utils pax-utils python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
+inherit check-reqs chromium-2 desktop flag-o-matic ninja-utils pax-utils python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
 UGC_PV="${PV/_p/-}"
 UGC_P="${PN}-${UGC_PV}"
@@ -712,7 +712,7 @@ src_configure() {
 	# shellcheck disable=SC2174
 	mkdir -p -m 755 "${TMPDIR}" || die
 
-	# But #654216
+	# Bug #654216
 	addpredict /dev/dri/ #nowarn
 
 	einfo "Configuring Chromium..."
