@@ -4,7 +4,7 @@
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="97ac44d93e48d378bfbb80180c54f76a8b1a5cef"
+GIT_COMMIT="8ee931edefea910342e4cd92de9ce3423ba6115c"
 EGO_PN="github.com/gopasspw/${PN}"
 
 inherit bash-completion-r1 golang-vcs-snapshot-r1
@@ -16,7 +16,7 @@ RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
 IUSE="debug +pie"
 
 RDEPEND="
@@ -51,6 +51,7 @@ src_compile() {
 src_install() {
 	dobin gopass
 	use debug && dostrip -x /usr/bin/gopass
+	einstalldocs
 
 	./gopass completion bash > gopass.bash || die
 	newbashcomp gopass.bash gopass
@@ -60,6 +61,4 @@ src_install() {
 
 	dodir /usr/share/zsh/site-functions
 	./gopass completion zsh > "${ED}"/usr/share/zsh/site-functions/_gopass || die
-
-	einstalldocs
 }
