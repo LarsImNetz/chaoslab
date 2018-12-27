@@ -1,9 +1,0 @@
-# config file for /etc/init.d/snmp_exporter
-# run /usr/bin/snmp_exporter -h to see available options
-
-SNMP_EXPORTER_OPTS="--config.file=/etc/snmp_exporter/snmp.yml"
-SNMP_LOGDIR="/var/log/${RC_SVCNAME}"
-
-# Logging
-#output_log="${SNMP_LOGDIR}/snmp_exporter.log"
-#error_log="${SNMP_LOGDIR}/error.log"
