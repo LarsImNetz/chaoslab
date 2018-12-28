@@ -90,6 +90,7 @@ CDEPEND="
 	)
 	cups? ( >=net-print/cups-1.3.11:= )
 	kerberos? ( virtual/krb5 )
+	pdf? ( media-libs/lcms:= )
 	pulseaudio? ( media-sound/pulseaudio:= )
 	system-ffmpeg? (
 		>=media-video/ffmpeg-4:=
@@ -472,8 +473,6 @@ src_prepare() {
 		third_party/pdfium/third_party/base
 		third_party/pdfium/third_party/bigint
 		third_party/pdfium/third_party/freetype
-		third_party/pdfium/third_party/lcms
-		third_party/pdfium/third_party/libpng16
 		third_party/pdfium/third_party/libtiff
 		third_party/pdfium/third_party/skia_shared
 	)
@@ -677,7 +676,7 @@ src_configure() {
 		# FreeType and HarfBuzz to meet that need. (https://crbug.com/694137)
 		"use_system_freetype=$(usetf system-harfbuzz)"
 		"use_system_harfbuzz=$(usetf system-harfbuzz)"
-		"use_system_lcms2=true"
+		"use_system_lcms2=$(usetf pdf)"
 		"use_system_libjpeg=true"
 		"use_system_zlib=true"
 		"use_vaapi=$(usetf vaapi)"
