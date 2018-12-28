@@ -279,10 +279,11 @@ src_prepare() {
 	done
 
 	for p in "${ugc_use[@]}"; do
-		use "${p%:*}" && break
-		ugc_p="${p#*:}"
-		einfo "Removing ${ugc_p}.patch"
-		sed -i "/${ugc_p}.patch/d" "${ugc_rooted_dir}/patch_order.list" || die
+		if ! use "${p%:*}"; then
+			ugc_p="${p#*:}"
+			einfo "Removing ${ugc_p}.patch"
+			sed -i "/${ugc_p}.patch/d" "${ugc_rooted_dir}/patch_order.list" || die
+		fi
 	done
 
 	if ! use system-icu; then
