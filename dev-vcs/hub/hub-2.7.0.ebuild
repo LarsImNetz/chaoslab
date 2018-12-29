@@ -70,6 +70,7 @@ src_test() {
 src_install() {
 	dobin hub
 	use debug && dostrip -x /usr/bin/hub
+	einstalldocs
 
 	use man && doman share/man/man1/*.1
 	use bash-completion && newbashcomp etc/hub.bash_completion.sh hub
@@ -83,6 +84,4 @@ src_install() {
 		insinto /usr/share/zsh/site-functions
 		newins etc/hub.zsh_completion _hub
 	fi
-
-	einstalldocs
 }
