@@ -38,11 +38,13 @@ REQUIRED_USE="
 	^^ ( gold lld )
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
-	cfi? ( amd64 thinlto )
+	cfi? ( thinlto )
 	libcxx? ( new-tcmalloc )
+	lld? ( amd64 )
 	new-tcmalloc? ( tcmalloc )
 	optimize-thinlto? ( thinlto )
 	system-openjpeg? ( pdf )
+	thinlto? ( amd64 )
 "
 RESTRICT="
 	!system-ffmpeg? ( proprietary-codecs? ( bindist ) )
