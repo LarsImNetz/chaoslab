@@ -31,6 +31,7 @@ src_compile() {
 	)
 	local mygoargs=(
 		-v -work -x
+		"-buildmode=$(usex pie pie exe)"
 		"-asmflags=all=-trimpath=${S}"
 		"-gcflags=all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"

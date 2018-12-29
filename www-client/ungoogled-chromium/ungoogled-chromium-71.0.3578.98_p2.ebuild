@@ -38,11 +38,13 @@ REQUIRED_USE="
 	^^ ( gold lld )
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
-	cfi? ( amd64 thinlto )
+	cfi? ( thinlto )
 	libcxx? ( new-tcmalloc )
+	lld? ( amd64 )
 	new-tcmalloc? ( tcmalloc )
 	optimize-thinlto? ( thinlto )
 	system-openjpeg? ( pdf )
+	thinlto? ( amd64 )
 "
 RESTRICT="
 	!system-ffmpeg? ( proprietary-codecs? ( bindist ) )
@@ -93,7 +95,7 @@ CDEPEND="
 	pdf? ( media-libs/lcms:= )
 	pulseaudio? ( media-sound/pulseaudio:= )
 	system-ffmpeg? (
-		>=media-video/ffmpeg-4:=
+		>=media-video/ffmpeg-3.4.5:=
 		|| (
 			media-video/ffmpeg[-samba]
 			>=net-fs/samba-4.5.16[-debug(-)]
@@ -286,14 +288,19 @@ src_prepare() {
 		fi
 	done
 
-	if ! use system-icu; then
-		sed -i '/common\/icudtl.dat/d' "${ugc_rooted_dir}/pruning.list" || die
+	if use system-ffmpeg && has_version '<media-video/ffmpeg-4.0.0'; then
+		sed -i '/system\/jpeg.patch/i debian_buster/system/ffmpeg34.patch' \
+			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
 	# Fix build with harfbuzz-2 (Bug #669034)
 	if use system-harfbuzz; then
 		sed -i '/system\/jpeg.patch/i debian_buster/system/harfbuzz.patch' \
 			"${ugc_rooted_dir}/patch_order.list" || die
+	fi
+
+	if ! use system-icu; then
+		sed -i '/common\/icudtl.dat/d' "${ugc_rooted_dir}/pruning.list" || die
 	fi
 
 	if use system-openjpeg; then
