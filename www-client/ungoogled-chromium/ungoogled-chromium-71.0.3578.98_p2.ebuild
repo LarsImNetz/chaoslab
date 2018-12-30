@@ -40,11 +40,10 @@ REQUIRED_USE="
 	|| ( $(python_gen_useflags 'python2*') )
 	cfi? ( thinlto )
 	libcxx? ( new-tcmalloc )
-	lld? ( amd64 )
 	new-tcmalloc? ( tcmalloc )
 	optimize-thinlto? ( thinlto )
 	system-openjpeg? ( pdf )
-	thinlto? ( amd64 )
+	x86? ( !lld !thinlto !widevine )
 "
 RESTRICT="
 	!system-ffmpeg? ( proprietary-codecs? ( bindist ) )
@@ -52,7 +51,6 @@ RESTRICT="
 "
 
 CDEPEND="
-	app-arch/bzip2:=
 	app-arch/snappy:=
 	dev-libs/expat:=
 	dev-libs/glib:2
@@ -121,14 +119,15 @@ RDEPEND="${CDEPEND}
 	x11-misc/xdg-utils
 	selinux? ( sec-policy/selinux-chromium )
 	tcmalloc? ( !<x11-drivers/nvidia-drivers-331.20 )
+	widevine? ( !x86? ( www-plugins/chrome-binary-plugins[widevine(-)] ) )
 	!www-client/chromium
 	!www-client/ungoogled-chromium-bin
-	!x86? ( widevine? ( www-plugins/chrome-binary-plugins[widevine(-)] ) )
 "
 # dev-vcs/git (Bug #593476)
 # sys-apps/sandbox - https://crbug.com/586444
 DEPEND="${CDEPEND}"
 BDEPEND="
+	app-arch/bzip2:=
 	>=app-arch/gzip-1.7
 	dev-lang/perl
 	dev-lang/yasm
