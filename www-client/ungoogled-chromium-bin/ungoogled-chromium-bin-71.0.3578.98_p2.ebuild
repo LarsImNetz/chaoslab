@@ -14,6 +14,7 @@ inherit chromium-2 desktop readme.gentoo-r1 xdg-utils
 MY_PV="${PV/_p/-}"
 MY_PN="${PN/-bin}"
 MY_P="${MY_PN}_${MY_PV}_linux"
+
 DESCRIPTION="Modifications to Chromium for removing Google integration and enhancing privacy"
 HOMEPAGE="https://github.com/Eloston/ungoogled-chromium"
 SRC_URI="https://github.com/intika/uc-arch-binaries/releases/download/${MY_PV}/${MY_P}.tar.xz -> ${PN}-${MY_PV}.tar.xz"
@@ -64,8 +65,6 @@ RDEPEND="
 	!www-client/ungoogled-chromium
 "
 
-DEPEND="app-arch/xz-utils"
-
 DISABLE_AUTOFORMATTING="yes"
 DOC_CONTENTS="
 Some web pages may require additional fonts to display properly.
@@ -75,6 +74,7 @@ are not displayed properly:
 - media-fonts/droid
 - media-fonts/ipamonafont
 - media-fonts/noto
+- media-fonts/noto-emoji
 - media-fonts/ja-ipafonts
 - media-fonts/takao-fonts
 - media-fonts/wqy-microhei
@@ -170,7 +170,7 @@ update_caches() {
 	if type gtk-update-icon-cache &>/dev/null; then
 		ebegin "Updating GTK icon cache"
 		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
-		eend $?
+		eend $? || die
 	fi
 	xdg_desktop_database_update
 }
