@@ -260,6 +260,8 @@ src_prepare() {
 		common:no-such-option-no-sysroot
 		common:parallel
 		rooted:libcxx
+		# Remove "optimize_for_size" redundancy
+		common:optimize
 	)
 
 	local ugc_use=(
@@ -668,7 +670,6 @@ src_configure() {
 		"host_toolchain=\"//build/toolchain/linux/unbundle:default\""
 		"link_pulseaudio=$(usetf pulseaudio)"
 		"linux_use_bundled_binutils=false"
-		"optimize_for_size=false"
 		"use_allocator=\"$(usex tcmalloc tcmalloc none)\""
 		"use_cups=$(usetf cups)"
 		"use_custom_libcxx=false"
