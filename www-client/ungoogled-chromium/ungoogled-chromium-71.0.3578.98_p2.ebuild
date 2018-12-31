@@ -290,22 +290,22 @@ src_prepare() {
 	done
 
 	if use system-ffmpeg && has_version '<media-video/ffmpeg-4.0.0'; then
-		sed -i '/system\/jpeg.patch/i debian_buster/system/ffmpeg34.patch' \
+		sed -i '/jpeg.patch/i debian_buster/system/ffmpeg34.patch' \
 			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
 	# Fix build with harfbuzz-2 (Bug #669034)
 	if use system-harfbuzz; then
-		sed -i '/system\/jpeg.patch/i debian_buster/system/harfbuzz.patch' \
+		sed -i '/jpeg.patch/i debian_buster/system/harfbuzz.patch' \
 			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
 	if ! use system-icu; then
-		sed -i '/common\/icudtl.dat/d' "${ugc_rooted_dir}/pruning.list" || die
+		sed -i '/icudtl.dat/d' "${ugc_rooted_dir}/pruning.list" || die
 	fi
 
 	if use system-openjpeg; then
-		sed -i '/system\/nspr.patch/a debian_buster/system/openjpeg.patch' \
+		sed -i '/nspr.patch/a debian_buster/system/openjpeg.patch' \
 			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
