@@ -557,9 +557,6 @@ setup_compile_flags() {
 		use gold && append-ldflags "-Wl,--threads -Wl,--thread-count=$(makeopts_jobs)"
 	fi
 
-	# Enable std::vector []-operator bounds checking (https://crbug.com/333391)
-	append-cxxflags -D__google_stl_debug_vector=1
-
 	# Don't complain if Chromium uses a diagnostic option that is not yet
 	# implemented in the compiler version used by the user. This is only
 	# supported by Clang.
