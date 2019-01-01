@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -28,8 +28,8 @@ LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="
-	+atk cfi cups custom-cflags gnome gold jumbo-build kerberos libcxx +lld
-	new-tcmalloc optimize-thinlto optimize-webui +pdf +proprietary-codecs
+	+atk +cfi cups custom-cflags +dbus gnome gold jumbo-build kerberos libcxx
+	+lld new-tcmalloc optimize-thinlto optimize-webui +pdf +proprietary-codecs
 	pulseaudio selinux +suid +system-ffmpeg system-harfbuzz +system-icu
 	+system-jsoncpp +system-libevent +system-libvpx +system-openh264
 	+system-openjpeg +tcmalloc +thinlto vaapi widevine
@@ -38,6 +38,7 @@ REQUIRED_USE="
 	^^ ( gold lld )
 	|| ( $(python_gen_useflags 'python3*') )
 	|| ( $(python_gen_useflags 'python2*') )
+	atk? ( dbus )
 	cfi? ( thinlto )
 	libcxx? ( new-tcmalloc )
 	new-tcmalloc? ( tcmalloc )
@@ -65,7 +66,6 @@ CDEPEND="
 	media-libs/libjpeg-turbo:=
 	media-libs/libpng:=
 	>=media-libs/libwebp-0.4.0:=
-	sys-apps/dbus:=
 	sys-apps/pciutils:=
 	sys-libs/zlib:=[minizip]
 	virtual/udev
@@ -89,6 +89,7 @@ CDEPEND="
 		>=dev-libs/atk-2.26
 	)
 	cups? ( >=net-print/cups-1.3.11:= )
+	dbus? ( sys-apps/dbus:= )
 	kerberos? ( virtual/krb5 )
 	pdf? ( media-libs/lcms:= )
 	pulseaudio? ( media-sound/pulseaudio:= )
@@ -178,6 +179,7 @@ GTK+ icon theme.
 
 PATCHES=(
 	"${FILESDIR}/${PN}-atk-r0.patch"
+	"${FILESDIR}/${PN}-dbus-r0.patch"
 	"${FILESDIR}/${PN}-compiler-r5.patch"
 	"${FILESDIR}/${PN}-gold-r1.patch"
 )
@@ -516,9 +518,8 @@ setup_compile_flags() {
 		strip-flags
 
 		# Filter common/redundant flags. See build/config/compiler/BUILD.gn
-		filter-flags -fomit-frame-pointer -fno-omit-frame-pointer
-		filter-flags '-fstack-protector*' '-fno-stack-protector*'
-		filter-flags '-fuse-ld=*' '-g*' '-Wl,*'
+		filter-flags -fomit-frame-pointer -fno-omit-frame-pointer \
+			-fstack-protector* -fno-stack-protector* -fuse-ld=* -g* -Wl,*
 
 		# Prevent libvpx build failures (Bug #530248, #544702, #546984)
 		filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
@@ -690,6 +691,7 @@ src_configure() {
 		"enable_pdf=$(usetf pdf)"
 		"enable_print_preview=$(usetf pdf)"
 		"use_atk=$(usetf atk)"
+		"use_dbus=$(usetf dbus)"
 		"use_icf=true"
 		# Enables the soon-to-be default tcmalloc (https://crbug.com/724399)
 		# It is relevant only when use_allocator == "tcmalloc"
