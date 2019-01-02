@@ -13,22 +13,27 @@ RESTRICT="mirror"
 LICENSE="public-domain"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
+IUSE="+sodium"
 
-RDEPEND="sys-apps/ucspi-tcp"
+DEPEND="sodium? ( dev-libs/libsodium:0=[-minimal] )"
+RDEPEND="
+	${DEPEND}
+	sys-apps/ucspi-tcp
+"
 
 src_prepare() {
 	# Leave optimization level to user CFLAGS
-	sed -i 's/-O3 -fomit-frame-pointer -funroll-loops//g' ./conf-cc || die
+	sed -i 's/-Os -fomit-frame-pointer -funroll-loops//g' ./conf-cc || die
 
-	# Use make-tinysshcc.sh script, which has no tests and doesn't execute binaries
-	# https://github.com/janmojzis/tinyssh/issues/2
+	# Use make-tinysshcc.sh script, which has no tests and doesn't execute
+	# binaries. See https://github.com/janmojzis/tinyssh/issues/2
 	sed -i 's/tinyssh/tinysshcc/g' ./Makefile || die
 
 	default
 }
 
 src_compile() {
-	emake compile
+	emake LIBS="$(usex sodium '-lsodium' '')"
 }
 
 src_install() {
@@ -45,9 +50,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	einfo
 	einfo "TinySSH is in beta stage, and ready for production use."
-	einfo
 	einfo "See https://tinyssh.org for more information."
-	einfo
 }
