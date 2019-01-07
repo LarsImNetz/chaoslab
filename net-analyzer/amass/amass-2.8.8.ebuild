@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 EGO_PN="github.com/OWASP/${PN^}"
+# Note: Keep EGO_VENDOR in sync with amass/go.mod
 EGO_VENDOR=(
-	# Note: Keep EGO_VENDOR in sync with amass/go.mod
 	"github.com/PuerkitoBio/fetchbot v1.1.2"
 	"github.com/PuerkitoBio/goquery v1.4.1"
 	"github.com/andybalholm/cascadia v1.0.0"
