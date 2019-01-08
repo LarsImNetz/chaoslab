@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -168,7 +168,7 @@ proc-macro2-0.3.8
 proc-macro2-0.4.19
 protobuf-1.7.4
 pulldown-cmark-0.0.3
-pwasm-utils-0.2.2
+pwasm-utils-0.6.1
 quick-error-1.2.2
 quote-0.4.2
 quote-0.5.2
