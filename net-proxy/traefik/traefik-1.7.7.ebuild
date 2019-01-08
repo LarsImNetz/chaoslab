@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -71,6 +71,7 @@ src_test() {
 src_install() {
 	dobin traefik
 	use debug && dostrip -x /usr/bin/traefik
+	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
@@ -87,8 +88,6 @@ src_install() {
 
 	diropts -o traefik -g traefik -m 0750
 	keepdir /var/log/traefik
-
-	einstalldocs
 }
 
 pkg_postinst() {
