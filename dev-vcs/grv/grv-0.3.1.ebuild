@@ -1,15 +1,15 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 EGO_PN="github.com/rgburke/${PN}"
 EGO_VENDOR=(
-	# Snapshot taken on 2018.12.08
+	# Snapshot taken on 2019.01.09
 	"github.com/google/go-querystring 44c6ddd0a234" # tests
-	"github.com/google/go-github v19.1.0" # tests
+	"github.com/google/go-github v21.0.0" # tests
 	"golang.org/x/oauth2 d668ce993890 github.com/golang/oauth2" # tests
-	"golang.org/x/net 610586996380 github.com/golang/net" # tests
+	"golang.org/x/net 1e06a53dbb7e github.com/golang/net" # tests
 )
 
 inherit golang-vcs-snapshot-r1
@@ -22,7 +22,7 @@ RESTRICT="mirror"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
 IUSE="debug pie"
 
 RDEPEND="
