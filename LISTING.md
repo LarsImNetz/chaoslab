@@ -75,7 +75,6 @@ app-metrics/**[unbound_exporter](app-metrics/unbound_exporter)** | A Prometheus 
 app-metrics/**[uwsgi_exporter](app-metrics/uwsgi_exporter)** 🔂 | uWSGI metrics exporter for prometheus.io
 app-metrics/**[varnish_exporter](app-metrics/varnish_exporter)** | Varnish exporter for Prometheus
 app-misc/**[asciinema-rs](app-misc/asciinema-rs)** | Terminal recording and playback client for asciinema.org, written in Rust
-app-misc/**[bat](app-misc/bat)** | A 'cat' clone with syntax highlighting and Git integration
 app-misc/**[corgi](app-misc/corgi)** | A CLI workflow manager that helps with your repetitive command usages
 app-misc/**[genact](app-misc/genact)** | A nonsense activity generator
 app-misc/**[jid](app-misc/jid)** | JSON incremental digger
