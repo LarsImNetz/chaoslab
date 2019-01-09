@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile install postinst postrm prepare pretend
+DEPEND=dev-nodejs/apm >net-libs/nodejs-6.0
+DESCRIPTION=A hackable text editor for the 21st Century
+EAPI=7
+HOMEPAGE=https://atom.io
+IUSE=+audit
+KEYWORDS=~amd64
+LICENSE=MIT
+RDEPEND=dev-nodejs/apm >net-libs/nodejs-6.0 >=dev-util/ctags-5.8 >=dev-util/electron-bin-3.0.10:3.0 dev-vcs/git media-fonts/inconsolata x11-libs/libxkbfile !app-editors/atom-bin !sys-apps/apmd
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/atom/atom/archive/v1.34.0.tar.gz -> atom-1.34.0.tar.gz
+_eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	xdg-utils	93b2dfbb00a09161e1e7f6360c0f7f6b
+_md5_=1e8b935731c5566eca91b5e05768ebf0

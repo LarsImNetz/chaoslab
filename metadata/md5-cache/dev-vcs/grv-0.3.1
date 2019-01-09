@@ -1,0 +1,15 @@
+BDEPEND=>=dev-lang/go-1.10.1
+DEFINED_PHASES=compile install test unpack
+DEPEND=>=dev-libs/libgit2-0.27 sys-libs/ncurses:0 sys-libs/readline:0 net-misc/curl
+DESCRIPTION=A terminal based interface for viewing Git repositories
+EAPI=7
+HOMEPAGE=https://github.com/rgburke/grv
+IUSE=debug pie
+KEYWORDS=~amd64 ~arm ~arm64 ~x86
+LICENSE=GPL-3
+RDEPEND=>=dev-libs/libgit2-0.27 sys-libs/ncurses:0 sys-libs/readline:0 net-misc/curl
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/rgburke/grv/releases/download/v0.3.1/grv-0.3.1-src.tar.gz -> grv-0.3.1.tar.gz https://github.com/google/go-querystring/archive/44c6ddd0a234.tar.gz -> github.com-google-go-querystring-44c6ddd0a234.tar.gz https://github.com/google/go-github/archive/v21.0.0.tar.gz -> github.com-google-go-github-v21.0.0.tar.gz https://github.com/golang/oauth2/archive/d668ce993890.tar.gz -> github.com-golang-oauth2-d668ce993890.tar.gz https://github.com/golang/net/archive/1e06a53dbb7e.tar.gz -> github.com-golang-net-1e06a53dbb7e.tar.gz
+_eclasses_=golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f
+_md5_=fc0255462a682e5c0743adcbcbd134d8
