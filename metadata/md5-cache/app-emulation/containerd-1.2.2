@@ -1,0 +1,15 @@
+BDEPEND=>=dev-lang/go-1.10.1
+DEFINED_PHASES=compile install unpack
+DEPEND=seccomp? ( sys-libs/libseccomp ) btrfs? ( sys-fs/btrfs-progs )
+DESCRIPTION=A daemon to control runC
+EAPI=7
+HOMEPAGE=https://containerd.tools
+IUSE=apparmor +btrfs +cri debug +seccomp
+KEYWORDS=~amd64 ~arm ~arm64
+LICENSE=Apache-2.0
+RDEPEND=seccomp? ( sys-libs/libseccomp ) >=app-emulation/runc-1.0.0_pre20181203
+RESTRICT=test
+SLOT=0
+SRC_URI=https://github.com/containerd/containerd/archive/v1.2.2.tar.gz -> containerd-1.2.2.tar.gz
+_eclasses_=golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f
+_md5_=a91280e8a9660423ceb83e0cf8732d93
