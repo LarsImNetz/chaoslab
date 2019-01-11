@@ -1,12 +1,13 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
+# Change this when you update the ebuild
+GIT_COMMIT="4c52b901c6cb019f7552cd93055f9688c6538be4"
 EGO_PN="github.com/${PN}/${PN}-ce"
-GIT_COMMIT="4d60db472b" # Change this when you update the ebuild
 
-inherit bash-completion-r1 golang-vcs-snapshot linux-info systemd udev user
+inherit bash-completion-r1 golang-vcs-snapshot-r1 linux-info systemd udev user
 
 DESCRIPTION="The core functions you need to create Docker images and run Docker containers"
 HOMEPAGE="https://dockerproject.org"
@@ -15,8 +16,8 @@ RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="~amd64 ~arm"
-IUSE="apparmor aufs btrfs +container-init +device-mapper +overlay pkcs11 seccomp systemd"
+KEYWORDS="~amd64 ~arm ~arm64"
+IUSE="apparmor aufs debug btrfs +container-init +device-mapper +overlay pkcs11 seccomp systemd"
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#build-dependencies
 CDEPEND="
@@ -32,10 +33,9 @@ DEPEND="${CDEPEND}
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#optional-dependencies
 RDEPEND="${CDEPEND}
-	>=app-arch/xz-utils-4.9
-	~app-emulation/containerd-1.1.2
-	~app-emulation/docker-proxy-0.8.0_pre20181015
-	~app-emulation/runc-1.0.0_pre20180309[apparmor?,seccomp?]
+	~app-emulation/containerd-1.2.2
+	~app-emulation/docker-proxy-0.8.0_pre20181208
+	~app-emulation/runc-1.0.0_pre20181203[apparmor?,seccomp?]
 	dev-libs/libltdl
 	>=dev-vcs/git-1.7
 	>=net-firewall/iptables-1.4
@@ -43,12 +43,7 @@ RDEPEND="${CDEPEND}
 	container-init? ( >=sys-process/tini-0.18.0[static] )
 "
 
-PATCHES=( "${FILESDIR}"/bsc1073877-docker-apparmor-add-signal.patch )
-
-QA_PRESTRIPPED="
-	usr/bin/dockerd
-	usr/bin/docker
-"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -177,12 +172,8 @@ src_prepare() {
 
 src_compile() {
 	export GOPATH="${G}"
-	local CGO_CFLAGS CGO_LDFLAGS
-
-	# setup CFLAGS and LDFLAGS for separate build target
-	# see https://github.com/tianon/docker-overlay/pull/10
-	CGO_CFLAGS="-I${ROOT}/usr/include"
-	CGO_LDFLAGS="-L${ROOT}/usr/$(get_libdir)"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
 
 	# fake golang layout
 	ln -s docker-ce/components/engine ../docker || die
@@ -206,24 +197,25 @@ src_compile() {
 	use btrfs || DOCKER_BUILDTAGS+=" btrfs_noversion"
 
 	# build daemon
-	pushd ../docker || die
+	pushd ../docker > /dev/null || die
 	chmod +x hack/make/.go-autogen || die
 	hack/make/.go-autogen || die
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=pie"
-		-asmflags "-trimpath=${G}/src/${EGO_PN/-ce}"
-		-gcflags "-trimpath=${G}/src/${EGO_PN/-ce}"
-		-ldflags "-s -w"
+		-asmflags "all=-trimpath=${G}/src/${EGO_PN/-ce}"
+		-gcflags "all=-trimpath=${G}/src/${EGO_PN/-ce}"
+		-ldflags "$(usex !debug '-s -w' '')"
 		-tags "autogen ${DOCKER_BUILDTAGS}"
 	)
 	go build "${mygoargs[@]}" ./cmd/dockerd || die
-	popd || die
+	popd > /dev/null || die
 
 	# build cli
-	pushd ../cli || die
+	pushd ../cli > /dev/null || die
 	local EGO_PNCLI="${EGO_PN/docker-ce/cli}"
-	local myldflags=( -s -w
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "${EGO_PNCLI}/cli.GitCommit=${GIT_COMMIT}"
 		-X "'${EGO_PNCLI}/cli.BuildTime=${BUILD_TIME}'"
 		-X "${EGO_PNCLI}/cli.Version=$(cat VERSION)"
@@ -231,8 +223,8 @@ src_compile() {
 	local mygoargs2=(
 		-v -work -x
 		"-buildmode=pie"
-		-asmflags "-trimpath=${G}/src/${EGO_PNCLI}"
-		-gcflags "-trimpath=${G}/src/${EGO_PNCLI}"
+		-asmflags "all=-trimpath=${G}/src/${EGO_PNCLI}"
+		-gcflags "all=-trimpath=${G}/src/${EGO_PNCLI}"
 		-ldflags "${myldflags[*]}"
 		-tags pkcs11
 	)
@@ -247,7 +239,7 @@ src_compile() {
 	gen-manpages --root . --target ./man/man1 > /dev/null || die
 	# Generate legacy pages from markdown
 	man/md2man-all.sh -q || die
-	popd || die
+	popd > /dev/null || die
 }
 
 src_install() {
@@ -259,7 +251,7 @@ src_install() {
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 
-	pushd components/engine || die
+	pushd components/engine > /dev/null || die
 	dobin dockerd
 
 	systemd_dounit contrib/init/systemd/docker.{service,socket}
@@ -274,11 +266,13 @@ src_install() {
 
 	# note: intentionally not using "doins" so that we preserve +x bits
 	dodir "/usr/share/${PN}/contrib"
-	cp -R contrib/* "${ED%/}/usr/share/${PN}/contrib"
-	popd || die
+	cp -R contrib/* "${ED}/usr/share/${PN}/contrib"
+	popd > /dev/null || die
 
-	pushd components/cli || die
+	pushd components/cli > /dev/null || die
 	dobin docker
+
+	use debug && dostrip -x /usr/bin/{docker,dockerd}
 
 	doman man/man*/*
 
@@ -287,7 +281,7 @@ src_install() {
 	doins contrib/completion/fish/docker.fish
 	insinto /usr/share/zsh/site-functions
 	doins contrib/completion/zsh/_docker
-	popd || die
+	popd > /dev/null || die
 
 	diropts -g docker -m 0750
 	keepdir /var/log/docker
@@ -302,8 +296,11 @@ pkg_postinst() {
 	elog "  rc-update add docker default"
 	elog "Similarly for systemd:"
 	elog "  systemctl enable docker.service"
-	elog
+	elog ""
 	elog "To use Docker as a non-root user, add yourself to the 'docker' group:"
 	elog "  usermod -aG docker youruser"
+	elog ""
+	elog "Devicemapper storage driver has been deprecated"
+	elog "It will be removed in a future release"
 	einfo
 }

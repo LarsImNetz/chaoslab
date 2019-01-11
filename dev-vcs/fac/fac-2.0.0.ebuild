@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -15,7 +15,7 @@ EGO_VENDOR=(
 	"gopkg.in/yaml.v2 v2.2.1 github.com/go-yaml/yaml"
 )
 
-inherit golang-vcs-snapshot-r1
+inherit flag-o-matic golang-vcs-snapshot-r1
 
 DESCRIPTION="Easy-to-use CUI for fixing git conflicts"
 HOMEPAGE="https://github.com/mkchoi212/fac"
@@ -26,7 +26,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="debug pie"
+IUSE="debug pie static"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/.*"
@@ -34,13 +34,23 @@ QA_PRESTRIPPED="usr/bin/.*"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
+src_prepare() {
+	if use static; then
+		use pie || export CGO_ENABLED=0
+		use pie && append-ldflags -static
+	fi
+	default
+}
+
 src_compile() {
 	export GOPATH="${G}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie exe)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "$(usex !debug '-s -w' '')"
 	)
 	go build "${mygoargs[@]}" || die
