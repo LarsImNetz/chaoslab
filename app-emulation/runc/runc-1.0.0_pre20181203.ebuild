@@ -1,15 +1,15 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-# For docker-18.09.0
-# https://github.com/docker/docker-ce/blob/v18.09.0/components/engine/hack/dockerfile/install/runc.installer
-
+# For docker-18.09.1
+# https://github.com/docker/docker-ce/blob/v18.09.1/components/engine/hack/dockerfile/install/runc.installer
+# Change this when you update the ebuild:
+GIT_COMMIT="96ec2177ae841256168fcf76954f7177af9446eb"
 EGO_PN="github.com/opencontainers/${PN}"
-GIT_COMMIT="69663f0bd4b60df09991c08812a60108003fa340"
 
-inherit bash-completion-r1 golang-vcs-snapshot
+inherit bash-completion-r1 golang-vcs-snapshot-r1
 
 DESCRIPTION="CLI tool for spawning and running containers"
 HOMEPAGE="http://runc.io"
@@ -19,7 +19,7 @@ RESTRICT="mirror test" # needs dockerd
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64"
-IUSE="+ambient apparmor bash-completion hardened +seccomp"
+IUSE="+ambient apparmor debug +kmem +seccomp"
 
 DEPEND="dev-util/go-md2man"
 RDEPEND="
@@ -29,35 +29,36 @@ RDEPEND="
 "
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/runc"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
-	local CGO_CFLAGS CGO_LDFLAGS
-	CGO_CFLAGS="-I${ROOT}/usr/include"
-	CGO_LDFLAGS="$(usex hardened '-fno-PIC ' '') -L${ROOT}/usr/$(get_libdir)"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
 
-	local myldflags=( -s -w
+	local options=(
+		"$(usex ambient 'ambient' '')"
+		"$(usex apparmor 'apparmor' '')"
+		"$(usex !kmem 'nokmem' '')"
+		"$(usex seccomp 'seccomp' '')"
+	)
+
+	local myldflags=(
+		"$(usex !debug '-s -w' '')"
 		-X "main.gitCommit=${GIT_COMMIT}"
 		-X "main.version=${PV}"
 	)
 
-	# build up optional flags
-	local opts
-	use ambient && opts+=" ambient"
-	use apparmor && opts+=" apparmor"
-	use seccomp && opts+=" seccomp"
-
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=pie"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
-		-tags "${opts/ /}"
+		-tags "${options[*]}"
 	)
 	go build "${mygoargs[@]}" || die
 
@@ -67,9 +68,9 @@ src_compile() {
 
 src_install() {
 	dobin runc
+	use debug && dostrip -x /usr/bin/runc
 	einstalldocs
 
 	doman man/man8/*
-
-	use bash-completion && dobashcomp contrib/completions/bash/runc
+	dobashcomp contrib/completions/bash/runc
 }

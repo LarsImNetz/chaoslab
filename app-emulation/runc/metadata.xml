@@ -15,8 +15,10 @@
 	</longdescription>
 	<use>
 		<flag name="ambient">
-			Enable support for ambient capabilities set (requires Linux kernel 4.3 or later)
+			Enable support for ambient capabilities set
+			(requires Linux kernel 4.3 or later)
 		</flag>
 		<flag name="apparmor">Enable AppArmor support</flag>
+		<flag name="kmem">Enable Kernel Memory Accounting</flag>
 	</use>
 </pkgmetadata>
