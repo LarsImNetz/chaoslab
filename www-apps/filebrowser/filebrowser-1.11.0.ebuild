@@ -89,7 +89,7 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+daemon debug pie"
+IUSE="+daemon debug pie static"
 
 DEPEND="sys-apps/yarn"
 
@@ -124,14 +124,24 @@ src_unpack() {
 	mv "${FRONTEND_P}" frontend || die
 }
 
+src_prepare() {
+	if use static; then
+		use pie || export CGO_ENABLED=0
+		use pie && append-ldflags -static
+	fi
+	default
+}
+
 src_compile() {
 	export GOPATH="${G}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
 	local PATH="${G}/bin:$PATH"
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "$(usex !debug '-s -w' '')"
 		-o filebrowser
 	)
