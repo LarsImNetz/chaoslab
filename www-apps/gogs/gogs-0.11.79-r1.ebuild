@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -8,7 +8,7 @@ GIT_COMMIT="f43d21d0aff791780aaca5770e0bc92c39c803d3"
 EGO_VENDOR=( "github.com/kevinburke/go-bindata v3.13.0" )
 EGO_PN="github.com/${PN}/${PN}"
 
-inherit fcaps golang-vcs-snapshot-r1 systemd user
+inherit fcaps flag-o-matic golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="A painless self-hosted Git service"
 HOMEPAGE="https://gogs.io"
@@ -19,7 +19,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="debug cert memcached mysql openssh pam pie postgres redis sqlite"
+IUSE="debug cert memcached mysql openssh pam pie postgres redis sqlite static"
 
 RDEPEND="
 	dev-vcs/git[curl,threads]
@@ -54,11 +54,18 @@ src_prepare() {
 	# Remove bundled binary, we will rebuild it ourselves
 	rm pkg/bindata/bindata.go || die
 
+	if use static; then
+		use pie || export CGO_ENABLED=0
+		use pie && append-ldflags -static
+	fi
+
 	default
 }
 
 src_compile() {
 	export GOPATH="${G}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
 	local PATH="${G}/bin:$PATH"
 
 	# Build go-bindata locally
@@ -84,8 +91,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 		-tags "${opts/ /}"
 	)
