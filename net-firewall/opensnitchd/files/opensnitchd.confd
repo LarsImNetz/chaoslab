@@ -1,0 +1,5 @@
+# config file for /etc/init.d/opensnitchd
+
+OPENSNITCHD_LOGDIR="/var/log"
+OPENSNITCHD_RULES="/etc/opensnitchd/rules"
+OPENSNITCHD_OPTS="-log-file ${OPENSNITCHD_LOGDIR}/opensnitchd.log -rules-path ${OPENSNITCHD_RULES} -ui-socket unix:///tmp/osui.sock"
