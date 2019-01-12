@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="0c1207215852a8726c3f09dea157d597fec368df"
-WEBAPP_COMMIT="52bc19c3b17fc3b0f88bc8ffe869f2c11781a713"
+GIT_COMMIT="dafe9bc2270422116468ac5029e336d9f417ca76"
+WEBAPP_COMMIT="862b44313fe403a7bdc56e0abe3050ee66064cdf"
 EGO_PN="github.com/mattermost/${PN}"
 WEBAPP_P="mattermost-webapp-${PV}"
 MY_PV="${PV/_/-}"
@@ -15,7 +15,7 @@ if [[ "$ARCH" != "x86" && "$ARCH" != "amd64" ]]; then
 	DEPEND="media-libs/libpng:0"
 fi
 
-inherit ${INHERIT} golang-vcs-snapshot-r1 systemd user
+inherit ${INHERIT} flag-o-matic golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="Open source Slack-alternative in Golang and React (Team Edition)"
 HOMEPAGE="https://mattermost.com"
@@ -28,7 +28,7 @@ RESTRICT="mirror test"
 LICENSE="AGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm64 x86
-IUSE="+audit debug pie"
+IUSE="+audit debug pie static"
 
 DEPEND="${DEPEND}
 	>net-libs/nodejs-6[npm]
@@ -77,22 +77,22 @@ src_prepare() {
 	# and disable diagnostics (call home) by default.
 	# shellcheck disable=SC2086
 	sed -i \
-		-e 's|"ListenAddress": ":8065"|"ListenAddress": "127.0.0.1:8065"|g' \
-		-e 's|"ListenAddress": ":8067"|"ListenAddress": "127.0.0.1:8067"|g' \
-		-e 's|"ConsoleLevel": "DEBUG"|"ConsoleLevel": "INFO"|g' \
-		-e 's|"EnableDiagnostics":.*|"EnableDiagnostics": false|' \
-		-e 's|"Directory": "./data/"|"Directory": "'${datadir}'/data/"|g' \
-		-e 's|"Directory": "./plugins"|"Directory": "'${datadir}'/plugins"|g' \
-		-e 's|"ClientDirectory": "./client/plugins"|"ClientDirectory": "'${datadir}'/client/plugins"|g' \
-		-e 's|tcp(dockerhost:3306)|unix(/run/mysqld/mysqld.sock)|g' \
+		-e 's|\("ListenAddress":\).*\(8065\).*|\1 "127.0.0.1:\2",|' \
+		-e 's|\("ListenAddress":\).*\(8067\).*|\1 "127.0.0.1:\2"|' \
+		-e 's|\("ConsoleLevel":\).*|\1 "INFO",|' \
+		-e 's|\("EnableDiagnostics":\).*|\1 false|' \
+		-e 's|\("Directory":\).*\(/data/\).*|\1 "'${datadir}'\2",|g' \
+		-e 's|\("Directory":\).*\(/plugins\).*|\1 "'${datadir}'\2",|' \
+		-e 's|\("ClientDirectory":\).*\(/client/plugins\)|\1 "'${datadir}'\2",|' \
+		-e 's|tcp(dockerhost:3306)|unix(/run/mysqld/mysqld.sock)|' \
 		config/default.json || die
 
 	# Reset email sending to original configuration
 	sed -i \
-		-e 's|"SendEmailNotifications": true,|"SendEmailNotifications": false,|g' \
-		-e 's|"FeedbackEmail": "test@example.com",|"FeedbackEmail": "",|g' \
-		-e 's|"SMTPServer": "dockerhost",|"SMTPServer": "",|g' \
-		-e 's|"SMTPPort": "2500",|"SMTPPort": "",|g' \
+		-e 's|\("SendEmailNotifications":\).*|\1 false,|' \
+		-e 's|\("FeedbackEmail":\).*|\1 "",|' \
+		-e 's|\("SMTPServer":\).*|\1 "",|' \
+		-e 's|\("SMTPPort":\).*|\1 "",|' \
 		config/default.json || die
 
 	# shellcheck disable=SC1117
@@ -101,12 +101,19 @@ src_prepare() {
 		-E "s/^(\s*)COMMIT_HASH:(.*),$/\1COMMIT_HASH: JSON.stringify\(\"${WEBAPP_COMMIT}\)\"\),/" \
 		client/webpack.config.js || die
 
+	if use static; then
+		use pie || export CGO_ENABLED=0
+		use pie && append-ldflags -static
+	fi
+
 	default
 }
 
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "${EGO_PN}/model.BuildNumber=${PV}"
@@ -118,8 +125,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 
