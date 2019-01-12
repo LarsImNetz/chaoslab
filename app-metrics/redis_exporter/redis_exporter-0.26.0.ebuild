@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 # Change this when you update the ebuild:
-GIT_COMMIT="1b148d98f01340c58335299eca42e2a8005397e5"
+GIT_COMMIT="bdb321677a309e525496ec3b786aa4c3745a546b"
 EGO_PN="github.com/oliver006/${PN}"
 
 inherit golang-vcs-snapshot-r1 systemd user
@@ -17,7 +17,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="debug pie"
+IUSE="debug pie static"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/.*"
@@ -42,8 +42,18 @@ pkg_setup() {
 	enewuser redis_exporter -1 -1 -1 redis_exporter
 }
 
+src_prepare() {
+	if use static; then
+		use pie || export CGO_ENABLED=0
+		use pie && append-ldflags -static
+	fi
+	default
+}
+
 src_compile() {
 	export GOPATH="${G}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "main.VERSION=${PV}"
@@ -53,8 +63,8 @@ src_compile() {
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
