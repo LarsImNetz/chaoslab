@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -103,8 +103,6 @@ src_install() {
 
 	# Remove the redundant file
 	rm config.example.js || die
-	# Remove phantomjs, it's not required anymore
-	rm -R node_modules/{phantomjs-prebuilt,.bin/phantomjs} || die
 
 	insinto /usr/share/cryptpad
 	doins -r {customize.dist,node_modules,storage,www}
