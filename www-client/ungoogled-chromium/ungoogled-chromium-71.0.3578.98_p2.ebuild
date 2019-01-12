@@ -59,7 +59,7 @@ CDEPEND="
 	dev-libs/libxslt:=
 	dev-libs/nspr:=
 	>=dev-libs/nss-3.26:=
-	>=dev-libs/re2-0.2016.11.01:=
+	>=dev-libs/re2-0.2018.10.01:=
 	>=media-libs/alsa-lib-1.0.19:=
 	media-libs/flac:=
 	media-libs/fontconfig:=
