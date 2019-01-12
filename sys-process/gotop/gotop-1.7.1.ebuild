@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -21,7 +21,7 @@ EGO_VENDOR=(
 	"golang.org/x/sys 3b87a42e500a github.com/golang/sys"
 )
 
-inherit golang-vcs-snapshot-r1
+inherit flag-o-matic golang-vcs-snapshot-r1
 
 DESCRIPTION="A terminal based graphical activity monitor inspired by gtop and vtop"
 HOMEPAGE="https://github.com/cjbassi/gotop"
@@ -32,7 +32,7 @@ RESTRICT="mirror"
 LICENSE="AGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
-IUSE="debug pie"
+IUSE="debug pie static"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/.*"
@@ -40,13 +40,23 @@ QA_PRESTRIPPED="usr/bin/.*"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
+src_prepare() {
+	if use static; then
+		use pie || export CGO_ENABLED=0
+		use pie && append-ldflags -static
+	fi
+	default
+}
+
 src_compile() {
 	export GOPATH="${G}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
 	local mygoargs=(
 		-v -work -x
 		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "$(usex !debug '-s -w' '')"
 	)
 	go build "${mygoargs[@]}" || die

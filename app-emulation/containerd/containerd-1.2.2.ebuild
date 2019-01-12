@@ -37,8 +37,8 @@ S="${G}/src/${EGO_PN}"
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
-	local CGO_CFLAGS="${CFLAGS}"
-	local CGO_LDFLAGS="${LDFLAGS}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
 
 	local options=(
 		"$(usex apparmor 'apparmor' '')"
