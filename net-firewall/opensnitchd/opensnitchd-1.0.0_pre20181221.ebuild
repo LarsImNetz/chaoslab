@@ -80,7 +80,7 @@ src_install() {
 	dobin opensnitchd
 	use debug && dostrip -x /usr/bin/opensnitchd
 	einstalldocs
-	
+
 	keepdir /etc/opensnitchd/rules
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
