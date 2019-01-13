@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 PYTHON_COMPAT=( python{2_7,3_{4,5,6}} )
 PYTHON_REQ_USE='sqlite?,threads(+)'
@@ -18,7 +18,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~x86"
 IUSE="gunicorn ldap mysql postgres sqlite"
 
-DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]"
+DEPEND="dev-python/setuptools_scm[${PYTHON_USEDEP}]"
 RDEPEND="
 	<=dev-python/django-1.11.99[${PYTHON_USEDEP}]
 	>=dev-python/django-1.11.8[${PYTHON_USEDEP}]
