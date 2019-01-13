@@ -83,7 +83,7 @@ src_prepare() {
 		-e 's|\("EnableDiagnostics":\).*|\1 false|' \
 		-e 's|\("Directory":\).*\(/data/\).*|\1 "'${datadir}'\2",|g' \
 		-e 's|\("Directory":\).*\(/plugins\).*|\1 "'${datadir}'\2",|' \
-		-e 's|\("ClientDirectory":\).*\(/client/plugins\)|\1 "'${datadir}'\2",|' \
+		-e 's|\("ClientDirectory":\).*\(/client/plugins\).*|\1 "'${datadir}'\2",|' \
 		-e 's|tcp(dockerhost:3306)|unix(/run/mysqld/mysqld.sock)|' \
 		config/default.json || die
 
