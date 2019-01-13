@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -16,7 +16,7 @@ LICENSE="ISC"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~x86"
 
-DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]"
+DEPEND="dev-python/setuptools_scm[${PYTHON_USEDEP}]"
 RDEPEND="
 	>=www-apps/modoboa-1.10.0[${PYTHON_USEDEP}]
 	>=dev-python/tldextract-2.0.2[${PYTHON_USEDEP}]
