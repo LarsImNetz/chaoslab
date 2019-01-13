@@ -21,7 +21,7 @@ IUSE="+audit"
 
 DEPEND="
 	dev-nodejs/apm
-	>net-libs/nodejs-6.0
+	>=net-libs/nodejs-8.12.0
 "
 RDEPEND="${DEPEND}
 	>=dev-util/ctags-5.8
@@ -102,6 +102,11 @@ src_compile() {
 	rm -r git || die
 	popd > /dev/null || die
 
+	# Fix tab close on middle click for Electron 3
+	pushd node_modules/tabs > /dev/null || die
+	eapply "${FILESDIR}/${PN}-fix-middle-click.patch" || die
+	popd > /dev/null || die
+
 	pushd script > /dev/null || die
 	npm install || die
 	eaudit
@@ -119,6 +124,8 @@ src_compile() {
 	find out/app/node_modules \
 		-name "*.a" -exec rm '{}' \; \
 		-or -name "*.bat" -exec rm '{}' \; \
+		-or -name "*.c" -exec rm '{}' \; \
+		-or -name "*.cpp" -exec rm '{}' \; \
 		-or -name ".eslint*" -exec rm '{}' \; \
 		-or -name "*.markdown" -exec rm '{}' \; \
 		-or -name "*.node" -exec chmod a-x '{}' \; \
