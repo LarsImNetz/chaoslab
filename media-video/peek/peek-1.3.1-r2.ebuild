@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -17,7 +17,7 @@ IUSE="gnome-shell keybinder open-filemanager test"
 RDEPEND="
 	dev-libs/glib:2
 	media-gfx/gifski
-	media-video/ffmpeg[X,encode,vpx]
+	media-video/ffmpeg[X,encode,vpx,xcb]
 	x11-libs/gtk+:3
 	gnome-shell? (
 		media-libs/gst-plugins-good:1.0
