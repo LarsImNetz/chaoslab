@@ -116,9 +116,10 @@ src_install() {
 			newicon -s ${X} "share/pixmaps/dash${X}.png" dash.png
 		done
 		# shellcheck disable=SC1117
-		make_desktop_entry "dash-qt %u" "Dash Core" "dash" \
-			"Qt;Network;P2P;Office;Finance;" \
+		make_desktop_entry "dash-qt" "Dash Core" "dash" \
+			"Qt;Network;P2P;Office;Finance" \
 			"MimeType=x-scheme-handler/dash;\nTerminal=false"
+		sed -i "/^Exec/s/$/ %u/" "${ED}"/usr/share/applications/*.desktop || die
 
 		doman doc/man/dash-qt.1
 	fi
@@ -131,18 +132,14 @@ update_caches() {
 	if type gtk-update-icon-cache &>/dev/null; then
 		ebegin "Updating GTK icon cache"
 		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
-		eend $?
+		eend $? || die
 	fi
 	xdg_desktop_database_update
+	xdg_mimeinfo_database_update
 }
 
 pkg_postinst() {
 	use gui && update_caches
-
-	ewarn
-	ewarn "This is a release candidate and not meant for production use."
-	ewarn "Please test this release candidate on testnet."
-	ewarn
 }
 
 pkg_postrm() {
