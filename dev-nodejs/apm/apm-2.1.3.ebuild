@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -22,6 +22,7 @@ DEPEND="net-libs/nodejs[npm]"
 RDEPEND="${DEPEND}
 	app-crypt/libsecret
 	dev-nodejs/node-gyp
+	dev-util/electron-bin:${ELECTRON_SLOT}
 	dev-vcs/git
 "
 
@@ -30,6 +31,8 @@ PATCHES=(
 	"${FILESDIR}/${PN}-use-system-npm-r0.patch"
 	"${FILESDIR}/${PN}-no-scripts-r0.patch"
 )
+
+QA_PRESTRIPPED="usr/.*"
 
 pkg_pretend() {
 	# shellcheck disable=SC2086
