@@ -18,20 +18,27 @@ EGO_VENDOR=(
 	"google.golang.org/grpc v1.11.3 github.com/grpc/grpc-go"
 )
 
-inherit flag-o-matic golang-vcs-snapshot-r1 linux-info systemd
+inherit golang-vcs-snapshot-r1 linux-info systemd
 
-DESCRIPTION="The daemon for OpenSnitch"
+DESCRIPTION="OpenSnitch daemon"
 HOMEPAGE="https://www.opensnitch.io/"
 ARCHIVE_URI="https://${EGO_PN}/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
 SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
-RESTRICT="mirror"
+RESTRICT="mirror test"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
 IUSE="debug pie static"
 
-DEPEND="net-libs/libnetfilter_queue"
+LIB_DEPEND="
+	net-libs/libnfnetlink[static-libs(+)]
+	net-libs/libnetfilter_queue[static-libs(+)]
+"
+DEPEND="
+	!static? ( ${LIB_DEPEND//\[static-libs\(+\)]} )
+	static? ( ${LIB_DEPEND} )
+"
 RDEPEND="${DEPEND}
 	net-firewall/iptables
 	net-libs/libpcap
@@ -52,25 +59,20 @@ CONFIG_CHECK="
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-pkg_setup() {
-	linux-info_pkg_setup
-}
-
-src_prepare() {
-	use static && append-ldflags -static
-	default
-}
-
 src_compile() {
 	export GOPATH="${G}"
 	export CGO_CFLAGS="${CFLAGS}"
 	export CGO_LDFLAGS="${LDFLAGS}"
+	use static && CGO_LDFLAGS+=" -static"
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
+		-buildmode "$(usex pie pie exe)"
 		-asmflags "all=-trimpath=${S}"
 		-gcflags "all=-trimpath=${S}"
 		-ldflags "$(usex !debug '-s -w' '')"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 		-o ./opensnitchd
 	)
 	go build "${mygoargs[@]}" ./daemon || die
