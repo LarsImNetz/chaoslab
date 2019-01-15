@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -41,12 +41,9 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
-IUSE="debug pie zsh-completion"
+IUSE="debug pie static"
 
-RDEPEND="
-	|| ( app-shells/fzf app-shells/peco )
-	zsh-completion? ( app-shells/zsh )
-"
+RDEPEND="|| ( app-shells/fzf app-shells/peco )"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/.*"
@@ -54,22 +51,22 @@ QA_PRESTRIPPED="usr/bin/.*"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-src_prepare() {
-	# Wrapf format %s has arg id of wrong type int
-	sed -i 's|Snippet ID: %s|Snippet ID: %d|' sync/gitlab.go || die
-
-	default
-}
-
 src_compile() {
 	export GOPATH="${G}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+	(use pie && use static) && CGO_LDFLAGS+=" -static"
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "$(usex !debug '-s -w' '')"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
+
 	go build "${mygoargs[@]}" || die
 }
 
@@ -82,8 +79,6 @@ src_install() {
 	use debug && dostrip -x /usr/bin/pet
 	einstalldocs
 
-	if use zsh-completion; then
-		insinto /usr/share/zsh/site-functions
-		doins misc/completions/zsh/_pet
-	fi
+	insinto /usr/share/zsh/site-functions
+	doins misc/completions/zsh/_pet
 }
