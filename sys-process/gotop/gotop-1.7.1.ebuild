@@ -4,8 +4,8 @@
 EAPI=7
 
 EGO_PN="github.com/cjbassi/${PN}"
+# Note: Keep EGO_VENDOR in sync with go.mod
 EGO_VENDOR=(
-	# Note: Keep EGO_VENDOR in sync with go.mod
 	#"github.com/StackExchange/wmi 5d049714c4a6"
 	#"github.com/cjbassi/drawille-go ad535d0f92cd"
 	"github.com/cjbassi/termui e8dd23f6146c"
@@ -21,7 +21,7 @@ EGO_VENDOR=(
 	"golang.org/x/sys 3b87a42e500a github.com/golang/sys"
 )
 
-inherit flag-o-matic golang-vcs-snapshot-r1
+inherit golang-vcs-snapshot-r1
 
 DESCRIPTION="A terminal based graphical activity monitor inspired by gtop and vtop"
 HOMEPAGE="https://github.com/cjbassi/gotop"
@@ -40,25 +40,22 @@ QA_PRESTRIPPED="usr/bin/.*"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-src_prepare() {
-	if use static; then
-		use pie || export CGO_ENABLED=0
-		use pie && append-ldflags -static
-	fi
-	default
-}
-
 src_compile() {
 	export GOPATH="${G}"
 	export CGO_CFLAGS="${CFLAGS}"
 	export CGO_LDFLAGS="${LDFLAGS}"
+	(use pie && use static) && CGO_LDFLAGS+=" -static"
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
+		-buildmode "$(usex pie pie exe)"
 		-asmflags "all=-trimpath=${S}"
 		-gcflags "all=-trimpath=${S}"
 		-ldflags "$(usex !debug '-s -w' '')"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
+
 	go build "${mygoargs[@]}" || die
 }
 
