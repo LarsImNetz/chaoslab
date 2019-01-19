@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="dad2b6048153fea5efbc0c06a5f35c06c767b308"
+GIT_COMMIT="37a1dc9c477c1c68c022d2084550f25bf20cac33"
 EGO_PN="github.com/hashicorp/${PN}"
 
 inherit fcaps golang-vcs-snapshot-r1 systemd user
@@ -34,21 +34,26 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "${EGO_PN}/version.GitCommit=${GIT_COMMIT}"
 		-X "${EGO_PN}/version.Version=${PV}"
 		-X "${EGO_PN}/version.VersionPrerelease="
 	)
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 		-tags vault
 		-o ./bin/vault
 	)
+
 	go build "${mygoargs[@]}" || die
 }
 
