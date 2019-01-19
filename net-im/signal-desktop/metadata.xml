@@ -10,4 +10,9 @@
 		<bugs-to>https://github.com/signalapp/Signal-Desktop/issues</bugs-to>
 		<doc>https://support.signal.org/hc/en-us</doc>
 	</upstream>
+	<use>
+		<flag name="start-in-tray">
+			Add a desktop entry to enable start-in-tray mode
+		</flag>
+	</use>
 </pkgmetadata>
