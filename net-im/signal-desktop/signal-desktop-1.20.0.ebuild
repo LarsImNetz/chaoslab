@@ -1,17 +1,18 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 inherit desktop xdg-utils
 
-ELECTRON_SLOT="2.0"
-ELECTRON_V="2.0.8"
+ELECTRON_SLOT="3.0"
+ELECTRON_V="3.0.14"
 MY_PN="Signal-Desktop"
+MY_PV="${PV/_beta/-beta.}"
 
 DESCRIPTION="Signal Private Messenger for the Desktop"
 HOMEPAGE="https://signal.org/"
-SRC_URI="https://github.com/signalapp/${MY_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/signalapp/${MY_PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="GPL-3"
@@ -24,7 +25,7 @@ DEPEND="
 	sys-apps/yarn
 "
 
-S="${WORKDIR}/${MY_PN}-${PV}"
+S="${WORKDIR}/${MY_PN}-${MY_PV}"
 
 pkg_pretend() {
 	# shellcheck disable=SC2086
@@ -89,15 +90,15 @@ src_install() {
 	done
 	make_desktop_entry "${PN}" Signal signal \
 		"GTK;Network;Chat;InstantMessaging;" \
-		"StartupNotify=true\\nStartupWMClass=signal-desktop"
+		"StartupNotify=true\\nStartupWMClass=Signal"
 	domenu "${FILESDIR}"/signal-desktop-tray.desktop
 }
 
 update_caches() {
 	if type gtk-update-icon-cache &>/dev/null; then
 		ebegin "Updating GTK icon cache"
-		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor" || die
-		eend $?
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		eend $? || die
 	fi
 	xdg_desktop_database_update
 }

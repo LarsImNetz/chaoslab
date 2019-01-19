@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -186,7 +186,7 @@ primal-sieve-0.2.9
 proc-macro2-0.4.20
 protobuf-1.7.4
 pulldown-cmark-0.0.3
-pwasm-utils-0.2.2
+pwasm-utils-0.6.1
 quick-error-1.2.2
 quote-0.6.8
 rand-0.3.22
@@ -328,7 +328,7 @@ inherit cargo systemd user
 
 DESCRIPTION="Fast, light, and robust Ethereum client"
 HOMEPAGE="https://parity.io"
-ARCHIVE_URI="https://github.com/paritytech/${PN}-ethereum/archive/v${PV/_*}.tar.gz -> ${P}.tar.gz"
+ARCHIVE_URI="https://github.com/paritytech/${PN}-ethereum/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 # shellcheck disable=SC2086
 SRC_URI="${ARCHIVE_URI} $(cargo_crate_uris ${CRATES})"
 RESTRICT="mirror"
@@ -342,7 +342,7 @@ DEPEND=">=virtual/rust-1.30.1"
 
 DOCS=( {CHANGELOG,README,SECURITY}.md )
 
-S="${WORKDIR}/parity-ethereum-${PV/_*}"
+S="${WORKDIR}/parity-ethereum-${PV}"
 
 pkg_pretend() {
 	# shellcheck disable=SC2086
@@ -365,10 +365,12 @@ pkg_setup() {
 src_compile() {
 	export CARGO_HOME="${ECARGO_HOME}"
 
-	cargo build $(usex debug '' --release) --features final || die
-	cargo build $(usex debug '' --release) -p evmbin || die
-	cargo build $(usex debug '' --release) -p ethstore-cli || die
-	cargo build $(usex debug '' --release) -p ethkey-cli || die
+	cargo build -j $(makeopts_jobs) $(usex debug '' --release) --features final || die
+
+	local x
+	for x in evmbin ethstore-cli ethkey-cli; do
+		cargo build -j $(makeopts_jobs) $(usex debug '' --release) -p ${x} || die
+	done
 }
 
 src_install() {
