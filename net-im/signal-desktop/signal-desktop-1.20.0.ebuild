@@ -18,6 +18,7 @@ RESTRICT="mirror"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
+IUSE="start-in-tray"
 
 RDEPEND=">=dev-util/electron-bin-${ELECTRON_V}:${ELECTRON_SLOT}"
 DEPEND="
@@ -91,7 +92,7 @@ src_install() {
 	make_desktop_entry "${PN}" Signal signal \
 		"GTK;Network;Chat;InstantMessaging;" \
 		"StartupNotify=true\\nStartupWMClass=Signal"
-	domenu "${FILESDIR}"/signal-desktop-tray.desktop
+	use start-in-tray && domenu "${FILESDIR}"/signal-desktop-tray.desktop
 }
 
 update_caches() {

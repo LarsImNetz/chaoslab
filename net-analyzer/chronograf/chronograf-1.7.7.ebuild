@@ -4,7 +4,7 @@
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="0b942e5276c11498f33df4d3ae1f4f7a10e9e969"
+GIT_COMMIT="de18060ef3b625466233484149505c35719f7642"
 EGO_PN="github.com/influxdata/${PN}"
 EGO_VENDOR=( "github.com/kevinburke/go-bindata v3.12.0" )
 
@@ -19,7 +19,7 @@ RESTRICT="mirror"
 LICENSE="AGPL-3+"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="debug pie"
+IUSE="debug pie static"
 
 DEPEND="
 	>=net-libs/nodejs-8.12.0
@@ -61,6 +61,8 @@ src_compile() {
 	export GOBIN="${S}/bin"
 	export CGO_CFLAGS="${CFLAGS}"
 	export CGO_LDFLAGS="${LDFLAGS}"
+	(use static && ! use pie) && export CGO_ENABLED=0
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
 	local PATH="${GOBIN}:$PATH"
 
 	local myldflags=(
@@ -75,6 +77,8 @@ src_compile() {
 		-asmflags "all=-trimpath=${S}"
 		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
 
 	# Build go-bindata locally
