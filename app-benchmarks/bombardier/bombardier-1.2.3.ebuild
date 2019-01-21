@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -14,8 +14,8 @@ RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="debug pie simplebenchserver"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
+IUSE="debug pie simplebenchserver static"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/.*"
@@ -25,22 +25,29 @@ S="${G}/src/${EGO_PN}"
 
 src_compile() {
 	export GOPATH="${G}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+	(use pie && use static) && CGO_LDFLAGS+=" -static"
+
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "main.version=${PV}"
 	)
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
+
 	go build "${mygoargs[@]}" || die
 
 	if use simplebenchserver; then
-		go build -v -ldflags "$(usex !debug '-s -w' '')" \
-			./cmd/utils/simplebenchserver || die
+		go build "${mygoargs[@]}" ./cmd/utils/simplebenchserver || die
 	fi
 }
 
