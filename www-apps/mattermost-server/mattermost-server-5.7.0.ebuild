@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="826252252404c13bf564a8c4fd51616fc2cc4df9"
-WEBAPP_COMMIT="86bcb560c7dbd31967a28bf3b9da746da1a6947c"
+GIT_COMMIT="7e5fda43bda67cd061e527b64046f241c2d6cc32"
+WEBAPP_COMMIT="ed6f4c89148492085861c03669a1152eccf6818c"
 EGO_PN="github.com/mattermost/${PN}"
 WEBAPP_P="mattermost-webapp-${PV}"
 MY_PV="${PV/_/-}"
@@ -28,7 +28,7 @@ RESTRICT="mirror test"
 LICENSE="AGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm64 x86
-IUSE="+audit debug pie"
+IUSE="+audit debug pie static"
 
 DEPEND="${DEPEND}
 	>net-libs/nodejs-6[npm]
@@ -72,26 +72,27 @@ src_unpack() {
 }
 
 src_prepare() {
-	# shellcheck disable=SC2086
+	local datadir="${EPREFIX}/var/lib/mattermost"
 	# Disable developer settings, fix path, set to listen localhost
 	# and disable diagnostics (call home) by default.
+	# shellcheck disable=SC2086
 	sed -i \
-		-e 's|"ListenAddress": ":8065"|"ListenAddress": "127.0.0.1:8065"|g' \
-		-e 's|"ListenAddress": ":8067"|"ListenAddress": "127.0.0.1:8067"|g' \
-		-e 's|"ConsoleLevel": "DEBUG"|"ConsoleLevel": "INFO"|g' \
-		-e 's|"EnableDiagnostics":.*|"EnableDiagnostics": false|' \
-		-e 's|"Directory": "./data/"|"Directory": "'${EPREFIX}'/var/lib/mattermost/data/"|g' \
-		-e 's|"Directory": "./plugins"|"Directory": "'${EPREFIX}'/var/lib/mattermost/plugins"|g' \
-		-e 's|"ClientDirectory": "./client/plugins"|"ClientDirectory": "'${EPREFIX}'/var/lib/mattermost/client/plugins"|g' \
-		-e 's|tcp(dockerhost:3306)|unix(/run/mysqld/mysqld.sock)|g' \
+		-e 's|\("ListenAddress":\).*\(8065\).*|\1 "127.0.0.1:\2",|' \
+		-e 's|\("ListenAddress":\).*\(8067\).*|\1 "127.0.0.1:\2"|' \
+		-e 's|\("ConsoleLevel":\).*|\1 "INFO",|' \
+		-e 's|\("EnableDiagnostics":\).*|\1 false|' \
+		-e 's|\("Directory":\).*\(/data/\).*|\1 "'${datadir}'\2",|g' \
+		-e 's|\("Directory":\).*\(/plugins\).*|\1 "'${datadir}'\2",|' \
+		-e 's|\("ClientDirectory":\).*\(/client/plugins\).*|\1 "'${datadir}'\2",|' \
+		-e 's|tcp(dockerhost:3306)|unix(/run/mysqld/mysqld.sock)|' \
 		config/default.json || die
 
 	# Reset email sending to original configuration
 	sed -i \
-		-e 's|"SendEmailNotifications": true,|"SendEmailNotifications": false,|g' \
-		-e 's|"FeedbackEmail": "test@example.com",|"FeedbackEmail": "",|g' \
-		-e 's|"SMTPServer": "dockerhost",|"SMTPServer": "",|g' \
-		-e 's|"SMTPPort": "2500",|"SMTPPort": "",|g' \
+		-e 's|\("SendEmailNotifications":\).*|\1 false,|' \
+		-e 's|\("FeedbackEmail":\).*|\1 "",|' \
+		-e 's|\("SMTPServer":\).*|\1 "",|' \
+		-e 's|\("SMTPPort":\).*|\1 "",|' \
 		config/default.json || die
 
 	# shellcheck disable=SC1117
@@ -106,6 +107,11 @@ src_prepare() {
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+	(use static && ! use pie) && export CGO_ENABLED=0
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
+
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "${EGO_PN}/model.BuildNumber=${PV}"
@@ -114,12 +120,15 @@ src_compile() {
 		-X "${EGO_PN}/model.BuildHashEnterprise=none"
 		-X "${EGO_PN}/model.BuildEnterpriseReady=false"
 	)
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
 
 	pushd client > /dev/null || die
