@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -30,17 +30,18 @@ pkg_setup() {
 }
 
 src_prepare() {
-	# shellcheck disable=SC2086
+	local datadir="${EPREFIX}/var/lib/mattermost"
 	# Disable developer settings, fix path, set to listen localhost
 	# and disable diagnostics (call home) by default.
+	# shellcheck disable=SC2086
 	sed -i \
-		-e 's|"ListenAddress": ":8065"|"ListenAddress": "127.0.0.1:8065"|g' \
-		-e 's|"ListenAddress": ":8067"|"ListenAddress": "127.0.0.1:8067"|g' \
-		-e 's|"EnableDiagnostics":.*|"EnableDiagnostics": false|' \
-		-e 's|"Directory": "./data/"|"Directory": "'${EPREFIX}'/var/lib/mattermost/data/"|g' \
-		-e 's|"Directory": "./plugins"|"Directory": "'${EPREFIX}'/var/lib/mattermost/plugins"|g' \
-		-e 's|"ClientDirectory": "./client/plugins"|"ClientDirectory": "'${EPREFIX}'/var/lib/mattermost/client/plugins"|g' \
-		-e 's|tcp(dockerhost:3306)|unix(/run/mysqld/mysqld.sock)|g' \
+		-e 's|\("ListenAddress":\).*\(8065\).*|\1 "127.0.0.1:\2",|' \
+		-e 's|\("ListenAddress":\).*\(8067\).*|\1 "127.0.0.1:\2"|' \
+		-e 's|\("EnableDiagnostics":\).*|\1 false|' \
+		-e 's|\("Directory":\).*\(/data/\).*|\1 "'${datadir}'\2",|g' \
+		-e 's|\("Directory":\).*\(/plugins\).*|\1 "'${datadir}'\2",|' \
+		-e 's|\("ClientDirectory":\).*\(/client/plugins\)|\1 "'${datadir}'\2",|' \
+		-e 's|tcp(dockerhost:3306)|unix(/run/mysqld/mysqld.sock)|' \
 		config/default.json || die
 
 	default
