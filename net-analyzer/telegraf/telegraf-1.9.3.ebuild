@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="20636091217b83e731ca7e87ee86ee7e3a729ab9"
+GIT_COMMIT="6ad8c8b00b244809cdf5b7f4747eb27b002986d0"
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 EGO_VENDOR=(
@@ -62,7 +62,7 @@ EGO_VENDOR=(
 	#"github.com/hashicorp/go-cleanhttp d5fe4b57a186"
 	#"github.com/hashicorp/go-rootcerts"
 	#"github.com/hashicorp/serf v0.8.1"
-	"github.com/influxdata/go-syslog v1.0.1"
+	"github.com/influxdata/go-syslog v2.0.0"
 	"github.com/influxdata/tail c43482518d41"
 	"github.com/influxdata/toml 2a2e3012f7cf"
 	"github.com/influxdata/wlog 7c63b0a71ef8"
@@ -72,6 +72,7 @@ EGO_VENDOR=(
 	"github.com/kardianos/service 615a14ed7509"
 	"github.com/kballard/go-shellquote 95032a82bc51"
 	#"github.com/kr/logfmt b84e30acd515"
+	"github.com/leodido/ragel-machinery 299bdde78165"
 	"github.com/mailru/easyjson efc7eb8984d6"
 	"github.com/matttproud/golang_protobuf_extensions v1.0.1"
 	"github.com/miekg/dns v1.0.8"
@@ -178,9 +179,9 @@ src_compile() {
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" ./cmd/telegraf || die
