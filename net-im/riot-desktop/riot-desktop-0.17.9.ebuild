@@ -1,16 +1,17 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 inherit desktop xdg-utils
 
-ELECTRON_SLOT="3.0"
-ELECTRON_V="3.0.10"
+ELECTRON_SLOT="4.0"
+ELECTRON_V="4.0.1"
+MY_PV="${PV/_rc/-rc.}"
 
 DESCRIPTION="A glossy Matrix collaboration client for desktop"
 HOMEPAGE="https://about.riot.im/"
-SRC_URI="https://github.com/vector-im/riot-web/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/vector-im/riot-web/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="Apache-2.0"
@@ -20,7 +21,7 @@ KEYWORDS="~amd64 ~x86"
 RDEPEND=">=dev-util/electron-bin-${ELECTRON_V}:${ELECTRON_SLOT}"
 DEPEND="net-libs/nodejs[npm]"
 
-S="${WORKDIR}/riot-web-${PV}"
+S="${WORKDIR}/riot-web-${MY_PV}"
 
 pkg_pretend() {
 	# shellcheck disable=SC2086
@@ -58,7 +59,7 @@ src_install() {
 
 	insinto /usr/share/riot
 	doins -r webapp/*
-	echo "${PV}" > "${ED}"/usr/share/riot/version || die
+	echo "${MY_PV}" > "${ED}"/usr/share/riot/version || die
 
 	insinto /etc/riot
 	doins config.sample.json
@@ -67,6 +68,8 @@ src_install() {
 
 	insinto /usr/libexec/riot
 	doins package.json
+	doins -r origin_migrator
+
 	dosym ../../share/riot /usr/libexec/riot/webapp
 
 	insinto /usr/libexec/riot/electron_app

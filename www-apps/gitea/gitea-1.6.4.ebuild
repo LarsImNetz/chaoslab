@@ -6,7 +6,7 @@ EAPI=7
 EGO_PN="code.gitea.io/${PN}"
 EGO_VENDOR=( "github.com/kevinburke/go-bindata v3.13.0" )
 
-inherit fcaps flag-o-matic golang-vcs-snapshot-r1 systemd user
+inherit fcaps golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="Gitea - Git with a cup of tea"
 HOMEPAGE="https://gitea.io"
@@ -54,19 +54,16 @@ src_prepare() {
 			custom/conf/app.ini.sample || die
 	fi
 
-	if use static; then
-		use pie || export CGO_ENABLED=0
-		use pie && append-ldflags -static
-	fi
-
 	default
 }
 
 src_compile() {
+	local PATH="${G}/bin:$PATH"
 	export GOPATH="${G}"
 	export CGO_CFLAGS="${CFLAGS}"
 	export CGO_LDFLAGS="${LDFLAGS}"
-	local PATH="${G}/bin:$PATH"
+	(use static && ! use pie) && export CGO_ENABLED=0
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
 
 	# Build go-bindata locally
 	go install ./vendor/github.com/kevinburke/go-bindata/go-bindata || die
@@ -79,6 +76,7 @@ src_compile() {
 	use bindata && opts+=" bindata"
 	use pam && opts+=" pam"
 	use sqlite && opts+=" sqlite"
+	use static && opts+=" netgo"
 
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
@@ -87,11 +85,12 @@ src_compile() {
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
+		-buildmode "$(usex pie pie exe)"
 		-asmflags "all=-trimpath=${S}"
 		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 		-tags "${opts/ /}"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
 	go build "${mygoargs[@]}" || die
 }

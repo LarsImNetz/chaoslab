@@ -3,23 +3,21 @@
 
 EAPI=7
 
-# Change this when you update the ebuild
-GIT_COMMIT="f43d21d0aff791780aaca5770e0bc92c39c803d3"
+EGO_PN="code.gitea.io/${PN}"
 EGO_VENDOR=( "github.com/kevinburke/go-bindata v3.13.0" )
-EGO_PN="github.com/${PN}/${PN}"
 
 inherit fcaps golang-vcs-snapshot-r1 systemd user
 
-DESCRIPTION="A painless self-hosted Git service"
-HOMEPAGE="https://gogs.io"
-ARCHIVE_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+DESCRIPTION="Gitea - Git with a cup of tea"
+HOMEPAGE="https://gitea.io"
+ARCHIVE_URI="https://github.com/go-${PN}/${PN}/archive/v${PV/_/-}.tar.gz -> ${P}.tar.gz"
 SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="debug cert memcached mysql openssh pam pie postgres redis sqlite static"
+IUSE="bindata debug memcached mysql openssh pam pie postgres redis sqlite static"
 
 RDEPEND="
 	dev-vcs/git[curl,threads]
@@ -32,27 +30,29 @@ RDEPEND="
 	sqlite? ( dev-db/sqlite )
 "
 
-FILECAPS=( cap_net_bind_service+ep usr/bin/gogs )
+FILECAPS=( cap_net_bind_service+ep usr/bin/gitea )
 QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
 pkg_setup() {
-	enewgroup gogs
-	enewuser gogs -1 /bin/bash /var/lib/gogs gogs
+	enewgroup git
+	enewuser git -1 /bin/bash /var/lib/gitea git
 }
 
+# shellcheck disable=SC1117
 src_prepare() {
-	# shellcheck disable=SC1117
-	sed -i \
-		-e "s|^\(RUN_USER =\).*|\1 gogs|" \
-		-e "s|^\(STATIC_ROOT_PATH =\).*|\1 ${EPREFIX}/usr/share/gogs|" \
-		-e "s|^\(ROOT_PATH =\).*|\1 ${EPREFIX}/var/log/gogs|" \
-		conf/app.ini || die
+	# Remove the git call, as the tarball isn't a proper git repository
+	sed -i "/GITEA_VERSION :=/d" Makefile || die
 
-	# Remove bundled binary, we will rebuild it ourselves
-	rm pkg/bindata/bindata.go || die
+	sed -i "s|^\(ROOT_PATH =\).*|\1 ${EPREFIX}/var/log/gitea|" \
+		custom/conf/app.ini.sample || die
+
+	if ! use bindata; then
+		sed -i "s|^\(STATIC_ROOT_PATH =\).*|\1 ${EPREFIX}/usr/share/gitea|" \
+			custom/conf/app.ini.sample || die
+	fi
 
 	default
 }
@@ -69,22 +69,19 @@ src_compile() {
 	go install ./vendor/github.com/kevinburke/go-bindata/go-bindata || die
 
 	# Generate embedded data
-	go-bindata \
-		-o=pkg/bindata/bindata.go \
-		-ignore="\\.DS_Store|README.md|TRANSLATORS|auth.d" \
-		-pkg=bindata conf/... || die
+	emake generate
 
 	# Build up optional flags
 	local opts=""
-	use cert && opts+=" cert"
+	use bindata && opts+=" bindata"
 	use pam && opts+=" pam"
 	use sqlite && opts+=" sqlite"
 	use static && opts+=" netgo"
 
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
-		-X "'${EGO_PN}/pkg/setting.BuildTime=$(date -u '+%Y-%m-%d %I:%M:%S %Z')'"
-		-X "${EGO_PN}/pkg/setting.BuildGitHash=${GIT_COMMIT}"
+		-X "main.Version=${PV/_/-}"
+		-X "'main.Tags=${opts/ /}'"
 	)
 	local mygoargs=(
 		-v -work -x
@@ -99,38 +96,44 @@ src_compile() {
 }
 
 src_test() {
-	go test -v -cover -race ./... || die
+	# shellcheck disable=SC2046
+	go test -tags='sqlite sqlite_unlock_notify' \
+		$(go list ./... | grep -v /integrations) || die
 }
 
 src_install() {
-	dobin gogs
-	use debug && dostrip -x /usr/bin/gogs
+	dobin gitea
+	use debug && dostrip -x /usr/bin/gitea
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}.service"
 
-	insinto /var/lib/gogs/conf
-	newins conf/app.ini app.ini.example
+	insinto /var/lib/gitea/conf
+	newins custom/conf/app.ini.sample app.ini.example
 
-	insinto /usr/share/gogs
-	doins -r templates
+	if ! use bindata; then
+		insinto /var/lib/gitea/custom
+		doins -r options
 
-	insinto /usr/share/gogs/public
-	doins -r public/{assets,css,img,js,plugins}
+		dosym ../custom/options/locale /var/lib/gitea/conf/locale
+
+		insinto /usr/share/gitea
+		doins -r public templates
+	fi
 
 	insinto /etc/logrotate.d
-	newins "${FILESDIR}/${PN}.logrotate-r1" "${PN}"
+	newins "${FILESDIR}/${PN}.logrotate" "${PN}"
 
-	diropts -o gogs -g gogs -m 0750
-	keepdir /var/log/gogs
+	diropts -o git -g git -m 0750
+	keepdir /var/log/gitea
 }
 
 pkg_postinst() {
 	fcaps_pkg_postinst
 
-	if [[ ! -e "${EROOT}/var/lib/gogs/conf/app.ini" ]]; then
+	if [[ ! -e "${EROOT}/var/lib/gitea/conf/app.ini" ]]; then
 		elog "No app.ini found, copying the example over"
-		cp "${EROOT}"/var/lib/gogs/conf/app.ini{.example,} || die
+		cp "${EROOT}"/var/lib/gitea/conf/app.ini{.example,} || die
 	else
 		elog "app.ini found, please check example file for possible changes"
 	fi

@@ -119,7 +119,6 @@ RDEPEND="${CDEPEND}
 	virtual/ttf-fonts
 	x11-misc/xdg-utils
 	selinux? ( sec-policy/selinux-chromium )
-	tcmalloc? ( !<x11-drivers/nvidia-drivers-331.20 )
 	widevine? ( !x86? ( www-plugins/chrome-binary-plugins[widevine(-)] ) )
 	!www-client/chromium
 	!www-client/ungoogled-chromium-bin
@@ -487,7 +486,7 @@ src_prepare() {
 		third_party/pdfium/third_party/libtiff
 		third_party/pdfium/third_party/skia_shared
 	)
-	use pdf && use system-openjpeg || keeplibs+=(
+	use system-openjpeg || keeplibs+=(
 		third_party/pdfium/third_party/libopenjpeg20
 	)
 	use system-ffmpeg || keeplibs+=( third_party/ffmpeg third_party/opus )
