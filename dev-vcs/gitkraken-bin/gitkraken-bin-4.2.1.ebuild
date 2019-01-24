@@ -92,7 +92,7 @@ update_caches() {
 	if type gtk-update-icon-cache &>/dev/null; then
 		ebegin "Updating GTK icon cache"
 		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
-		eend $?
+		eend $? || die
 	fi
 	xdg_desktop_database_update
 }
