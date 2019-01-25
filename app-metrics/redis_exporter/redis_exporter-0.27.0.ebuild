@@ -4,7 +4,7 @@
 EAPI=7
 
 # Change this when you update the ebuild:
-GIT_COMMIT="bdb321677a309e525496ec3b786aa4c3745a546b"
+GIT_COMMIT="5722219230f32ca66eb0268890eb356e76757d12"
 EGO_PN="github.com/oliver006/${PN}"
 
 inherit golang-vcs-snapshot-r1 systemd user
@@ -42,31 +42,30 @@ pkg_setup() {
 	enewuser redis_exporter -1 -1 -1 redis_exporter
 }
 
-src_prepare() {
-	if use static; then
-		use pie || export CGO_ENABLED=0
-		use pie && append-ldflags -static
-	fi
-	default
-}
-
 src_compile() {
 	export GOPATH="${G}"
 	export CGO_CFLAGS="${CFLAGS}"
 	export CGO_LDFLAGS="${LDFLAGS}"
+	(use static && ! use pie) && export CGO_ENABLED=0
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
+
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "main.VERSION=${PV}"
 		-X "main.COMMIT_SHA1=${GIT_COMMIT}"
 		-X "main.BUILD_DATE=$(date -u +%F-%T)"
 	)
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
+		-buildmode "$(usex pie pie exe)"
 		-asmflags "all=-trimpath=${S}"
 		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
+
 	go build "${mygoargs[@]}" || die
 }
 
