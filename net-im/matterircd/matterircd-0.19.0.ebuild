@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 EGO_PN="github.com/42wim/${PN}"
 
-inherit golang-vcs-snapshot user
+inherit golang-vcs-snapshot-r1 user
 
 DESCRIPTION="Connect to your Mattermost or Slack using your IRC-client of choice"
 HOMEPAGE="https://github.com/42wim/matterircd"
@@ -14,11 +14,11 @@ RESTRICT="mirror"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~arm64 ~x86"
-IUSE="pie"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
+IUSE="debug pie static"
 
 DOCS=( README.md )
-QA_PRESTRIPPED="usr/bin/matterircd"
+QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
@@ -30,18 +30,27 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+	(use static && ! use pie) && export CGO_ENABLED=0
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie default)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
-		-ldflags "-s -w"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
+		-ldflags "$(usex !debug '-s -w' '')"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
+
 	go build "${mygoargs[@]}" || die
 }
 
 src_install() {
 	dobin matterircd
+	use debug && dostrip -x /usr/bin/matterircd
 	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
@@ -55,9 +64,9 @@ src_install() {
 }
 
 pkg_postinst() {
-	if [[ ! -e "${EROOT%/}/etc/matterircd/matterircd.toml" ]]; then
+	if [[ ! -e "${EROOT}/etc/matterircd/matterircd.toml" ]]; then
 		elog "No matterircd.toml found, copying the example over"
-		cp "${EROOT%/}"/etc/matterircd/matterircd.toml{.example,} || die
+		cp "${EROOT}"/etc/matterircd/matterircd.toml{.example,} || die
 	else
 		elog "matterircd.toml found, please check example file for possible changes"
 	fi
