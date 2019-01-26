@@ -1,0 +1,15 @@
+DEFINED_PHASES=compile install prepare pretend setup
+DEPEND=net-libs/nodejs[npm]
+DESCRIPTION=Atom package manager
+EAPI=7
+HOMEPAGE=https://github.com/atom/apm
+IUSE=python_targets_python2_7
+KEYWORDS=~amd64
+LICENSE=MIT
+RDEPEND=net-libs/nodejs[npm] app-crypt/libsecret dev-nodejs/node-gyp dev-util/electron-bin:3.1 dev-vcs/git
+REQUIRED_USE=python_targets_python2_7
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/atom/apm/archive/v2.1.3.tar.gz -> apm-2.1.3.tar.gz
+_eclasses_=multilib	b2f01ad412baf81650c23fcf0975fa33	python-single-r1	3a0fc81f484bfdbd9c2b7448015a36e4	python-utils-r1	12114a2a9aab35b93efc037a196b3234	toolchain-funcs	f164325a2cdb5b3ea39311d483988861
+_md5_=41facac070d581f05a16e57e926ceb8b
