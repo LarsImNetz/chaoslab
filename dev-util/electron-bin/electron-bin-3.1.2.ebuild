@@ -24,7 +24,7 @@ SRC_URI="
 RESTRICT="mirror"
 
 LICENSE="MIT"
-SLOT="3.0"
+SLOT="3.1"
 KEYWORDS="-* ~amd64 ~arm ~arm64 ~x86"
 
 RDEPEND="
