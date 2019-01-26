@@ -15,9 +15,9 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
-IUSE="bash-completion debug fish-completion man pie static zsh-completion"
+IUSE="bash-completion debug fish-completion pie static zsh-completion"
 
-DEPEND="man? ( app-text/ronn dev-ruby/bundler )"
+DEPEND="sys-apps/groff"
 RDEPEND="
 	>=dev-vcs/git-1.7.3
 	fish-completion? ( app-shells/fish )
@@ -29,18 +29,6 @@ QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
-
-src_pretend() {
-	if use man && [[ "${MERGE_TYPE}" != binary ]]; then
-		# shellcheck disable=SC2086
-		if has network-sandbox ${FEATURES}; then
-			ewarn
-			ewarn "${CATEGORY}/${PN}[man] requires 'network-sandbox' to be disabled in FEATURES"
-			ewarn
-			die "[network-sandbox] is enabled in FEATURES"
-		fi
-	fi
-}
 
 src_compile() {
 	export GOPATH="${G}"
@@ -61,11 +49,13 @@ src_compile() {
 		-ldflags "${myldflags[*]}"
 		-tags "$(usex static 'netgo' '')"
 		-installsuffix "$(usex static 'netgo' '')"
+		-o bin/hub
 	)
 
 	go build "${mygoargs[@]}" || die
+	go build -o bin/md2roff ./md2roff-bin || die
 
-	use man && emake man-pages
+	emake man-pages
 }
 
 src_test() {
@@ -76,11 +66,11 @@ src_test() {
 }
 
 src_install() {
-	dobin hub
+	dobin bin/hub
 	use debug && dostrip -x /usr/bin/hub
 	einstalldocs
 
-	use man && doman share/man/man1/*.1
+	doman share/man/man1/*.1
 	use bash-completion && newbashcomp etc/hub.bash_completion.sh hub
 
 	if use fish-completion; then

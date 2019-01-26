@@ -17,6 +17,5 @@
 	</longdescription>
 	<use>
 		<flag name="fish-completion">Enable fish completion support</flag>
-		<flag name="man">Build and install man pages</flag>
 	</use>
 </pkgmetadata>
