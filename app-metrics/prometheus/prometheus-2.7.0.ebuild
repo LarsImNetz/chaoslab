@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -16,7 +16,7 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="debug examples pie"
+IUSE="debug examples pie static"
 
 DOCS=( {README,CHANGELOG,CONTRIBUTING}.md )
 
@@ -33,6 +33,11 @@ pkg_setup() {
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+	(use static && ! use pie) && export CGO_ENABLED=0
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
+
 	local PROMU="${EGO_PN}/vendor/${EGO_PN%/*}/common/version"
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
@@ -42,13 +47,17 @@ src_compile() {
 		-X "${PROMU}.Revision=non-git"
 		-X "${PROMU}.Version=${MY_PV}"
 	)
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
+
 	go install "${mygoargs[@]}" ./cmd/{prometheus,promtool} || die
 }
 
