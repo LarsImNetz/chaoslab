@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="0bddfa23a2ebe3c0773d917fc104f53d74f7a5ec"
+GIT_COMMIT="c97c712e96e0e53308054d5e1180289fe02dce38"
 EGO_PN="github.com/hashicorp/${PN}"
 
 inherit golang-vcs-snapshot-r1 systemd user
@@ -17,7 +17,7 @@ RESTRICT="mirror test"
 LICENSE="MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="debug pie"
+IUSE="debug pie static"
 
 DOCS=( CHANGELOG.md README.md )
 QA_PRESTRIPPED="usr/bin/.*"
@@ -32,24 +32,34 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+	(use static && ! use pie) && export CGO_ENABLED=0
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
+
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "${EGO_PN}/version.GitCommit=${GIT_COMMIT:0:7}"
 		-X "${EGO_PN}/version.GitDescribe=v${PV/_*}"
 	)
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
+
 	go build "${mygoargs[@]}" || die
 }
 
 src_install() {
 	dobin consul
 	use debug && dostrip -x /usr/bin/consul
+	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
@@ -63,6 +73,4 @@ src_install() {
 
 	diropts -o consul -g consul -m 0750
 	keepdir /var/log/consul
-
-	einstalldocs
 }
