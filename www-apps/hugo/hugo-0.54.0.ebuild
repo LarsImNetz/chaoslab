@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="8fc339dc2529ff77e494a1c12cd1ff9fbcb880a4"
+GIT_COMMIT="b1a82c61aba067952fdae2f73b826fe7d0f3fc2f"
 EGO_PN="github.com/gohugoio/hugo"
 EGO_VENDOR=(
 	# Note: Keep EGO_VENDOR in sync with go.mod
@@ -13,9 +13,9 @@ EGO_VENDOR=(
 	"github.com/PuerkitoBio/purell v1.1.0"
 	"github.com/PuerkitoBio/urlesc de5bf2ad4578"
 	"github.com/alecthomas/assert 405dbfeb8e38" # tests
-	"github.com/alecthomas/chroma v0.6.0"
 	"github.com/alecthomas/colour 60882d9e2721" # tests
-	"github.com/alecthomas/repr 117648cd9897" # tests
+	"github.com/alecthomas/chroma v0.6.2"
+	"github.com/alecthomas/repr d37bc2a10ba1" # tests
 	"github.com/bep/debounce v1.1.0"
 	"github.com/bep/gitmap v1.0.0"
 	"github.com/bep/go-tocss v0.6.0"
@@ -56,7 +56,7 @@ EGO_VENDOR=(
 	"github.com/sanity-io/litter v1.1.0" # tests
 	"github.com/sergi/go-diff v1.0.0" # tests
 	"github.com/shurcooL/sanitized_anchor_name 86672fcb3f95"
-	"github.com/spf13/afero v1.2.0"
+	"github.com/spf13/afero v1.2.1"
 	"github.com/spf13/cast v1.3.0"
 	"github.com/spf13/cobra v0.0.3"
 	"github.com/spf13/fsync 12a01e648f05"
@@ -72,7 +72,7 @@ EGO_VENDOR=(
 	"golang.org/x/image c73c2afc3b81 github.com/golang/image"
 	"golang.org/x/net 161cd47e91fd github.com/golang/net" # inderect
 	"golang.org/x/sync 1d60e4601c6f github.com/golang/sync"
-	"golang.org/x/sys 70b957f3b65e github.com/golang/sys" # inderect
+	"golang.org/x/sys b4a75ba826a6 github.com/golang/sys" # inderect
 	"golang.org/x/text v0.3.0 github.com/golang/text"
 	#"gopkg.in/check.v1 788fd7840127 github.com/go-check/check"
 	"gopkg.in/yaml.v2 v2.2.2 github.com/go-yaml/yaml"
@@ -108,9 +108,9 @@ src_compile() {
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 		-tags "$(usex sass 'extended' 'none')"
 	)
