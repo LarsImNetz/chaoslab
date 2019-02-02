@@ -5,7 +5,7 @@ EAPI=7
 
 EGO_PN="github.com/drone/${PN}"
 
-inherit flag-o-matic golang-vcs-snapshot-r1
+inherit golang-vcs-snapshot-r1
 
 DESCRIPTION="Command line client for the Drone continuous integration server"
 HOMEPAGE="https://drone.io"
@@ -23,30 +23,29 @@ QA_PRESTRIPPED="usr/bin/.*"
 G="${WORKDIR}/${P}"
 S="${G}/src/${EGO_PN}"
 
-src_prepare() {
-	if use static; then
-		use pie || export CGO_ENABLED=0
-		use pie && append-ldflags -static
-	fi
-	default
-}
-
 src_compile() {
 	export GOPATH="${G}"
 	export CGO_CFLAGS="${CFLAGS}"
 	export CGO_LDFLAGS="${LDFLAGS}"
+	(use static && ! use pie) && export CGO_ENABLED=0
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
+
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "main.version=${PV}"
 	)
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
+		-buildmode "$(usex pie pie exe)"
 		-asmflags "all=-trimpath=${S}"
 		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 		-o ./bin/drone
 	)
+
 	go build "${mygoargs[@]}" ./drone || die
 }
 
