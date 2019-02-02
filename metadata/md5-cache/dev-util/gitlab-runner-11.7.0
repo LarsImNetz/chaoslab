@@ -1,15 +1,15 @@
 BDEPEND=>=dev-lang/go-1.10.1 virtual/pkgconfig
 DEFINED_PHASES=compile install postinst preinst setup unpack
-DEPEND=app-emulation/docker
+DEPEND=build-images? ( app-emulation/docker )
 DESCRIPTION=The official GitLab Runner, written in Go
 EAPI=7
 HOMEPAGE=https://gitlab.com/gitlab-org/gitlab-runner
 IUSE=+build-images debug pie static
 KEYWORDS=~amd64
 LICENSE=MIT
-RDEPEND=app-emulation/docker
+RDEPEND=build-images? ( app-emulation/docker )
 RESTRICT=mirror test
 SLOT=0
 SRC_URI=https://gitlab.com/gitlab-org/gitlab-runner/repository/v11.7.0/archive.tar.gz -> gitlab-runner-11.7.0.tar.gz https://github.com/mitchellh/gox/archive/9cc4875981.tar.gz -> github.com-mitchellh-gox-9cc4875981.tar.gz
 _eclasses_=golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f	multilib	b2f01ad412baf81650c23fcf0975fa33	systemd	71fd8d2065d102753fb9e4d20eaf3e9f	toolchain-funcs	f164325a2cdb5b3ea39311d483988861	user	8bc2845510e2109af75e3eeac607ec81
-_md5_=98a9f17101edeab03c28a43e1aba5e45
+_md5_=c3dac4c5243e62adff9801f27c6a32b2
