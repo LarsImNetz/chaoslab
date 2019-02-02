@@ -21,7 +21,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="+build-images debug pie static"
 
-RDEPEND="app-emulation/docker"
+RDEPEND="build-images? ( app-emulation/docker )"
 DEPEND="${RDEPEND}"
 
 DOCS=( CHANGELOG.md README.md )

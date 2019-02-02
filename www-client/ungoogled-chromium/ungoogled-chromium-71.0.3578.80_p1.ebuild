@@ -171,6 +171,10 @@ GTK+ icon theme.
 PATCHES=(
 	"${FILESDIR}/${PN}-compiler-r4.patch"
 	"${FILESDIR}/${PN}-gold-r0.patch"
+	"${FILESDIR}/${PN}-fix-nav-preload-with-third-party-cookie-blocking.patch"
+	# Apply extra patches (taken from openSUSE)
+	"${FILESDIR}/${PN}-libusb-interrupt-event-handler-r0.patch"
+	"${FILESDIR}/${PN}-system-libusb-r0.patch"
 )
 
 S="${WORKDIR}/chromium-${PV/_*}"
@@ -208,12 +212,6 @@ src_prepare() {
 
 	mkdir -p third_party/node/linux/node-linux-x64/bin || die
 	ln -s "${EPREFIX}/usr/bin/node" third_party/node/linux/node-linux-x64/bin/node || die
-
-	# Apply extra patches (taken from openSUSE)
-	local p
-	for p in "${FILESDIR}/extra-$(ver_cut 1-1)"/*.patch; do
-		eapply "${p}"
-	done
 
 	# Hack for libusb stuff (taken from openSUSE)
 	rm third_party/libusb/src/libusb/libusb.h || die

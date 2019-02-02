@@ -181,6 +181,10 @@ PATCHES=(
 	"${FILESDIR}/${PN}-dbus-r0.patch"
 	"${FILESDIR}/${PN}-compiler-r5.patch"
 	"${FILESDIR}/${PN}-gold-r1.patch"
+	"${FILESDIR}/${PN}-fix-nav-preload-with-third-party-cookie-blocking.patch"
+	# Apply extra patches (taken from openSUSE)
+	"${FILESDIR}/${PN}-libusb-interrupt-event-handler-r0.patch"
+	"${FILESDIR}/${PN}-system-libusb-r0.patch"
 )
 
 S="${WORKDIR}/chromium-${PV/_*}"
@@ -221,12 +225,6 @@ src_prepare() {
 		ln -s "${EPREFIX}/usr/bin/node" \
 			third_party/node/linux/node-linux-x64/bin/node || die
 	fi
-
-	# Apply extra patches (taken from openSUSE)
-	local p
-	for p in "${FILESDIR}/extra-$(ver_cut 1-1)"/*.patch; do
-		eapply "${p}"
-	done
 
 	# Hack for libusb stuff (taken from openSUSE)
 	rm third_party/libusb/src/libusb/libusb.h || die
