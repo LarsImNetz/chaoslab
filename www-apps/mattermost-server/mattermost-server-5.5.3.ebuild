@@ -1,11 +1,11 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="3aed6efc6bb5a67fdb8237aac38d46fab3266e8d"
-WEBAPP_COMMIT="52bc19c3b17fc3b0f88bc8ffe869f2c11781a713"
+GIT_COMMIT="8e0e9672269b4fddbf9e1329eb44e654e40edb1e"
+WEBAPP_COMMIT="862b44313fe403a7bdc56e0abe3050ee66064cdf"
 EGO_PN="github.com/mattermost/${PN}"
 WEBAPP_P="mattermost-webapp-${PV}"
 MY_PV="${PV/_/-}"
@@ -28,7 +28,7 @@ RESTRICT="mirror test"
 LICENSE="AGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm64 x86
-IUSE="+audit debug pie"
+IUSE="+audit debug pie static"
 
 DEPEND="${DEPEND}
 	>net-libs/nodejs-6[npm]
@@ -107,6 +107,11 @@ src_prepare() {
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+	(use static && ! use pie) && export CGO_ENABLED=0
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
+
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "${EGO_PN}/model.BuildNumber=${PV}"
@@ -115,12 +120,15 @@ src_compile() {
 		-X "${EGO_PN}/model.BuildHashEnterprise=none"
 		-X "${EGO_PN}/model.BuildEnterpriseReady=false"
 	)
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
 
 	pushd client > /dev/null || die

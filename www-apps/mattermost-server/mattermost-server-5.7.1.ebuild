@@ -4,8 +4,8 @@
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="eb65ce62243dcf3ad54fc46e7a03036099656c54"
-WEBAPP_COMMIT="b32bc9472691b4300c1dbdf688a20b33f1d58349"
+GIT_COMMIT="ad3ddac9b935fb842ca4301f69266ffb87ec8c86"
+WEBAPP_COMMIT="ed6f4c89148492085861c03669a1152eccf6818c"
 EGO_PN="github.com/mattermost/${PN}"
 WEBAPP_P="mattermost-webapp-${PV}"
 MY_PV="${PV/_/-}"
@@ -15,7 +15,7 @@ if [[ "$ARCH" != "x86" && "$ARCH" != "amd64" ]]; then
 	DEPEND="media-libs/libpng:0"
 fi
 
-inherit ${INHERIT} flag-o-matic golang-vcs-snapshot-r1 systemd user
+inherit ${INHERIT} golang-vcs-snapshot-r1 systemd user
 
 DESCRIPTION="Open source Slack-alternative in Golang and React (Team Edition)"
 HOMEPAGE="https://mattermost.com"
@@ -101,11 +101,6 @@ src_prepare() {
 		-E "s/^(\s*)COMMIT_HASH:(.*),$/\1COMMIT_HASH: JSON.stringify\(\"${WEBAPP_COMMIT}\)\"\),/" \
 		client/webpack.config.js || die
 
-	if use static; then
-		use pie || export CGO_ENABLED=0
-		use pie && append-ldflags -static
-	fi
-
 	default
 }
 
@@ -114,6 +109,9 @@ src_compile() {
 	export GOBIN="${S}"
 	export CGO_CFLAGS="${CFLAGS}"
 	export CGO_LDFLAGS="${LDFLAGS}"
+	(use static && ! use pie) && export CGO_ENABLED=0
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
+
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "${EGO_PN}/model.BuildNumber=${PV}"
@@ -122,12 +120,15 @@ src_compile() {
 		-X "${EGO_PN}/model.BuildHashEnterprise=none"
 		-X "${EGO_PN}/model.BuildEnterpriseReady=false"
 	)
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
+		-buildmode "$(usex pie pie exe)"
 		-asmflags "all=-trimpath=${S}"
 		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
 
 	pushd client > /dev/null || die

@@ -26,6 +26,7 @@ block-buffer-0.3.3
 byte-tools-0.2.0
 byteorder-1.2.6
 bytes-0.4.10
+cast-0.2.2
 cc-1.0.25
 cesu8-1.1.0
 cfg-if-0.1.5
@@ -35,6 +36,9 @@ clap-2.32.0
 cloudabi-0.0.3
 cmake-0.1.35
 combine-3.6.1
+criterion-0.2.5
+criterion-plot-0.2.5
+criterion-stats-0.2.5
 crossbeam-0.4.1
 crossbeam-channel-0.2.6
 crossbeam-deque-0.2.0
@@ -48,15 +52,16 @@ crossbeam-utils-0.5.0
 crossbeam-utils-0.6.2
 crunchy-0.1.6
 crunchy-0.2.1
+csv-1.0.2
+csv-core-0.1.4
 ct-logs-0.4.0
 daemonize-0.3.0
 difference-1.0.0
 digest-0.7.6
-docopt-0.8.3
+docopt-1.0.2
 edit-distance-2.0.1
 either-1.5.0
 elastic-array-0.10.0
-env_logger-0.4.3
 env_logger-0.5.13
 error-chain-0.12.0
 ethabi-6.1.0
@@ -65,6 +70,7 @@ ethabi-derive-6.0.2
 ethbloom-0.5.0
 ethereum-types-0.4.0
 ethereum-types-serialize-0.2.1
+failsafe-0.3.0
 failure-0.1.3
 failure_derive-0.1.3
 fake-simd-0.1.2
@@ -73,6 +79,7 @@ fixed-hash-0.2.2
 fixedbitset-0.1.9
 fnv-1.0.6
 fs-swap-0.2.4
+fs_extra-1.1.0
 fuchsia-zircon-0.3.3
 fuchsia-zircon-sys-0.3.3
 futures-0.1.25
@@ -84,8 +91,8 @@ getopts-0.2.18
 globset-0.4.2
 h2-0.1.12
 hamming-0.1.3
+handlebars-0.32.4
 hashdb-0.3.0
-heapsize-0.4.2
 heck-0.3.0
 hex-0.2.0
 home-0.3.3
@@ -105,7 +112,10 @@ iovec-0.1.2
 ipnetwork-0.12.8
 itertools-0.5.10
 itertools-0.7.8
+itertools-num-0.1.2
 itoa-0.4.3
+jemalloc-sys-0.1.8
+jemallocator-0.1.9
 jni-0.10.2
 jni-sys-0.3.0
 keccak-hash-0.1.2
@@ -114,7 +124,7 @@ kvdb-0.1.0
 kvdb-memorydb-0.1.0
 kvdb-rocksdb-0.1.4
 language-tags-0.2.2
-lazy_static-1.1.0
+lazy_static-1.2.0
 lazycell-1.2.0
 libc-0.2.43
 libloading-0.5.0
@@ -161,16 +171,20 @@ parity-bytes-0.1.0
 parity-crypto-0.2.0
 parity-path-0.1.1
 parity-rocksdb-0.5.0
-parity-rocksdb-sys-0.5.3
+parity-rocksdb-sys-0.5.5
 parity-snappy-0.1.0
-parity-snappy-sys-0.1.1
+parity-snappy-sys-0.1.2
 parity-tokio-ipc-0.1.0
 parity-wasm-0.31.3
 parity-wordlist-1.2.1
 parking_lot-0.6.4
+parking_lot-0.7.0
 parking_lot_core-0.3.1
+parking_lot_core-0.4.0
 patricia-trie-0.3.0
 percent-encoding-1.0.1
+pest-1.0.6
+pest_derive-1.0.8
 petgraph-0.4.13
 phf-0.7.23
 phf_codegen-0.7.23
@@ -188,12 +202,19 @@ protobuf-1.7.4
 pulldown-cmark-0.0.3
 pwasm-utils-0.6.1
 quick-error-1.2.2
+quote-0.3.15
 quote-0.6.8
 rand-0.3.22
 rand-0.4.3
 rand-0.5.5
+rand-0.6.1
+rand_chacha-0.1.0
 rand_core-0.2.2
 rand_core-0.3.0
+rand_hc-0.1.0
+rand_isaac-0.1.1
+rand_pcg-0.1.1
+rand_xorshift-0.1.0
 rayon-1.0.2
 rayon-core-1.4.1
 redox_syscall-0.1.40
@@ -204,7 +225,7 @@ regex-syntax-0.5.6
 regex-syntax-0.6.2
 relay-0.1.1
 remove_dir_all-0.5.1
-ring-0.13.2
+ring-0.13.5
 rlp-0.2.4
 rlp-0.3.0
 rpassword-1.0.2
@@ -231,6 +252,7 @@ sha1-0.2.0
 sha1-0.5.0
 sha2-0.7.1
 shell32-sys-0.1.2
+simplelog-0.5.3
 siphasher-0.1.3
 siphasher-0.2.3
 skeptic-0.4.0
@@ -241,18 +263,21 @@ smallvec-0.6.5
 socket2-0.3.8
 stable_deref_trait-1.1.1
 string-0.1.1
-strsim-0.6.0
 strsim-0.7.0
+syn-0.11.11
 syn-0.15.11
+synom-0.11.3
 synstructure-0.10.1
 target_info-0.1.0
 tempdir-0.3.7
+term-0.5.1
 term_size-0.3.1
 termcolor-1.0.4
 termion-1.5.1
 textwrap-0.10.0
 textwrap-0.9.0
 thread-id-3.3.0
+thread-scoped-1.0.2
 thread_local-0.3.6
 threadpool-1.7.1
 time-0.1.40
@@ -293,6 +318,7 @@ unicase-2.2.0
 unicode-bidi-0.3.4
 unicode-normalization-0.1.7
 unicode-segmentation-1.2.1
+unicode-xid-0.0.4
 unicode-width-0.1.5
 unicode-xid-0.1.0
 unreachable-1.0.0
@@ -328,7 +354,7 @@ inherit cargo systemd user
 
 DESCRIPTION="Fast, light, and robust Ethereum client"
 HOMEPAGE="https://parity.io"
-ARCHIVE_URI="https://github.com/paritytech/${PN}-ethereum/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+ARCHIVE_URI="https://github.com/paritytech/${PN}-ethereum/archive/v${PV/_*}.tar.gz -> ${P}.tar.gz"
 # shellcheck disable=SC2086
 SRC_URI="${ARCHIVE_URI} $(cargo_crate_uris ${CRATES})"
 RESTRICT="mirror"
@@ -342,7 +368,7 @@ DEPEND=">=virtual/rust-1.30.1"
 
 DOCS=( {CHANGELOG,README,SECURITY}.md )
 
-S="${WORKDIR}/parity-ethereum-${PV}"
+S="${WORKDIR}/parity-ethereum-${PV/_*}"
 
 pkg_pretend() {
 	# shellcheck disable=SC2086
