@@ -1,5 +1,5 @@
 DEFINED_PHASES=compile install unpack
-DEPEND=>=dev-lang/go-1.9
+DEPEND=>=dev-lang/go-1.10
 DESCRIPTION=Remove unnecessary files from node_modules (.md, .ts, ...)
 EAPI=6
 HOMEPAGE=https://github.com/tj/node-prune
@@ -9,5 +9,5 @@ LICENSE=MIT
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/tj/node-prune/archive/ea363c1e0d198f9e8314051d0c25c66c57606f0e.tar.gz -> node-prune-1.0.2_pre20180704.tar.gz https://github.com/apex/log/archive/d6c5facec1.tar.gz -> github.com-apex-log-d6c5facec1.tar.gz https://github.com/dustin/go-humanize/archive/9f541cc9db.tar.gz -> github.com-dustin-go-humanize-9f541cc9db.tar.gz https://github.com/fatih/color/archive/3f9d52f717.tar.gz -> github.com-fatih-color-3f9d52f717.tar.gz https://github.com/mattn/go-colorable/archive/efa589957c.tar.gz -> github.com-mattn-go-colorable-efa589957c.tar.gz https://github.com/mattn/go-isatty/archive/3fb116b820.tar.gz -> github.com-mattn-go-isatty-3fb116b820.tar.gz https://github.com/pkg/errors/archive/059132a15d.tar.gz -> github.com-pkg-errors-059132a15d.tar.gz
-_eclasses_=golang-base	8e4d7f712ec0e170e2c190c1e3da6501	golang-vcs-snapshot	6f66975a5b570c5e05ed96910c574abc
+_eclasses_=golang-base	c57d2c3f9e1a02d0feb8b87c7b689892	golang-vcs-snapshot	12177e83bede6f7fb87eae383864b40b
 _md5_=44d9183b7da685860b558b10cee08a74
