@@ -1,7 +1,7 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Ian Moone <gentoo@chaoslab.org> (2 Feb 2019)
-# USE=cfi causes link breakage in the final steps, I need time to properly
+# USE=cfi causes link breakage in the final steps, I need more time to properly
 # investigate this.
-=www-client/ungoogled-chromium-72.0.3626.81_pre cfi
+>=www-client/ungoogled-chromium-72.0.3626.81_pre cfi
