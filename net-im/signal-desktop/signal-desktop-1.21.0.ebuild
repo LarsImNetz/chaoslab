@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -6,7 +6,7 @@ EAPI=7
 inherit desktop xdg-utils
 
 ELECTRON_SLOT="3.0"
-ELECTRON_V="3.0.9"
+ELECTRON_V="3.0.14"
 MY_PN="Signal-Desktop"
 MY_PV="${PV/_beta/-beta.}"
 
@@ -18,6 +18,7 @@ RESTRICT="mirror"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
+IUSE="start-in-tray"
 
 RDEPEND=">=dev-util/electron-bin-${ELECTRON_V}:${ELECTRON_SLOT}"
 DEPEND="
@@ -91,7 +92,7 @@ src_install() {
 	make_desktop_entry "${PN}" Signal signal \
 		"GTK;Network;Chat;InstantMessaging;" \
 		"StartupNotify=true\\nStartupWMClass=Signal"
-	domenu "${FILESDIR}"/signal-desktop-tray.desktop
+	use start-in-tray && domenu "${FILESDIR}"/signal-desktop-tray.desktop
 }
 
 update_caches() {
