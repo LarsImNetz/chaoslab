@@ -4,7 +4,7 @@
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="dda8079947be70b9cde4625ea2fcca7f5148a604"
+GIT_COMMIT="4da8d0a4b3abb81e06d3d9ce13b9b8a0bfe153bb"
 EGO_PN="github.com/influxdata/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 EGO_VENDOR=(
@@ -137,7 +137,7 @@ EGO_VENDOR=(
 	"gopkg.in/yaml.v2 v2.2.1 github.com/go-yaml/yaml"
 )
 
-inherit golang-vcs-snapshot-r1 systemd user
+inherit golang-vcs-snapshot systemd user
 
 MY_PV="${PV/_/-}"
 DESCRIPTION="An agent for collecting, processing, aggregating, and writing metrics"
@@ -179,9 +179,9 @@ src_compile() {
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" ./cmd/telegraf || die

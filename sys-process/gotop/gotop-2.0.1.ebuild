@@ -4,29 +4,12 @@
 EAPI=7
 
 EGO_PN="github.com/cjbassi/${PN}"
-# Note: Keep EGO_VENDOR in sync with go.mod
-EGO_VENDOR=(
-	#"github.com/StackExchange/wmi 5d049714c4a6"
-	#"github.com/cjbassi/drawille-go ad535d0f92cd"
-	"github.com/cjbassi/termui e8dd23f6146c"
-	#"github.com/davecgh/go-spew v1.1.1"
-	"github.com/docopt/docopt-go ee0de3bc6815"
-	#"github.com/go-ole/go-ole v1.2.1"
-	#"github.com/mattn/go-runewidth v0.0.2"
-	#"github.com/nsf/termbox-go 3e24a7b6661e"
-	#"github.com/pmezard/go-difflib v1.0.0"
-	"github.com/shirou/gopsutil v2.18.11"
-	#"github.com/shirou/w32 bb4de0191aa4"
-	#"github.com/stretchr/testify v1.2.2"
-	"golang.org/x/sys 3b87a42e500a github.com/golang/sys"
-)
 
-inherit golang-vcs-snapshot-r1
+inherit golang-vcs-snapshot
 
 DESCRIPTION="A terminal based graphical activity monitor inspired by gtop and vtop"
 HOMEPAGE="https://github.com/cjbassi/gotop"
-ARCHIVE_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
-SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
+SRC_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="AGPL-3"
@@ -44,7 +27,7 @@ src_compile() {
 	export GOPATH="${G}"
 	export CGO_CFLAGS="${CFLAGS}"
 	export CGO_LDFLAGS="${LDFLAGS}"
-	(use pie && use static) && CGO_LDFLAGS+=" -static"
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
 
 	local mygoargs=(
 		-v -work -x
