@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 # Change this when you update the ebuild:
-GIT_COMMIT="bf3f2d9ff07ed03ef16be56af20d58dc0300e60f"
+GIT_COMMIT="fd8f4a7177e9ea509f27105ae4e55e6c68ece6f7"
 EGO_PN="fortio.org/${PN}"
 # Note: Keep EGO_VENDOR in sync with Gopkg.lock
 EGO_VENDOR=(
@@ -16,7 +16,7 @@ EGO_VENDOR=(
 	"google.golang.org/grpc v1.15.0 github.com/grpc/grpc-go"
 )
 
-inherit golang-vcs-snapshot-r1
+inherit golang-vcs-snapshot
 
 DESCRIPTION="A load testing CLI, advanced echo server, and web UI in Go"
 HOMEPAGE="https://fortio.org/"
@@ -27,7 +27,7 @@ RESTRICT="mirror"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="daemon debug pie"
+IUSE="daemon debug pie static"
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/.*"
@@ -52,6 +52,10 @@ pkg_setup() {
 
 src_compile() {
 	export GOPATH="${G}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
+
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "main.defaultDataDir=."
@@ -60,13 +64,17 @@ src_compile() {
 		-X "${EGO_PN}/version.gitstatus=0"
 		-X "${EGO_PN}/version.tag=v${PV}"
 	)
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
+
 	go build "${mygoargs[@]}" || die
 }
 
