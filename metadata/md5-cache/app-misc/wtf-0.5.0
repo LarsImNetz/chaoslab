@@ -1,0 +1,13 @@
+BDEPEND=>=dev-lang/go-1.10
+DEFINED_PHASES=compile install postinst unpack
+DESCRIPTION=A personal information dashboard for your terminal
+EAPI=7
+HOMEPAGE=https://wtfutil.com
+IUSE=debug pie static
+KEYWORDS=~amd64 ~arm ~arm64 ~x86
+LICENSE=MIT
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/wtfutil/wtf/archive/0.5.0.tar.gz -> wtf-0.5.0.tar.gz
+_eclasses_=golang-base	c57d2c3f9e1a02d0feb8b87c7b689892	golang-vcs-snapshot	12177e83bede6f7fb87eae383864b40b
+_md5_=3ac073bb7da4952e2d27ebcf9058e3d5

@@ -1,0 +1,13 @@
+BDEPEND=>=dev-lang/go-1.10
+DEFINED_PHASES=compile install unpack
+DESCRIPTION=Audit git repos for secrets
+EAPI=7
+HOMEPAGE=https://github.com/zricethezav/gitleaks
+IUSE=debug pie static
+KEYWORDS=~amd64 ~arm ~arm64 ~x86
+LICENSE=GPL-3
+RESTRICT=mirror test
+SLOT=0
+SRC_URI=https://github.com/zricethezav/gitleaks/archive/v1.24.0.tar.gz -> gitleaks-1.24.0.tar.gz
+_eclasses_=golang-base	c57d2c3f9e1a02d0feb8b87c7b689892	golang-vcs-snapshot	12177e83bede6f7fb87eae383864b40b
+_md5_=70d139cc538d31abb456a516b0b43148

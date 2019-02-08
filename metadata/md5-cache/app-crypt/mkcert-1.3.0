@@ -1,0 +1,13 @@
+BDEPEND=>=dev-lang/go-1.10
+DEFINED_PHASES=compile install unpack
+DESCRIPTION=A simple tool for making locally-trusted development certificates
+EAPI=7
+HOMEPAGE=https://github.com/FiloSottile/mkcert
+IUSE=debug pie static
+KEYWORDS=~amd64 ~arm ~arm64 ~x86
+LICENSE=BSD
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/FiloSottile/mkcert/archive/v1.3.0.tar.gz -> mkcert-1.3.0.tar.gz
+_eclasses_=golang-base	c57d2c3f9e1a02d0feb8b87c7b689892	golang-vcs-snapshot	12177e83bede6f7fb87eae383864b40b
+_md5_=8178ba8f370cfc50162cd9f8e34ab0be
