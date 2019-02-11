@@ -5,7 +5,7 @@ EAPI=7
 
 EGO_PN="github.com/joohoi/${PN}"
 
-inherit fcaps golang-vcs-snapshot user
+inherit fcaps golang-vcs-snapshot-r1 user
 
 DESCRIPTION="A simplified DNS server with a RESTful HTTP API to provide ACME DNS challenges"
 HOMEPAGE="https://github.com/joohoi/acme-dns"
