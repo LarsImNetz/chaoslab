@@ -7,7 +7,7 @@ EAPI=7
 GIT_COMMIT="ab0dde5169979380f6482a723a02137326412284"
 EGO_PN="github.com/wtfutil/${PN}"
 
-inherit golang-vcs-snapshot
+inherit golang-vcs-snapshot-r1
 
 DESCRIPTION="A personal information dashboard for your terminal"
 HOMEPAGE="https://wtfutil.com"
