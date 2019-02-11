@@ -5,7 +5,7 @@ EAPI=7
 
 EGO_PN="github.com/FiloSottile/${PN}"
 
-inherit golang-vcs-snapshot
+inherit golang-vcs-snapshot-r1
 
 DESCRIPTION="A simple tool for making locally-trusted development certificates"
 HOMEPAGE="https://github.com/FiloSottile/mkcert"

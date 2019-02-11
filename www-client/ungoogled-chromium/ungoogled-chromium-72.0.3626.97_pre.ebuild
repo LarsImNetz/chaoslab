@@ -13,7 +13,7 @@ CHROMIUM_LANGS="
 
 inherit check-reqs chromium-2 desktop flag-o-matic ninja-utils pax-utils python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
-UGC_PV="c68b9f4916d6a34dc6c843a565bfd1ca08b9fe4c"
+UGC_PV="660eb60b10773edebfc2261fd4c7d744c6e4c325"
 UGC_P="${PN}-${UGC_PV}"
 UGC_WD="${WORKDIR}/${UGC_P}"
 
@@ -22,6 +22,7 @@ HOMEPAGE="https://www.chromium.org/Home https://github.com/Eloston/ungoogled-chr
 SRC_URI="
 	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${PV/_*}.tar.xz
 	https://github.com/Eloston/${PN}/archive/${UGC_PV}.tar.gz -> ${UGC_P}.tar.gz
+	https://dev.gentoo.org/~floppym/dist/chromium-webrtc-includes-r1.patch.xz
 "
 
 LICENSE="BSD"
@@ -214,6 +215,10 @@ src_prepare() {
 
 	default
 
+	pushd third_party/webrtc >/dev/null || die
+	eapply "${WORKDIR}"/chromium-webrtc-includes-r1.patch
+	popd >/dev/null || die
+
 	if use optimize-webui; then
 		mkdir -p third_party/node/linux/node-linux-x64/bin || die
 		ln -s "${EPREFIX}/usr/bin/node" \
@@ -232,7 +237,7 @@ src_prepare() {
 	local ugc_rooted_dir="${UGC_WD}/config_bundles/linux_rooted"
 
 	local ugc_unneeded=(
-		# ARM related patch
+		# ARM related patches
 		common:crashpad
 		common:gcc_skcms_ice
 		common:skia-aarch64-buildfix
@@ -288,7 +293,7 @@ src_prepare() {
 	fi
 
 	if use system-openjpeg; then
-		sed -i '/nspr.patch/a debian_buster/system/openjpeg.patch' \
+		sed -i '/jpeg.patch/a debian_buster/system/openjpeg.patch' \
 			"${ugc_rooted_dir}/patch_order.list" || die
 	fi
 
@@ -670,8 +675,10 @@ src_configure() {
 		"use_vaapi=$(usetf vaapi)"
 
 		# Additional flags
+		"enable_desktop_in_product_help=false"
 		"enable_pdf=$(usetf pdf)"
 		"enable_print_preview=$(usetf pdf)"
+		"rtc_build_examples=false"
 		"use_icf=true"
 		# Enables the soon-to-be default tcmalloc (https://crbug.com/724399)
 		# It is relevant only when use_allocator == "tcmalloc"

@@ -5,7 +5,7 @@ EAPI=7
 
 EGO_PN="github.com/zricethezav/${PN}"
 
-inherit golang-vcs-snapshot
+inherit golang-vcs-snapshot-r1
 
 DESCRIPTION="Audit git repos for secrets"
 HOMEPAGE="https://github.com/zricethezav/gitleaks"
