@@ -10,5 +10,5 @@ RDEPEND=dev-nodejs/apm >=net-libs/nodejs-8.12.0 >=dev-util/ctags-5.8 >=dev-util/
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/atom/atom/archive/v1.34.0.tar.gz -> atom-1.34.0.tar.gz
-_eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	xdg-utils	93b2dfbb00a09161e1e7f6360c0f7f6b
+_eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	xdg-utils	14d00d009167652b1fa363e55effe213
 _md5_=7ac9e25c5b63a4a5a84b0524653191ba
