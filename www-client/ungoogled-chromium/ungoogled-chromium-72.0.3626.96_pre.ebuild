@@ -22,6 +22,7 @@ HOMEPAGE="https://www.chromium.org/Home https://github.com/Eloston/ungoogled-chr
 SRC_URI="
 	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${PV/_*}.tar.xz
 	https://github.com/Eloston/${PN}/archive/${UGC_PV}.tar.gz -> ${UGC_P}.tar.gz
+	https://dev.gentoo.org/~floppym/dist/chromium-webrtc-includes-r1.patch.xz
 "
 
 LICENSE="BSD"
@@ -213,6 +214,10 @@ src_prepare() {
 	python_setup 'python3*'
 
 	default
+
+	pushd third_party/webrtc >/dev/null || die
+	eapply "${WORKDIR}"/chromium-webrtc-includes-r1.patch
+	popd >/dev/null || die
 
 	if use optimize-webui; then
 		mkdir -p third_party/node/linux/node-linux-x64/bin || die
