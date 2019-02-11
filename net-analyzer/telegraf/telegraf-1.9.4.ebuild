@@ -137,7 +137,7 @@ EGO_VENDOR=(
 	"gopkg.in/yaml.v2 v2.2.1 github.com/go-yaml/yaml"
 )
 
-inherit golang-vcs-snapshot systemd user
+inherit golang-vcs-snapshot-r1 systemd user
 
 MY_PV="${PV/_/-}"
 DESCRIPTION="An agent for collecting, processing, aggregating, and writing metrics"
