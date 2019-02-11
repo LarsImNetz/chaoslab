@@ -16,7 +16,7 @@ EGO_VENDOR=(
 	"google.golang.org/grpc v1.15.0 github.com/grpc/grpc-go"
 )
 
-inherit golang-vcs-snapshot
+inherit golang-vcs-snapshot-r1
 
 DESCRIPTION="A load testing CLI, advanced echo server, and web UI in Go"
 HOMEPAGE="https://fortio.org/"
