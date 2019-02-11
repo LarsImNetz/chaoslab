@@ -5,7 +5,7 @@ EAPI=7
 
 EGO_PN="github.com/cjbassi/${PN}"
 
-inherit golang-vcs-snapshot
+inherit golang-vcs-snapshot-r1
 
 DESCRIPTION="A terminal based graphical activity monitor inspired by gtop and vtop"
 HOMEPAGE="https://github.com/cjbassi/gotop"
