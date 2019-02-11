@@ -30,7 +30,7 @@ EGO_VENDOR=(
 	#"google.golang.org/appengine v1.0.0 github.com/golang/appengine"
 )
 
-inherit golang-vcs-snapshot
+inherit golang-vcs-snapshot-r1
 
 DESCRIPTION="Simple command-line snippet manager, written in Go"
 HOMEPAGE="https://github.com/knqyf263/pet"
