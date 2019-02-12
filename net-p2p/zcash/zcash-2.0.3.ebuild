@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -27,9 +27,9 @@ PROTON_URI="https://archive.apache.org/dist/qpid/proton/${PROTON_PV}/${PROTON_PK
 PROTON_STAMP=".stamp_fetched-proton-${PROTON_PKG}.hash"
 
 # depends/packages/librustzcash.mk (https://github.com/zcash/librustzcash, Apache 2.0 / MIT license)
-RUSTZCASH_PV="f5e5cb24e1bd756a02fc4a3fd2b824238ccd15ad"
+RUSTZCASH_PV="06da3b9ac8f278e5d4ae13088cf0a4c03d2c13f5"
 RUSTZCASH_PKG="librustzcash-${RUSTZCASH_PV}.tar.gz"
-RUSTZCASH_HASH="e9a488a8bbecf7fb237a32dadd65133211ef61616d44cf55609e029837a41004"
+RUSTZCASH_HASH="9909ec59fa7a411c2071d6237b3363a0bc6e5e42358505cf64b7da0f58a7ff5a"
 RUSTZCASH_URI="https://github.com/zcash/librustzcash/archive/${RUSTZCASH_PV}.tar.gz"
 RUSTZCASH_STAMP=".stamp_fetched-librustzcash-${RUSTZCASH_PKG}.hash"
 
@@ -58,7 +58,7 @@ CRATE_ZIP32_STAMP=".stamp_fetched-crate_zip32-${CRATE_ZIP32_PKG}.hash"
 CRATE_DEP=(
 	"aes 0.2.0 e6fb1737cdc8da3db76e90ca817a194249a38fcb500c2e6ecec39b29448aa873"
 	"aes-soft 0.2.0 67cc03b0a090a05cb01e96998a01905d7ceedce1bc23b756c0bb7faa0682ccb1"
-	"aesni 0.4.0 f2838c142db62c0c6aea0a24054c46d35488532fdaea0f51dbeba430f0985df5"
+	"aesni 0.4.1 6810b7fb9f2bb4f76f05ac1c170b8dde285b6308955dc3afd89710268c958d9e"
 	"arrayvec 0.4.7 a1e964f9e24d588183fcb43503abda40d288c8657dfc27311516ce2f05675aef"
 	"bellman 0.1.0 eae372472c7ea8f7c8fc6a62f7d5535db8302de7f1aafda2e13a97c4830d3bcf"
 	"bit-vec 0.4.4 02b4ff8b16e6076c3e14220b39fbc1fabb6737522281a388998046859400895f"
@@ -85,17 +85,18 @@ CRATE_DEP=(
 	"opaque-debug 0.1.1 d620c9c26834b34f039489ac0dfdb12c7ac15ccaf818350a64c9b5334a452ad7"
 	"pairing 0.14.2 ceda21136251c6d5a422d3d798d8ac22515a6e8d3521bb60c59a8349d36d0d57"
 	"rand 0.4.2 eba5f8cb59cc50ed56be8880a5c7b496bfd9bd26394e176bc67884094145c2c5"
-	"stream-cipher 0.1.0 ac49bc6cb2847200d18bfb738ce89448570f4aa1c34ac0348db6205ee69a0777"
+	"stream-cipher 0.1.1 30dc6118470d69ce0fdcf7e6f95e95853f7f4f72f80d835d4519577c323814ab"
 	"typenum 1.10.0 612d636f949607bdf9b123b4a6f6d966dedf3ff669f7f045890d3a4a73948169"
 	"winapi 0.3.4 04e3bd221fcbe8a271359c04f21a76db7d0c6028862d1bb5512d85e1e2eb5bb3"
 	"winapi-i686-pc-windows-gnu 0.4.0 ac3b87c63620426dd9b991e5ce0329eff545bccbbb34f3be09ff6fb6ab51b7b6"
 	"winapi-x86_64-pc-windows-gnu 0.4.0 712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
 )
 
+MY_PV="${PV/_/-}"
 DESCRIPTION="Cryptocurrency that offers privacy of transactions"
 HOMEPAGE="https://z.cash"
 SRC_URI="
-	https://github.com/${PN}/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
+	https://github.com/${PN}/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz
 	${BDB_URI}
 	${CRATE_BLAKE2_URI} -> ${CRATE_BLAKE2_PKG}
 	${CRATE_SAPLING_CRYPTO_URI} -> ${CRATE_SAPLING_CRYPTO_PKG}
@@ -115,7 +116,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="+bundled-ssl examples +hardened libressl libs mining proton reduce-exports zeromq"
+IUSE="+bundled-ssl examples +hardened libressl libs mining proton +reduce-exports zeromq"
 
 REQUIRED_USE="bundled-ssl? ( !libressl )"
 
@@ -128,15 +129,17 @@ RDEPEND="
 		!libressl? ( dev-libs/openssl:0=[-bindist] )
 		libressl? ( dev-libs/libressl:0= )
 	)
-	zeromq? ( >=net-libs/zeromq-4.2.1 )
+	zeromq? ( >=net-libs/zeromq-4.3.1 )
 "
 DEPEND="${RDEPEND}
 	>=dev-cpp/gtest-1.8.0
 	virtual/rust
 "
 
-PATCHES=( "${FILESDIR}/${P}-no_gtest.patch" )
+PATCHES=( "${FILESDIR}/${PN}-2.0.1-no_gtest.patch" )
 DOCS=( doc/{payment-api,security-warnings,tor}.md )
+
+S="${WORKDIR}/${PN}-${MY_PV}"
 
 pkg_setup() {
 	enewgroup zcash
@@ -149,6 +152,8 @@ src_unpack() {
 }
 
 src_prepare() {
+	default
+
 	local DEP_SRC STAMP_DIR LIBS c
 	local native_packages packages
 	DEP_SRC="${S}/depends/sources"
@@ -209,7 +214,6 @@ src_prepare() {
 	popd || die
 	eend $?
 
-	default
 	./autogen.sh || die
 }
 
