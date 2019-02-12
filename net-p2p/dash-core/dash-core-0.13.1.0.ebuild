@@ -1,9 +1,9 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
-inherit autotools bash-completion-r1 gnome2-utils systemd user xdg-utils
+inherit autotools bash-completion-r1 desktop systemd user xdg-utils
 
 MY_PV="${PV/_/-}"
 MY_P="dash-${MY_PV}"
@@ -16,10 +16,13 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86"
-IUSE="daemon dbus +gui hardened libressl +qrcode reduce-exports system-univalue test upnp utils +wallet zeromq"
+IUSE="daemon dbus +gui hardened libressl +qrcode +reduce-exports system-univalue test upnp utils +wallet zeromq"
 REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
 
-CDEPEND="dev-libs/boost:0=[threads(+)]
+# Keep 'dev-libs/bls-signatures' in sync with depends/packages/chia_bls.mk
+CDEPEND="
+	dev-libs/boost:0=[threads(+)]
+	~dev-libs/bls-signatures-0_p20181101
 	dev-libs/libevent
 	gui? (
 		dev-libs/protobuf
@@ -34,9 +37,11 @@ CDEPEND="dev-libs/boost:0=[threads(+)]
 	system-univalue? ( dev-libs/univalue )
 	upnp? ( net-libs/miniupnpc )
 	wallet? ( sys-libs/db:4.8[cxx] )
-	zeromq? ( net-libs/zeromq )"
+	zeromq? ( net-libs/zeromq )
+"
 DEPEND="${CDEPEND}
-	gui? ( dev-qt/linguist-tools )"
+	gui? ( dev-qt/linguist-tools:5 )
+"
 RDEPEND="${CDEPEND}"
 
 S="${WORKDIR}/${MY_P}"
@@ -60,12 +65,13 @@ src_prepare() {
 src_configure() {
 	# shellcheck disable=SC2207
 	local myeconf=(
-		--without-libs
 		--disable-bench
 		--disable-ccache
+		--disable-gui-tests
 		--disable-maintainer-mode
-		$(usex gui "--with-gui=qt5" --without-gui)
+		--without-libs
 		$(use_with daemon)
+		$(use_with gui)
 		$(use_with qrcode qrencode)
 		$(use_with upnp miniupnpc)
 		$(use_with utils)
@@ -110,23 +116,26 @@ src_install() {
 			newicon -s ${X} "share/pixmaps/dash${X}.png" dash.png
 		done
 		# shellcheck disable=SC1117
-		make_desktop_entry "dash-qt %u" "Dash Core" "dash" \
-			"Qt;Network;P2P;Office;Finance;" \
+		make_desktop_entry "dash-qt" "Dash Core" "dash" \
+			"Qt;Network;P2P;Office;Finance" \
 			"MimeType=x-scheme-handler/dash;\nTerminal=false"
+		sed -i "/^Exec/s/$/ %u/" "${ED}"/usr/share/applications/*.desktop || die
 
 		doman doc/man/dash-qt.1
 	fi
 
 	use utils && doman doc/man/dash-{cli,tx}.1
-}
-
-pkg_preinst() {
-	use gui && gnome2_icon_savelist
+	find "${D}" -name '*.la' -delete || die
 }
 
 update_caches() {
-	gnome2_icon_cache_update
+	if type gtk-update-icon-cache &>/dev/null; then
+		ebegin "Updating GTK icon cache"
+		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
+		eend $? || die
+	fi
 	xdg_desktop_database_update
+	xdg_mimeinfo_database_update
 }
 
 pkg_postinst() {
