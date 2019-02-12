@@ -1,13 +1,16 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 inherit autotools bash-completion-r1 desktop systemd user xdg-utils
 
-DESCRIPTION="A full node Bitcoin Cash implementation with GUI, daemon and utils"
-HOMEPAGE="https://bitcoinabc.org"
-SRC_URI="https://github.com/Bitcoin-ABC/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+MY_PV="${PV/_/-}"
+MY_P="dash-${MY_PV}"
+
+DESCRIPTION="A peer-to-peer privacy-centric digital currency"
+HOMEPAGE="https://www.dash.org"
+SRC_URI="https://github.com/dashpay/dash/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 RESTRICT="mirror"
 
 LICENSE="MIT"
@@ -16,8 +19,10 @@ KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 IUSE="daemon dbus +gui hardened libressl +qrcode +reduce-exports system-univalue test upnp utils +wallet zeromq"
 REQUIRED_USE="dbus? ( gui ) qrcode? ( gui )"
 
+# Keep 'dev-libs/bls-signatures' in sync with depends/packages/chia_bls.mk
 CDEPEND="
 	dev-libs/boost:0=[threads(+)]
+	~dev-libs/bls-signatures-0_p20181101
 	dev-libs/libevent
 	gui? (
 		dev-libs/protobuf
@@ -29,46 +34,22 @@ CDEPEND="
 	)
 	!libressl? ( dev-libs/openssl:0=[-bindist] )
 	libressl? ( dev-libs/libressl:0= )
-	system-univalue? ( >=dev-libs/univalue-1.0.4 )
+	system-univalue? ( dev-libs/univalue )
 	upnp? ( net-libs/miniupnpc )
-	wallet? (
-		|| (
-			sys-libs/db:5.3[cxx]
-			sys-libs/db:6.0[cxx]
-			sys-libs/db:6.1[cxx]
-			sys-libs/db:6.2[cxx]
-		)
-	)
+	wallet? ( sys-libs/db:4.8[cxx] )
 	zeromq? ( net-libs/zeromq )
 "
 DEPEND="${CDEPEND}
 	gui? ( dev-qt/linguist-tools:5 )
 "
-RDEPEND="${CDEPEND}
-	daemon? (
-		!net-p2p/bitcoind
-		!net-p2p/bitcoinxt[daemon]
-		!net-p2p/bitcoin-unlimited[daemon]
-	)
-	gui?  (
-		!net-p2p/bitcoin-qt
-		!net-p2p/bitcoinxt[gui]
-		!net-p2p/bitcoin-unlimited[gui]
-	)
-	utils? (
-		!net-p2p/bitcoin-cli
-		!net-p2p/bitcoin-tx
-		!net-p2p/bitcoinxt[utils]
-		!net-p2p/bitcoin-unlimited[utils]
-	)
-"
+RDEPEND="${CDEPEND}"
 
-PATCHES=( "${FILESDIR}/${PN}-qt_tls_crash_fix.patch" )
+S="${WORKDIR}/${MY_P}"
 
 pkg_setup() {
 	if use daemon; then
-		enewgroup bitcoin
-		enewuser bitcoin -1 -1 /var/lib/bitcoin bitcoin
+		enewgroup dash
+		enewuser dash -1 -1 /var/lib/dash dash
 	fi
 }
 
@@ -92,7 +73,6 @@ src_configure() {
 		$(use_with daemon)
 		$(use_with gui)
 		$(use_with qrcode qrencode)
-		$(use_with system-univalue)
 		$(use_with upnp miniupnpc)
 		$(use_with utils)
 		$(use_enable hardened hardening)
@@ -105,7 +85,7 @@ src_configure() {
 }
 
 src_test() {
-	emake -C src bitcoin_test_check
+	emake -C src dash_test_check
 }
 
 src_install() {
@@ -116,50 +96,46 @@ src_install() {
 		newconfd "${FILESDIR}/${PN}.confd" "${PN}"
 		systemd_newunit "${FILESDIR}/${PN}.service-r1" "${PN}.service"
 
-		insinto /etc/bitcoin
-		newins "${FILESDIR}/${PN}.conf" bitcoin.conf
-		fowners bitcoin:bitcoin /etc/bitcoin/bitcoin.conf
-		fperms 600 /etc/bitcoin/bitcoin.conf
-		newins contrib/debian/examples/bitcoin.conf bitcoin.conf.example
+		insinto /etc/dash
+		newins "${FILESDIR}/${PN}.conf" dash.conf
+		fowners dash:dash /etc/dash/dash.conf
+		fperms 600 /etc/dash/dash.conf
+		newins contrib/debian/examples/dash.conf dash.conf.example
 		doins share/rpcuser/rpcuser.py
 
-		doman doc/man/bitcoind.1
-		newbashcomp contrib/bitcoind.bash-completion bitcoind
+		doman doc/man/dashd.1
+		newbashcomp contrib/dashd.bash-completion dashd
 
 		insinto /etc/logrotate.d
 		newins "${FILESDIR}/${PN}.logrotate" "${PN}"
-
-		diropts -o bitcoin -g bitcoin -m 0750
-		keepdir /var/lib/bitcoin/.bitcoin
 	fi
 
 	if use gui; then
 		local X
 		for X in 16 32 64 128 256; do
-			newicon -s ${X} "share/pixmaps/bitcoin-abc${X}.png" bitcoin.png
+			newicon -s ${X} "share/pixmaps/dash${X}.png" dash.png
 		done
 		# shellcheck disable=SC1117
-		make_desktop_entry "bitcoin-qt %u" "Bitcoin ABC" "bitcoin" \
-			"Qt;Network;P2P;Office;Finance;" \
-			"MimeType=x-scheme-handler/bitcoincash;\nTerminal=false"
+		make_desktop_entry "dash-qt" "Dash Core" "dash" \
+			"Qt;Network;P2P;Office;Finance" \
+			"MimeType=x-scheme-handler/dash;\nTerminal=false"
+		sed -i "/^Exec/s/$/ %u/" "${ED}"/usr/share/applications/*.desktop || die
 
-		doman doc/man/bitcoin-qt.1
+		doman doc/man/dash-qt.1
 	fi
 
-	if use utils; then
-		doman doc/man/bitcoin-{cli,tx}.1
-		newbashcomp contrib/bitcoin-cli.bash-completion bitcoin-cli
-		newbashcomp contrib/bitcoin-tx.bash-completion bitcoin-tx
-	fi
+	use utils && doman doc/man/dash-{cli,tx}.1
+	find "${D}" -name '*.la' -delete || die
 }
 
 update_caches() {
 	if type gtk-update-icon-cache &>/dev/null; then
 		ebegin "Updating GTK icon cache"
 		gtk-update-icon-cache "${EROOT}/usr/share/icons/hicolor"
-		eend $?
+		eend $? || die
 	fi
 	xdg_desktop_database_update
+	xdg_mimeinfo_database_update
 }
 
 pkg_postinst() {

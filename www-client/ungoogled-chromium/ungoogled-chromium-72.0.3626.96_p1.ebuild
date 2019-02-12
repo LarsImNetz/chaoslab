@@ -13,7 +13,7 @@ CHROMIUM_LANGS="
 
 inherit check-reqs chromium-2 desktop flag-o-matic ninja-utils pax-utils python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
-UGC_PV="660eb60b10773edebfc2261fd4c7d744c6e4c325"
+UGC_PV="${PV/_p/-}"
 UGC_P="${PN}-${UGC_PV}"
 UGC_WD="${WORKDIR}/${UGC_P}"
 
@@ -468,6 +468,7 @@ src_prepare() {
 		third_party/pdfium/third_party/base
 		third_party/pdfium/third_party/bigint
 		third_party/pdfium/third_party/freetype
+		third_party/pdfium/third_party/lcms
 		third_party/pdfium/third_party/libtiff
 		third_party/pdfium/third_party/skia_shared
 	)

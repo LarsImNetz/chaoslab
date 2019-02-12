@@ -3,8 +3,8 @@
 
 EAPI=7
 
-# For docker-18.09.1
-# https://github.com/docker/docker-ce/blob/v18.09.1/components/engine/hack/dockerfile/install/runc.installer
+# For docker-18.09.2
+# https://github.com/docker/docker-ce/blob/v18.09.2/components/engine/hack/dockerfile/install/runc.installer
 # Change this when you update the ebuild:
 GIT_COMMIT="96ec2177ae841256168fcf76954f7177af9446eb"
 EGO_PN="github.com/opencontainers/${PN}"
@@ -27,6 +27,8 @@ RDEPEND="
 	apparmor? ( sys-libs/libapparmor )
 	seccomp? ( sys-libs/libseccomp )
 "
+
+PATCHES=( "${FILESDIR}/${PN}-fix-cve.patch" )
 
 DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/.*"

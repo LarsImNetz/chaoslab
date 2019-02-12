@@ -4,7 +4,7 @@
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="4c52b901c6cb019f7552cd93055f9688c6538be4"
+GIT_COMMIT="62479626f213818ba5b4565105a05277308587d5"
 EGO_PN="github.com/${PN}/${PN}-ce"
 
 inherit bash-completion-r1 golang-vcs-snapshot-r1 linux-info systemd udev user
@@ -35,7 +35,7 @@ DEPEND="${CDEPEND}
 RDEPEND="${CDEPEND}
 	~app-emulation/containerd-1.2.2
 	~app-emulation/docker-proxy-0.8.0_pre20181208
-	~app-emulation/runc-1.0.0_pre20181203[apparmor?,seccomp?]
+	>=app-emulation/runc-1.0.0_pre20181203-r1[apparmor?,seccomp?]
 	dev-libs/libltdl
 	>=dev-vcs/git-1.7
 	>=net-firewall/iptables-1.4
