@@ -1,13 +1,13 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="76f907b0fada2f16931e37471da695349fcdf8c6"
+GIT_COMMIT="ef77e72f435b71b1ad6da7d6a6a4c4a262439379"
 EGO_PN="github.com/influxdata/${PN}"
+# Note: Keep EGO_VENDOR in sync with Gopkg.lock
 EGO_VENDOR=(
-	# Note: Keep EGO_VENDOR in sync with Gopkg.lock
 	"collectd.org 2ce144541b89 github.com/collectd/go-collectd"
 	"github.com/BurntSushi/toml a368813c5e64"
 	#"github.com/Masterminds/semver v1.4.2"
@@ -15,6 +15,7 @@ EGO_VENDOR=(
 	#"github.com/alecthomas/kingpin v2.2.6"
 	#"github.com/alecthomas/template a0175ee3bccc"
 	#"github.com/alecthomas/units 2efee857e7cf"
+	"github.com/apache/arrow c6d97c59ef04"
 	#"github.com/apex/log 941dea75d3eb"
 	#"github.com/aws/aws-sdk-go v1.15.50"
 	"github.com/beorn7/perks 3a771d992973"
@@ -35,16 +36,16 @@ EGO_VENDOR=(
 	"github.com/gogo/protobuf v1.1.1"
 	"github.com/golang/protobuf v1.1.0"
 	"github.com/golang/snappy d9eb7a3d35ec"
-	#"github.com/google/go-cmp v0.2.0"
+	"github.com/google/go-cmp v0.2.0"
 	#"github.com/google/go-github dd29b543e14c"
 	#"github.com/google/go-querystring v1.0.0"
 	#"github.com/goreleaser/goreleaser v0.88.0"
 	#"github.com/goreleaser/nfpm v0.9.5"
 	#"github.com/imdario/mergo v0.3.6"
-	"github.com/influxdata/flux v0.7.1"
+	"github.com/influxdata/flux v0.12.0"
 	"github.com/influxdata/influxql c661ab7db8ad"
 	"github.com/influxdata/line-protocol 32c6aa80de5e"
-	"github.com/influxdata/platform dc5616e3f9ed"
+	"github.com/influxdata/platform 0f79e4ea3248"
 	"github.com/influxdata/roaring fc520f41fab6"
 	"github.com/influxdata/tdigest a7d76c6f093a"
 	"github.com/influxdata/usage-client 6d3895376368"
@@ -113,7 +114,7 @@ RESTRICT="mirror"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="debug man pie"
+IUSE="debug man pie static"
 
 DEPEND="man? ( app-text/asciidoc app-text/xmlto )"
 
@@ -129,7 +130,7 @@ pkg_setup() {
 
 src_prepare() {
 	# By default InfluxDB sends anonymous statistics to
-	# usage.influxdata.com. Let's sed-fix to disable it.
+	# usage.influxdata.com, which is a no-no!
 	sed -i "s:# reporting.*:reporting-disabled = true:" \
 		etc/config.sample.toml || die
 
@@ -139,19 +140,28 @@ src_prepare() {
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+	(use static && ! use pie) && export CGO_ENABLED=0
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
+
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "main.branch=non-git"
 		-X "main.commit=${GIT_COMMIT:0:7}"
 		-X "main.version=${MY_PV}"
 	)
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
+
 	go install "${mygoargs[@]}" ./cmd/influx{,d,_inspect,_stress,_tools,_tsm} || die
 
 	use man && emake -C man
