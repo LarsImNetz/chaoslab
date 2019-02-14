@@ -1,10 +1,10 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="8e0bb396f056ac1700964ce6464c3f0ad0300974"
+GIT_COMMIT="8b0a9deb922b5a1fd85ab3c9a2b135dab5348f8d"
 EGO_PN="github.com/influxdata/${PN}"
 EGO_VENDOR=( "github.com/kevinburke/go-bindata v3.12.0" )
 
@@ -19,11 +19,10 @@ RESTRICT="mirror"
 LICENSE="AGPL-3+"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="debug pie"
+IUSE="debug pie static"
 
 DEPEND="
-	<=net-libs/nodejs-11
-	>net-libs/nodejs-6
+	>=net-libs/nodejs-8.12.0
 	sys-apps/yarn
 "
 
@@ -60,18 +59,26 @@ src_prepare() {
 src_compile() {
 	export GOPATH="${G}"
 	export GOBIN="${S}/bin"
+	export CGO_CFLAGS="${CFLAGS}"
+	export CGO_LDFLAGS="${LDFLAGS}"
+	(use static && ! use pie) && export CGO_ENABLED=0
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
 	local PATH="${GOBIN}:$PATH"
+
 	local myldflags=(
 		"$(usex !debug '-s -w' '')"
 		-X "main.version=${PV}"
 		-X "main.commit=${GIT_COMMIT:0:8}"
 	)
+
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
+		-tags "$(usex static 'netgo' '')"
+		-installsuffix "$(usex static 'netgo' '')"
 	)
 
 	# Build go-bindata locally
