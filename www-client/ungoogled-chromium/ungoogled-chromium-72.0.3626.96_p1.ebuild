@@ -46,7 +46,7 @@ REQUIRED_USE="
 	system-openjpeg? ( pdf )
 	x86? ( !lld !thinlto !widevine )
 "
-RESTRICT="mirror
+RESTRICT="
 	!system-ffmpeg? ( proprietary-codecs? ( bindist ) )
 	!system-openh264? ( bindist )
 "
@@ -111,7 +111,6 @@ CDEPEND="
 	system-openjpeg? ( media-libs/openjpeg:2= )
 	vaapi? ( x11-libs/libva:= )
 "
-# For nvidia-drivers blocker (Bug #413637)
 RDEPEND="${CDEPEND}
 	virtual/opengl
 	virtual/ttf-fonts

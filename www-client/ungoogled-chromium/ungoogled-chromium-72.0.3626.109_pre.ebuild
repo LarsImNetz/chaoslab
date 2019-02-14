@@ -13,7 +13,7 @@ CHROMIUM_LANGS="
 
 inherit check-reqs chromium-2 desktop flag-o-matic ninja-utils pax-utils python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
-UGC_PV="${PV/105_pre/96-1}"
+UGC_PV="${PV/109_pre/96-1}"
 UGC_P="${PN}-${UGC_PV}"
 UGC_WD="${WORKDIR}/${UGC_P}"
 
@@ -29,7 +29,7 @@ LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="
-	+cfi cups custom-cflags gnome gold jumbo-build kerberos libcxx
+	+cfi closure-compile cups custom-cflags gnome gold jumbo-build kerberos libcxx
 	+lld new-tcmalloc optimize-thinlto optimize-webui +pdf +proprietary-codecs
 	pulseaudio selinux +suid +system-ffmpeg system-harfbuzz +system-icu
 	+system-jsoncpp +system-libevent +system-libvpx +system-openh264
@@ -46,7 +46,7 @@ REQUIRED_USE="
 	system-openjpeg? ( pdf )
 	x86? ( !lld !thinlto !widevine )
 "
-RESTRICT="mirror
+RESTRICT="
 	!system-ffmpeg? ( proprietary-codecs? ( bindist ) )
 	!system-openh264? ( bindist )
 "
@@ -87,6 +87,7 @@ CDEPEND="
 	x11-libs/libXScrnSaver:=
 	x11-libs/libXtst:=
 	x11-libs/pango:=
+	closure-compile? ( virtual/jre:* )
 	cups? ( >=net-print/cups-1.3.11:= )
 	kerberos? ( virtual/krb5 )
 	pdf? ( media-libs/lcms:= )
@@ -111,7 +112,6 @@ CDEPEND="
 	system-openjpeg? ( media-libs/openjpeg:2= )
 	vaapi? ( x11-libs/libva:= )
 "
-# For nvidia-drivers blocker (Bug #413637)
 RDEPEND="${CDEPEND}
 	virtual/opengl
 	virtual/ttf-fonts
@@ -458,6 +458,7 @@ src_prepare() {
 		v8/third_party/v8
 	)
 
+	use closure-compile && keeplibs+=( third_party/closure_compiler )
 	use optimize-webui && keeplibs+=(
 		third_party/node
 		third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2
@@ -612,7 +613,7 @@ src_configure() {
 
 		# UGC's "common" GN flags (config_bundles/common/gn_flags.map)
 		"blink_symbol_level=0"
-		"closure_compile=false"
+		"closure_compile=$(usetf closure-compile)"
 		"enable_ac3_eac3_audio_demuxing=true"
 		"enable_hangout_services_extension=false"
 		"enable_hevc_demuxing=true"
