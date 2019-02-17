@@ -27,7 +27,7 @@ src_compile() {
 	export GOPATH="${G}"
 	export CGO_CFLAGS="${CFLAGS}"
 	export CGO_LDFLAGS="${LDFLAGS}"
-	(use pie && use static) && CGO_LDFLAGS+=" -static"
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
 
 	local mygoargs=(
 		-v -work -x
