@@ -1,0 +1,13 @@
+BDEPEND=>=dev-lang/go-1.10.1
+DEFINED_PHASES=compile install unpack
+DESCRIPTION=Yet Another i3status replacement written in Go
+EAPI=7
+HOMEPAGE=https://github.com/burik666/yagostatus
+IUSE=debug pie static
+KEYWORDS=~amd64 ~arm ~arm64 ~x86
+LICENSE=GPL-3
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/burik666/yagostatus/archive/v0.3.0.tar.gz -> yagostatus-0.3.0.tar.gz https://github.com/pkg/errors/archive/v0.8.1.tar.gz -> github.com-pkg-errors-v0.8.1.tar.gz https://github.com/golang/net/archive/26e67e76b6c3.tar.gz -> github.com-golang-net-26e67e76b6c3.tar.gz https://github.com/go-yaml/yaml/archive/v2.2.1.tar.gz -> github.com-go-yaml-yaml-v2.2.1.tar.gz
+_eclasses_=golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f
+_md5_=3eaa10c612e60891e0f5251f8f5bdcac
