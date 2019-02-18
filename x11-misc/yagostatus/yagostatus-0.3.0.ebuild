@@ -3,21 +3,27 @@
 
 EAPI=7
 
-EGO_PN="github.com/cjbassi/${PN}"
+EGO_PN="github.com/burik666/${PN}"
+# Note: Keep EGO_VENDOR in sync with go.mod
+EGO_VENDOR=(
+	"github.com/pkg/errors v0.8.1"
+	"golang.org/x/net 26e67e76b6c3 github.com/golang/net"
+	"gopkg.in/yaml.v2 v2.2.1 github.com/go-yaml/yaml"
+)
 
 inherit golang-vcs-snapshot-r1
 
-DESCRIPTION="A terminal based graphical activity monitor inspired by gtop and vtop"
-HOMEPAGE="https://github.com/cjbassi/gotop"
-SRC_URI="https://${EGO_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+DESCRIPTION="Yet Another i3status replacement written in Go"
+HOMEPAGE="https://github.com/burik666/yagostatus"
+ARCHIVE_URI="https://${EGO_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="${ARCHIVE_URI} ${EGO_VENDOR_URI}"
 RESTRICT="mirror"
 
-LICENSE="AGPL-3"
+LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86" # Untested: arm arm64 x86
 IUSE="debug pie static"
 
-DOCS=( README.md )
 QA_PRESTRIPPED="usr/bin/.*"
 
 G="${WORKDIR}/${P}"
@@ -27,7 +33,7 @@ src_compile() {
 	export GOPATH="${G}"
 	export CGO_CFLAGS="${CFLAGS}"
 	export CGO_LDFLAGS="${LDFLAGS}"
-	(use pie && use static) && CGO_LDFLAGS+=" -static"
+	(use static && use pie) && CGO_LDFLAGS+=" -static"
 
 	local mygoargs=(
 		-v -work -x
@@ -43,7 +49,9 @@ src_compile() {
 }
 
 src_install() {
-	dobin gotop
-	use debug && dostrip -x /usr/bin/gotop
-	einstalldocs
+	dobin yagostatus
+	use debug && dostrip -x /usr/bin/yagostatus
+
+	dodoc README.md yagostatus.yml
+	docompress -x "/usr/share/doc/${PF}"
 }

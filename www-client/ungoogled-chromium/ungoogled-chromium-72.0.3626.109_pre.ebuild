@@ -13,7 +13,7 @@ CHROMIUM_LANGS="
 
 inherit check-reqs chromium-2 desktop flag-o-matic ninja-utils pax-utils python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
-UGC_PV="${PV/109_pre/96-1}"
+UGC_PV="a58db880c15e5077e881cad7b07d1a277ecd463a"
 UGC_P="${PN}-${UGC_PV}"
 UGC_WD="${WORKDIR}/${UGC_P}"
 
@@ -265,6 +265,9 @@ src_prepare() {
 		system-libevent:event
 		system-libvpx:vpx
 		vaapi:enable-vaapi
+		vaapi:chromium-vaapi-relax-the-version-check-for-VA-API
+		vaapi:chromium-enable-mojo-video-decoders-by-default
+		vaapi:chromium-vaapi-fix-the-VA_CHECK_VERSION
 	)
 
 	local ugc_p ugc_dir
