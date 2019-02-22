@@ -63,8 +63,6 @@ RDEPEND="${CDEPEND}
 	)
 "
 
-PATCHES=( "${FILESDIR}/${PN}-qt_tls_crash_fix.patch" )
-
 pkg_setup() {
 	if use daemon; then
 		enewgroup bitcoin
