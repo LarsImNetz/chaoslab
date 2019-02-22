@@ -4,7 +4,7 @@
 EAPI=7
 
 # Generated with:
-# curl -s https://raw.githubusercontent.com/mattgreen/watchexec/1.10.0/Cargo.lock | sed 's/^"checksum \([[:graph:]]\+\) \([[:graph:]]\+\) (.*$/\1-\2/'
+# curl -s https://raw.githubusercontent.com/mattgreen/watchexec/1.10.1/Cargo.lock | sed 's/^"checksum \([[:graph:]]\+\) \([[:graph:]]\+\) (.*$/\1-\2/'
 CRATES="
 aho-corasick-0.6.9
 atty-0.2.11
