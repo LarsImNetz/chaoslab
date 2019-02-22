@@ -1,12 +1,12 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 inherit desktop xdg-utils
 
-ELECTRON_SLOT="3.0"
-ELECTRON_V="3.0.10"
+ELECTRON_SLOT="4.0"
+ELECTRON_V="4.0.4"
 MY_PV="${PV/_rc/-rc.}"
 
 DESCRIPTION="A glossy Matrix collaboration client for desktop"
@@ -68,6 +68,8 @@ src_install() {
 
 	insinto /usr/libexec/riot
 	doins package.json
+	doins -r origin_migrator
+
 	dosym ../../share/riot /usr/libexec/riot/webapp
 
 	insinto /usr/libexec/riot/electron_app
@@ -81,7 +83,7 @@ src_install() {
 	for size in 16 24 48 64 96 128 256 512; do
 		newicon -s ${size} "electron_app/build/icons/${size}x${size}.png" riot.png
 	done
-	newicon -s scalable res/themes/riot/img/logos/riot-logo.svg riot.svg
+	newicon -s scalable res/themes/riot/img/logos/riot-im-logo.svg riot.svg
 	make_desktop_entry "${PN}" Riot riot \
 		"Network;Chat;InstantMessaging;IRCClient" \
 		"Terminal=false\\nStartupNotify=true\\nStartupWMClass=Riot"
