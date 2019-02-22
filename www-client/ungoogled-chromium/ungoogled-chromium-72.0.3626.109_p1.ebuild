@@ -13,7 +13,7 @@ CHROMIUM_LANGS="
 
 inherit check-reqs chromium-2 desktop flag-o-matic ninja-utils pax-utils python-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 
-UGC_PV="660eb60b10773edebfc2261fd4c7d744c6e4c325"
+UGC_PV="${PV/_p/-}"
 UGC_P="${PN}-${UGC_PV}"
 UGC_WD="${WORKDIR}/${UGC_P}"
 
@@ -29,7 +29,7 @@ LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="
-	+cfi cups custom-cflags gnome gold jumbo-build kerberos libcxx
+	+cfi closure-compile cups custom-cflags gnome gold jumbo-build kerberos libcxx
 	+lld new-tcmalloc optimize-thinlto optimize-webui +pdf +proprietary-codecs
 	pulseaudio selinux +suid +system-ffmpeg system-harfbuzz +system-icu
 	+system-jsoncpp +system-libevent +system-libvpx +system-openh264
@@ -87,6 +87,7 @@ CDEPEND="
 	x11-libs/libXScrnSaver:=
 	x11-libs/libXtst:=
 	x11-libs/pango:=
+	closure-compile? ( virtual/jre:* )
 	cups? ( >=net-print/cups-1.3.11:= )
 	kerberos? ( virtual/krb5 )
 	pdf? ( media-libs/lcms:= )
@@ -264,6 +265,9 @@ src_prepare() {
 		system-libevent:event
 		system-libvpx:vpx
 		vaapi:enable-vaapi
+		vaapi:chromium-vaapi-relax-the-version-check-for-VA-API
+		vaapi:chromium-enable-mojo-video-decoders-by-default
+		vaapi:chromium-vaapi-fix-the-VA_CHECK_VERSION
 	)
 
 	local ugc_p ugc_dir
@@ -457,6 +461,7 @@ src_prepare() {
 		v8/third_party/v8
 	)
 
+	use closure-compile && keeplibs+=( third_party/closure_compiler )
 	use optimize-webui && keeplibs+=(
 		third_party/node
 		third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2
@@ -611,7 +616,7 @@ src_configure() {
 
 		# UGC's "common" GN flags (config_bundles/common/gn_flags.map)
 		"blink_symbol_level=0"
-		"closure_compile=false"
+		"closure_compile=$(usetf closure-compile)"
 		"enable_ac3_eac3_audio_demuxing=true"
 		"enable_hangout_services_extension=false"
 		"enable_hevc_demuxing=true"
