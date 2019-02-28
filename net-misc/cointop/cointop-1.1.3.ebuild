@@ -27,9 +27,9 @@ src_compile() {
 	export GOPATH="${G}"
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		-asmflags "-trimpath=${S}"
-		-gcflags "-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "$(usex !debug '-s -w' '')"
 		-o ./bin/cointop
 	)
