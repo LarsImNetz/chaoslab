@@ -1,14 +1,15 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-inherit systemd tmpfiles user
+inherit systemd tmpfiles toolchain-funcs user
 
 KNOT_MODULES=(
-	+module-dnsproxy module-dnstap +module-noudp
-	+module-onlinesign module-rosedb +module-rrl
-	+module-stats +module-synthrecord +module-whoami
+	+module-cookies +module-dnsproxy module-dnstap
+	+module-geoip +module-noudp +module-onlinesign
+	+module-queryacl +module-rrl +module-stats
+	+module-synthrecord +module-whoami
 )
 
 DESCRIPTION="High-performance authoritative-only DNS server"
@@ -29,7 +30,6 @@ for mod in "${KNOT_MODULES[@]}"; do
 	IUSE+=" ${mod}"
 	REQUIRED_USE+=" ${mod#+}? ( daemon )"
 done
-unset mod
 
 RDEPEND="
 	dev-db/lmdb
@@ -48,6 +48,7 @@ RDEPEND="
 		dev-libs/fstrm
 		dev-libs/protobuf-c
 	)
+	module-geoip? ( dev-libs/libmaxminddb )
 	utils? ( dev-libs/libedit )
 "
 DEPEND="${RDEPEND}
@@ -62,33 +63,40 @@ pkg_setup() {
 	fi
 }
 
-# shellcheck disable=SC2191,SC2206,SC2207,SC2086
 src_configure() {
 	local myconf=""
+	if use fastparser; then
+		if tc-is-clang && has_version '>=sys-devel/clang-5.0.0'; then
+			myconf+=( "--enable-fastparser=force" )
+		else
+			myconf+=( "--enable-fastparser" )
+		fi
+	fi
+
 	use daemon && myconf+=(
-		--with-storage="${EPREFIX}"/var/lib/knot
-		--with-rundir="${EPREFIX}"/var/run/knot
+		"--with-storage=${EPREFIX}/var/lib/knot"
+		"--with-rundir=${EPREFIX}/var/run/knot"
 	)
 
 	local mod
 	for mod in "${KNOT_MODULES[@]#+}"; do
 		if [[ "${mod}" == module-dnsproxy ]] || \
 			[[ "${mod}" == module-onlinesign ]]; then
-			myconf+=("$(use_with ${mod})")
+			myconf+=( "$(use_with "${mod}")" )
 		else
-			myconf+=(--with-${mod}=$(usex ${mod} 'shared'))
+			myconf+=( "--with-${mod}=$(usex "${mod}" 'shared')" )
 		fi
 	done
 
 	myconf+=(
-		--enable-systemd=$(usex systemd)
-		$(use_enable daemon)
-		$(use_enable fastparser)
-		$(use_enable module-dnstap dnstap)
-		$(use_enable doc documentation)
-		$(use_enable static-libs static)
-		$(use_enable utils utilities)
-		$(use_with idn libidn)
+		"--enable-systemd=$(usex systemd)"
+		"$(use_enable daemon)"
+		"$(use_enable module-dnstap dnstap)"
+		"$(use_enable module-geoip maxminddb)"
+		"$(use_enable doc documentation)"
+		"$(use_enable static-libs static)"
+		"$(use_enable utils utilities)"
+		"$(use_with idn libidn)"
 	)
 
 	econf "${myconf[@]}" || die "econf failed"
@@ -111,11 +119,11 @@ src_install() {
 		systemd_dounit "${FILESDIR}/${PN}.service"
 		newtmpfiles "${FILESDIR}/${PN}.tmpfilesd" "${PN}.conf"
 
-		keepdir /var/lib/knot
-
-		rmdir "${D%/}"/var/run/knot "${D%/}"/var/run || die
-		find "${D}" -name '*.la' -delete || die
+		# Remove empty directories
+		rmdir "${D%/}"/var/{run/knot,run} "${D%/}"/var/{lib/knot,lib} || die
 	fi
+
+	find "${D%/}" -name '*.la' -delete || die
 }
 
 pkg_postinst() {

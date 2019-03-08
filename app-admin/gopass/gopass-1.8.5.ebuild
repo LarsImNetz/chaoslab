@@ -4,7 +4,7 @@
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="8ee931edefea910342e4cd92de9ce3423ba6115c"
+GIT_COMMIT="dd169b82e713c09f31fa6919342543163b5894f3"
 EGO_PN="github.com/gopasspw/${PN}"
 
 inherit bash-completion-r1 golang-vcs-snapshot-r1
@@ -40,9 +40,9 @@ src_compile() {
 	)
 	local mygoargs=(
 		-v -work -x
-		"-buildmode=$(usex pie pie exe)"
-		"-asmflags=all=-trimpath=${S}"
-		"-gcflags=all=-trimpath=${S}"
+		-buildmode "$(usex pie pie exe)"
+		-asmflags "all=-trimpath=${S}"
+		-gcflags "all=-trimpath=${S}"
 		-ldflags "${myldflags[*]}"
 	)
 	go build "${mygoargs[@]}" || die
