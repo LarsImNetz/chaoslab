@@ -4,7 +4,7 @@
 EAPI=7
 
 # Change this when you update the ebuild
-GIT_COMMIT="65d2c9b51d02e6b14db3da3cb8424ef72e046780"
+GIT_COMMIT="567e41ff6b096a478333c804d5c18264050bc3f8"
 EGO_PN="github.com/hashicorp/${PN}"
 
 inherit golang-vcs-snapshot-r1 systemd user
@@ -59,6 +59,7 @@ src_compile() {
 src_install() {
 	dobin consul
 	use debug && dostrip -x /usr/bin/consul
+	einstalldocs
 
 	newinitd "${FILESDIR}/${PN}.initd" "${PN}"
 	newconfd "${FILESDIR}/${PN}.confd" "${PN}"
@@ -72,6 +73,4 @@ src_install() {
 
 	diropts -o consul -g consul -m 0750
 	keepdir /var/log/consul
-
-	einstalldocs
 }
