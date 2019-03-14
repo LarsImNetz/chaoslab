@@ -10,5 +10,5 @@ RDEPEND=dev-libs/atk dev-libs/expat dev-libs/glib:2 dev-libs/nss gnome-base/gcon
 RESTRICT=mirror
 SLOT=2.0
 SRC_URI=amd64? ( https://github.com/electron/electron/releases/download/v2.0.18/electron-v2.0.18-linux-x64.zip -> electron-bin-2.0.18-x64.zip ) arm? ( https://github.com/electron/electron/releases/download/v2.0.18/electron-v2.0.18-linux-armv7l.zip -> electron-bin-2.0.18-armv7l.zip ) arm64? ( https://github.com/electron/electron/releases/download/v2.0.18/electron-v2.0.18-linux-arm64.zip -> electron-bin-2.0.18-arm64.zip ) x86? ( https://github.com/electron/electron/releases/download/v2.0.18/electron-v2.0.18-linux-ia32.zip -> electron-bin-2.0.18-ia32.zip )
-_eclasses_=chromium-2	92ff174aa2b13d6ea0c4539533f0b2de	eutils	6e6c2737b59a4b982de6fb3ecefd87f8	linux-info	953c3b1c472dcadbf62098a9301327f2	multilib	b2f01ad412baf81650c23fcf0975fa33	toolchain-funcs	f164325a2cdb5b3ea39311d483988861
+_eclasses_=chromium-2	92ff174aa2b13d6ea0c4539533f0b2de	eutils	6e6c2737b59a4b982de6fb3ecefd87f8	linux-info	953c3b1c472dcadbf62098a9301327f2	multilib	b2f01ad412baf81650c23fcf0975fa33	toolchain-funcs	b45201c4e6c096b98e250336954e64b9
 _md5_=96adea398f0c0cae7ad28ebd5678d99b
