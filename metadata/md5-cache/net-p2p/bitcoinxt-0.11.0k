@@ -12,5 +12,5 @@ REQUIRED_USE=dbus? ( gui ) qrcode? ( gui )
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/bitcoinxt/bitcoinxt/archive/v0.11K.tar.gz -> bitcoinxt-0.11.0k.tar.gz
-_eclasses_=autotools	1bf086cdd7356f5c9a4acd9727bd2065	bash-completion-r1	47a7402d95930413ce25ba8d857339bb	desktop	b1d22ac8bdd4679ab79c71aca235009d	libtool	f143db5a74ccd9ca28c1234deffede96	multilib	1d91b03d42ab6308b5f4f6b598ed110e	systemd	71fd8d2065d102753fb9e4d20eaf3e9f	toolchain-funcs	b45201c4e6c096b98e250336954e64b9	user	8bd74731cafdcdad8f7a63637302e073	xdg-utils	14d00d009167652b1fa363e55effe213
+_eclasses_=autotools	1bf086cdd7356f5c9a4acd9727bd2065	bash-completion-r1	47a7402d95930413ce25ba8d857339bb	desktop	b1d22ac8bdd4679ab79c71aca235009d	libtool	f143db5a74ccd9ca28c1234deffede96	multilib	1d91b03d42ab6308b5f4f6b598ed110e	systemd	71fd8d2065d102753fb9e4d20eaf3e9f	toolchain-funcs	8c7f9d80beedd16f2e5a7f612c609529	user	8bd74731cafdcdad8f7a63637302e073	xdg-utils	14d00d009167652b1fa363e55effe213
 _md5_=0239cf6b692b8fdbe0f1804d2757d7f1
