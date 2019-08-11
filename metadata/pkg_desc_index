@@ -1,0 +1,203 @@
+app-admin/consul 1.4.2 1.4.3: A tool for service discovery, monitoring and configuration
+app-admin/doctl 1.13.0: A command line tool for DigitalOcean services
+app-admin/gollum 0.5.3: An n:m message multiplexer written in Go
+app-admin/gopass 1.8.5: The slightly more awesome standard unix password manager for teams
+app-admin/pick 0.8.0: A minimal password manager written in Go
+app-admin/terraform 0.11.11: A tool for building, changing, and combining infrastructure safely/efficiently
+app-admin/vault 1.0.2 1.0.3: A tool for managing secrets
+app-admin/vault-client 1.1.4: A CLI to HashiCorp's Vault inspired by pass
+app-backup/duplicacy 2.1.2: A new generation cloud backup tool
+app-backup/restic 0.9.4: A backup program that is fast, efficient and secure
+app-benchmarks/bombardier 1.2.4: Fast cross-platform HTTP benchmarking tool written in Go
+app-benchmarks/dnsperfbench 0.1.7: A command line tool to compare performance of DNS resolvers
+app-benchmarks/fortio 1.3.1: A load testing CLI, advanced echo server, and web UI in Go
+app-benchmarks/hey 0.1.1: HTTP load generator, ApacheBench (ab) replacement
+app-benchmarks/pewpew 0.3.5: Flexible HTTP command line stress tester for websites and web services
+app-benchmarks/vegeta 12.2.1: HTTP load testing tool and library. It's over 9000!
+app-crypt/certspotter 0.9: A Certificate Transparency log monitor from SSLMate
+app-crypt/enchive 3.4: A tool to encrypt files to yourself for long-term archival
+app-crypt/kbfs 2.11.0: Keybase Filesystem (KBFS)
+app-crypt/keybase 2.13.1: Client for Keybase
+app-crypt/minisign 0.8: A dead simple tool to sign files and verify digital signatures
+app-crypt/mkcert 1.3.0: A simple tool for making locally-trusted development certificates
+app-crypt/ssh-vault 0.12.4: Encrypt/Decrypt using SSH private keys
+app-editors/atom 1.33.0-r1 1.33.1-r1 1.34.0-r1 1.34.0-r2: A hackable text editor for the 21st Century
+app-editors/micro 1.4.1: A modern and intuitive terminal-based text editor
+app-editors/oni 0.3.7_beta3: Code editor with a modern twist on modal editing, powered by Neovim
+app-emulation/containerd 1.2.2: A daemon to control runC
+app-emulation/docker 18.09.2: The core functions you need to create Docker images and run Docker containers
+app-emulation/docker-proxy 0.8.0_pre20181208: Docker container networking
+app-emulation/runc 1.0.0_pre20181203-r1: CLI tool for spawning and running containers
+app-forensics/gitleaks 1.24.0: Audit git repos for secrets
+app-metrics/alertmanager 0.15.3: Handles alerts sent by client applications such as the Prometheus
+app-metrics/apache_exporter 0.5.0: Exports apache mod_status statistics via HTTP for Prometheus consumption
+app-metrics/blackbox_exporter 0.13.0: Prometheus exporter for blackbox probing via HTTP, HTTPS, DNS, TCP and ICMP
+app-metrics/collectd_exporter 0.4.0: A server that accepts collectd stats for Prometheus consumption
+app-metrics/consul_exporter 0.3.0 0.4.0: Export Consul service health to Prometheus
+app-metrics/dovecot_exporter 0.1.3-r1: A Prometheus metrics exporter for the Dovecot mail server
+app-metrics/elasticsearch_exporter 1.0.2 1.0.4_rc1: Elasticsearch stats exporter for Prometheus
+app-metrics/graphite_exporter 0.4.2: A server that accepts Graphite metrics for Prometheus consumption
+app-metrics/haproxy_exporter 0.9.0: Scrapes HAProxy stats and exports them via HTTP for Prometheus consumption
+app-metrics/influxdb_exporter 0.1.0: A server that accepts InfluxDB metrics for Prometheus consumption
+app-metrics/memcached_exporter 0.5.0: Exports metrics from memcached servers for consumption by Prometheus
+app-metrics/mongodb_exporter 0.6.2: A Prometheus exporter for MongoDB
+app-metrics/mysqld_exporter 0.10.0 0.11.0: Prometheus exporter for MySQL server metrics
+app-metrics/nginx-vts-exporter 0.10.3: A server that scrapes Nginx vts stats and exports them for Prometheus
+app-metrics/node_exporter 0.16.0 0.17.0: Prometheus exporter for hardware and OS metrics exposed by *NIX kernels
+app-metrics/openvpn_exporter 0.2.1: A Prometheus exporter for OpenVPN
+app-metrics/php-fpm_exporter 0.5.2: A Prometheus exporter that connects directly to PHP-FPM
+app-metrics/phpfpm_exporter 0.3.0: A Prometheus exporter for PHP-FPM
+app-metrics/postfix_exporter 0.1.2: A Prometheus metrics exporter for the Postfix mail server
+app-metrics/postgres_exporter 0.4.6: PostgreSQL stats exporter for Prometheus
+app-metrics/process-exporter 0.2.12 0.3.11 0.4.0: A Prometheus exporter that mines /proc to report on selected processes
+app-metrics/prometheus 2.6.1 2.7.1: The Prometheus monitoring system and time series database
+app-metrics/pushgateway 0.6.0 0.7.0: Push acceptor for ephemeral and batch jobs to expose their metrics to Prometheus
+app-metrics/redis_exporter 0.28.0: A server that export Redis metrics for Prometheus consumption
+app-metrics/script_exporter 1.0.2: A Prometheus exporter for shell script exit status and duration
+app-metrics/sql_exporter 0.2.0: Flexible SQL Exporter for Prometheus
+app-metrics/ssl_exporter 0.2.0: Exports Prometheus metrics for SSL certificates
+app-metrics/statsd_exporter 0.6.0 0.7.0: Receives StatsD-style metrics and exports them as Prometheus metrics
+app-metrics/transmission-exporter 0.2.1: Transmission Exporter for Prometheus
+app-metrics/unbound_exporter 0.2_pre20171204-r1: A Prometheus exporter for Unbound
+app-metrics/uwsgi_exporter 0.8.0: uWSGI metrics exporter for prometheus.io
+app-metrics/varnish_exporter 1.4.1: Varnish exporter for Prometheus
+app-misc/asciinema-rs 0.5.1: Terminal recording and playback client for asciinema.org, written in Rust
+app-misc/corgi 0.2.4: A CLI workflow manager that helps with your repetitive command usages
+app-misc/genact 0.6.0: A nonsense activity generator
+app-misc/jid 0.7.2: JSON incremental digger
+app-misc/pet 0.3.4: Simple command-line snippet manager, written in Go
+app-misc/vanity-monero 0.2.7: Generate vanity address for CryptoNote currency
+app-misc/watchexec 1.10.1: Executes commands in response to file modifications
+app-misc/wtf 0.5.0: A personal information dashboard for your terminal
+app-shells/antibody 4.1.0: The fastest shell plugin manager
+app-shells/fzf 0.17.5: A general-purpose command-line fuzzy finder
+app-shells/peco 0.5.3: Simplistic interactive filtering tool
+app-shells/powerline-rs 0.1.9: A powerline-shell rewritten in Rust, inspired by powerline-go
+dev-db/influxdb 1.7.3 1.7.4: Scalable datastore for metrics, events, and real-time analytics
+dev-db/pgweb 0.11.0 0.11.2: Web-based PostgreSQL database browser written in Go
+dev-lang/go 1.11.5 1.12: A concurrent garbage collected and typesafe programming language
+dev-libs/bls-signatures 0_p20181101: BLS signatures in C++, using the relic toolkit
+dev-libs/libmesode 0.9.1 0.9.2 9999: Fork of libstrophe for use with Profanity XMPP Client
+dev-libs/libstrophe 0.9.2 9999: A simple, lightweight C library for writing XMPP clients
+dev-nodejs/apm 2.1.3 2.1.3-r1: Atom package manager
+dev-nodejs/node-gyp 3.8.0: Node.js native addon build tool
+dev-nodejs/semver 5.6.0: The semantic version parser used by npm
+dev-python/LEPL 5.1.3: A Parser Library for Python 2.6+/3+: Recursive Descent; Full Backtracking
+dev-python/coreapi 2.3.3: Python client library for Core API
+dev-python/coreapi-cli 1.0.6: An interactive command line client for Core API
+dev-python/coreschema 0.0.4: Core Schema
+dev-python/django-auth-ldap 1.7.0: Django LDAP authentication backend
+dev-python/django-braces 1.11.0: Reusable, generic mixins for Django
+dev-python/django-ckeditor 5.2.2: Django admin CKEditor integration
+dev-python/django-reversion 2.0.12: A Django extension that provides version control for model instances
+dev-python/django-subcommand2 0.1.1: Support subcommands in management commands
+dev-python/django-xforwardedfor-middleware 2.0: Django X-Forwarded-For Middleware
+dev-python/djangorestframework 3.7.3: Web APIs for Django, made easy
+dev-python/geoip2 2.9.0: MaxMind GeoIP2 API
+dev-python/google 2.0.1: Google search from Python
+dev-python/itypes 1.1.0: Basic immutable container types for Python
+dev-python/jsonfield 2.0.2: A reusable JSONField model for Django to store ad-hoc data
+dev-python/maxminddb 1.4.1: Python MaxMind DB reader extension
+dev-python/progressbar33 2.4: Text progressbar library for python
+dev-python/proxy-db 0.2.3: Manage free and private proxies on local db for Python Projects
+dev-python/py-dateutil 2.2: Extensions to the standard Python datetime module
+dev-python/python-ldap 3.1.0: Various LDAP-related Python modules
+dev-python/requests 2.20.1: HTTP library for human beings
+dev-python/requests-file 1.4.3: File transport adapter for Requests
+dev-python/rfc6266 0.0.4: Content-Disposition header support for Python
+dev-python/scrypt 0.8.6: Bindings for the scrypt key derivation function library
+dev-python/tldextract 2.2.0: Accurately separates the gTLD or ccTLD from the registered domain and subdomains
+dev-util/ctags 20181015: Exuberant Ctags creates tags files for code browsing in editors
+dev-util/drone 0.8.10: Drone is a Continuous Delivery platform built on Docker
+dev-util/drone-cli 1.0.6: Command line client for the Drone continuous integration server
+dev-util/electron-bin 2.0.18 3.0.16 3.1.6 4.0.7: Cross platform application development framework based on web technologies
+dev-util/gitlab-runner 11.6.1 11.7.0: The official GitLab Runner, written in Go
+dev-util/go-md2man 1.0.8: A utility to convert markdown to man pages
+dev-util/node-prune 1.0.2_pre20180704: Remove unnecessary files from node_modules (.md, .ts, ...)
+dev-vcs/fac 2.0.0: Easy-to-use CUI for fixing git conflicts
+dev-vcs/gitkraken-bin 4.2.2: The intuitive, fast, and beautiful cross-platform Git client
+dev-vcs/grv 0.3.1: A terminal based interface for viewing Git repositories
+dev-vcs/hub 2.9.0 2.10.0: A command-line wrapper for git that makes you better at GitHub
+dev-vcs/lab 0.14.0: Lab wraps Git or Hub to easily interact with repositories on GitLab
+mail-filter/rspamd 1.8.3: Rapid spam filtering system
+media-gfx/gifski 0.8.5: GIF encoder based on libimagequant
+media-video/peek 1.3.1-r2: Simple animated Gif screen recorder
+net-analyzer/amass 2.8.8: In-Depth DNS Enumeration and Network Mapping
+net-analyzer/aquatone 1.4.3: A tool for visual inspection of websites across a large amount of hosts
+net-analyzer/chronograf 1.7.7 1.7.8: Open source monitoring and visualization UI for the TICK stack
+net-analyzer/dirhunt 0.6.0: A web crawler optimized for search and analyze directories
+net-analyzer/kapacitor 1.5.1 1.5.2: A framework for processing, monitoring, and alerting on time series data
+net-analyzer/telegraf 1.9.3 1.9.4: An agent for collecting, processing, aggregating, and writing metrics
+net-dns/acme-dns 0.6 0.7.2: A simplified DNS server with a RESTful HTTP API to provide ACME DNS challenges
+net-dns/dnscrypt-proxy 2.0.19: A flexible DNS proxy, with support for modern encrypted DNS protocols
+net-dns/dnscrypt-wrapper 0.4.2 9999: A server-side DNSCrypt proxy
+net-dns/knot 2.7.6 2.8.0: High-performance authoritative-only DNS server
+net-dns/knot-resolver 3.2.1: A caching full DNS resolver implementation written in C and LuaJIT
+net-dns/unbound 1.8.1 1.8.3: A validating, recursive and caching DNS resolver
+net-firewall/firehol 3.1.6: A firewall for humans...
+net-firewall/opensnitchd 1.0.0_pre20181221: OpenSnitch daemon
+net-im/dino 9999: A modern Jabber/XMPP Client using GTK+/Vala
+net-im/matterircd 0.19.0: Connect to your Mattermost or Slack using your IRC-client of choice
+net-im/mattermost-desktop 4.2.0: Native desktop application for Mattermost
+net-im/profanity 0.5.1 9999: A console based XMPP client inspired by Irssi
+net-im/riot-desktop 1.0.1 1.0.3: A glossy Matrix collaboration client for desktop
+net-im/signal-desktop 1.21.2 1.22.0: Signal Private Messenger for the Desktop
+net-im/slack-term 0.4.1: A Slack client for your terminal
+net-libs/nghttp2 1.35.1 1.36.0: HTTP/2 C Library
+net-libs/nodejs 6.17.0 8.12.0 8.15.1 10.15.3: A JavaScript runtime built on Chrome's V8 JavaScript engine
+net-misc/cointop 1.1.3: A terminal based UI application for tracking cryptocurrencies
+net-misc/curlie 1.2.0: The power of curl, the ease of use of HTTPie
+net-misc/electron-cash 3.3.5 3.3.6: Lightweight Bitcoin Cash client
+net-misc/gotty-client 1.6.1 1.7.0: A terminal client for GoTTY
+net-misc/piknik 0.9.1-r1: Copy/paste anything over the network
+net-misc/ssf 3.0.0: A network toolkit for TCP/UDP port forwarding, SOCKS proxy and remote shell
+net-misc/ssh-chat 1.7: A chat over SSH server written in Go
+net-misc/tinyssh 20181206 20190101: A small SSH server with state-of-the-art cryptography
+net-p2p/bitcoin-abc 0.18.7 0.18.8 0.19.0: A full node Bitcoin Cash implementation with GUI, daemon and utils
+net-p2p/bitcoin-unlimited 1.5.0.2 1.5.1.0: A full node Bitcoin (and Bitcoin Cash) implementation with GUI, daemon and utils
+net-p2p/bitcoinxt 0.11.0k: A full node Bitcoin Cash implementation with GUI, daemon and utils
+net-p2p/dash-core 0.13.0.0 0.13.1.0: A peer-to-peer privacy-centric digital currency
+net-p2p/go-ipfs 0.4.18 0.4.19: IPFS implementation written in Go
+net-p2p/monero 0.13.0.4: The secure, private and untraceable cryptocurrency
+net-p2p/monero-gui 0.13.0.4: The secure, private and untraceable cryptocurrency (with GUI wallet)
+net-p2p/parity 2.1.11 2.2.11 2.3.4_beta: Fast, light, and robust Ethereum client
+net-p2p/zcash 2.0.2 2.0.3: Cryptocurrency that offers privacy of transactions
+net-proxy/ergo 0.2.5: The reverse proxy agent for local domain management
+net-proxy/fabio 1.5.11: A load balancing and TCP router for deploying applications managed by consul
+net-proxy/shadowsocks-go 1.2.1-r1: A Go port of Shadowsocks
+net-proxy/shadowsocks-rust 1.6.12: A Rust port of Shadowsocks
+net-proxy/shadowsocks2 0.0.11: A fresh implementation of Shadowsocks in Go
+net-proxy/toxiproxy 2.1.3: A TCP proxy to simulate network and system conditions
+net-proxy/traefik 1.7.8 1.7.9: A modern HTTP reverse proxy and load balancer made to deploy microservices
+net-vpn/onioncat 0.2.2_pre20180613: An IP-Transparent Tor Hidden Service Connector
+sys-apps/bane 0.4.3: AppArmor profile generator for docker containers
+sys-apps/nvm 0.33.11 0.34.0: A simple bash script to manage multiple active node.js versions
+sys-apps/yarn 1.13.0 1.14.0: Fast, reliable, and secure node dependency management
+sys-auth/yubikey-touch-detector 1.1.0: A tool that can detect when your YubiKey is waiting for a touch
+sys-fs/gocryptfs 1.6.1: Encrypted overlay filesystem written in Go
+sys-fs/tmsu 0.7.4-r1: Files tagger and virtual tag-based filesystem
+sys-process/gotop 2.0.2 3.0.0: A terminal based graphical activity monitor inspired by gtop and vtop
+www-apps/cryptpad 2.15.0 2.17.0: The zero knowledge realtime collaborative editor
+www-apps/filebrowser 1.11.0: A stylish web file manager
+www-apps/gitea 1.7.2 1.7.3: Gitea - Git with a cup of tea
+www-apps/gogs 0.11.86: A painless self-hosted Git service
+www-apps/gotty 1.0.1: A simple command line tool that turns your CLI tools into web applications
+www-apps/grafana 5.4.2 5.4.3: Grafana is an open source metric analytics & visualization suite
+www-apps/hiawatha-monitor 1.6: Monitoring application for www-servers/hiawatha
+www-apps/hugo 0.54.0: A static HTML and CSS website generator written in Go
+www-apps/mattermost-server 5.6.5 5.7.2 5.8.0: Open source Slack-alternative in Golang and React (Team Edition)
+www-apps/mattermost-server-ee 5.6.5 5.7.2 5.8.0: Open source Slack-alternative in Golang and React (Enterprise Edition)
+www-apps/modoboa 1.13.1: A mail hosting and management platform with a modern and simplified Web UI
+www-apps/modoboa-dmarc 1.1.0: A set of tools to use DMARC through Modoboa
+www-client/ungoogled-chromium 72.0.3626.121_pre 72.0.3626.122_p1: Modifications to Chromium for removing Google integration and enhancing privacy
+www-client/ungoogled-chromium-bin 71.0.3578.98_p2: Modifications to Chromium for removing Google integration and enhancing privacy
+www-misc/httplab 0.4.0: An interactive web server that let you inspect HTTP requests and forge responses
+www-misc/wuzz 0.4.0: Interactive cli tool for HTTP inspection
+www-plugins/browserpass 2.0.22-r1: WebExtension host binary for app-admin/pass, a UNIX password manager
+www-servers/algernon 1.12.0 1.12.1: Pure Go web server with Lua, Markdown, QUIC and Pongo2 support
+www-servers/caddy 0.11.1: Fast, cross-platform HTTP/2 web server with automatic HTTPS
+www-servers/h2o 2.2.5 2.3.0_beta1 9999: An optimized HTTP server with support for HTTP/1.x and HTTP/2
+www-servers/hiawatha 10.8.3: Advanced and secure webserver
+www-servers/rest-server 0.9.7: A high performance HTTP server that implements restic's REST backend API
+x11-misc/noti 3.1.0: Trigger notifications when a process completes
+x11-misc/yagostatus 0.3.0 0.4.0: Yet Another i3status replacement written in Go

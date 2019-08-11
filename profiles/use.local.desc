@@ -2,3 +2,227 @@
 # Please add your descriptions to your package's metadata.xml ONLY.
 # * generated automatically using pmaint *
 
+app-admin/terraform:fish-completion - Enable fish completion support
+app-admin/terraform:terraform-bundle - Install a helper program to create "bundle archives"
+app-backup/restic:doc - Generate HTML documentation
+app-benchmarks/bombardier:simplebenchserver - Build a simple HTTP server used for benchmarking
+app-benchmarks/fortio:daemon - Allow fortio to run as a system-wide service; installs an init script and creates a fortio user:group
+app-editors/atom:audit - Run 'npm audit' to perform security reports and try to fix known vulnerabilities (requires npm v6)
+app-emulation/containerd:apparmor - Support for AppArmor
+app-emulation/containerd:btrfs - Support for BTRFS snapshot driver
+app-emulation/containerd:cri - Support for Kubernetes CRI
+app-emulation/docker:apparmor - Enable AppArmor support
+app-emulation/docker:aufs - Enables dependencies for the "aufs" graph driver, including necessary kernel flags
+app-emulation/docker:btrfs - Enables dependencies for the "btrfs" graph driver, including necessary kernel flags
+app-emulation/docker:container-init - Makes the a staticly-linked init system tini available inside a container
+app-emulation/docker:device-mapper - Enables dependencies for the "devicemapper" graph driver, including necessary kernel flags
+app-emulation/docker:overlay - Enables dependencies for the "overlay" graph driver, including necessary kernel flags
+app-emulation/docker:pkcs11 - Enables pkcs-11 support
+app-emulation/runc:ambient - Enable support for ambient capabilities set (requires Linux kernel 4.3 or later)
+app-emulation/runc:apparmor - Enable AppArmor support
+app-emulation/runc:kmem - Enable Kernel Memory Accounting
+app-shells/fzf:tmux - Install TMUX extra tools
+app-shells/powerline-rs:chrono - Enable time support for --shell bare
+app-shells/powerline-rs:git - Enable git support
+app-shells/powerline-rs:users - Enable username support
+dev-db/influxdb:man - Build and install man pages
+dev-db/pgweb:daemon - Allow pgweb to run as a system-wide service. Installs an init script and creates a pgweb user:group.
+dev-lang/go:default-buildmode-pie - Use pie as the default '-buildmode' for Go
+dev-libs/libmesode:doc - Install doxygen documentation
+dev-libs/libstrophe:doc - Install doxygen documentation
+dev-libs/libstrophe:xml - Use dev-libs/libxml2 to parse XML
+dev-util/ctags:json - Enable JSON output support
+dev-util/ctags:xml - Enable XML parsing support
+dev-util/ctags:yaml - Enable YAML parsing support
+dev-util/gitlab-runner:build-images - Use docker to build the images
+dev-vcs/hub:fish-completion - Enable fish completion support
+mail-filter/rspamd:jemalloc - Use dev-libs/jemalloc for allocations
+mail-filter/rspamd:pcre2 - Use dev-libs/libpcre2
+mail-filter/rspamd:torch - Enable torch support. This is required for the neural module
+media-video/peek:gnome-shell - Enable gnome-shell recorder
+media-video/peek:keybinder - Enable support for global hotkeys using dev-libs/keybinder
+media-video/peek:open-filemanager - Enable file manager integration
+net-dns/knot:daemon - Build the system daemon, not just the libraries
+net-dns/knot:fastparser - Use a zone file parser that is faster, but requires more memory and CPU time to compile
+net-dns/knot:libidn2 - If IDN support is enabled, use net-dns/libidn2 instead of net-dns/libidn
+net-dns/knot:module-cookies - Enable DNS Cookies module and related '+cookie' kdig option
+net-dns/knot:module-dnsproxy - Enable the tiny DNS proxy module
+net-dns/knot:module-dnstap - Include support for the dnstap binary log format (http://dnstap.info/)
+net-dns/knot:module-geoip - Add geoip support for country and city lookup based on IPs
+net-dns/knot:module-noudp - Enable the module which can send empty truncated responses to UDP queries
+net-dns/knot:module-onlinesign - Enable the module that sign zones on the fly instead of pre-signing zone
+net-dns/knot:module-queryacl - Enable the module for query access control
+net-dns/knot:module-rrl - Enable the response rate limiting module
+net-dns/knot:module-stats - Enable the server statistics module
+net-dns/knot:module-synthrecord - Enable the automatic forward/reverse records module
+net-dns/knot:module-whoami - Enable the whoami response module
+net-dns/knot:utils - Install command-line utilities
+net-dns/knot-resolver:dnstap - Enables dnstap packet logging
+net-dns/knot-resolver:go - Build modules written in Go
+net-dns/unbound:dnscrypt - Enable dnscrypt support
+net-dns/unbound:dnstap - Enable dnstap support
+net-dns/unbound:ecdsa - Enable ECDSA support
+net-dns/unbound:ecs - Enable EDNS client subnet support
+net-dns/unbound:gost - Enable GOST support
+net-dns/unbound:redis - Enable cache db backend which uses dev-libs/hiredis
+net-firewall/firehol:ipset - Use net-firewall/ipset to manage large lists of IPs
+net-firewall/firehol:qos - Enable FireQOS to assist you configure traffic shaping on Linux
+net-im/profanity:c-plugins - Enable C plugins
+net-im/profanity:icons - Enable GTK tray icons
+net-im/profanity:largefile - Enable support for large files
+net-im/profanity:otr - Enable Off-the-Record support (encryption)
+net-im/profanity:pgp - Enable PGP support
+net-im/profanity:plugins - Enable plugins
+net-im/profanity:python-plugins - Enable Python plugins
+net-im/profanity:themes - Install additional themes
+net-im/profanity:xscreensaver - Use x11-libs/libXScrnSaver for checking idle time
+net-im/signal-desktop:start-in-tray - Add a desktop entry to enable start-in-tray mode
+net-libs/nghttp2:hpack-tools - Install HPACK (header compression) helper tools
+net-libs/nghttp2:utils - Install nghttp, nghttpd and nghttpx
+net-libs/nodejs:bundled-ssl - Use bundled OpenSSL instead of system-wide (EXPERIMENTAL)
+net-libs/nodejs:inspector - Enable V8 inspector
+net-libs/nodejs:npm - Enable NPM package manager
+net-libs/nodejs:snapshot - Enable snapshot creation for faster startup
+net-libs/nodejs:systemtap - Enable SystemTAP/DTrace tracing
+net-misc/electron-cash:audio_modem - Enable plugin to support Audio Modem
+net-misc/electron-cash:cli - Enables the CLI interface
+net-misc/electron-cash:cosign - Enable plugin to support multisig wallets between multiple Electron Cash clients
+net-misc/electron-cash:digitalbitbox - Enable plugin to support Digital Bitbox hardware wallet
+net-misc/electron-cash:email - Enable plugin to support emailing invoices
+net-misc/electron-cash:qrcode - Enable QR code scanning with media-gfx/zbar
+net-misc/electron-cash:sync - Enable plugin to sync wallet metadata across multiple Electrum clients
+net-misc/electron-cash:vkb - Enable plugin for virtual keyboard
+net-misc/tinyssh:sodium - Build against dev-libs/libsodium instead of bundled NaCL
+net-p2p/bitcoin-abc:daemon - Build the system daemon
+net-p2p/bitcoin-abc:gui - Build the end-user Qt GUI for the Bitcoin crypto-currency
+net-p2p/bitcoin-abc:qrcode - Enable generation of QR Codes for receiving payments
+net-p2p/bitcoin-abc:reduce-exports - Attempt to reduce exported symbols in the resulting executables
+net-p2p/bitcoin-abc:system-univalue - Use system univalue instead of the bundled one
+net-p2p/bitcoin-abc:upnp - Enable Universal Plug and Play
+net-p2p/bitcoin-abc:utils - Enable command-line client and transaction tool
+net-p2p/bitcoin-abc:wallet - Enable wallet support
+net-p2p/bitcoin-abc:zeromq - Report blocks and transactions via zeromq
+net-p2p/bitcoin-unlimited:daemon - Build the system daemon
+net-p2p/bitcoin-unlimited:gui - Build the end-user Qt GUI for the Bitcoin crypto-currency
+net-p2p/bitcoin-unlimited:qrcode - Enable generation of QR Codes for receiving payments
+net-p2p/bitcoin-unlimited:reduce-exports - Attempt to reduce exported symbols in the resulting executables
+net-p2p/bitcoin-unlimited:upnp - Enable Universal Plug and Play
+net-p2p/bitcoin-unlimited:utils - Enable command-line client and transaction tool
+net-p2p/bitcoin-unlimited:wallet - Enable wallet support
+net-p2p/bitcoin-unlimited:zeromq - Report blocks and transactions via zeromq
+net-p2p/bitcoinxt:daemon - Build the system daemon
+net-p2p/bitcoinxt:gui - Build the end-user Qt GUI for the Bitcoin crypto-currency
+net-p2p/bitcoinxt:qrcode - Enable generation of QR Codes for receiving payments
+net-p2p/bitcoinxt:reduce-exports - Attempt to reduce exported symbols in the resulting executables
+net-p2p/bitcoinxt:upnp - Enable Universal Plug and Play
+net-p2p/bitcoinxt:utils - Enable command-line client and transaction tool
+net-p2p/bitcoinxt:wallet - Enable wallet support
+net-p2p/bitcoinxt:zeromq - Report blocks and transactions via zeromq
+net-p2p/dash-core:daemon - Build the system daemon
+net-p2p/dash-core:gui - Build the end-user Qt GUI for the Dash crypto-currency
+net-p2p/dash-core:qrcode - Enable generation of QR Codes for receiving payments
+net-p2p/dash-core:reduce-exports - Attempt to reduce exported symbols in the resulting executables
+net-p2p/dash-core:system-univalue - Use system univalue instead of the bundled one
+net-p2p/dash-core:upnp - Enable Universal Plug and Play
+net-p2p/dash-core:utils - Enable command-line client and transaction tool
+net-p2p/dash-core:wallet - Enable wallet support
+net-p2p/dash-core:zeromq - Report blocks and transactions via zeromq
+net-p2p/go-ipfs:fuse - Enable runtime support for sys-fs/fuse
+net-p2p/monero:daemon - Build the system daemon
+net-p2p/monero:dot - Allow to create dot graphs using media-gfx/graphviz
+net-p2p/monero:simplewallet - Build the CLI wallet
+net-p2p/monero:utils - Enable command-line tools
+net-p2p/monero-gui:daemon - Build the system daemon
+net-p2p/monero-gui:dot - Allow to create dot graphs using media-gfx/graphviz
+net-p2p/monero-gui:scanner - Enable support for reading QR Codes
+net-p2p/monero-gui:simplewallet - Build the CLI wallet
+net-p2p/monero-gui:utils - Enable command-line tools
+net-p2p/parity:daemon - Allow parity to run as a system-wide service. Installs an init script and creates a parity user:group.
+net-p2p/zcash:bundled-ssl - Use bundled OpenSSL instead
+net-p2p/zcash:libs - Build libraries like libzcashconsensus
+net-p2p/zcash:mining - Build mining code
+net-p2p/zcash:proton - Build the Apache Qpid Proton library required for AMQP support
+net-p2p/zcash:reduce-exports - Attempt to reduce exported symbols in the resulting executables
+net-p2p/zcash:zeromq - Report blocks and transactions via ZeroMQ
+net-vpn/onioncat:http - Enable handling of accidental HTTP requests
+net-vpn/onioncat:i2p - Install GarliCat (I2P-version)
+net-vpn/onioncat:log - Enable packet logging
+net-vpn/onioncat:queue - Enable queueuing of packets while connecting setup
+net-vpn/onioncat:relay - Disable source IP checking before forwarding
+net-vpn/onioncat:rtt - Enable inband RTT measurement
+sys-fs/gocryptfs:man - Build and install man pages
+www-apps/filebrowser:daemon - Allow filebrowser to run as a system-wide service. Installs an init script and creates a filebrowser user:group.
+www-apps/gitea:bindata - Build a single monolithic binary, with all assets included
+www-apps/gitea:openssh - Use OpenSSH instead of the builtin SSH server
+www-apps/gitea:redis - Add support for redis sessions
+www-apps/gogs:cert - Generate self-signed certificate
+www-apps/gogs:openssh - Use OpenSSH instead of the builtin SSH server
+www-apps/gogs:redis - Add support for redis sessions
+www-apps/hugo:sass - Enable SASS/SCSS support
+www-apps/mattermost-server:audit - Run 'npm audit' to perform security reports and try to fix known vulnerabilities (requires npm v6)
+www-apps/modoboa:gunicorn - Uses www-servers/gunicorn to daemonize this application
+www-client/ungoogled-chromium:cfi - Build with CFI (Control Flow Integrity) enabled (recommended).
+www-client/ungoogled-chromium:closure-compile - Enable closure type-checking for Chrome's web technology-based UI. Requires Java.
+www-client/ungoogled-chromium:gnome - Improve integration with GIO (libgio).
+www-client/ungoogled-chromium:gold - Use GNU's gold linker.
+www-client/ungoogled-chromium:jumbo-build - Coalesce translation units together, making builds faster on single machines, at the expense of more memory during build time. This flag is not automatically tested by Chromium developers, so it may not work all the time.
+www-client/ungoogled-chromium:libcxx - Build against sys-devel/libcxx, which requires that all C++ dependencies must be built with '-stdlib=libc++' (EXPERIMENTAL).
+www-client/ungoogled-chromium:lld - LLD is a linker from the LLVM project. That is a drop-in replacement for system linkers and runs much faster than them (recommended).
+www-client/ungoogled-chromium:new-tcmalloc - Use the soon-to-be default tcmalloc.
+www-client/ungoogled-chromium:optimize-thinlto - Whether to enable ThinLTO optimizations. Turning ThinLTO optimizations on can substantially increase link time and binary size, but they generally also make binaries a fair bit faster.
+www-client/ungoogled-chromium:optimize-webui - Optimize parts of Chromium's UI written with web technologies (HTML/CSS/JS) for runtime performance purposes. This does more work at compile time for speed benefits at runtime.
+www-client/ungoogled-chromium:pdf - Enable the built-in PDF viewer
+www-client/ungoogled-chromium:proprietary-codecs - Enable proprietary codecs like H.264, MP3.
+www-client/ungoogled-chromium:suid - Build the SUID sandbox, which is only needed on CONFIG_USER_NS=n kernels.
+www-client/ungoogled-chromium:system-ffmpeg - Use the system media-video/ffmpeg instead of bundled.
+www-client/ungoogled-chromium:system-harfbuzz - Use the system media-libs/harfbuzz instead of bundled.
+www-client/ungoogled-chromium:system-icu - Use the system dev-libs/icu instead of bundled.
+www-client/ungoogled-chromium:system-jsoncpp - Use the system dev-libs/jsoncpp instead of bundled.
+www-client/ungoogled-chromium:system-libevent - Use the system dev-libs/libevent instead of bundled.
+www-client/ungoogled-chromium:system-libvpx - Use the system media-libs/libvpx instead of bundled.
+www-client/ungoogled-chromium:system-openh264 - Use the system media-libs/openh264 instead of bundled. If disabled, it will restrict USE=bindist.
+www-client/ungoogled-chromium:system-openjpeg - Use the system-wide media-libs/openjpeg instead of bundled. OpenJPEG use are exclusively for Chromium's PDF viewer.
+www-client/ungoogled-chromium:tcmalloc - Use bundled tcmalloc instead of system malloc.
+www-client/ungoogled-chromium:thinlto - Build with ThinLTO support. LTO (Link Time Optimization) achieves better runtime performance through whole-program analysis and cross-module optimization (highly recommended).
+www-client/ungoogled-chromium:widevine - Unsupported closed-source DRM capability (required by Netflix VOD).
+www-client/ungoogled-chromium-bin:suid - Build the SUID sandbox, which is only needed on CONFIG_USER_NS=n kernels
+www-client/ungoogled-chromium-bin:widevine - Unsupported closed-source DRM capability (required by Netflix VOD)
+www-servers/algernon:redis - Add support for storing in a redis DB
+www-servers/caddy:authz - It provides support for enforcing authorization based on various models like ACL, RBAC, ABAC
+www-servers/caddy:awses - A plugin for signing and proxying requests to AWS Elasticsearch
+www-servers/caddy:awslambda - Gateways requests to AWS Lambda functions
+www-servers/caddy:cache - A simple middleware caching
+www-servers/caddy:cgi - Implements the Common Gateway Interface (CGI) for Caddy
+www-servers/caddy:cors - Supports Cross Origin Resource Sharing headers
+www-servers/caddy:datadog - Allows Caddy to send some metrics to Datadog
+www-servers/caddy:expires - Allows you to set expiration header relative to the request time
+www-servers/caddy:filter - Provides a directive to filter response bodies
+www-servers/caddy:forwardproxy - Enables Caddy to act as a ForwardProxy for http/2.0 and http/1.1 requests
+www-servers/caddy:geoip - Determine user Geolocation by IP address using MaxMind database
+www-servers/caddy:git - The git plugin makes it possible to deploy your site with a simple git push
+www-servers/caddy:grpc - Proxies gRPC calls from clients to gRPC services
+www-servers/caddy:ipfilter - Adds the ability to allow or block requests based on the client's IP address
+www-servers/caddy:jwt - An authorization layer based on JSON Web Tokens (JWT)
+www-servers/caddy:locale - Locale detection for caddy
+www-servers/caddy:login - Enable login checks against a backend and then returned as JWT token
+www-servers/caddy:mailout - A SMTP client email middleware with PGP encryption
+www-servers/caddy:minify - Minify static assets on-the-fly. Supports CSS, HTML, JS, JSON, SVG and XML
+www-servers/caddy:multipass - Implements the idea to authenticate users based on something they own instead of something they know
+www-servers/caddy:nobots - A plugin to protect your website against web crawlers and bots
+www-servers/caddy:prometheus - Enables prometheus metrics for Caddy
+www-servers/caddy:proxyprotocol - Enables PROXY protocol (v1) support
+www-servers/caddy:ratelimit - Limit the request processing rate based on client's IP address
+www-servers/caddy:realip - Allows you to see the actual client IP from X-Forwarded-For headers if you are running behind a CDN or Proxy
+www-servers/caddy:reauth - A common basis for authenticating with various and multiple authentication systems
+www-servers/caddy:restic - A plugin that serves a Restic repository at a path, see https://restic.github.io for details
+www-servers/caddy:telemetry - Produces as a series of reports to Caddy Telemetry Project which aggregates the global data set and makes it queryable (Please read the documentation to stay aware of the privacy implications)
+www-servers/caddy:upload - Upload files using an API and HTTP method POST or PUT
+www-servers/caddy:webdav - A plugin that implements WebDAV
+www-servers/h2o:mruby - Enable support for mruby
+www-servers/hiawatha:cache - Enable caching of content
+www-servers/hiawatha:monitor - Pull in www-apps/hiawatha-monitor
+www-servers/hiawatha:rewrite - Enable the rewrite toolkit
+www-servers/hiawatha:rproxy - Enable reverse proxy support
+www-servers/hiawatha:ssl - Enable TLS support via net-libs/mbedtls
+www-servers/hiawatha:tomahawk - Enable Tomahawk control server
+www-servers/hiawatha:xslt - Enable XSLT support and directory listings
