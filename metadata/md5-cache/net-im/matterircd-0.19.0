@@ -9,5 +9,5 @@ LICENSE=MIT
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/42wim/matterircd/archive/v0.19.0.tar.gz -> matterircd-0.19.0.tar.gz
-_eclasses_=golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f	user	f8dcb46ee7b0bcdec51dac1ef4bfdfc9
+_eclasses_=golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f	user	00484e1be1aac73e24fca1c99557a7d6
 _md5_=337f6a5245fddc274efd1064d500e9a1
