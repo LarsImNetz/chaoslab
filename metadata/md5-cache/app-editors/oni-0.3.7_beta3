@@ -9,5 +9,5 @@ RDEPEND=app-editors/neovim >=dev-util/electron-bin-2.0.8:2.0
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/onivim/oni/archive/v0.3.7-beta3.tar.gz -> oni-0.3.7_beta3.tar.gz
-_eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	xdg-utils	14d00d009167652b1fa363e55effe213
+_eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	xdg-utils	92c60e3d7f481da372979bdcd33e5109
 _md5_=773428412d03632ef3e25820126a2ad8
