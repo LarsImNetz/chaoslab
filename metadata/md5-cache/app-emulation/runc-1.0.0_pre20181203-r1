@@ -11,5 +11,5 @@ RDEPEND=!app-emulation/docker-runc apparmor? ( sys-libs/libapparmor ) seccomp? (
 RESTRICT=mirror test
 SLOT=0
 SRC_URI=https://github.com/opencontainers/runc/archive/96ec2177ae841256168fcf76954f7177af9446eb.tar.gz -> runc-1.0.0_pre20181203.tar.gz
-_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f	multilib	1d91b03d42ab6308b5f4f6b598ed110e	toolchain-funcs	2f8b8f320bee13b71a8a54cc6d09e08a
+_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f	multilib	1d91b03d42ab6308b5f4f6b598ed110e	toolchain-funcs	512eb3367f507ebaa1d1d43ab7d66e6c
 _md5_=972e08c8b40ab84c1739442441e57a39
