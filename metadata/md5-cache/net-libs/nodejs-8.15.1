@@ -3,13 +3,13 @@ DEPEND=>=dev-libs/libuv-1.23.2:= >=net-dns/c-ares-1.10.1 >=net-libs/http-parser-
 DESCRIPTION=A JavaScript runtime built on Chrome's V8 JavaScript engine
 EAPI=7
 HOMEPAGE=https://nodejs.org/
-IUSE=bundled-ssl cpu_flags_x86_sse2 debug doc icu inspector libressl +npm +snapshot +ssl systemtap test +python_single_target_python2_7
+IUSE=bundled-ssl cpu_flags_x86_sse2 debug doc icu inspector libressl +npm +snapshot +ssl systemtap test +python_targets_python2_7 +python_single_target_python2_7
 KEYWORDS=~amd64 ~arm ~arm64 ~ppc ~ppc64 ~x86 ~amd64-linux ~x64-macos
 LICENSE=Apache-1.1 Apache-2.0 BSD BSD-2 MIT
 RDEPEND=>=dev-libs/libuv-1.23.2:= >=net-dns/c-ares-1.10.1 >=net-libs/http-parser-2.9.0:= >=net-libs/nghttp2-1.33.0 sys-libs/zlib icu? ( >=dev-libs/icu-60.1:= ) ssl? ( !bundled-ssl? ( =dev-libs/openssl-1.0.2*:0=[-bindist] ) )
-REQUIRED_USE=^^ ( python_single_target_python2_7 ) inspector? ( icu ssl ) libressl? ( bundled-ssl ) bundled-ssl? ( ssl ) npm? ( ssl )
+REQUIRED_USE=^^ ( python_single_target_python2_7 ) python_single_target_python2_7? ( python_targets_python2_7 ) inspector? ( icu ssl ) libressl? ( bundled-ssl ) bundled-ssl? ( ssl ) npm? ( ssl )
 RESTRICT=test
 SLOT=0
 SRC_URI=https://nodejs.org/dist/v8.15.1/node-v8.15.1.tar.xz
-_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	eutils	fcb2aa98e1948b835b5ae66ca52868c5	flag-o-matic	8a43b9830f1e64a7a5fc0a276afa0275	multilib	1d91b03d42ab6308b5f4f6b598ed110e	pax-utils	a41d1fd1c111289ffa04490de6ee79d7	python-single-r1	4de31a18344a72217ca7cc04ec6d1f8e	python-utils-r1	f7aef159261e9835066ddf8d3a0e3487	toolchain-funcs	512eb3367f507ebaa1d1d43ab7d66e6c
+_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	eutils	fcb2aa98e1948b835b5ae66ca52868c5	flag-o-matic	8a43b9830f1e64a7a5fc0a276afa0275	multilib	1d91b03d42ab6308b5f4f6b598ed110e	pax-utils	a41d1fd1c111289ffa04490de6ee79d7	python-single-r1	721d0faeb54c0c332aa593d384993b4c	python-utils-r1	f7aef159261e9835066ddf8d3a0e3487	toolchain-funcs	512eb3367f507ebaa1d1d43ab7d66e6c
 _md5_=72507e7c6c167e178e3a558112a7c007
