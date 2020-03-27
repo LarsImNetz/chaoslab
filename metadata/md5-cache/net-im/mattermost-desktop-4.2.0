@@ -9,5 +9,5 @@ RDEPEND=>=dev-util/electron-bin-2.0.14:2.0
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/mattermost/desktop/archive/v4.2.0.tar.gz -> mattermost-desktop-4.2.0.tar.gz
-_eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	xdg-utils	ff2ff954e6b17929574eee4efc5152ba
+_eclasses_=desktop	3b1f1d9a6b749c9ce2d5182877265b23	xdg-utils	ff2ff954e6b17929574eee4efc5152ba
 _md5_=7d0ebd17ed300a8a150ae9a5b459749d
