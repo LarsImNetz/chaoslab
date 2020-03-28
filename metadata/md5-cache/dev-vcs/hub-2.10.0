@@ -11,5 +11,5 @@ RDEPEND=>=dev-vcs/git-1.7.3 fish-completion? ( app-shells/fish ) zsh-completion?
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/github/hub/archive/v2.10.0.tar.gz -> hub-2.10.0.tar.gz
-_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f	multilib	c9e26066f2b7b5a91ad08d042f7f7306	toolchain-funcs	512eb3367f507ebaa1d1d43ab7d66e6c
+_eclasses_=bash-completion-r1	47a7402d95930413ce25ba8d857339bb	golang-base-r1	132a484423dd30dc80945e27e282ff49	golang-vcs-snapshot-r1	b83993ebda35c3b9f953830425a3f20f	multilib	318e8ae683e57fd3ccd0d31a769d8ee8	toolchain-funcs	512eb3367f507ebaa1d1d43ab7d66e6c
 _md5_=1962f30b7f831b7c9ea817b8dde700a6
