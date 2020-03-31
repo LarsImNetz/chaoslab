@@ -10,5 +10,5 @@ RDEPEND=>=dev-util/electron-bin-3.0.14:3.0
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/signalapp/Signal-Desktop/archive/v1.22.0.tar.gz -> signal-desktop-1.22.0.tar.gz
-_eclasses_=desktop	3b1f1d9a6b749c9ce2d5182877265b23	xdg-utils	ff2ff954e6b17929574eee4efc5152ba
+_eclasses_=desktop	7fd20552ce4cc97e8acb132a499a7dd8	xdg-utils	ff2ff954e6b17929574eee4efc5152ba
 _md5_=8d034a42b07c5efa57ed6e9861d07df1
