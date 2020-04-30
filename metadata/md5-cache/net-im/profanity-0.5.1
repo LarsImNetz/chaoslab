@@ -1,16 +1,16 @@
 BDEPEND=>=app-portage/elt-patches-20170815 || ( >=sys-devel/automake-1.16.1:1.16 >=sys-devel/automake-1.15.1:1.15 ) >=sys-devel/autoconf-2.69 >=sys-devel/libtool-2.4
 DEFINED_PHASES=configure install prepare setup
-DEPEND=dev-libs/glib:2 || ( >=dev-libs/libmesode-0.9.1[ssl] >=dev-libs/libstrophe-0.9.1[ssl,xml] ) net-misc/curl sys-apps/util-linux:0 sys-libs/ncurses:0[unicode] sys-libs/readline:0 icons? ( >=x11-libs/gtk+-2.24.10:2 ) libnotify? ( x11-libs/libnotify ) otr? ( net-libs/libotr ) pgp? ( app-crypt/gpgme ) python-plugins? ( python_single_target_python2_7? ( >=dev-lang/python-2.7.17-r1:2.7 >=dev-lang/python-exec-2:=[python_targets_python2_7] ) ) xscreensaver? ( x11-libs/libXScrnSaver ) virtual/pkgconfig test? ( dev-util/cmocka )
+DEPEND=dev-libs/glib:2 || ( >=dev-libs/libmesode-0.9.1[ssl] >=dev-libs/libstrophe-0.9.1[ssl,xml] ) net-misc/curl sys-apps/util-linux:0 sys-libs/ncurses:0[unicode] sys-libs/readline:0 icons? ( >=x11-libs/gtk+-2.24.10:2 ) libnotify? ( x11-libs/libnotify ) otr? ( net-libs/libotr ) pgp? ( app-crypt/gpgme ) python-plugins? ( python_single_target_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 >=dev-lang/python-exec-2:=[python_targets_python2_7] ) ) xscreensaver? ( x11-libs/libXScrnSaver ) virtual/pkgconfig test? ( dev-util/cmocka )
 DESCRIPTION=A console based XMPP client inspired by Irssi
 EAPI=7
 HOMEPAGE=http://profanity.im
 IUSE=c-plugins icons +largefile libnotify +otr pgp plugins python-plugins test +themes xscreensaver +python_single_target_python2_7
 KEYWORDS=~amd64 ~x86
 LICENSE=GPL-3
-RDEPEND=dev-libs/glib:2 || ( >=dev-libs/libmesode-0.9.1[ssl] >=dev-libs/libstrophe-0.9.1[ssl,xml] ) net-misc/curl sys-apps/util-linux:0 sys-libs/ncurses:0[unicode] sys-libs/readline:0 icons? ( >=x11-libs/gtk+-2.24.10:2 ) libnotify? ( x11-libs/libnotify ) otr? ( net-libs/libotr ) pgp? ( app-crypt/gpgme ) python-plugins? ( python_single_target_python2_7? ( >=dev-lang/python-2.7.17-r1:2.7 >=dev-lang/python-exec-2:=[python_targets_python2_7] ) ) xscreensaver? ( x11-libs/libXScrnSaver ) libnotify? ( virtual/notification-daemon )
+RDEPEND=dev-libs/glib:2 || ( >=dev-libs/libmesode-0.9.1[ssl] >=dev-libs/libstrophe-0.9.1[ssl,xml] ) net-misc/curl sys-apps/util-linux:0 sys-libs/ncurses:0[unicode] sys-libs/readline:0 icons? ( >=x11-libs/gtk+-2.24.10:2 ) libnotify? ( x11-libs/libnotify ) otr? ( net-libs/libotr ) pgp? ( app-crypt/gpgme ) python-plugins? ( python_single_target_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 >=dev-lang/python-exec-2:=[python_targets_python2_7] ) ) xscreensaver? ( x11-libs/libXScrnSaver ) libnotify? ( virtual/notification-daemon )
 REQUIRED_USE=c-plugins? ( plugins ) python-plugins? ( plugins ^^ ( python_single_target_python2_7 ) )
 RESTRICT=mirror
 SLOT=0
 SRC_URI=https://github.com/boothj5/profanity/archive/0.5.1.tar.gz -> profanity-0.5.1.tar.gz
-_eclasses_=autotools	7d999b62b8749fad43fff00620cedf47	libtool	f143db5a74ccd9ca28c1234deffede96	multilib	318e8ae683e57fd3ccd0d31a769d8ee8	python-single-r1	2d2617a730e75e491e1d17af87841ec5	python-utils-r1	727554821dab8292d3a8198893c2ef8b	toolchain-funcs	512eb3367f507ebaa1d1d43ab7d66e6c
+_eclasses_=autotools	7d999b62b8749fad43fff00620cedf47	libtool	f143db5a74ccd9ca28c1234deffede96	multilib	318e8ae683e57fd3ccd0d31a769d8ee8	python-single-r1	2d2617a730e75e491e1d17af87841ec5	python-utils-r1	dd532a387632f19bfc5523fc2289a9a0	toolchain-funcs	512eb3367f507ebaa1d1d43ab7d66e6c
 _md5_=729187d5e01e62a50813243c2283a7f9
